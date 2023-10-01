@@ -14,6 +14,10 @@ const listPerson: Person[] = [
 
 const port = import.meta.env.VITE_PORT || 3000
 
+const data = axios.get('http://polycinema.test/api/v1')
+console.log(data);
+
+
 const App = () => {
 
   return (
