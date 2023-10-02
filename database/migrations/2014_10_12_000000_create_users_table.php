@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->interger('accumulated_points'); // Điểm tích lũy
+            $table->integer('role')->default(0); // Quyền 0:user, 1:admin
             $table->rememberToken();
             $table->timestamps();
         });
