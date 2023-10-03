@@ -1,0 +1,209 @@
+.listmovie__container{
+        max-width: 1150px;
+        margin: 0 auto;
+        
+}
+.tab-listmovie{
+        text-align: center;
+}
+.list-tab{
+        display:  inline-flex;
+        margin: 0 auto;
+        gap: 16px;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 30px;
+}
+.item-tab{
+        padding: 10px 0px;
+}
+.item-tab a{
+        padding: 0px 30px;
+        font-size: 30px;
+        font-weight: 300;
+        color: #000;
+        line-height: 1.5;
+}
+.item-tab a:active{
+        color:#03599d ;
+        border-bottom:2px solid #03599d ;
+        padding-bottom: 9px;
+}
+.product__movies{
+        display: grid;
+        grid-template-columns: repeat(4,25%);
+}
+.product__movies-item{
+        border-radius: 20px;
+        padding: 0px 30px;
+        position: relative;
+}
+.movie-img {
+        position: relative;
+        border-radius: 20px;
+        max-width: 100%;
+}
+.movie-img .movie-img-item{
+        border-radius: 20px;
+        max-width: 100%;
+}
+.movie-play{
+        position: absolute;
+        transform: translate(100px,-190px);
+        color: white;
+        font-size: 50px;
+        z-index: 10;
+        display: none;
+        transition: all 0.3s;
+}
+.movie-icon-tag{
+        position: absolute;
+        transform: translate(30px, 10px);
+        top: 0;
+        left: 0;
+        width: 20%;
+}
+.movie-icon-sale{
+        position: absolute;
+        background-repeat: no-repeat;
+        height: 30%;
+        width: 30%;
+        transform: translateX(4%);
+        top: 0;
+        right: 0;
+}
+
+.movie-img:hover .bg-movie{
+        position: absolute;
+        width: 79%;
+        height: 69%;
+        background-color: rgba(0, 0, 0,0.3);
+        border-radius: 20px;
+        z-index: 1;
+        transition: all 0.3s ease-in-out;
+}
+.movie-img:hover .movie-play{
+        display: block;
+        transition: all 0.3s;
+}
+.movie-item-description{
+        margin-top: 10px;
+}
+.movie-item-description .movie-name{
+        color: #337ab7;
+        max-height: 30px;
+        min-height: 30px;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1.5rem;
+        
+}
+.movie-des{
+        display: flex;
+        gap: 5px;
+        font-size: 15px;
+
+}
+.movie-des .movie-des-1{
+        font-weight: 700;
+}
+.btn-movie{
+        position: relative;
+        margin-top: 30px;
+        border-width: 0;
+        padding: 5px 10px;
+        width: 100%;
+        background-image: linear-gradient(to right, #0a64a7 0%, #258dcf 51%, #3db1f3 100%) !important;
+        color: #fff;
+        font-size: 24px;
+        border-radius: 10px;
+        
+    
+}
+.btn-movie-icon{
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform: rotate(-50deg);
+        font-size: 50px;
+        opacity: 0.5;
+}
+@media (max-width: 480px) {
+        .listmovie__container{
+                max-width: 100%;
+                
+        }
+        .tab-listmovie{
+                text-align: center;
+        }
+        .list-tab{
+                display:  inline-flex;
+                gap: 10px;
+        }
+        .item-tab{
+                padding: 5px 0px;
+        }
+        .item-tab a{
+                padding: 0px 10px;
+                font-size: 16px;
+        }
+        .item-tab a:active{
+                padding-bottom: 5px;
+        }
+        .product__movies{
+                display: block;
+        }
+        .product__movies-item{
+                
+                display: flex;
+                gap: 20px;
+                margin-bottom: 20px;
+        }
+        .movie-img {
+                width: 60%;
+        }
+        .movie-img .movie-img-item{
+                border-radius: 10px;
+                max-width: 100%;
+        }
+        .movie-play{
+                transform: translate(60px,-150px);
+        }
+        .movie-icon-tag{
+                transform: translate(10px, 10px);
+                width: 20%;
+        }
+        .movie-icon-sale{
+                height: 20%;
+                width: 30%;
+        }
+        
+        
+        .movie-item-description{
+                margin-top: 10px;
+                
+        }
+        
+        .movie-des{
+                margin-top: 20px;
+                
+        }
+        
+        .btn-movie{
+                margin-top: 10px;
+                padding: 5px 10px;
+                font-size: 16px;
+                border-radius: 10px;
+                
+            
+        }
+        .btn-movie-icon{
+                position: absolute;
+                left: 0;
+                top: 0;
+                transform: rotate(-50deg);
+                font-size: 30px;
+                opacity: 0.5;
+        }
+        
+        
+}
