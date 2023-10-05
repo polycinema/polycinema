@@ -4,8 +4,6 @@ import { router } from './router'
 
 
 
-const data = axios.get('http://polycinema.test/api/v1')
-console.log(data);
 
 
 const App = () => {
