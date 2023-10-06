@@ -1,4 +1,3 @@
-import React from 'react'
 import "./ListMovie.css"
 import { Link } from 'react-router-dom'
 import { AiFillPlayCircle } from "react-icons/ai";
@@ -201,9 +200,6 @@ const ListMovie = () => {
         
         </div>
         </div>
-
-        
-
   )
   }
 
