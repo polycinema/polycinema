@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('seat_name');
             $table->enum('type', ['single', 'double', 'special']);
             $table->foreignId('room_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
