@@ -6,7 +6,7 @@ const Register = () => {
     console.log(values);
   };
   return (
-    <div>
+    <div className="max-w-2xl mx-auto my-20">
       <Form
         layout="vertical"
         labelCol={{ span: 20 }}

@@ -7,19 +7,19 @@ const LayoutWebsite = () => {
         <div className='m-auto'>
         <div className='bg-black'>
           <div className='text-white flex flex-row-reverse md:mx-40 md:-px-2'>
-            <Link to={""} className='hover:text-[#397EBA] mx-1'>Đăng ký</Link> |
-            <Link to={""} className='hover:text-[#397EBA] mx-1'>Đăng nhập</Link>
+            <Link to={"poly-acount"} className='hover:text-[#397EBA] mx-1'>Đăng ký</Link> |
+            <Link to={"poly-acount"} className='hover:text-[#397EBA] mx-1'>Đăng nhập</Link>
           </div>
         </div>
         <div className='sticky top-0 z-50'>
           <header className='border-b-[1px] border-[#E7E7E7] bg-white'>
             <div className='md:max-w-6xl md:flex md:mx-auto md:justify-between md:py-4'>
               <div>
-                <a href=''><img src={logo} alt='' /></a>
+                <Link to={""}><img src={logo} alt='' /></Link>
               </div>
               <div>
                 <ul className='flex md:space-x-6 space-x-5 md:py-4 font-bold md:text-lg sm:text-base justify-center my-2'>
-                  <li><Link to={''} className='hover:text-[#397EBA]'>PHIM</Link></li>
+                  <li><Link to={'poly-movies'} className='hover:text-[#397EBA]'>PHIM</Link></li>
                   <li><Link to={''} className='hover:text-[#397EBA]'>GIÁ VÉ</Link></li>
                   <li><Link to={''} className='hover:text-[#397EBA]'>TIN MỚI VÀ ƯU ĐÃI</Link></li>
                   <li><Link to={''} className='hover:text-[#397EBA]'>THÀNH VIÊN</Link></li>
@@ -33,9 +33,10 @@ const LayoutWebsite = () => {
           < Outlet />
             </main>
     
-            <hr/>
     
-            <footer>
+            <footer className='mt-24'>
+            <hr/>
+
         <div className='md:m-auto md:max-w-6xl md:py-4'>
           <div className='md:grid md:grid-cols-3 md:gap-8'>
             <div className='text-center md:text-left text-xs md:text-base'>

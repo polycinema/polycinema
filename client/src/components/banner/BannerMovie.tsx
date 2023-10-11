@@ -44,7 +44,7 @@ import 'slick-carousel/slick/slick-theme.css';
     <div className="box-all">
          <Slider {...settings} className="w-full">
         <div className="slider">
-            <img src="https://files.betacorp.vn/files/ecm/2023/09/25/vani-bc-1702x621-copy-133653-250923-54.jpg"  alt=""/>
+            <img  src="https://files.betacorp.vn/files/ecm/2023/09/25/vani-bc-1702x621-copy-133653-250923-54.jpg"  alt=""/>
         </div>
         <div >
            <img src="https://files.betacorp.vn/files/ecm/2023/04/21/mer-resize-1702-x-621-140337-210423-86.png"  alt=""/>

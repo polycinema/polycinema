@@ -1,11 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
-
-import ListMovie from "./components/listmovie/ListMovie";
+import HomePage from "./pages/HomePage/HonePage";
 
 import LayoutWebsite from "./layouts/LayoutWebsite";
+import MoviePage from "./pages/MoviePage/MoviePage";
+import Account from "./auth/Account";
 export const router = createBrowserRouter([
         {path:'', element:<LayoutWebsite/>, children:[
-                {path:'', element:<ListMovie/>}
+                {path:'', element:<HomePage/>},
+                {path:'poly-movies',element:<MoviePage/>},
+                {path:'poly-acount',element:<Account/>},
         ]}
 
 ])
