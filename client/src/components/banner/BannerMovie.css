@@ -1,0 +1,11 @@
+
+.slider{
+    width: 100%;
+}
+.box-all{
+    margin-bottom: 50px;
+}
+.box-all .slick-dots li {
+    background-color: rgb(157, 157, 157);
+    border-radius: 100%;
+}

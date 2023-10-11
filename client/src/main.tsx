@@ -13,6 +13,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   //     </PersistGate>
 
   // </Provider>
-        <App/>
+  <React.StrictMode>
+  <App />
+</React.StrictMode>,
 
 )
