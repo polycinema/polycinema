@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\SeatRequest;
 use App\Models\Seat;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -31,7 +32,7 @@ class SeatController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SeatRequest $request)
     {
         if ($request->isMethod('POST')) {
             $seat = Seat::create($request->all());
@@ -79,7 +80,7 @@ class SeatController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SeatRequest $request, string $id)
     {
         if ($id) {
             $seat = Seat::find($id);
