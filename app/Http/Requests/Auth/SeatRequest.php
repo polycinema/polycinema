@@ -23,30 +23,24 @@ class SeatRequest extends FormRequest
     {
         $rules = [];
         $currentAction = $this->route()->getActionMethod();
-
-        switch($this->method()) {
+        switch ($this->method()) {
             case 'POST':
-                    switch($currentAction){
-                        case 'store':
-                                $rules = [
-                                    'seat_name' => 'required',
-                                    'type' => 'required',
-                                    'room_id' => 'required'
-                                ];
-                            break;
-                    }
-                break;        
-            
+                switch ($currentAction) {
+                    case 'store':
+                        $rules = [
+                            'seat_name' => 'required',
+                            'type' => 'required',
+                            'room_id' => 'required'
+                        ];
+                        break;
+                }
+                break;
+
             case  'GET':
 
                 break;
         }
 
         return $rules;
-    }
-
-    public function messages()
-    {
-
     }
 }
