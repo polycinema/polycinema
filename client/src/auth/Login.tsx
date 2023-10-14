@@ -8,7 +8,7 @@ const Login = () => {
     console.log(values);
   };
   return (
-    <div>
+    <div className="max-w-2xl mx-auto my-20">
       <Form
         name="normal_login"
         className="login-form"

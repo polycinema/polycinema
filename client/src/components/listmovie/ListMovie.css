@@ -1,8 +1,9 @@
 .listmovie__container{
         max-width: 1150px;
-        margin: 0 auto;
+        margin: 100px auto;
         
 }
+
 .tab-listmovie{
         text-align: center;
 }
