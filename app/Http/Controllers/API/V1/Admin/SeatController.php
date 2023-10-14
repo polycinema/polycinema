@@ -5,8 +5,12 @@ namespace App\Http\Controllers\API\V1\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\SeatRequest;
 use App\Models\Seat;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Validator as ValidationValidator;
 
 class SeatController extends Controller
 {
@@ -34,24 +38,54 @@ class SeatController extends Controller
      */
     public function store(SeatRequest $request)
     {
-        if ($request->isMethod('POST')) {
-            $seat = Seat::create($request->all());
-
-            if ($seat) {
+        try {
+            $validator = Validator::make([
+                'seat_name' => 'required',
+                'type' => 'required',
+                'room_id' => 'required'
+            ]);
+    
+            if ($validator->failes()) {
                 return response()->json([
-                    'data' => $seat,
-                    'message' => 'Thêm ghế thành công'
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'error' => 'Đã có lỗi xảy ra',
-                    'message' => 'Tạo mới thất bại'
-                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                    'errors' => $validator->errors(),
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
-        } else {
-            return back()->withInput(); // Quay trở lại route trước cùng với dự liệu Form
+    
+            if ($request->isMethod('POST')) {
+                $seat = Seat::create($request->all());
+    
+                if ($seat) {
+                    return response()->json([
+                        'data' => $seat,
+                        'message' => 'Thêm ghế thành công'
+                    ], Response::HTTP_OK);
+                }
+            }
+        } catch (Exception $exception) {
+            Log::error('SeatController@store:', [$exception->getMessage()]);
+
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+    // } catch (Exception $exception) {
+    //     Log::error('SeatController@store: ', [$exception->getMessage()]);
+
+    //     return response()->json([
+    //         'error' => 'Đã có lỗi xảy ra'
+    //     ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    // } 
+
+    //     else {
+    //         return response()->json([
+    //             'error' => 'Đã có lỗi xảy ra',
+    //             'message' => 'Tạo mới thất bại'
+    //         ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    //     }
+    // } else {
+    //     return back()->withInput(); // Quay trở lại route trước cùng với dự liệu Form
+    // }
 
     /**
      * Display the specified resource.
