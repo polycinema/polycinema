@@ -29,7 +29,7 @@ const LayoutWebsite = () => {
           </header>
         </div>
     
-            <main >
+            <main className='bg-[#F8F8F8]' >
           < Outlet />
             </main>
     
