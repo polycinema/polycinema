@@ -21,7 +21,7 @@ const LayoutWebsite = () => {
                 <ul className='flex md:space-x-6 space-x-5 md:py-4 font-bold md:text-lg sm:text-base justify-center my-2'>
                   <li><Link to={'poly-movies'} className='hover:text-[#397EBA]'>PHIM</Link></li>
                   <li><Link to={''} className='hover:text-[#397EBA]'>GIÁ VÉ</Link></li>
-                  <li><Link to={''} className='hover:text-[#397EBA]'>TIN MỚI VÀ ƯU ĐÃI</Link></li>
+                  <li><Link to={'poly-news'} className='hover:text-[#397EBA]'>TIN MỚI VÀ ƯU ĐÃI</Link></li>
                   <li><Link to={''} className='hover:text-[#397EBA]'>THÀNH VIÊN</Link></li>
                 </ul>
               </div>
