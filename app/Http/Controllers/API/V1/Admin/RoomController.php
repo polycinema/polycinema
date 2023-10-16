@@ -5,8 +5,11 @@ namespace App\Http\Controllers\API\V1\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RoomRequest;
 use App\Models\Room;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class RoomController extends Controller
 {
@@ -32,106 +35,116 @@ class RoomController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RoomRequest $request)
+    public function store(Request $request)
     {
-        if ($request->isMethod('POST')) {
-            $room = Room::create($request->all());
+        try {
+            $validator = Validator::make($request->all(), [
+                'room_name' => 'required',
+                'capacity' => 'required|numeric|min:0'
+            ], [
+                'room_name.required' => 'Trường tên phòng không được trống',
+                'capacity.required' => 'Trường sức chứa của phòng không được trống',
+                'capacity.numeric' => 'Trường sức chứa của phòng phải là số nguyên',
+                'capacity.min' => 'Trường sức chứa của phòng phải lớn hơn 0'
+            ]);
 
-            if ($room) {
+            if ($validator->fails()) {
                 return response()->json([
-                    'data' => $room,
-                    'message' => 'Thêm phòng thành công'
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'error' => 'Đã có lỗi xảy ra',
-                    'message' => 'Tạo mới thất bại'
-                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                    'errors' => $validator->errors(),
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
-        } else {
-            return back()->withInput(); // Quay trở lại route trước cùng với dự liệu Form
+
+            if ($request->isMethod('POST')) {
+                $room = Room::create($request->all());
+
+                if ($room) {
+                    return response()->json([
+                        'data' => $room,
+                        'message' => "Thêm phòng $room->room_name thành công"
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'error' => 'Đã có lỗi xảy ra',
+                        'message' => 'Tạo mới thất bại'
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
+            }
+        } catch (Exception $exception) {
+            Log::error('API/V1/Admin/RoomController@store:', [$exception->getMessage()]);
+
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Room $room)
     {
-        if ($id) {
-            $room = Room::find($id);
-
-            if ($room) {
-                return response()->json([
-                    'data' => $room,
-                    'message' => "Thông tin phòng $room->room_name"
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'error' => 'Đã có lỗi xảy ra',
-                    'message' => 'Phòng không tồn tại'
-                ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
-        } else {
-            return back();
-        }
+        return response()->json([
+            'data' => $room,
+            'message' => "Thông tin sản phẩm $room->room_name"
+        ], Response::HTTP_OK);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(RoomRequest $request, string $id)
+    public function update(Request $request, Room $room)
     {
-        if ($id) {
-            $room = Room::find($id);
-            if ($room) {
-                $updated = $room->update($request->all());
-                if ($updated) {
-                    return response()->json([
-                        'data' => $room,
-                        'message' => "Đã cập nhật phòng $room->room_name"
-                    ], Response::HTTP_OK);
-                } else {
-                    return response()->json([
-                        'error' => 'Đã có lỗi xảy ra',
-                        'message' => ''
-                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
-                    return back()->withInput();
-                }
+        try {
+            $validator = Validator::make($request->all(), [
+                'room_name' => 'required',
+                'capacity' => 'required|numeric|min:1'
+            ], [
+                'room_name.required' => 'Trường tên phòng không được trống',
+                'capacity.required' => 'Trường sức chứa của phòng không được trống',
+                'capacity.numeric' => 'Trường sức chứa của phòng phải là số nguyên',
+                'capacity.min' => 'Trường sức chứa của phòng phải lớn hơn 0'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'errors' => $validator->errors(),
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
-        } else {
-            return back()->withInput();
+
+            $room->fill($request->all());
+            $room->save();
+            
+            return response()->json([
+                'data' => $room,
+                'message' => "Đã cập nhật phòng $room->room_name"
+            ], Response::HTTP_OK);
+
+        } catch (Exception $exception) {
+            Log::error('API/V1/Admin/RoomController@update:', [$exception->getMessage()]);
+
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Room $room)
     {
-        if ($id) {
-            $room = Room::find($id);
+        $deleted = $room->delete();
 
-            if ($room) {
-                $deleted = $room->delete();
-
-                if ($deleted) {
-                    return response()->json([
-                        'data' => $room,
-                        'message' => "Đã xóa thành công phòng $room->room_name"
-                    ], Response::HTTP_OK);
-                } else {
-                    return response()->json([
-                        'error' => 'Đã có lỗi xảy ra',
-                        'message' => ''
-                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
-                }
-            } else {
-                return response()->json([
-                    'error' => 'Đã có lỗi xảy ra',
-                    'message' => 'Ghế không tồn tại'
-                ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
+        if ($deleted) {
+            return response()->json([
+                'data' => $room,
+                'message' => "Đã xóa thành công phòng $room->room_name"
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra',
+                'message' => ''
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

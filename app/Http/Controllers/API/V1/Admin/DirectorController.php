@@ -5,9 +5,12 @@ namespace App\Http\Controllers\API\V1\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\DirectorRequest;
 use App\Models\Director;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class DirectorController extends Controller
 {
@@ -34,130 +37,150 @@ class DirectorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DirectorRequest $request)
+    public function store(Request $request)
     {
-        if ($request->isMethod('POST')) {
-            $director = new Director();
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+                'image' => 'required|image',
+            ]);
 
-            if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                $filename = $request->file('image')->getClientOriginalName();
-                $image = $request->file('image')->storeAs('directors_img', $filename, 'public');
+            if ($validator->fails()) {
+                return response()->json([
+                    'errors' => $validator->errors(),
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-            $director->name = $request->name;
-            $director->image = $image;
+            if ($request->isMethod('POST')) {
+                $director = new Director();
 
-            $result = $director->save();
+                if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                    $filename = time() . '_' . $request->file('image')->getClientOriginalName();
+                    $image = $request->file('image')->storeAs('directors_img', $filename, 'public');
+                }
+
+                $director->name = $request->name;
+                $director->image = $image;
+
+                $result = $director->save();
 
 
-            if($result){
-                return response()->json([
-                    'data' => $director,
-                    'message' => "Thêm đạo diễn $director->name thành công"
-                ],Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'error' => 'Đã có lỗi xảy ra',
-                    'message' => 'Truy vấn thất bại'
-                ],Response::HTTP_INTERNAL_SERVER_ERROR);
+                if ($result) {
+                    return response()->json([
+                        'data' => $director,
+                        'message' => "Thêm đạo diễn $director->name thành công"
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'error' => 'Đã có lỗi xảy ra',
+                        'message' => 'Truy vấn thất bại'
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
             }
-        } else {
-            return back()->withInput(); // Quay trở lại route trước cùng với dự liệu Form
+        } catch (Exception $exception) {
+            Log::error('API/V1/Admin/DirectorController@store:', [$exception->getMessage()]);
+
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Director $director)
     {
-        if($id){
-            $director = Director::find($id);
-
-            if ($director) {
-                return response()->json([
-                    'data' => $director,
-                    'message' => "Thông tin đạo diễn $director->name"
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'error' => 'Đã có lỗi xảy ra',
-                    'message' => 'Đạo diễn không tồn tại'
-                ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
-        } else {
-            return back();
-        }
+        return response()->json([
+            'data' => $director,
+            'message' => "Thông tin đạo diễn $director->name"
+        ], Response::HTTP_OK);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Director $director)
     {
-        if ($id) {
-            $director = Director::find($id);
-            $destination = public_path('storage\\' . $director->image);
-
-            $filename = "";
-            if ($request->hasFile('new_image') && $request->file('new_image')->isValid()) {
-                if(File::exists($destination)){
-                    File::delete($destination);
-                }
-                $filename = $request->file('new_image')->store('directors_img', 'public');
-            } else {
-                $filename = $request->image;     
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+                'image' => 'nullable|image',
+            ], [
+                'name.required' => 'Trường tên đạo diễn không được trống',
+                'image.image' => 'Ảnh tải lên không hợp lệ'
+            ]);
+    
+            if ($validator->fails()) {
+                return response()->json([
+                    'errors' => $validator->errors(),
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
-
+    
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                if(Storage::exists($director->image)){
+                    Storage::delete($director->image);
+                }
+    
+                $originalname = time() . '_' . $request->file('image')->getClientOriginalName();
+                $filename = $request->file('image')->storeAs('directors_img', $originalname, 'public');
+            } else {
+                $filename = $director->image;
+            }
+    
             $director->name = $request->name;
             $director->image = $filename;
-            
+    
             $result = $director->save();
-
-            if($result){
+    
+            if ($result) {
                 return response()->json([
                     'data' => $director,
                     'message' => "Sửa thông tin đạo diễn $director->name thành công"
-                ],Response::HTTP_OK);
+                ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'error' => 'Đã có lỗi xảy ra',
                     'message' => 'Truy vấn thất bại'
-                ],Response::HTTP_INTERNAL_SERVER_ERROR);
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
-        } else {
-            return back()->withInput();
+        } catch (Exception $exception) {
+            Log::error('API/V1/Admin/DirectorController@update:', [$exception->getMessage()]);
+
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Director $director)
     {
-        if($id){
-            $directors = Director::find($id);
+        if ($director) {
+            if(Storage::exists($director->image)){
+                Storage::delete($director->image);
+            }
 
-            if ($directors) {
-                $deleted = $directors->delete();
+            $deleted = $director->delete();
 
-                if ($deleted) {
-                    return response()->json([
-                        'data' => $directors,
-                        'message' => "Đã xóa thành công đạo diễn $directors->name"
-                    ], Response::HTTP_OK);
-                } else {
-                    return response()->json([
-                        'error' => 'Đã có lỗi xảy ra',
-                        'message' => ''
-                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
-                }
+            if ($deleted) {
+                return response()->json([
+                    'data' => $director,
+                    'message' => "Đã xóa thành công đạo diễn $director->name"
+                ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'error' => 'Đã có lỗi xảy ra',
-                    'message' => 'Đạo diễn không tồn tại'
+                    'message' => ''
                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
+        } else {
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra',
+                'message' => 'Đạo diễn không tồn tại'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

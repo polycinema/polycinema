@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
-            $table->string('seat_name');
-            $table->enum('type', ['single', 'double', 'special']);
-            $table->foreignId('room_id');
+            $table->string('seat_name')->nullable();
+            $table->enum('type', ['single', 'double', 'special'])->nullable();
+            $table->foreignId('room_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
