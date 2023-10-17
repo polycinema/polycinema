@@ -14,4 +14,8 @@ class Actor extends Model
         'date_of_birth',
         'image'
     ];
+
+    public function movies() {
+        return $this->belongsToMany(Movie::class);
+    }
 }

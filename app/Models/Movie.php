@@ -19,4 +19,16 @@ class Movie extends Model
         'duration',
         'director_id'
     ];
+
+    public function director() {
+        return $this->belongsTo(Director::class);
+    }
+
+    public function actors() {
+        return $this->belongsToMany(Actor::class, 'movie_actors');
+    }
+
+    public function genres() {
+        return $this->belongsToMany(Genre::class, 'movie_genres');
+    }
 }
