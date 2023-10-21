@@ -91,10 +91,18 @@ class DirectorController extends Controller
      */
     public function show(Director $director)
     {
-        return response()->json([
-            'data' => $director,
-            'message' => "Thông tin đạo diễn $director->name"
-        ], Response::HTTP_OK);
+        try {
+            return response()->json([
+                'data' => $director,
+                'message' => "Thông tin đạo diễn $director->name"
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/Admin/DirectorController@store:', [$exception->getMessage()]);
+
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -110,29 +118,29 @@ class DirectorController extends Controller
                 'name.required' => 'Trường tên đạo diễn không được trống',
                 'image.image' => 'Ảnh tải lên không hợp lệ'
             ]);
-    
+
             if ($validator->fails()) {
                 return response()->json([
                     'errors' => $validator->errors(),
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
-    
+
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                if(Storage::exists($director->image)){
+                if (Storage::exists($director->image)) {
                     Storage::delete($director->image);
                 }
-    
+
                 $originalname = time() . '_' . $request->file('image')->getClientOriginalName();
                 $filename = $request->file('image')->storeAs('directors_img', $originalname, 'public');
             } else {
                 $filename = $director->image;
             }
-    
+
             $director->name = $request->name;
             $director->image = $filename;
-    
+
             $result = $director->save();
-    
+
             if ($result) {
                 return response()->json([
                     'data' => $director,
@@ -159,7 +167,7 @@ class DirectorController extends Controller
     public function destroy(Director $director)
     {
         if ($director) {
-            if(Storage::exists($director->image)){
+            if (Storage::exists($director->image)) {
                 Storage::delete($director->image);
             }
 

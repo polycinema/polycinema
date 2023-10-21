@@ -73,7 +73,7 @@ class RoomController extends Controller
             Log::error('API/V1/Admin/RoomController@store:', [$exception->getMessage()]);
 
             return response()->json([
-                'error' => 'Đã có lỗi xảy ra'
+                'error' => 'Đã có lỗi nghiêm trọng xảy ra'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -83,10 +83,18 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        return response()->json([
-            'data' => $room,
-            'message' => "Thông tin sản phẩm $room->room_name"
-        ], Response::HTTP_OK);
+        try {
+            return response()->json([
+                'data' => $room,
+                'message' => "Thông tin sản phẩm $room->room_name"
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/Admin/RoomController@show:', [$exception->getMessage()]);
+
+            return response()->json([
+                'error' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -113,12 +121,11 @@ class RoomController extends Controller
 
             $room->fill($request->all());
             $room->save();
-            
+
             return response()->json([
                 'data' => $room,
                 'message' => "Đã cập nhật phòng $room->room_name"
             ], Response::HTTP_OK);
-
         } catch (Exception $exception) {
             Log::error('API/V1/Admin/RoomController@update:', [$exception->getMessage()]);
 
@@ -133,17 +140,25 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
-        $deleted = $room->delete();
+        try {
+            $deleted = $room->delete();
 
-        if ($deleted) {
+            if ($deleted) {
+                return response()->json([
+                    'data' => $room,
+                    'message' => "Đã xóa thành công phòng $room->room_name"
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'error' => 'Đã có lỗi xảy ra',
+                    'message' => ''
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception $exception) {
+            Log::error('API/V1/Admin/RoomController@destroy:', [$exception->getMessage()]);
+
             return response()->json([
-                'data' => $room,
-                'message' => "Đã xóa thành công phòng $room->room_name"
-            ], Response::HTTP_OK);
-        } else {
-            return response()->json([
-                'error' => 'Đã có lỗi xảy ra',
-                'message' => ''
+                'error' => 'Đã có lỗi nghiêm trọng xảy ra'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

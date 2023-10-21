@@ -13,4 +13,8 @@ class Director extends Model
         'name',
         'image',
     ];
+
+    public function movies() {
+        return $this->belongsToMany(Movie::class);
+    }
 }

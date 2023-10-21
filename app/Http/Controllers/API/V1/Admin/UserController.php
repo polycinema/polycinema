@@ -75,7 +75,7 @@ class UserController extends Controller
                 'role' => $request->role
             ]);
 
-            if($user) {
+            if ($user) {
                 return response()->json([
                     'data' => $user,
                     'message' => "Thêm người dùng $user->name thành công",
@@ -95,10 +95,18 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return response()->json([
-            'data' => $user,
-            'message' => "Thông tin người dùng $user->name",
-        ], Response::HTTP_OK);
+        try {
+            return response()->json([
+                'data' => $user,
+                'message' => "Thông tin người dùng $user->name",
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/Admin/UserConctroller@store:', [$exception->getMessage()]);
+
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -142,13 +150,12 @@ class UserController extends Controller
 
             $result = $user->save();
 
-            if($result){
+            if ($result) {
                 return response()->json([
                     'data' => $user,
                     'message' => "Cập nhật thông tin người dùng $user->name thành công",
                 ], Response::HTTP_OK);
             }
-
         } catch (Exception $exception) {
             Log::error('API/V1/Admin/UserConctroller@update:', [$exception->getMessage()]);
 

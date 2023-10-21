@@ -96,10 +96,18 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return response()->json([
-            'data' => $product,
-            'message' => "Thông tin sản phẩm $product->name"
-        ], Response::HTTP_OK);
+        try {
+            return response()->json([
+                'data' => $product,
+                'message' => "Thông tin sản phẩm $product->name"
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/Admin/ProductController@show:', [$exception->getMessage()]);
+
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -172,7 +180,7 @@ class ProductController extends Controller
         if (Storage::exists($product->image)) {
             Storage::delete($product->image);
         }
-        
+
         $deleted = $product->delete();
 
         if ($deleted) {
