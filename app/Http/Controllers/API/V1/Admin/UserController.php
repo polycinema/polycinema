@@ -118,8 +118,8 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required|min:2|max:25',
                 'email' => 'required|email|min:12|max:50|unique:users,email',
-                'password' => 'required|min:6|max:100|',
-                're_password' => 'required|same:password',
+                'password' => 'required|min:6|max:100|nullable',
+                're_password' => 'required|same:password|nullable',
                 'role' => 'nullable',
             ], [
                 'name.required' => 'Trường tên người dùng không được trống',
