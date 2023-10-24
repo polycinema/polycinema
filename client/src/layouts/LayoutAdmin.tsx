@@ -4,6 +4,7 @@ import { Link,  } from 'react-router-dom';
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
+import {Outlet} from 'react-router-dom'
 
 const LayoutAdmin: React.FC = () => {
   const {
@@ -40,11 +41,12 @@ const LayoutAdmin: React.FC = () => {
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }} />
         <Content style={{ margin: '24px 16px 0' }}>
-          <div style={{ padding: 24, minHeight: 580, background: colorBgContainer }}>content</div>
+          <div style={{ padding: 24, minHeight: 580, background: colorBgContainer }}><Outlet/>.</div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
       </Layout>
     </Layout>
+
   );
 }
 export default LayoutAdmin;
