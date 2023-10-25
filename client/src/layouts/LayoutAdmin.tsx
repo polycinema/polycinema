@@ -1,8 +1,12 @@
-import React from 'react';
-import logo1 from '../../public/img/logo1.png';
-import { Link,  } from 'react-router-dom';
-import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
+import React from "react";
+import logo1 from "../../public/img/logo1.png";
+import { Link, Outlet } from "react-router-dom";
+import {
+  UploadOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+} from "@ant-design/icons";
+import { Layout, Menu, theme } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
 
 const LayoutAdmin: React.FC = () => {
@@ -23,28 +27,43 @@ const LayoutAdmin: React.FC = () => {
         }}
       >
         <div className="demo-logo-vertical" />
-        <Link to={""}><img src={logo1} alt='' /></Link>
+        <Link to={""}>
+          <img src={logo1} alt="" />
+        </Link>
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['4']}
-          items={[UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].map(
-            (icon, index) => ({
-              key: String(index + 1),
-              icon: React.createElement(icon),
-              label: `nav ${index + 1}`,
-            }),
-          )}
+          defaultSelectedKeys={["4"]}
+          items={[
+            UserOutlined,
+            VideoCameraOutlined,
+            UploadOutlined,
+            UserOutlined,
+          ].map((icon, index) => ({
+            key: String(index + 1),
+            icon: React.createElement(icon),
+            label: `nav ${index + 1}`,
+          }))}
         />
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }} />
-        <Content style={{ margin: '24px 16px 0' }}>
-          <div style={{ padding: 24, minHeight: 580, background: colorBgContainer }}>content</div>
+        <Content style={{ margin: "24px 16px 0" }}>
+          <div
+            style={{
+              padding: 24,
+              minHeight: 580,
+              background: colorBgContainer,
+            }}
+          >
+            <Outlet />
+          </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: "center" }}>
+          Ant Design ©2023 Created by Ant UED
+        </Footer>
       </Layout>
     </Layout>
   );
-}
+};
 export default LayoutAdmin;
