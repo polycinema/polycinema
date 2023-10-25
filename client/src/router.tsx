@@ -13,7 +13,11 @@ import AddDirector from "./pages/admin/DirectorMng/AddDirector";
 import EditDirector from "./pages/admin/DirectorMng/EditDirector";
 import ListGenre from "./pages/admin/GenreMng/ListGenre";
 import AddGenre from "./pages/admin/GenreMng/AddGenre";
+import Actor from "./pages/admin/Actor/List-Actor";
+import AddActor from "./pages/admin/Actor/Add-Actor";
+import EditActor from "./pages/admin/Actor/Edit-Actor";
 export const router = createBrowserRouter([
+
         {
                 path: "",
                 element: <LayoutWebsite />,
@@ -28,6 +32,9 @@ export const router = createBrowserRouter([
                 path: "admin",
                 element: <LayoutAdmin />,
                 children: [
+                        {path: "actors", element: <Actor />},
+                        {path: "actors/add", element: < AddActor/>},
+                        {path: "actors/:id/edit", element: < EditActor/>},
                         { path: "genres", element: <ListGenre /> },
                         { path: "genres/add", element: <AddGenre /> },
                         { path: "genres/:id/edit", element: <ListGenre /> },
@@ -39,4 +46,5 @@ export const router = createBrowserRouter([
                         { path: 'director/:id/edit', element:<EditDirector /> },
                 ],
         },
+
 ]);
