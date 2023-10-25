@@ -1,3 +1,4 @@
+
 import React from "react";
 import logo1 from "../../public/img/logo1.png";
 import { Link, Outlet } from "react-router-dom";
@@ -15,7 +16,7 @@ const LayoutAdmin: React.FC = () => {
   } = theme.useToken();
 
   return (
-    <Layout>
+    <Layout style={{minHeight:"100vh"}}>
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
@@ -48,16 +49,8 @@ const LayoutAdmin: React.FC = () => {
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }} />
-        <Content style={{ margin: "24px 16px 0" }}>
-          <div
-            style={{
-              padding: 24,
-              minHeight: 580,
-              background: colorBgContainer,
-            }}
-          >
-            <Outlet />
-          </div>
+        <Content style={{ margin: '24px 16px 0' }}>
+          <div style={{ padding: 24, minHeight: "100%", background: colorBgContainer }}><Outlet/></div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
           Ant Design ©2023 Created by Ant UED
