@@ -1,9 +1,20 @@
-import { Button, Form, Input, Space } from "antd";
+import { Button, Form, Input, Space, notification } from "antd";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
+import { useRegisterMutation } from "../redux/api/authApi";
+import { useEffect } from "react";
 
 const Register = () => {
+  const [register, { isLoading, error }] = useRegisterMutation();
+  useEffect(() => {
+    console.log("error: ", error);
+  }, [error]);
   const onFinish = (values: any) => {
-    console.log(values);
+    register(values)
+      .unwrap()
+      .then(() => {
+        notification.success({ message: "Register is successly!" });
+      });
+    // console.log(values);
   };
   return (
     <div className="max-w-2xl mx-auto my-20">
