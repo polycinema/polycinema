@@ -13,3 +13,7 @@
     background-color: rgb(157, 157, 157);
     border-radius: 100%;
 }
+
+.box-all .slick-slider button {
+    display: none !important;
+}
