@@ -1,0 +1,19 @@
+
+.slider{
+    width: 100vw;
+}
+.slider img{
+    width: 100vw;
+    object-fit: cover;
+}
+.box-all{
+    margin-bottom: 50px;
+}
+.box-all .slick-dots li {
+    background-color: rgb(157, 157, 157);
+    border-radius: 100%;
+}
+
+.box-all .slick-slider button {
+    display: none !important;
+}

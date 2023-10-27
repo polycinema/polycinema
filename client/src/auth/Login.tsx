@@ -1,14 +1,20 @@
-import { Button, Checkbox, Form, Input, Space } from "antd";
+import { Button, Checkbox, Form, Input, Space, notification } from "antd";
 import { AiOutlineMail } from "@react-icons/all-files/ai/AiOutlineMail";
 import { LockOutlined } from "@ant-design/icons";
 import Link from "antd/es/typography/Link";
+import { useLoginMutation } from "../redux/api/authApi";
 
 const Login = () => {
+  const [login, { isLoading, error }] = useLoginMutation();
   const onFinish = (values: any) => {
-    console.log(values);
+    login(values)
+      .unwrap()
+      .then(() => {
+        notification.success({ message: "Login is successly!" });
+      });
   };
   return (
-    <div>
+    <div className="max-w-2xl mx-auto my-20">
       <Form
         name="normal_login"
         className="login-form"
