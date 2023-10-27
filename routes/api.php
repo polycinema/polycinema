@@ -20,5 +20,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function () {
 
-    include(base_path('routes/admin.php'));
+    Route::get('/', function () {
+        $datas = [
+            ['id' => 1, 'name' => 'Giang', 'age' => 20],
+            ['id' => 2, 'name' => 'Giang', 'age' => 20],
+            ['id' => 3, 'name' => 'Giang', 'age' => 20]
+        ];
+
+        return response()->json([
+            'data' => $datas
+        ]);
+    });
 });
