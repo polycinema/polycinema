@@ -17,6 +17,8 @@ import Actor from "./pages/admin/Actor/List-Actor";
 import AddActor from "./pages/admin/Actor/Add-Actor";
 import EditActor from "./pages/admin/Actor/Edit-Actor";
 import MovieDetail from "./components/MovieDetail/MovieDetail";
+import EditAcount from "./pages/admin/Acount/EditAcount";
+import ListAcount from "./pages/admin/Acount/ListAcount";
 export const router = createBrowserRouter([
         {
                 path: '', element: <LayoutWebsite />, children: [
@@ -29,20 +31,6 @@ export const router = createBrowserRouter([
         },
         {
                 path: 'admin', element: <LayoutAdmin />, children: [
-                        {
-                                path: "",
-                                element: <LayoutWebsite />,
-                                children: [
-                                        { path: "", element: <HomePage /> },
-                                        { path: "poly-movies", element: <MoviePage /> },
-                                        { path: "poly-acount", element: <Account /> },
-                                        { path: "poly-news", element: <NewsPage /> },
-                                ],
-                        },
-                        {
-                                path: "admin",
-                                element: <LayoutAdmin />,
-                                children: [
                                         { path: "actors", element: <Actor /> },
                                         { path: "actors/add", element: < AddActor /> },
                                         { path: "actors/:id/edit", element: < EditActor /> },
@@ -55,9 +43,8 @@ export const router = createBrowserRouter([
                                         { path: 'director', element: <ListDirector /> },
                                         { path: 'director/add', element: <AddDirector /> },
                                         { path: 'director/:id/edit', element: <EditDirector /> },
-                                ],
-                        },
-
+                                        { path: 'acount/:id/edit', element: <EditAcount /> },
+                                        { path: 'acount', element: <ListAcount /> },
                 ]
         }
 ])
