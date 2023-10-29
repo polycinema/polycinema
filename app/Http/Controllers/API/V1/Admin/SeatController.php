@@ -78,11 +78,17 @@ class SeatController extends Controller
      */
     public function show(Seat $seat)
     {
-        if ($seat) {
+        try {
             return response()->json([
                 'data' => $seat,
                 'message' => "Thông tin ghế $seat->seat_name"
             ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/Admin/SeatController@store:', [$exception->getMessage()]);
+
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -115,7 +121,6 @@ class SeatController extends Controller
                 'data' => $seat,
                 'message' => "Đã cập nhật ghế $seat->seat_name"
             ], Response::HTTP_OK);
-            
         } catch (Exception $exception) {
             Log::error('API/V1/Admin/SeatController@update:', [$exception->getMessage()]);
 
