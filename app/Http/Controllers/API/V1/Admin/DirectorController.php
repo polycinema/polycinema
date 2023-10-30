@@ -42,7 +42,11 @@ class DirectorController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
-                'image' => 'required|image',
+                'image' => 'required|image|mimes:png,jpg,jpeg,gif',
+            ], [
+                'name.required' => 'Trường tên đạo diễn không được trống',
+                'image.image' => 'Ảnh tải lên không hợp lệ',
+                'image.mimes' => 'Hình ảnh phải có định dạng PNG, JPG, JPEG hoặc GIF',
             ]);
 
             if ($validator->fails()) {
@@ -113,10 +117,11 @@ class DirectorController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
-                'image' => 'nullable|image',
+                'image' => 'nullable|image|mimes:png,jpg,jpeg,gif',
             ], [
                 'name.required' => 'Trường tên đạo diễn không được trống',
-                'image.image' => 'Ảnh tải lên không hợp lệ'
+                'image.image' => 'Ảnh tải lên không hợp lệ',
+                'image.mimes' => 'Hình ảnh phải có định dạng PNG, JPG, JPEG hoặc GIF.',
             ]);
 
             if ($validator->fails()) {
