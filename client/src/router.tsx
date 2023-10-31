@@ -19,7 +19,9 @@ import EditActor from "./pages/admin/Actor/Edit-Actor";
 import MovieDetail from "./components/MovieDetail/MovieDetail";
 import EditAcount from "./pages/admin/Acount/EditAcount";
 import ListAcount from "./pages/admin/Acount/ListAcount";
+import NotFoundPage from "./pages/NotFound/NotFoundPage";
 export const router = createBrowserRouter([
+        {path: '*', element: <NotFoundPage/>},
         {
                 path: '', element: <LayoutWebsite />, children: [
                         { path: '', element: <HomePage /> },
