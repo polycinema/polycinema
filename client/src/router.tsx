@@ -21,6 +21,10 @@ import MovieDetail from "./components/MovieDetail/MovieDetail";
 import EditAcount from "./pages/admin/Acount/EditAcount";
 import ListAcount from "./pages/admin/Acount/ListAcount";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
+import ListRooms from "./pages/admin/Room/List-Room";
+import AddRoom from "./pages/admin/Room/Add-Room";
+import EditRoom from "./pages/admin/Room/Edit-Room";
+
 export const router = createBrowserRouter([
         {path: '*', element: <NotFoundPage/>},
         {
@@ -34,6 +38,9 @@ export const router = createBrowserRouter([
         },
         {
                 path: 'admin', element: <LayoutAdmin />, children: [
+                                        {path: "rooms", element: <ListRooms/>},
+                                        {path: "rooms/add", element: <AddRoom/>},
+                                        {path: "rooms/:id/edit", element: <EditRoom/>},
                                         { path: "actors", element: <Actor /> },
                                         { path: "actors/add", element: < AddActor /> },
                                         { path: "actors/:id/edit", element: < EditActor /> },
@@ -50,4 +57,5 @@ export const router = createBrowserRouter([
                                         { path: 'acount', element: <ListAcount /> },
                 ]
         }
-])
+]);
+
