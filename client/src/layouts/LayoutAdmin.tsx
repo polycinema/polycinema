@@ -63,9 +63,15 @@ const LayoutAdmin: React.FC = () => {
             },
             {
               key: 7,
+              icon: <UserOutlined />,
+              label: <Link to={"rooms"}>Room</Link>,
+            },
+            {
+              key: 8,
               icon: <LogoutOutlined />,
               label: <Link to={""}>Logout</Link>,
             },
+
           ]}
         />
       </Sider>
