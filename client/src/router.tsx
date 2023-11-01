@@ -19,6 +19,7 @@ import EditActor from "./pages/admin/Actor/Edit-Actor";
 import MovieDetail from "./components/MovieDetail/MovieDetail";
 import EditAcount from "./pages/admin/Acount/EditAcount";
 import ListAcount from "./pages/admin/Acount/ListAcount";
+import EditGenre from "./pages/admin/GenreMng/EditGenre";
 export const router = createBrowserRouter([
         {
                 path: '', element: <LayoutWebsite />, children: [
@@ -36,7 +37,7 @@ export const router = createBrowserRouter([
                                         { path: "actors/:id/edit", element: < EditActor /> },
                                         { path: "genres", element: <ListGenre /> },
                                         { path: "genres/add", element: <AddGenre /> },
-                                        { path: "genres/:id/edit", element: <ListGenre /> },
+                                        { path: "genres/:id/edit", element: <EditGenre /> },
                                         { path: "movies/create", element: <AddMovies /> },
                                         { path: "movies", element: <MovieTable /> },
                                         { path: "movies/:id/edit", element: <EditMovies /> },
