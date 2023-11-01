@@ -13,6 +13,7 @@ import AddDirector from "./pages/admin/DirectorMng/AddDirector";
 import EditDirector from "./pages/admin/DirectorMng/EditDirector";
 import ListGenre from "./pages/admin/GenreMng/ListGenre";
 import AddGenre from "./pages/admin/GenreMng/AddGenre";
+import EditGenre from "./pages/admin/GenreMng/EditGenre";
 import Actor from "./pages/admin/Actor/List-Actor";
 import AddActor from "./pages/admin/Actor/Add-Actor";
 import EditActor from "./pages/admin/Actor/Edit-Actor";
@@ -38,7 +39,7 @@ export const router = createBrowserRouter([
                                         { path: "actors/:id/edit", element: < EditActor /> },
                                         { path: "genres", element: <ListGenre /> },
                                         { path: "genres/add", element: <AddGenre /> },
-                                        { path: "genres/:id/edit", element: <ListGenre /> },
+                                        { path: "genres/:id/edit", element: <EditGenre /> },
                                         { path: "movies/create", element: <AddMovies /> },
                                         { path: "movies", element: <MovieTable /> },
                                         { path: "movies/:id/edit", element: <EditMovies /> },

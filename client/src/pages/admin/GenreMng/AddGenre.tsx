@@ -1,19 +1,36 @@
 import React from 'react'
-import { Button, Form, Input } from 'antd';
-import { IGenre, addGenre } from '../../../api/genre';
+import { Button, Form, Input, message } from 'antd';
+import { useNavigate } from 'react-router';
+import { pause } from '../../../utils/pause';
+import { addGenre } from '../../../api/genre';
 type FieldType = {
         name?: string;
         
 };
 
 const AddGenre = () => {
-        const onFinish =async (values:IGenre) => {
-                try {
-                        await addGenre(values)
-                } catch (error) {
-                        console.log(error);
+        
+        const [form] = Form.useForm()
+        const [messageApi , contextHolder] = message.useMessage()
+        const navigate = useNavigate();
+
+
+        const onFinish = (values) => {
+                addGenre(values)
+                .then(async()=>{
+                        form.resetFields()
+                        messageApi.open({
+                                type:"success",
+                                content:"Thêm thể loại thành công , Chuyển trang sau 3s"
+                        })
+                        await pause(3000)
+                        navigate("/admin/genres")
+                })
+                .catch((err)=>{
+                        console.log(err.message);
                         
-                }
+                })
+                
                 
         };
 
@@ -21,6 +38,8 @@ const AddGenre = () => {
                 console.log('Failed:', errorInfo);
         };
         return (
+                <>
+                {contextHolder}
                 <div>
                         <h1 className='text-4xl m-6'>Thêm thể loại phim</h1>
                         <Form
@@ -57,6 +76,8 @@ const AddGenre = () => {
                                 </Form.Item>
                         </Form>
                 </div>
+                </>
+               
         )
 }
 

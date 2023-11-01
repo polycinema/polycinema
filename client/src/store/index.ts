@@ -23,7 +23,7 @@ import authApi, { authReducer } from "../redux/api/authApi";
         whitelist: ["carts"],
       };
       const rootReducer = combineReducers({
-       [authApi.reducerPath]: authReducer
+       [authApi.reducerPath]: authReducer,
       });
       const middleware = [
         authApi.middleware

@@ -1,12 +1,10 @@
 import instance from "./instance";
-import axios from "axios"
 export interface IGenre {
         id:number
         name:string
 }
-// axios.defaults.withCredentials=true
 export const addGenre =async (genre:IGenre)=>{
-        // await axios.get(`http://polycinema.test/sanctum/csrf-cookie`)
+        
         return instance.post(`/genres`, genre,{
                 headers:{
                         "Accept":"application/json"
@@ -14,7 +12,26 @@ export const addGenre =async (genre:IGenre)=>{
         })
 
 }
-export const getGenre = ()=>{
+export const updateGenre =async (genre:IGenre)=>{
+        
+        return instance.patch(`/genres/${genre.id}`, genre,{
+                headers:{
+                        "Accept":"application/json"
+                }
+        })
+
+}
+export const removeGenre =async (id:number|string)=>{
+        
+        return instance.delete(`/genres/${id}`)
+        
+
+}
+export const getAllGenre = ()=>{
         return instance.get(`/genres`)
+
+}
+export const getGenreById = (id:number|string)=>{
+        return instance.get(`/genres/${id}`)
 
 }
