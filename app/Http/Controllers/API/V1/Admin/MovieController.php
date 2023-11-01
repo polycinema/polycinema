@@ -109,7 +109,7 @@ class MovieController extends Controller
         try {
             $movie = Movie::with('genres')->with('actors')->find($id);
 
-            if(!$movie) {
+            if (!$movie) {
                 return response()->json([
                     'message' => 'NOT FOUND'
                 ], Response::HTTP_NOT_FOUND);
@@ -215,4 +215,6 @@ class MovieController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    
 }

@@ -11,6 +11,8 @@ class ShowTime extends Model
 
     protected $fillable = [
         'movie_id',
+        'room_id',
+        'show_date',
         'start_time',
         'end_time'
     ];

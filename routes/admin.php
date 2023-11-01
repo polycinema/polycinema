@@ -7,7 +7,10 @@ use App\Http\Controllers\API\V1\Admin\MovieController;
 use App\Http\Controllers\API\V1\Admin\ProductController;
 use App\Http\Controllers\API\V1\Admin\RoomController;
 use App\Http\Controllers\API\V1\Admin\SeatController;
+use App\Http\Controllers\API\V1\Admin\ShowTimeController;
 use App\Http\Controllers\API\V1\Admin\UserController;
+
+
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function () {
@@ -27,4 +30,8 @@ Route::prefix('admin')->group(function () {
     Route::resource('genres', GenreController::class)->except(['edit', 'create']);
 
     Route::resource('actors', ActorController::class)->except(['edit', 'create']);
+
+    Route::resource('showtime', ShowTimeController::class)->except(['edit', 'create']);
+
 });
+

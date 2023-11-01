@@ -97,7 +97,7 @@ class DirectorController extends Controller
                 'message' => "Thông tin đạo diễn $director->name"
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
-            Log::error('API/V1/Admin/DirectorController@store:', [$exception->getMessage()]);
+            Log::error('API/V1/Admin/DirectorController@show:', [$exception->getMessage()]);
 
             return response()->json([
                 'error' => 'Đã có lỗi xảy ra'
