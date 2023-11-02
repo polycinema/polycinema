@@ -24,6 +24,7 @@ import NotFoundPage from "./pages/NotFound/NotFoundPage";
 import ListRooms from "./pages/admin/Room/List-Room";
 import AddRoom from "./pages/admin/Room/Add-Room";
 import EditRoom from "./pages/admin/Room/Edit-Room";
+import AddAcount from "./pages/admin/Acount/AddAcount";
 
 export const router = createBrowserRouter([
         {path: '*', element: <NotFoundPage/>},
@@ -55,6 +56,7 @@ export const router = createBrowserRouter([
                                         { path: 'director/:id/edit', element: <EditDirector /> },
                                         { path: 'acount/:id/edit', element: <EditAcount /> },
                                         { path: 'acount', element: <ListAcount /> },
+                                        { path: 'addAcount', element: <AddAcount /> },
                 ]
         }
 ]);
