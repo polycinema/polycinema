@@ -40,9 +40,13 @@ class DirectorController extends Controller
     public function store(Request $request)
     {
         try {
-            $validator = Validator::make($request->all(), [
+           $validator = Validator::make($request->all(), [
                 'name' => 'required',
                 'image' => 'required|string',
+            ], [
+                'name.required' => 'Trường tên đạo diễn không được trống',
+                'image.required' => 'Ảnh tải lên không hợp lệ',
+                'image.string' => 'Ảnh không hợp lệ',
             ]);
 
             if ($validator->fails()) {

@@ -41,15 +41,15 @@ class ActorController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
                 'date_of_birth' => 'required|date',
-                'image' => 'required|image|mimes:png,jpg,jpeg,gif,webp'
+                'image' => 'required'
             ], [
                 'name.required' => 'Trường tên là bắt buộc',
                 'date_of_birth.required' => 'Trường ngày sinh là bắt buộc',
                 'date_of_birth.date' => 'Trường ngày sinh phải là một ngày hợp lệ',
                 'image.required' => 'Trường ảnh là bắt buộc',
-                'image.string' => 'Trường ảnh phải là một chuỗi',
-                'image.image' => 'Trường ảnh phải là một tệp hình ảnh hợp lệ',
-                'image.mimes' => 'Trường ảnh phải có định dạng: png, jpg, jpeg, gif, webp'
+                // 'image.string' => 'Trường ảnh phải là một chuỗi',
+                // 'image.image' => 'Trường ảnh phải là một tệp hình ảnh hợp lệ',
+                // 'image.mimes' => 'Trường ảnh phải có định dạng: png, jpg, jpeg, gif, webp'
             ]);
 
             if ($validator->fails()) {
@@ -62,9 +62,9 @@ class ActorController extends Controller
 
             $actor->fill($request->all());
 
-            if ($request->hasFile('image')) {
-                $actor->image = upload_file('actors', $request->file('image'));
-            }
+            // if ($request->hasFile('image')) {
+            //     $actor->image = upload_file('actors', $request->file('image'));
+            // }
 
             $actor->save();
 
@@ -100,15 +100,15 @@ class ActorController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
                 'date_of_birth' => 'required|date',
-                'image' => 'required|image|mimes:png,jpg,jpeg,gif,webp'
+                'image' => 'required'
             ], [
                 'name.required' => 'Trường tên là bắt buộc',
                 'date_of_birth.required' => 'Trường ngày sinh là bắt buộc',
                 'date_of_birth.date' => 'Trường ngày sinh phải là một ngày hợp lệ',
                 'image.required' => 'Trường ảnh là bắt buộc',
-                'image.string' => 'Trường ảnh phải là một chuỗi',
-                'image.image' => 'Trường ảnh phải là một tệp hình ảnh hợp lệ',
-                'image.mimes' => 'Trường ảnh phải có định dạng: png, jpg, jpeg, gif, webp'
+                // 'image.string' => 'Trường ảnh phải là một chuỗi',
+                // 'image.image' => 'Trường ảnh phải là một tệp hình ảnh hợp lệ',
+                // 'image.mimes' => 'Trường ảnh phải có định dạng: png, jpg, jpeg, gif, webp'
             ]);
 
             if ($validator->fails()) {
@@ -117,13 +117,13 @@ class ActorController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-            $oldImage = $actor->image;
-            $actor->fill($request->except('image'));
+            // $oldImage = $actor->image;
+            $actor->fill($request->all());
 
-            if ($request->hasFile('image')) {
-                $actor->image = upload_file('actors', $request->file('image'));
-                delete_file($oldImage);
-            }
+            // if ($request->hasFile('image')) {
+            //     $actor->image = upload_file('actors', $request->file('image'));
+            //     delete_file($oldImage);
+            // }
 
             $actor->save();
 
@@ -150,7 +150,7 @@ class ActorController extends Controller
 
             $actor->movies()->detach();
 
-            delete_file($actor->image);
+            // delete_file($actor->image);
 
             return response()->json([
                 'message' => 'Đã xoá thành công'
