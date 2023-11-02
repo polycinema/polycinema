@@ -42,7 +42,7 @@ class DirectorController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
-                'image' => 'required|image',
+                'image' => 'required|string',
             ]);
 
             if ($validator->fails()) {
@@ -54,18 +54,17 @@ class DirectorController extends Controller
             if ($request->isMethod('POST')) {
                 $director = new Director();
 
-                if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                    $filename = time() . '_' . $request->file('image')->getClientOriginalName();
-                    $image = $request->file('image')->storeAs('directors_img', $filename, 'public');
-                }
+                // if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                //     $filename = time() . '_' . $request->file('image')->getClientOriginalName();
+                //     $image = $request->file('image')->storeAs('directors_img', $filename, 'public');
+                // }
 
-                $director->name = $request->name;
-                $director->image = $image;
+                $director->fill($request->all());
 
-                $result = $director->save();
+                $director->save();
 
 
-                if ($result) {
+                if ($director->save()) {
                     return response()->json([
                         'data' => $director,
                         'message' => "Thêm đạo diễn $director->name thành công"
@@ -113,10 +112,11 @@ class DirectorController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
-                'image' => 'nullable|image',
+                'image' => 'required|string',
             ], [
                 'name.required' => 'Trường tên đạo diễn không được trống',
-                'image.image' => 'Ảnh tải lên không hợp lệ'
+                'image.required' => 'Ảnh tải lên không hợp lệ',
+                'image.string' => 'Ảnh không hợp lệ',
             ]);
 
             if ($validator->fails()) {
@@ -125,23 +125,26 @@ class DirectorController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-            if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                if (Storage::exists($director->image)) {
-                    Storage::delete($director->image);
-                }
+            // if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            //     if (Storage::exists($director->image)) {
+            //         Storage::delete($director->image);
+            //     }
 
-                $originalname = time() . '_' . $request->file('image')->getClientOriginalName();
-                $filename = $request->file('image')->storeAs('directors_img', $originalname, 'public');
-            } else {
-                $filename = $director->image;
-            }
+            //     $originalname = time() . '_' . $request->file('image')->getClientOriginalName();
+            //     $filename = $request->file('image')->storeAs('directors_img', $originalname, 'public');
+            // } else {
+            //     $filename = $director->image;
+            // }
 
-            $director->name = $request->name;
-            $director->image = $filename;
+            // $director->name = $request->name;
+            // $director->image = $filename;
 
-            $result = $director->save();
+            // $result = $director->save();
+            $director->fill($request->all());
 
-            if ($result) {
+            $director->save();
+
+            if ($director->save()) {
                 return response()->json([
                     'data' => $director,
                     'message' => "Sửa thông tin đạo diễn $director->name thành công"
@@ -167,9 +170,9 @@ class DirectorController extends Controller
     public function destroy(Director $director)
     {
         if ($director) {
-            if (Storage::exists($director->image)) {
-                Storage::delete($director->image);
-            }
+            // if (Storage::exists($director->image)) {
+            //     Storage::delete($director->image);
+            // }
 
             $deleted = $director->delete();
 
