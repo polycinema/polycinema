@@ -21,4 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
 
     include(base_path('routes/admin.php'));
+    include(base_path('routes/user.php'));
 });

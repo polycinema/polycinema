@@ -101,7 +101,7 @@ class UserController extends Controller
                 'message' => "Thông tin người dùng $user->name",
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
-            Log::error('API/V1/Admin/UserConctroller@store:', [$exception->getMessage()]);
+            Log::error('API/V1/Admin/UserConctroller@show:', [$exception->getMessage()]);
 
             return response()->json([
                 'error' => 'Đã có lỗi xảy ra'
