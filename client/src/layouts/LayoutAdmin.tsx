@@ -1,7 +1,7 @@
 import React from "react";
 import logo1 from "../../public/img/logo1.png";
 import { Link, Outlet } from "react-router-dom";
-import { AppstoreOutlined, GroupOutlined,  LogoutOutlined,  TeamOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, GroupOutlined,  LogoutOutlined,  TeamOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined, SolutionOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -29,7 +29,7 @@ const LayoutAdmin: React.FC = () => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["4"]}
+          // defaultSelectedKeys={["4"]}
           items={[
             {
               key: 1,
@@ -63,7 +63,7 @@ const LayoutAdmin: React.FC = () => {
             },
             {
               key: 7,
-              icon: <UserOutlined />,
+              icon: <SolutionOutlined />,
               label: <Link to={"rooms"}>Room</Link>,
             },
             {
