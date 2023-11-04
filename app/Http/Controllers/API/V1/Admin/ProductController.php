@@ -42,12 +42,11 @@ class ProductController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
-                'image' => 'required|image',
+                'image' => 'required',
                 'price' => 'required|numeric'
             ], [
                 'name.required' => 'Trường tên sản phẩm không được trống',
                 'image.required' => 'Trường ảnh sản phẩm không được trống',
-                'image.image' => 'Ảnh sản phẩm không phù hợp!',
                 'price.required' => 'Trường giá sản phẩm không được để trống',
                 'price.numeric' => 'Trường giá sản phẩm phải là số nguyên'
             ]);
@@ -59,19 +58,16 @@ class ProductController extends Controller
 
             $product = new Product();
 
-            if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                $filename = time() . '_' . $request->file('image')->getClientOriginalName();
-                $image = $request->file('image')->storeAs('products_img', $filename, 'public');
-            }
+            // if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            //     $filename = time() . '_' . $request->file('image')->getClientOriginalName();
+            //     $image = $request->file('image')->storeAs('products_img', $filename, 'public');
+            // }
 
-            $product->name = $request->name;
-            $product->image = $image;
-            $product->price = $request->price;
-
-            $result = $product->save();
+            $product->fill($request->all());
+            $product->save();
 
 
-            if ($result) {
+            if ($product->save()) {
                 return response()->json([
                     'data' => $product,
                     'message' => 'Thêm sản phẩm thành công'
@@ -118,12 +114,13 @@ class ProductController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required|',
-                'image' => 'image',
+                'name' => 'required',
+                'image' => 'required|string',
                 'price' => 'required|numeric'
             ], [
                 'name.required' => 'Trường tên sản phẩm không được trống',
-                'image.image' => 'Ảnh sản phẩm không phù hợp!',
+                'image.required' => 'Ảnh sản phẩm không được trống',
+                'image.string' => 'Ảnh sản phẩm không phù hợp',
                 'price.required' => 'Trường giá sản phẩm không được để trống',
                 'price.numeric' => 'Trường giá sản phẩm phải là số nguyên'
             ]);
@@ -134,25 +131,23 @@ class ProductController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-            if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                if (Storage::exists($product->image)) {
-                    Storage::delete($product->image);
-                }
+            // if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            //     if (Storage::exists($product->image)) {
+            //         Storage::delete($product->image);
+            //     }
 
-                $originalname = time() . '_' . $request->file('image')->getClientOriginalName();
-                $filename = $request->file('image')->storeAs('products_img', $originalname, 'public');
-            } else {
-                $filename = $product->image;
-            }
+            //     $originalname = time() . '_' . $request->file('image')->getClientOriginalName();
+            //     $filename = $request->file('image')->storeAs('products_img', $originalname, 'public');
+            // if($request->image != ''){
+            //     $filename = $request->image;
+            // } else {
+            //     $filename = $product->image;
+            // }
 
-            $product->name = $request->name;
-            $product->image = $filename;
-            $product->price = $request->price;
+            $product->fill($request->all());
+            $product->save();
 
-
-            $result = $product->save();
-
-            if ($result) {
+            if ($product->save()) {
                 return response()->json([
                     'data' => $product,
                     'message' => "Sửa thông tin sản phẩm $product->name thành công"
@@ -177,9 +172,9 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        if (Storage::exists($product->image)) {
-            Storage::delete($product->image);
-        }
+        // if (Storage::exists($product->image)) {
+        //     Storage::delete($product->image);
+        // }
 
         $deleted = $product->delete();
 

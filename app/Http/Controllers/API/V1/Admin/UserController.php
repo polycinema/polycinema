@@ -44,8 +44,8 @@ class UserController extends Controller
                 'name' => 'required|min:2|max:25',
                 'email' => 'required|email|min:12|max:50|unique:users,email',
                 'password' => 'required|min:6|max:100|',
-                're_password' => 'required|same:password',
-                'role' => 'nullable',
+                // 're_password' => 'required|same:password',
+                // 'role' => 'nullable',
             ], [
                 'name.required' => 'Trường tên người dùng không được trống',
                 'name.min' => 'Trường tên người dùng lớn hơn 2 ký tự',
@@ -58,8 +58,8 @@ class UserController extends Controller
                 'password.required' => 'Mật khẩu không được trống',
                 'password.min' => 'Mật khẩu phải lớn hơn 6 ký tự',
                 'password.max' => 'Mật khẩu phải nhỏ hơn 100 ký tự',
-                're_password.required' => 'Yêu cầu xác nhận mật khẩu',
-                're_password.same' => 'Xác nhận mật khẩu không trùng nhau',
+                // 're_password.required' => 'Yêu cầu xác nhận mật khẩu',
+                // 're_password.same' => 'Xác nhận mật khẩu không trùng nhau',
             ]);
 
             if ($validator->fails()) {
@@ -72,7 +72,7 @@ class UserController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'role' => $request->role
+                // 'role' => $request->role
             ]);
 
             if ($user) {
@@ -101,7 +101,7 @@ class UserController extends Controller
                 'message' => "Thông tin người dùng $user->name",
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
-            Log::error('API/V1/Admin/UserConctroller@store:', [$exception->getMessage()]);
+            Log::error('API/V1/Admin/UserConctroller@show:', [$exception->getMessage()]);
 
             return response()->json([
                 'error' => 'Đã có lỗi xảy ra'
@@ -117,10 +117,10 @@ class UserController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|min:2|max:25',
-                'email' => 'required|email|min:12|max:50|unique:users,email',
+                'email' => 'required|email|min:12|max:50',
                 'password' => 'required|min:6|max:100|nullable',
-                're_password' => 'required|same:password|nullable',
-                'role' => 'nullable',
+                // 're_password' => 'required|same:password|nullable',
+                // 'role' => 'nullable',
             ], [
                 'name.required' => 'Trường tên người dùng không được trống',
                 'name.min' => 'Trường tên người dùng lớn hơn 2 ký tự',
@@ -129,12 +129,12 @@ class UserController extends Controller
                 'email.email' => 'Trường email không hợp lệ',
                 'email.min' => 'Trường email lớn hơn 12 ký tự',
                 'email.max' => 'Trường email nhỏ hơn 50 ký tự',
-                'email.unique' => 'Email đã được đăng ký',
+                // 'email.unique' => 'Email đã được đăng ký',
                 'password.required' => 'Mật khẩu không được trống',
                 'password.min' => 'Mật khẩu phải lớn hơn 6 ký tự',
                 'password.max' => 'Mật khẩu phải nhỏ hơn 100 ký tự',
-                're_password.required' => 'Yêu cầu xác nhận mật khẩu',
-                're_password.same' => 'Xác nhận mật khẩu không trùng nhau',
+                // 're_password.required' => 'Yêu cầu xác nhận mật khẩu',
+                // 're_password.same' => 'Xác nhận mật khẩu không trùng nhau',
             ]);
 
             if ($validator->fails()) {
