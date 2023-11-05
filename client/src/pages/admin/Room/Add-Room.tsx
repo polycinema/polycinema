@@ -60,7 +60,7 @@ const AddRoom = () => {
         <Form.Item label="Tác vụ">
           <>
             {contextHolder}
-            <Button htmlType="submit">Thêm thể loại </Button>
+            <Button htmlType="submit">Thêm phòng </Button>
           </>
         </Form.Item>
       </Form>

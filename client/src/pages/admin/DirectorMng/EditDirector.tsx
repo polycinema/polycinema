@@ -57,7 +57,7 @@ const EditDirector = () => {
                                 form.resetFields()
                                 messageApi.open({
                                         type: "success",
-                                        content: "Thêm diễn viên thành công , Chuyển trang sau 1s"
+                                        content: "Thêm đạo diễn thành công , Chuyển trang sau 1s"
                                 })
                                 await pause(1000)
                                 navigate("/admin/director")
@@ -70,7 +70,7 @@ const EditDirector = () => {
                                 form.resetFields()
                                 messageApi.open({
                                         type: "success",
-                                        content: "Thêm diễn viên thành công , Chuyển trang sau 1s"
+                                        content: "Thêm đạo diễn thành công , Chuyển trang sau 1s"
                                 })
                                 await pause(1000)
                                 navigate("/admin/director")
@@ -79,7 +79,7 @@ const EditDirector = () => {
                                 console.log(err.message);
 
                         })
-                        
+
 
 
 
@@ -176,7 +176,7 @@ const EditDirector = () => {
                                         </Form.Item>
                                 </Form>
                                 <div >
-                                        <h4 className='mb-2 text-xl'>Ảnh tác giả</h4>
+                                        <h4 className='mb-2 text-xl'>Ảnh đạo diễn</h4>
                                         <img className='w-72 rounded-sm' src={director?.image} alt="anh" />
 
                                 </div>

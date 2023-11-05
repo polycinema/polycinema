@@ -15,7 +15,7 @@ export const addRoom =async (room:IRoom)=>{
 }
 export const updateRoom =async (room:IRoom)=>{
 
-        return instance.patch(`/rooms/${room.capacity}`, room,{
+        return instance.patch(`/rooms/${room.id}`, room,{
                 headers:{
                         "Accept":"application/json"
                 }

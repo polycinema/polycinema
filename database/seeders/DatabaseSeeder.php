@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             DirectorSeeder::class,
             MovieSeeder::class,
-            ShowTimeSeeder::class
+            // ShowTimeSeeder::class
         ]);
     }
 }

@@ -14,7 +14,6 @@ import EditDirector from "./pages/admin/DirectorMng/EditDirector";
 import ListGenre from "./pages/admin/GenreMng/ListGenre";
 import AddGenre from "./pages/admin/GenreMng/AddGenre";
 import EditGenre from "./pages/admin/GenreMng/EditGenre";
-import Actor from "./pages/admin/Actor/List-Actor";
 import AddActor from "./pages/admin/Actor/Add-Actor";
 import EditActor from "./pages/admin/Actor/Edit-Actor";
 import MovieDetail from "./components/MovieDetail/MovieDetail";
@@ -25,6 +24,7 @@ import ListRooms from "./pages/admin/Room/List-Room";
 import AddRoom from "./pages/admin/Room/Add-Room";
 import EditRoom from "./pages/admin/Room/Edit-Room";
 import AddAcount from "./pages/admin/Acount/AddAcount";
+import ListActor from "./pages/admin/Actor/List-Actor";
 
 export const router = createBrowserRouter([
         {path: '*', element: <NotFoundPage/>},
@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
                                         {path: "rooms", element: <ListRooms/>},
                                         {path: "rooms/add", element: <AddRoom/>},
                                         {path: "rooms/:id/edit", element: <EditRoom/>},
-                                        { path: "actors", element: <Actor /> },
+                                        { path: "actors", element: <ListActor /> },
                                         { path: "actors/add", element: < AddActor /> },
                                         { path: "actors/:id/edit", element: < EditActor /> },
                                         { path: "genres", element: <ListGenre /> },
