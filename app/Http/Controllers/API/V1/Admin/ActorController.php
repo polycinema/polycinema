@@ -40,12 +40,12 @@ class ActorController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
-                'date_of_birth' => 'required|date',
+                'date_of_birth' => 'required',
                 'image' => 'required'
             ], [
                 'name.required' => 'Trường tên là bắt buộc',
                 'date_of_birth.required' => 'Trường ngày sinh là bắt buộc',
-                'date_of_birth.date' => 'Trường ngày sinh phải là một ngày hợp lệ',
+                // 'date_of_birth.date' => 'Trường ngày sinh phải là một ngày hợp lệ',
                 'image.required' => 'Trường ảnh là bắt buộc',
                 // 'image.string' => 'Trường ảnh phải là một chuỗi',
                 // 'image.image' => 'Trường ảnh phải là một tệp hình ảnh hợp lệ',
@@ -148,7 +148,7 @@ class ActorController extends Controller
         try {
             $actor->delete();
 
-            $actor->movies()->detach();
+            // $actor->movies()->detach();
 
             // delete_file($actor->image);
 
