@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\MovieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,5 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
 
     include(base_path('routes/admin.php'));
-    // include(base_path('routes/user.php'));
+    include(base_path('routes/auth.php'));
+
+    Route::get('movies', [MovieController::class, 'index'])->name('movies.index');
+
+    Route::get('movies/{id}', [MovieController::class, 'show'])->name('movies.show');
 });
