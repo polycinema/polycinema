@@ -25,6 +25,10 @@ import AddRoom from "./pages/admin/Room/Add-Room";
 import EditRoom from "./pages/admin/Room/Edit-Room";
 import AddAcount from "./pages/admin/Acount/AddAcount";
 import ListActor from "./pages/admin/Actor/List-Actor";
+import AddNews from "./pages/admin/News/Add-News";
+import ListNews from "./pages/admin/News/List-News";
+import EditNews from "./pages/admin/News/Update-News";
+import ListPost from "./pages/admin/News/List-News";
 
 export const router = createBrowserRouter([
         {path: '*', element: <NotFoundPage/>},
@@ -57,6 +61,10 @@ export const router = createBrowserRouter([
                                         { path: 'acount/:id/edit', element: <EditAcount /> },
                                         { path: 'acount', element: <ListAcount /> },
                                         { path: 'addAcount', element: <AddAcount /> },
+                                        { path: 'news/add', element: <AddNews /> },
+                                        { path: 'news', element: <ListPost /> },
+                                        { path: 'news/:id/edit', element: <EditNews /> },
+
                 ]
         }
 ]);
