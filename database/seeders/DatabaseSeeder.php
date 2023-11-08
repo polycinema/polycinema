@@ -27,7 +27,9 @@ class DatabaseSeeder extends Seeder
             SeatSeeder::class,
             RoomSeader::class,
             ProductSeeder::class,
-            DirectorSeeder::class
+            DirectorSeeder::class,
+            MovieSeeder::class,
+            // ShowTimeSeeder::class
         ]);
     }
 }

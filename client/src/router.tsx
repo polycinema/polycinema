@@ -14,7 +14,6 @@ import EditDirector from "./pages/admin/DirectorMng/EditDirector";
 import ListGenre from "./pages/admin/GenreMng/ListGenre";
 import AddGenre from "./pages/admin/GenreMng/AddGenre";
 import EditGenre from "./pages/admin/GenreMng/EditGenre";
-import Actor from "./pages/admin/Actor/List-Actor";
 import AddActor from "./pages/admin/Actor/Add-Actor";
 import EditActor from "./pages/admin/Actor/Edit-Actor";
 import MovieDetail from "./components/MovieDetail/MovieDetail";
@@ -24,9 +23,6 @@ import NotFoundPage from "./pages/NotFound/NotFoundPage";
 import ListRooms from "./pages/admin/Room/List-Room";
 import AddRoom from "./pages/admin/Room/Add-Room";
 import EditRoom from "./pages/admin/Room/Edit-Room";
-import ShowTimeMng from "./pages/admin/Showtime/ShowTimeMng";
-import CreateShowTime from "./pages/admin/Showtime/CreateShowTime";
-import UpdateShowTime from "./pages/admin/Showtime/UpdateShowTime";
 
 export const router = createBrowserRouter([
         {path: '*', element: <NotFoundPage/>},
@@ -44,7 +40,7 @@ export const router = createBrowserRouter([
                                         {path: "rooms", element: <ListRooms/>},
                                         {path: "rooms/add", element: <AddRoom/>},
                                         {path: "rooms/:id/edit", element: <EditRoom/>},
-                                        { path: "actors", element: <Actor /> },
+                                        { path: "actors", element: <ListActor /> },
                                         { path: "actors/add", element: < AddActor /> },
                                         { path: "actors/:id/edit", element: < EditActor /> },
                                         { path: "genres", element: <ListGenre /> },
@@ -58,9 +54,6 @@ export const router = createBrowserRouter([
                                         { path: 'director/:id/edit', element: <EditDirector /> },
                                         { path: 'acount/:id/edit', element: <EditAcount /> },
                                         { path: 'acount', element: <ListAcount /> },
-                                        { path: 'showtime', element: <ShowTimeMng /> },
-                                        { path: 'showtime/add', element: <CreateShowTime /> },
-                                        { path: 'showtime/:id/edit', element: <UpdateShowTime /> },
                 ]
         }
 ]);

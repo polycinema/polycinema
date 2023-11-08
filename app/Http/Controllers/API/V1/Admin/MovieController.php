@@ -41,7 +41,7 @@ class MovieController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
                 'title' => 'required',
-                'image' => 'required|image|mimes:png,jpg,jpeg,gif',
+                'image' => 'required',
                 'trailer' => 'required|string',
                 'description' => 'required',
                 'release_date' => 'required|date',
@@ -53,8 +53,6 @@ class MovieController extends Controller
                 'name.required' => 'Vui lòng nhập tên.',
                 'title.required' => 'Vui lòng nhập tiêu đề.',
                 'image.required' => 'Vui lòng chọn hình ảnh.',
-                'image.image' => 'Hình ảnh phải là định dạng hình ảnh.',
-                'image.mimes' => 'Hình ảnh phải có định dạng PNG, JPG, JPEG hoặc GIF.',
                 'trailer.required' => 'Vui lòng chọn video trailer.',
                 'trailer.mimetypes' => 'Video trailer phải có định dạng MP4 hoặc QuickTime.',
                 'description.required' => 'Vui lòng nhập mô tả.',
@@ -77,9 +75,9 @@ class MovieController extends Controller
 
             $movie->fill($request->all());
 
-            if ($request->hasFile('image')) {
-                $movie->image = upload_file('movies', $request->file('image'));
-            }
+            // if ($request->hasFile('image')) {
+            //     $movie->image = upload_file('movies', $request->file('image'));
+            // }
 
             $movie->save();
             $movie->actors()->attach($request->input('actors'));
@@ -109,7 +107,7 @@ class MovieController extends Controller
         try {
             $movie = Movie::with('genres')->with('actors')->find($id);
 
-            if(!$movie) {
+            if (!$movie) {
                 return response()->json([
                     'message' => 'NOT FOUND'
                 ], Response::HTTP_NOT_FOUND);
@@ -136,7 +134,7 @@ class MovieController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
                 'title' => 'required',
-                'image' => 'nullable|image|mimes:png,jpg,jpeg,gif',
+                'image' => 'required',
                 'trailer' => 'required|string',
                 'description' => 'required',
                 'release_date' => 'required|date',
@@ -147,8 +145,7 @@ class MovieController extends Controller
             ], [
                 'name.required' => 'Vui lòng nhập tên.',
                 'title.required' => 'Vui lòng nhập tiêu đề.',
-                'image.image' => 'Hình ảnh phải là định dạng hình ảnh.',
-                'image.mimes' => 'Hình ảnh phải có định dạng PNG, JPG, JPEG hoặc GIF.',
+                'image.required' => 'Vui lòng chọn hình ảnh',
                 'trailer.required' => 'Vui lòng chọn video trailer.',
                 'description.required' => 'Vui lòng nhập mô tả.',
                 'release_date.required' => 'Vui lòng chọn ngày phát hành.',
@@ -165,18 +162,18 @@ class MovieController extends Controller
                     'errors' => $validator->errors()
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
-            $oldImage = $movie->image;
+            // $oldImage = $movie->image;
 
-            $movie->fill($request->except('image'));
+            $movie->fill($request->all());
 
             $movie->save();
             $movie->actors()->sync($request->input('actors'));
             $movie->genres()->sync($request->input('genres'));
 
-            if ($request->hasFile('image')) {
-                $movie->image = upload_file('movies', $request->file('image'));
-                delete_file($oldImage);
-            }
+            // if ($request->hasFile('image')) {
+            //     $movie->image = upload_file('movies', $request->file('image'));
+            //     delete_file($oldImage);
+            // }
 
             return response()->json([
                 'message' => 'Đã cập nhật thành công',
@@ -199,7 +196,7 @@ class MovieController extends Controller
         try {
             $movie->delete();
 
-            delete_file($movie->image);
+            // delete_file($movie->image);
 
             $movie->actors()->detach();
             $movie->genres()->detach();
@@ -215,4 +212,6 @@ class MovieController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    
 }
