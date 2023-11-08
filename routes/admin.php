@@ -4,6 +4,7 @@ use App\Http\Controllers\API\V1\Admin\DirectorController;
 use App\Http\Controllers\API\V1\Admin\ActorController;
 use App\Http\Controllers\API\V1\Admin\GenreController;
 use App\Http\Controllers\API\V1\Admin\MovieController;
+use App\Http\Controllers\API\V1\Admin\PostController;
 use App\Http\Controllers\API\V1\Admin\ProductController;
 use App\Http\Controllers\API\V1\Admin\RoomController;
 use App\Http\Controllers\API\V1\Admin\SeatController;
@@ -26,12 +27,13 @@ Route::prefix('admin')->group(function () {
 
     Route::resource('users', UserController::class)->except('create', 'edit');
 
-
     Route::resource('genres', GenreController::class)->except(['edit', 'create']);
 
     Route::resource('actors', ActorController::class)->except(['edit', 'create']);
 
     Route::resource('showtime', ShowTimeController::class)->except(['edit', 'create']);
+
+    Route::resource('posts', PostController::class)->except(['edit', 'create']);
 
 });
 
