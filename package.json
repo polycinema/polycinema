@@ -2,6 +2,7 @@
   "dependencies": {
     "antd": "^5.9.4",
     "bootstrap-icons": "^1.11.1",
+    "dayjs": "^1.11.10",
     "react-icons": "^4.11.0",
     "react-slick": "^0.29.0",
     "react-youtube": "^10.1.0",
