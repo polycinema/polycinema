@@ -1,7 +1,7 @@
 import React from "react";
 import logo1 from "../../public/img/logo1.png";
 import { Link, Outlet } from "react-router-dom";
-import { AppstoreOutlined, GroupOutlined,  LogoutOutlined,  TeamOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined, SolutionOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, GroupOutlined, LogoutOutlined, TeamOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined, SolutionOutlined, ShopOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -24,7 +24,7 @@ const LayoutAdmin: React.FC = () => {
       >
         <div className="demo-logo-vertical" />
         <Link to={""}>
-          <img src={logo1} alt="" className="w-32 mx-auto my-12"/>
+          <img src={logo1} alt="" className="w-32 mx-auto my-12" />
         </Link>
         <Menu
           theme="dark"
@@ -68,6 +68,16 @@ const LayoutAdmin: React.FC = () => {
             },
             {
               key: 8,
+              icon: <GroupOutlined />,
+              label: <Link to={"news"}>New</Link>,
+            },
+            {
+              key: 9,
+              icon: <ShopOutlined />,
+              label: <Link to={"products"}>Product</Link>,
+            },
+            {
+              key: 10,
               icon: <LogoutOutlined />,
               label: <Link to={""}>Logout</Link>,
             },

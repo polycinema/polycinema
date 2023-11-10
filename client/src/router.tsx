@@ -27,6 +27,13 @@ import ShowTimeMng from "./pages/admin/Showtime/ShowTimeMng";
 import CreateShowTime from "./pages/admin/Showtime/CreateShowTime";
 import UpdateShowTime from "./pages/admin/Showtime/UpdateShowTime";
 import ListActor from "./pages/admin/Actor/List-Actor";
+import AddAcount from "./pages/admin/Acount/AddAcount";
+import AddNews from "./pages/admin/News/Add-News";
+import ListPost from "./pages/admin/News/List-News";
+import EditNews from "./pages/admin/News/Update-News";
+import AddProduct from "./pages/admin/Product/Add-Product";
+import ListProduct from "./pages/admin/Product/List-Product";
+import EditProduct from "./pages/admin/Product/Edit-Product";
 
 
 export const router = createBrowserRouter([
@@ -61,7 +68,14 @@ export const router = createBrowserRouter([
                                         { path: 'acount', element: <ListAcount /> },
                                         { path: 'showtime', element: <ShowTimeMng /> },
                                         { path: 'showtime/add', element: <CreateShowTime /> },
-                                        { path: 'showtime/:id/edit', element: <UpdateShowTime /> }
+                                        { path: 'showtime/:id/edit', element: <UpdateShowTime /> },
+                                        { path: 'addAcount', element: <AddAcount /> },
+                                        { path: 'news/add', element: <AddNews /> },
+                                        { path: 'news', element: <ListPost /> },
+                                        { path: 'news/:id/edit', element: <EditNews /> },
+                                        { path: 'products/add', element: <AddProduct /> },
+                                        { path: 'products', element: <ListProduct /> },
+                                        { path: 'products/:id/edit', element: <EditProduct /> }
                 ]
         }
 ]);
