@@ -3,7 +3,7 @@ const MovieDetail = () => {
   return (
     <>
       <div className="container">
-        <h3 className="title">Trang chủ > <span className="nameMovie">Biệt Đội Đánh Thuê
+        <h3 className="title">Trang chủ <span className="nameMovie">Biệt Đội Đánh Thuê
           4</span></h3>
         <div className="title1">
           <div className="title1-img">

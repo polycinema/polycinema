@@ -1,35 +1,89 @@
-import { Table } from "antd";
+import { Button, Popconfirm, Table } from "antd";
+import {
+  useGetShowTimesQuery,
+  useRemoveShowTimeMutation,
+} from "../../../redux/api/showTimeApi";
+import { IShowTime } from "../../../interfaces/showtime";
+import { Link } from "react-router-dom";
+import { DeleteOutlined, EditFilled } from "@ant-design/icons";
+import IsLoading from "../../../utils/IsLoading";
 
 const ShowTimeMng = () => {
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
+  const { data, isLoading, error }: any = useGetShowTimesQuery();
+  const [removeShowtime] = useRemoveShowTimeMutation();
+  console.log("error: ", error);
+  // if (isLoading) {
+  // }
+  if (isLoading) {
+    return (
+      <>
+        <IsLoading />
+      </>
+    );
+  }
+
+  const dataSource: IShowTime[] = data?.data?.map(
+    ({ room_id, movie_id, start_time, end_time, id, show_date }: IShowTime) => {
+      return {
+        key: id,
+        room_id,
+        movie_id,
+        start_time,
+        end_time,
+        show_date,
+      };
+    }
+  );
+  // console.log('dataSource: ',dataSource)
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: "Room Id",
+      dataIndex: "room_id",
+      key: "1",
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
+      title: "Movie Id",
+      dataIndex: "movie_id",
+      key: "2",
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Start Time",
+      dataIndex: "start_time",
+      key: "3",
+    },
+    {
+      title: "End Time",
+      dataIndex: "end_time",
+      key: "4",
+    },
+    {
+      title: "Show date",
+      dataIndex: "show_date",
+      key: "5",
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "6",
+      render: (_: any, { key: id }: any) => {
+        console.log(id);
+        return (
+          <div className="space-x-3">
+            <Link to={`/admin/showtime/${id}/edit`}>
+              <Button icon={<EditFilled />} />
+            </Link>
+            <Popconfirm
+              title="Delete the task"
+              description="Are you sure to delete this task?"
+              onConfirm={() => removeShowtime(id)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button icon={<DeleteOutlined />} danger />
+            </Popconfirm>
+          </div>
+        );
+      },
     },
   ];
   return (

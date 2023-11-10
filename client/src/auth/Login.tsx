@@ -6,10 +6,12 @@ import { useLoginMutation } from "../redux/api/authApi";
 
 const Login = () => {
   const [login, { isLoading, error }] = useLoginMutation();
+  console.log('error login: ',error)
   const onFinish = (values: any) => {
     login(values)
       .unwrap()
-      .then(() => {
+      .then((login) => {
+        console.log('user: ',login)
         notification.success({ message: "Login is successly!" });
       });
   };

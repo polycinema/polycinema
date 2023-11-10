@@ -23,6 +23,11 @@ import NotFoundPage from "./pages/NotFound/NotFoundPage";
 import ListRooms from "./pages/admin/Room/List-Room";
 import AddRoom from "./pages/admin/Room/Add-Room";
 import EditRoom from "./pages/admin/Room/Edit-Room";
+import ShowTimeMng from "./pages/admin/Showtime/ShowTimeMng";
+import CreateShowTime from "./pages/admin/Showtime/CreateShowTime";
+import UpdateShowTime from "./pages/admin/Showtime/UpdateShowTime";
+import ListActor from "./pages/admin/Actor/List-Actor";
+
 
 export const router = createBrowserRouter([
         {path: '*', element: <NotFoundPage/>},
@@ -54,6 +59,9 @@ export const router = createBrowserRouter([
                                         { path: 'director/:id/edit', element: <EditDirector /> },
                                         { path: 'acount/:id/edit', element: <EditAcount /> },
                                         { path: 'acount', element: <ListAcount /> },
+                                        { path: 'showtime', element: <ShowTimeMng /> },
+                                        { path: 'showtime/add', element: <CreateShowTime /> },
+                                        { path: 'showtime/:id/edit', element: <UpdateShowTime /> }
                 ]
         }
 ]);

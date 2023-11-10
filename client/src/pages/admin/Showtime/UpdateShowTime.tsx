@@ -1,32 +1,67 @@
 import { VerticalAlignTopOutlined } from "@ant-design/icons";
-import { Button, DatePicker, Form, Input } from "antd";
-import dayjs from "dayjs";
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  TimePicker,
+  notification,
+} from "antd";
 import { useEffect } from "react";
+import {
+  useGetByIdShowTimeQuery,
+  useUpdateShowTimeMutation,
+} from "../../../redux/api/showTimeApi";
+import { useParams } from "react-router";
+import dayjs from "dayjs";
+import IsLoading from "../../../utils/IsLoading";
 
 const UpdateShowTime = () => {
+  const { id } = useParams();
   const [form] = Form.useForm();
-  const dateFormat = "YYYY/MM/DD";
-  const data  = {
-    movie_id: "1",
-    start_time: "2023/11/01",
-    end_time: "2023/10/12",
-  };
-  // console.log('format date: ', dayjs(data.start_time))
+  const [updateShowTime, { isLoading, error }] = useUpdateShowTimeMutation();
+  const { data }: any = useGetByIdShowTimeQuery(id);
   useEffect(() => {
-    form.setFieldsValue({
-      movie_id: data.movie_id,
-      start_time: dayjs(data.start_time),
-      end_time: dayjs(data.end_time),
-    });
-  }, [data]);
-  const onFinish = ({ start_time, end_time, movie_id }: any) => {
-    console.log(
-      "value finish: ",
-      dayjs(start_time).format(dateFormat),
-      dayjs(end_time).format(dateFormat),
-      movie_id
+    (async () => {
+      await form.setFieldsValue({
+        movie_id: data?.data.movie_id,
+        room_id: data?.data.room_id,
+        show_date: dayjs(data?.data?.show_date, "YYYY/MM/DD"),
+        start_time: dayjs(data?.data?.start_time, "HH:mm:ss"),
+        end_time: dayjs(data?.data?.end_time, "HH:mm:ss"),
+      });
+    })();
+  }, [data?.data, form]);
+  useEffect(() => {
+    if (error) {
+      return;
+    }
+  }, [error]);
+  if (isLoading) {
+    return (
+      <>
+        <IsLoading />
+      </>
     );
-    // console.log("formate date: ", dayjs(value.start_time).format(dateFormat));
+  }
+  const onFinish = ({
+    start_time,
+    end_time,
+    movie_id,
+    room_id,
+    show_date,
+  }: any) => {
+    updateShowTime({
+      start_time: dayjs(start_time).format("HH:mm:ss"),
+      end_time: dayjs(end_time).format("HH:mm:ss"),
+      movie_id,
+      room_id,
+      show_date: dayjs(show_date).format("YYYY/MM/DD"),
+      id,
+    }).then(() => {
+      // console.log("value: ", values);
+      notification.success({ message: "update showtime successfully" });
+    });
   };
   return (
     <div>
@@ -42,6 +77,16 @@ const UpdateShowTime = () => {
           <Input />
         </Form.Item>
         <Form.Item
+          name={"room_id"}
+          label={"ID Room"}
+          rules={[
+            { message: "Trường room_id không được để trống! ", required: true },
+          ]}
+          style={{ width: 200 }}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
           name={"start_time"}
           label={"Start time"}
           rules={[
@@ -51,7 +96,7 @@ const UpdateShowTime = () => {
             },
           ]}
         >
-          <DatePicker />
+          <TimePicker format="HH:mm:ss" />
         </Form.Item>
         <Form.Item
           name={"end_time"}
@@ -59,6 +104,18 @@ const UpdateShowTime = () => {
           rules={[
             {
               message: "Trường end time không được để trống! ",
+              required: true,
+            },
+          ]}
+        >
+          <TimePicker format="HH:mm:ss" />
+        </Form.Item>
+        <Form.Item
+          name={"show_date"}
+          label={"Ngày chiếu"}
+          rules={[
+            {
+              message: "Trường show_date không được để trống! ",
               required: true,
             },
           ]}

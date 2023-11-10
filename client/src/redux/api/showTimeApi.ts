@@ -1,11 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IShowTime } from "../../interfaces/showtime";
+import { pause } from "../../utils/pause";
 const showtimeApi = createApi({
     reducerPath: "showtime",
     baseQuery: fetchBaseQuery({
         baseUrl:  import.meta.env.VITE_API_URL,
+        fetchFn: async (...arg) => {
+            await pause(1500);
+            return await fetch(...arg);
+          },
     }),
     endpoints: (build) => ({
-        getShowTimes: build.query({
+        getShowTimes: build.query<IShowTime[], void>({
             query: () => ({
                 url: "/showtime",
             }),
@@ -24,7 +30,7 @@ const showtimeApi = createApi({
         }),
         UpdateShowTime: build.mutation({
             query: (showtime) => ({
-                url: `/showtime/${showtime.id}/edit`,
+                url: `/showtime/${showtime.id}`,
                 method: "PUT",
                 body: showtime,
             }),

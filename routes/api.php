@@ -24,7 +24,7 @@ Route::prefix('v1')->group(function () {
     include(base_path('routes/admin.php'));
     include(base_path('routes/auth.php'));
 
-    Route::get('movies', [MovieController::class, 'index'])->name('movies.index');
+    // Route::get('movies', [MovieController::class, 'index'])->name('movies.index');
 
-    Route::get('movies/{id}', [MovieController::class, 'show'])->name('movies.show');
+    // Route::get('movies/{id}', [MovieController::class, 'show'])->name('movies.show');
 });
