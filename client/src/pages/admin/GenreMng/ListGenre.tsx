@@ -95,9 +95,9 @@ const ListGenre = () => {
                 <>
                         {contextHolder}
                         <div>
-                        <Button>
-                                <Link to={"/admin/genres/add"}>Thêm thể loại</Link>
-                        </Button>
+                                <Button>
+                                        <Link to={"/admin/genres/add"}>Thêm thể loại</Link>
+                                </Button>
                                 <h1 className='text-2xl m-6 '>Danh sách thể loại</h1>
                                 <Table columns={columns} dataSource={dataConfig} />
                         </div>
