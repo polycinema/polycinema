@@ -82,9 +82,9 @@ const ListRooms = () => {
   return (
     <>
       {contextHolder}
-      <div className="flex justify-center ">
+      <div >
         <Button>
-          <Link to={"/admin/rooms/add"}>Thêm thể loại</Link>
+          <Link to={"/admin/rooms/add"}>Thêm phòng</Link>
         </Button>
         <h1 className="text-2xl m-6 ">Danh sách phòng </h1>
         <Table columns={columns} dataSource={dataConfig} />
