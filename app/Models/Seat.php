@@ -15,4 +15,8 @@ class Seat extends Model
         'type',
         'room_id',
     ];
+
+    public function rooms() {
+        return $this->belongsTo(Room::class, 'room_id');
+    }
 }
