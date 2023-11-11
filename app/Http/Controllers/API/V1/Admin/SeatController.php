@@ -18,7 +18,7 @@ class SeatController extends Controller
      */
     public function index()
     {
-        $seats = Seat::all();
+        $seats = Seat::query()->with('rooms')->get();
         if ($seats) {
             return response()->json([
                 'data' => $seats,
