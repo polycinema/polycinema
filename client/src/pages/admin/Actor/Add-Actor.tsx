@@ -6,15 +6,15 @@ import { useState } from "react";
 import { IActor, addActor } from "../../../api/actor";
 import { useNavigate } from "react-router";
 import { pause } from "../../../utils/pause";
+import dayjs from "dayjs";
 
 const AddActor = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
-  const [datetime, setdatetime] = useState("");
   const [urlImage, setUrlImage] = useState("");
   const onFinish = (values: IActor) => {
-    addActor({ ...values, image: urlImage, date_of_birth:datetime })
+    addActor({ ...values, image: urlImage,date_of_birth: dayjs(values.date_of_birth).format("YYYY/MM/DD") })
       .then(async () => {
         form.resetFields();
         messageApi.open({
@@ -32,27 +32,11 @@ const AddActor = () => {
   const onFinishFailed = (errorInfo: any) => {
     console.log(errorInfo);
   };
-  const onChangeDate = (
-    value: DatePickerProps["value"] | RangePickerProps["value"],
-    dateString: [string, string] | string
-  ) => {
-    setdatetime(dateString);
-  };
 
   const props: UploadProps = {
     name: "file",
     action: "https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload",
-    // Thay đổi thành URL API của Cloudinary
-    headers: {
-      // Authorization: 'Bearer 773215578244178',
-      // "Access-Control-Allow-Origin":"*"
-      // Thay đổi thành API key của bạn
-    },
-    data: {
-      // Thêm các dữ liệu cần thiết như upload preset
-      upload_preset: "upload",
-      // Thay đổi thành upload preset của bạn
-    },
+    data: {upload_preset: "upload",},
     onChange(info) {
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
@@ -83,13 +67,17 @@ const AddActor = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item label="Tên Diễn Viên" name="name">
+        <Form.Item 
+        label="Tên Diễn Viên" 
+        name="name"
+        rules={[{ required: true, message: 'Tên diễn không được để trống' }]}
+        >
           <Input />
         </Form.Item>
         <Form.Item
           label="Ảnh diễn viên"
           name="image"
-          rules={[{ required: true, message: "Please input your image!" }]}
+          rules={[{ required: true, message: 'Ảnh không được để trống' }]}
         >
           <Upload {...props}>
             <Button icon={<UploadOutlined />}>Click to Upload</Button>
@@ -97,8 +85,9 @@ const AddActor = () => {
         </Form.Item>
         <Form.Item
         label="Ngày sinh diễn viên"
-        name="date_of_birth">
-                        <DatePicker format={"YYYY-MM-DD"}  onChange={onChangeDate} />
+        name="date_of_birth"
+        rules={[{ required: true, message: 'Ngày sinh không được để trống' }]}>
+                        <DatePicker /> 
 
         </Form.Item>
 

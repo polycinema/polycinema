@@ -17,6 +17,8 @@ import {
       import storage from "redux-persist/lib/storage";
 import authApi, { authReducer } from "../redux/api/authApi";
 import showtimeApi, { showtimeReducer } from "../redux/api/showTimeApi";
+import movieApi, { movieReducer } from "../redux/api/movieApi";
+
       
       const persistConfig = {
         key: "root",
@@ -26,10 +28,13 @@ import showtimeApi, { showtimeReducer } from "../redux/api/showTimeApi";
       const rootReducer = combineReducers({
        [authApi.reducerPath]: authReducer,
        [showtimeApi.reducerPath]: showtimeReducer,
+       [movieApi.reducerPath]: movieReducer,
+
       });
       const middleware = [
+        showtimeApi.middleware,
         authApi.middleware,
-        showtimeApi.middleware
+        movieApi.middleware
       ]
       const persistedReducer = persistReducer(persistConfig, rootReducer);
       

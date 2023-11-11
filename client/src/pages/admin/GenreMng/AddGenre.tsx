@@ -56,7 +56,7 @@ const AddGenre = () => {
                                 <Form.Item<FieldType>
                                         label="Tên thể loại"
                                         name="name"
-                                        rules={[{ required: true, message: 'Please input your genre!' }]}
+                                        rules={[{ required: true, message: 'Tên không được để trống' }]}
                                 >
                                         <Input />
                                 </Form.Item>

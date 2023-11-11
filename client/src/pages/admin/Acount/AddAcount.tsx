@@ -59,7 +59,7 @@ const AddAcount = () => {
                     <Form.Item<FieldType>
                         label="Tên người dùng"
                         name="name"
-                        rules={[{ required: true, message: 'Please input your name!' }]}
+                        rules={[{ required: true, message: 'Tên tài khoản không được để trống' }]}
                     >
                         <Input />
                     </Form.Item>
@@ -67,7 +67,7 @@ const AddAcount = () => {
                     <Form.Item<FieldType>
                         label="Email"
                         name="email"
-                        rules={[{ required: true, message: 'Please input your email!' }]}
+                        rules={[{ required: true, message: 'Email không được để trống' }]}
                     >
                         <Input />
                     </Form.Item>
@@ -75,7 +75,7 @@ const AddAcount = () => {
                     <Form.Item<FieldType>
                         label="Password"
                         name="password"
-                        rules={[{ required: true, message: 'Please input your password!' }]}
+                        rules={[{ required: true, message: 'Password không được để trống' }]}
                     >
                         <Input.Password />
                     </Form.Item>

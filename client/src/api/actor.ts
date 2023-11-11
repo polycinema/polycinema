@@ -1,6 +1,6 @@
 import instance from "./instance";
 export interface IActor {
-
+        id?:string|number|undefined
         name:string
         date_of_birth: string
         image: string
