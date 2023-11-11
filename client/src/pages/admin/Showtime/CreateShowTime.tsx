@@ -36,7 +36,7 @@ const CreateShowTime = () => {
   };
   console.error('error crate showtime: ',error)
   return (
-    <div>
+    <div >
       <h3>Create Show Time</h3>
       <Form onFinish={onFinish}>
         <Form.Item

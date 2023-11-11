@@ -92,17 +92,7 @@ const EditDirector = () => {
         const props: UploadProps = {
                 name: 'file',
                 action: 'https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload',
-                // Thay đổi thành URL API của Cloudinary
-                headers: {
-                        // Authorization: 'Bearer 773215578244178',
-                        // "Access-Control-Allow-Origin":"*"
-                        // Thay đổi thành API key của bạn
-                },
-                data: {
-                        // Thêm các dữ liệu cần thiết như upload preset
-                        upload_preset: 'upload',
-                        // Thay đổi thành upload preset của bạn
-                },
+                data: {upload_preset: 'upload',},
                 onChange(info) {
                         if (info.file.status !== 'uploading') {
 
@@ -144,14 +134,14 @@ const EditDirector = () => {
                                         <Form.Item<FieldType>
                                                 label="Tên đạo diễn"
                                                 name="name"
-                                                rules={[{ required: true, message: 'Please input your name!' }]}
+                                                rules={[{ required: true, message: 'Tên không được để trống' }]}
                                         >
                                                 <Input />
                                         </Form.Item>
                                         <Form.Item<FieldType>
                                                 label="Ảnh đạo diễn"
                                                 name="image"
-                                                rules={[{ required: true, message: "Please input your image!" }]}
+                                                rules={[{ required: true, message: 'Ảnh không được để trống' }]}
 
                                         >
                                                 <Upload {...props}>

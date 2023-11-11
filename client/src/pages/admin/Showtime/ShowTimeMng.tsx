@@ -88,7 +88,10 @@ const ShowTimeMng = () => {
   ];
   return (
     <div>
-      <h3>Show time</h3>
+      <Button>
+          <Link to={"/admin/showtime/add"}>Create ShowTime</Link>
+        </Button>
+        <h1 className="text-2xl m-6 ">ShowTime</h1>
       <Table dataSource={dataSource} columns={columns} />;
     </div>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import logo1 from "../../public/img/logo1.png";
 import { Link, Outlet } from "react-router-dom";
-import { AppstoreOutlined, GroupOutlined, LogoutOutlined, TeamOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined, SolutionOutlined, ShopOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, GroupOutlined, LogoutOutlined, TeamOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined, SolutionOutlined, ShopOutlined, FieldTimeOutlined } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -78,6 +78,11 @@ const LayoutAdmin: React.FC = () => {
             },
             {
               key: 10,
+              icon: <FieldTimeOutlined />,
+              label: <Link to={"showtime"}>ShowTime</Link>,
+            },
+            {
+              key: 11,
               icon: <LogoutOutlined />,
               label: <Link to={""}>Logout</Link>,
             },

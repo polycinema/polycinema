@@ -96,14 +96,14 @@ const AddDirector = () => {
                                         <Form.Item<FieldType>
                                                 label="Tên đạo diễn"
                                                 name="name"
-                                                rules={[{ required: true, message: 'Please input your name!' }]}
+                                                rules={[{ required: true, message: 'Tên không được để trống' }]}
                                         >
                                                 <Input />
                                         </Form.Item>
                                         <Form.Item<FieldType>
                                                 label="Ảnh đạo diễn"
                                                 name="image"
-                                                rules={[{ required: true, message: "Please input your image!" }]}
+                                                rules={[{ required: true, message: 'Ảnh không được để trống' }]}
                                         >
                                                 <Upload {...props}>
                                                         <Button icon={<UploadOutlined />}>Click to Upload</Button>

@@ -12,8 +12,7 @@ import { useNavigate, useParams } from "react-router";
 import { useState, useEffect } from "react";
 import { IActor, getActorById, updateActor } from "../../../api/actor";
 import { pause } from "../../../utils/pause";
-import { RangePickerProps } from "antd/es/date-picker";
-import { IDirector } from "../../../api/director";
+import dayjs from "dayjs";
 
 const EditActor = () => {
   const { id } = useParams();
@@ -22,26 +21,24 @@ const EditActor = () => {
   const navigate = useNavigate();
   const [actor, setActor] = useState<IActor>();
   const [urlImage, setUrlImage] = useState<string>();
-  const [datetime, setdatetime] = useState("");
 
   useEffect(() => {
     (async () => {
       try {
         const { data } = await getActorById(id);
         setActor(data.data);
-        console.log(data.data);
       } catch (error) {
         console.log(error);
       }
     })();
   }, []);
   const onFinish = async (value: IActor) => {
-    urlImage === undefined || datetime === undefined
+    urlImage === undefined
       ? updateActor({
           id: id,
           ...value,
           image: actor?.image,
-          date_of_birth: actor?.date_of_birth,
+          date_of_birth: dayjs(value.date_of_birth).format("YYYY/MM/DD") 
         })
           .then(async () => {
             form.resetFields();
@@ -59,7 +56,7 @@ const EditActor = () => {
           id: id,
           ...value,
           image: urlImage,
-          date_of_birth: datetime,
+          date_of_birth: dayjs(value.date_of_birth).format("YYYY/MM/DD")
         })
           .then(async () => {
             form.resetFields();
@@ -82,17 +79,8 @@ const EditActor = () => {
   const props: UploadProps = {
     name: "file",
     action: "https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload",
-    // Thay đổi thành URL API của Cloudinary
-    headers: {
-      // Authorization: 'Bearer 773215578244178',
-      // "Access-Control-Allow-Origin":"*"
-      // Thay đổi thành API key của bạn
-    },
-    data: {
-      // Thêm các dữ liệu cần thiết như upload preset
-      upload_preset: "upload",
-      // Thay đổi thành upload preset của bạn
-    },
+    
+    data: {upload_preset: "upload",},
     onChange(info) {
       if (info.file.status !== "uploading") {
         console.log(info.file, info.fileList);
@@ -108,12 +96,6 @@ const EditActor = () => {
       }
     },
   };
-  const onChangeDate = (
-    value: DatePickerProps["value"] | RangePickerProps["value"],
-    dateString: [string, string] | string
-  ) => {
-    setdatetime(dateString);
-  };
   useEffect(() => {
     setFields();
   }, [actor]);
@@ -122,7 +104,7 @@ const EditActor = () => {
       id: actor?.id,
       name: actor?.name,
       image: actor?.image,
-      // date_of_birth:actor?.date_of_birth
+      date_of_birth:dayjs(actor?.date_of_birth, "YYYY/MM/DD")
     });
   };
   return (
@@ -142,21 +124,29 @@ const EditActor = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
           >
-            <Form.Item label="Tên Diễn Viên" name="name">
+            <Form.Item 
+            label="Tên Diễn Viên" 
+            name="name"
+            rules={[{ required: true, message: 'Tên  không được để trống' }]}
+            >
               <Input />
             </Form.Item>
             <Form.Item
               label="Ảnh diễn viên"
               name="image"
-              rules={[{ required: true, message: "Please input your image!" }]}
+              rules={[{ required: true, message: 'Ảnh không được để trống' }]}
             >
               <Upload {...props}>
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
             </Form.Item>
-            <Form.Item label="Ngày sinh diễn viên" name="date_of_birth">
-              <DatePicker format={"YYYY-MM-DD"} onChange={onChangeDate} />
-              <span>{actor?.date_of_birth}</span>
+            <Form.Item 
+            label="Ngày sinh diễn viên" 
+            name="date_of_birth"
+            rules={[{ required: true, message: 'Ngày sinh không được để trống' }]}
+            >
+
+              <DatePicker   />
             </Form.Item>
 
             <Form.Item label="Tác vụ">

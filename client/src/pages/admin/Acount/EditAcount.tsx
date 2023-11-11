@@ -102,7 +102,7 @@ const EditAcount = (props: Props) => {
                                         <Form.Item<FieldType>
                                                 label="Tên tài khoản"
                                                 name="name"
-                                                rules={[{ required: true, message: 'Please input your user!' }]}
+                                                rules={[{ required: true, message: 'Tên tài khoản không được để trống' }]}
                                         >
                                                 <Input />
                                         </Form.Item>
@@ -110,7 +110,7 @@ const EditAcount = (props: Props) => {
                                         <Form.Item<FieldType>
                                                 label="Email"
                                                 name="email"
-                                                rules={[{ required: true, message: 'Please input your email!' }]}
+                                                rules={[{ required: true, message: 'Email không được để trống' }]}
                                         >
                                                 <Input />
                                         </Form.Item>
@@ -119,6 +119,7 @@ const EditAcount = (props: Props) => {
                                         <Form.Item<FieldType>
                                                 label="Password"
                                                 name="password"
+                                                rules={[{ required: true, message: 'Password không được để trống' }]}
                                         >
                                                 <Input.Password />
                                         </Form.Item>
@@ -126,7 +127,7 @@ const EditAcount = (props: Props) => {
                                         <Form.Item<FieldType>
                                                 label="Role"
                                                 name="role"
-                                                rules={[{ required: true, message: 'Please input your role!' }]}
+                                                rules={[{ required: true, message: 'Role không được để trống' }]}
                                         >
                                                 <Select
                                                         showSearch

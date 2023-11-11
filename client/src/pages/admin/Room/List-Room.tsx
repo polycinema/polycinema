@@ -82,7 +82,7 @@ const ListRooms = () => {
   return (
     <>
       {contextHolder}
-      <div>
+      <div className="flex justify-center ">
         <Button>
           <Link to={"/admin/rooms/add"}>Thêm thể loại</Link>
         </Button>
