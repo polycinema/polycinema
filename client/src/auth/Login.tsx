@@ -4,10 +4,17 @@ import { LoadingOutlined, LockOutlined } from "@ant-design/icons";
 import Link from "antd/es/typography/Link";
 import { useLoginMutation } from "../redux/api/authApi";
 import { IAuth } from "../interfaces/auth";
+import { useEffect } from "react";
 
 const Login = () => {
-  const [login, { isLoading, error }] = useLoginMutation();
-  console.error('error login: ',error)
+  const [login, { isLoading, error }]:any = useLoginMutation();
+  useEffect(() => {
+    if (error) {
+      return notification.error({
+        message: error?.data.error,
+      });
+    }
+  }, [error]);
   const onFinish = (values: IAuth) => {
     login(values)
       .unwrap()
@@ -59,7 +66,9 @@ const Login = () => {
 
         <Form.Item>
           <Space>
-            <Button htmlType="submit">{isLoading ? <LoadingOutlined /> : 'Login'}</Button>
+            <Button htmlType="submit">
+              {isLoading ? <LoadingOutlined /> : "Login"}
+            </Button>
           </Space>
         </Form.Item>
       </Form>
