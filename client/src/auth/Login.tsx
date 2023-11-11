@@ -27,7 +27,7 @@ const Login = () => {
         // console.log('auth: ',auth)
         if(auth){
           dispatch(setIsAuth())
-          dispatch(setUser(auth))
+          dispatch(setUser(auth.user))
           dispatch(setToken(auth.token))
         }
         notification.success({ message: "Login is successly!" });
