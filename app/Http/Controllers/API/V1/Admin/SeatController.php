@@ -18,16 +18,17 @@ class SeatController extends Controller
      */
     public function index()
     {
-        $seats = Seat::query()->with('rooms')->get();
-        if ($seats) {
+        try{
+            $seats = Seat::query()->with('room')->get();
+
             return response()->json([
-                'data' => $seats,
-                'message' => 'Danh sách ghế'
+                'data' => $seats
             ], Response::HTTP_OK);
-        } else {
+        }catch(Exception $exception) {
+            Log::error('SeatController@index: ', [$exception->getMessage()]);
+
             return response()->json([
-                'error' => 'Đã có lỗi xảy ra',
-                'message' => 'Truy vấn thất bại'
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

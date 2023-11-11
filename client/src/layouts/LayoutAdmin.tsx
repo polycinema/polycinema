@@ -5,6 +5,9 @@ import { AppstoreOutlined, GroupOutlined, LogoutOutlined, TeamOutlined, UserOutl
 import { Layout, Menu, Popconfirm, theme } from "antd";
 import { useAppDispatch } from "../store/hook";
 import { setLogout } from "../redux/slices/authorizationSlice";
+
+import { CiBoxes } from "react-icons/ci";
+
 const { Header, Content, Footer, Sider } = Layout;
 
 const LayoutAdmin: React.FC = () => {
@@ -85,6 +88,11 @@ const LayoutAdmin: React.FC = () => {
             },
             {
               key: 11,
+              icon: <CiBoxes />,
+              label: <Link to={"seat"}>Seat</Link>,
+            },
+            {
+              key: 12,
               icon: <LogoutOutlined />,
               label: (
                 <Popconfirm

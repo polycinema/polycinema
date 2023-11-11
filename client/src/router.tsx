@@ -35,6 +35,9 @@ import AddProduct from "./pages/admin/Product/Add-Product";
 import ListProduct from "./pages/admin/Product/List-Product";
 import EditProduct from "./pages/admin/Product/Edit-Product";
 import PrivateRouter from "./components/privateRouter/PrivateRouter";
+import AddSeat from "./pages/admin/Seat/AddSeat";
+import EditSeat from "./pages/admin/Seat/EditSeat";
+import ListSeat from "./pages/admin/Seat/ListSeat";
 
 export const router = createBrowserRouter([
   { path: "*", element: <NotFoundPage /> },
@@ -83,8 +86,16 @@ export const router = createBrowserRouter([
           { path: "products/add", element: <AddProduct /> },
           { path: "products", element: <ListProduct /> },
           { path: "products/:id/edit", element: <EditProduct /> },
+          { path: 'seat', element: <ListSeat /> },
+          { path: 'seat/add', element: <AddSeat /> },
+          { path: 'seat/:id/edit', element: <EditSeat /> },
         ],
       },
     ],
   },
-]);
+
+
+
+
+])
+
