@@ -38,6 +38,7 @@ import PrivateRouter from "./components/privateRouter/PrivateRouter";
 import AddSeat from "./pages/admin/Seat/AddSeat";
 import EditSeat from "./pages/admin/Seat/EditSeat";
 import ListSeat from "./pages/admin/Seat/ListSeat";
+import Dashboard from "./pages/admin/Dashboard/Dashboard";
 
 export const router = createBrowserRouter([
   { path: "*", element: <NotFoundPage /> },
@@ -53,12 +54,13 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "admin",
+    path: "/admin",
     element: <PrivateRouter />,
     children: [
       {
         element: <LayoutAdmin />,
         children: [
+          { index: true, element: <Dashboard /> },
           { path: "rooms", element: <ListRooms /> },
           { path: "rooms/add", element: <AddRoom /> },
           { path: "rooms/:id/edit", element: <EditRoom /> },

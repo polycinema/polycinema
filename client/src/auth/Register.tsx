@@ -34,7 +34,7 @@ const Register = () => {
         </Form.Item>
         <Form.Item
           label="Email"
-          name={"mail"}
+          name={"email"}
           rules={[
             { required: true, message: "Vui lòng nhập Email" },
             { type: "email", message: "Email không đúng định dạng" },
