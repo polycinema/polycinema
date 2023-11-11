@@ -59,7 +59,7 @@ class AuthenController extends Controller
             $validator = Validator::make($request->all(), [
                 'name'      => ['required', 'string', 'max:255'],
                 'email'     => ['required', 'string', 'email', 'unique:' . User::class],
-                'password'  => ['required', 'confirmed', Password::defaults()]
+                'password'  => ['required', Password::defaults()]
             ]);
 
             if ($validator->fails()) {

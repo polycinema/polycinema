@@ -1,14 +1,15 @@
 import { Button, Form, Input, Space, notification } from "antd";
-import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
+import { LoadingOutlined, LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { useRegisterMutation } from "../redux/api/authApi";
 import { useEffect } from "react";
+import { IAuth } from "../interfaces/auth";
 
 const Register = () => {
   const [register, { isLoading, error }] = useRegisterMutation();
   useEffect(() => {
-    console.log("error: ", error);
+    console.error("error register: ", error);
   }, [error]);
-  const onFinish = (values: any) => {
+  const onFinish = (values: IAuth) => {
     register(values)
       .unwrap()
       .then(() => {
@@ -29,17 +30,17 @@ const Register = () => {
           name={"name"}
           rules={[{ required: true, message: "Vui lòng nhập tên" }]}
         >
-          <Input prefix={<UserOutlined className="site-form-item-icon" />} />
+          <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="User name"/>
         </Form.Item>
         <Form.Item
           label="Email"
-          name={"email"}
+          name={"mail"}
           rules={[
             { required: true, message: "Vui lòng nhập Email" },
             { type: "email", message: "Email không đúng định dạng" },
           ]}
         >
-          <Input prefix={<MailOutlined />} />
+          <Input prefix={<MailOutlined />} placeholder="Email"/>
         </Form.Item>
         <Form.Item
           label="Password"
@@ -49,7 +50,7 @@ const Register = () => {
             { min: 6, message: "Password tối thiểu 6 kí tự" },
           ]}
         >
-          <Input.Password prefix={<LockOutlined />} />
+          <Input.Password prefix={<LockOutlined />} placeholder="Password"/>
         </Form.Item>
         <Form.Item
           label="Confirm password"
@@ -67,11 +68,11 @@ const Register = () => {
             }),
           ]}
         >
-          <Input.Password prefix={<LockOutlined />} />
+          <Input.Password prefix={<LockOutlined />} placeholder="Confirm password"/>
         </Form.Item>
         <Form.Item>
           <Space style={{ display: "flex", justifyContent: "space-between" }}>
-            <Button htmlType="submit">Register</Button>
+            <Button htmlType="submit">{isLoading ? <LoadingOutlined /> : 'Register'}</Button>
           </Space>
         </Form.Item>
       </Form>

@@ -1,17 +1,17 @@
 import { Button, Checkbox, Form, Input, Space, notification } from "antd";
 import { AiOutlineMail } from "@react-icons/all-files/ai/AiOutlineMail";
-import { LockOutlined } from "@ant-design/icons";
+import { LoadingOutlined, LockOutlined } from "@ant-design/icons";
 import Link from "antd/es/typography/Link";
 import { useLoginMutation } from "../redux/api/authApi";
+import { IAuth } from "../interfaces/auth";
 
 const Login = () => {
   const [login, { isLoading, error }] = useLoginMutation();
-  console.log('error login: ',error)
-  const onFinish = (values: any) => {
+  console.error('error login: ',error)
+  const onFinish = (values: IAuth) => {
     login(values)
       .unwrap()
-      .then((login) => {
-        console.log('user: ',login)
+      .then(() => {
         notification.success({ message: "Login is successly!" });
       });
   };
@@ -59,7 +59,7 @@ const Login = () => {
 
         <Form.Item>
           <Space>
-            <Button htmlType="submit">Login</Button>
+            <Button htmlType="submit">{isLoading ? <LoadingOutlined /> : 'Login'}</Button>
           </Space>
         </Form.Item>
       </Form>

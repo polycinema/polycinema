@@ -3,7 +3,7 @@ import { pause } from "../../utils/pause";
 const authApi = createApi({
   reducerPath: 'auth',
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://localhost:8000/api/v1`,
+    baseUrl: `http://localhost:8000/api`,
     fetchFn: async (...arg) => {
       await pause(1500);
       return await fetch(...arg);
