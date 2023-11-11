@@ -39,10 +39,6 @@ const AddMovies = () => {
         })()
     },[])
     const onFinish = (value) => {
-        console.log({ ...value, 
-            image: urlImage, 
-            release_date:
-            dayjs(value.release_date).format(Format)});
         
         addMovies({ ...value, 
             image: urlImage, 
@@ -69,21 +65,7 @@ const AddMovies = () => {
     }
     
     
-    const optionGenres: SelectProps['options'] = genres?.map((item:IGenre)=>{
-        return {
-            value: item.id, label: item.name
-        }
-    })
-    const optionActors: SelectProps['options'] = actors?.map((item:IActor)=>{
-        return {
-            value: item.id, label: item.name
-        }
-    })
-    const optionDirectors: SelectProps['options'] = directors?.map((item:IDirector)=>{
-        return {
-            value: item.id, label: item.name
-        }
-    })
+    
     const props: UploadProps = {
         name: 'file',
         action: 'https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload',
@@ -142,7 +124,11 @@ const AddMovies = () => {
                             mode="multiple"
                             style={{ width: '100%' }}
                             placeholder="Please select"
-                            options={optionGenres}
+                            options={ genres?.map((item:IGenre)=>{
+                                return {
+                                    value: item.id, label: item.name
+                                }
+                            })}
                         />
                     </Form.Item>
                     <Form.Item
@@ -192,7 +178,11 @@ const AddMovies = () => {
                     >
                         <Select
                             style={{ width: 120 }}
-                            options={optionDirectors}
+                            options={directors?.map((item:IDirector)=>{
+                                return {
+                                    value: item.id, label: item.name
+                                }
+                            })}
                         />
                     </Form.Item>
                     <Form.Item
@@ -204,7 +194,11 @@ const AddMovies = () => {
                             mode="multiple"
                             style={{ width: '100%' }}
                             placeholder="Please select"
-                            options={optionActors}
+                            options={actors?.map((item:IActor)=>{
+                                return {
+                                    value: item.id, label: item.name
+                                }
+                            })}
                         />
                     </Form.Item>
 
