@@ -34,49 +34,57 @@ import EditNews from "./pages/admin/News/Update-News";
 import AddProduct from "./pages/admin/Product/Add-Product";
 import ListProduct from "./pages/admin/Product/List-Product";
 import EditProduct from "./pages/admin/Product/Edit-Product";
-
+import PrivateRouter from "./components/privateRouter/PrivateRouter";
 
 export const router = createBrowserRouter([
-        {path: '*', element: <NotFoundPage/>},
-        {
-                path: '', element: <LayoutWebsite />, children: [
-                        { path: '', element: <HomePage /> },
-                        { path: 'poly-movies', element: <MoviePage /> },
-                        { path: 'poly-acount', element: <Account /> },
-                        { path: 'poly-news', element: <NewsPage /> },
-                        { path: 'poly-moviesDetail/:id', element: <MovieDetail /> },
-                ]
-        },
-        {
-                path: 'admin', element: <LayoutAdmin />, children: [
-                                        {path: "rooms", element: <ListRooms/>},
-                                        {path: "rooms/add", element: <AddRoom/>},
-                                        {path: "rooms/:id/edit", element: <EditRoom/>},
-                                        { path: "actors", element: <ListActor /> },
-                                        { path: "actors/add", element: < AddActor /> },
-                                        { path: "actors/:id/edit", element: < EditActor /> },
-                                        { path: "genres", element: <ListGenre /> },
-                                        { path: "genres/add", element: <AddGenre /> },
-                                        { path: "genres/:id/edit", element: <EditGenre /> },
-                                        { path: "movies/create", element: <AddMovies /> },
-                                        { path: "movies", element: <MovieTable /> },
-                                        { path: "movies/:id/edit", element: <EditMovies /> },
-                                        { path: 'director', element: <ListDirector /> },
-                                        { path: 'director/add', element: <AddDirector /> },
-                                        { path: 'director/:id/edit', element: <EditDirector /> },
-                                        { path: 'acount/:id/edit', element: <EditAcount /> },
-                                        { path: 'acount', element: <ListAcount /> },
-                                        { path: 'showtime', element: <ShowTimeMng /> },
-                                        { path: 'showtime/add', element: <CreateShowTime /> },
-                                        { path: 'showtime/:id/edit', element: <UpdateShowTime /> },
-                                        { path: 'addAcount', element: <AddAcount /> },
-                                        { path: 'news/add', element: <AddNews /> },
-                                        { path: 'news', element: <ListPost /> },
-                                        { path: 'news/:id/edit', element: <EditNews /> },
-                                        { path: 'products/add', element: <AddProduct /> },
-                                        { path: 'products', element: <ListProduct /> },
-                                        { path: 'products/:id/edit', element: <EditProduct /> }
-                ]
-        }
+  { path: "*", element: <NotFoundPage /> },
+  {
+    path: "",
+    element: <LayoutWebsite />,
+    children: [
+      { path: "", element: <HomePage /> },
+      { path: "poly-movies", element: <MoviePage /> },
+      { path: "poly-acount", element: <Account /> },
+      { path: "poly-news", element: <NewsPage /> },
+      { path: "poly-moviesDetail/:id", element: <MovieDetail /> },
+    ],
+  },
+  {
+    path: "admin",
+    element: <PrivateRouter />,
+    children: [
+      {
+        element: <LayoutAdmin />,
+        children: [
+          { path: "rooms", element: <ListRooms /> },
+          { path: "rooms/add", element: <AddRoom /> },
+          { path: "rooms/:id/edit", element: <EditRoom /> },
+          { path: "actors", element: <ListActor /> },
+          { path: "actors/add", element: <AddActor /> },
+          { path: "actors/:id/edit", element: <EditActor /> },
+          { path: "genres", element: <ListGenre /> },
+          { path: "genres/add", element: <AddGenre /> },
+          { path: "genres/:id/edit", element: <EditGenre /> },
+          { path: "movies/create", element: <AddMovies /> },
+          { path: "movies", element: <MovieTable /> },
+          { path: "movies/:id/edit", element: <EditMovies /> },
+          { path: "director", element: <ListDirector /> },
+          { path: "director/add", element: <AddDirector /> },
+          { path: "director/:id/edit", element: <EditDirector /> },
+          { path: "acount/:id/edit", element: <EditAcount /> },
+          { path: "acount", element: <ListAcount /> },
+          { path: "showtime", element: <ShowTimeMng /> },
+          { path: "showtime/add", element: <CreateShowTime /> },
+          { path: "showtime/:id/edit", element: <UpdateShowTime /> },
+          { path: "addAcount", element: <AddAcount /> },
+          { path: "news/add", element: <AddNews /> },
+          { path: "news", element: <ListPost /> },
+          { path: "news/:id/edit", element: <EditNews /> },
+          { path: "products/add", element: <AddProduct /> },
+          { path: "products", element: <ListProduct /> },
+          { path: "products/:id/edit", element: <EditProduct /> },
+        ],
+      },
+    ],
+  },
 ]);
-

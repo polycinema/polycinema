@@ -19,17 +19,19 @@ import authApi, { authReducer } from "../redux/api/authApi";
 import showtimeApi, { showtimeReducer } from "../redux/api/showTimeApi";
 import movieApi, { movieReducer } from "../redux/api/movieApi";
 
+import { authorizationReducer } from "../redux/slices/authorizationSlice";
       
       const persistConfig = {
         key: "root",
         storage,
-        whitelist: ["carts"],
+        whitelist: ["Authorization"],
       };
       const rootReducer = combineReducers({
        [authApi.reducerPath]: authReducer,
        [showtimeApi.reducerPath]: showtimeReducer,
        [movieApi.reducerPath]: movieReducer,
 
+       Authorization: authorizationReducer
       });
       const middleware = [
         showtimeApi.middleware,

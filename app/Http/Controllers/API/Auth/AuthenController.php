@@ -99,10 +99,10 @@ class AuthenController extends Controller
             $user = $request->user();
 
             //  delete the current login session
-            $user->currentAccessToken()->delete();
+            // $user->currentAccessToken()->delete();
 
             //  delete all session of current user
-            // $user->tokens()->delete();
+            $user->tokens()->delete();
 
             //  delete by ID
             // $tokenId = $user->currentAccessToken()->id;

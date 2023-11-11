@@ -24,8 +24,15 @@ const authApi = createApi({
         body: login
       })
     }),
+    logout: build.mutation({
+      query: (user) =>({
+        url: `/logout`,
+        method: 'POST',
+        body:user
+      })
+    }),
   })
 })
-export const {useRegisterMutation,useLoginMutation} = authApi;
+export const {useRegisterMutation,useLoginMutation,useLogoutMutation} = authApi;
 export const authReducer = authApi.reducer;
 export default authApi

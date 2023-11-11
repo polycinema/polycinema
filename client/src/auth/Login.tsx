@@ -5,9 +5,14 @@ import Link from "antd/es/typography/Link";
 import { useLoginMutation } from "../redux/api/authApi";
 import { IAuth } from "../interfaces/auth";
 import { useEffect } from "react";
+import { setIsAuth, setToken, setUser } from "../redux/slices/authorizationSlice";
+import { useAppDispatch } from "../store/hook";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const [login, { isLoading, error }]:any = useLoginMutation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     if (error) {
       return notification.error({
@@ -18,9 +23,15 @@ const Login = () => {
   const onFinish = (values: IAuth) => {
     login(values)
       .unwrap()
-      .then(() => {
+      .then((auth:any) => {
+        // console.log('auth: ',auth)
+        if(auth){
+          dispatch(setIsAuth())
+          dispatch(setUser(auth))
+          dispatch(setToken(auth.token))
+        }
         notification.success({ message: "Login is successly!" });
-      });
+      }).then(()=> navigate('/'));
   };
   return (
     <div className="max-w-2xl mx-auto my-20">

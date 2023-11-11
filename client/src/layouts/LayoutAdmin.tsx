@@ -2,14 +2,16 @@ import React from "react";
 import logo1 from "../../public/img/logo1.png";
 import { Link, Outlet } from "react-router-dom";
 import { AppstoreOutlined, GroupOutlined, LogoutOutlined, TeamOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined, SolutionOutlined, ShopOutlined, FieldTimeOutlined } from "@ant-design/icons";
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu, Popconfirm, theme } from "antd";
+import { useAppDispatch } from "../store/hook";
+import { setLogout } from "../redux/slices/authorizationSlice";
 const { Header, Content, Footer, Sider } = Layout;
 
 const LayoutAdmin: React.FC = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
+  const dispatch = useAppDispatch();
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
@@ -84,9 +86,18 @@ const LayoutAdmin: React.FC = () => {
             {
               key: 11,
               icon: <LogoutOutlined />,
-              label: <Link to={""}>Logout</Link>,
+              label: (
+                <Popconfirm
+                  title="Đăng xuất tài khoản"
+                  description="Bạn có muốn đăng xuất?"
+                  okText="Yes"
+                  cancelText="No"
+                  onConfirm={() => dispatch(setLogout())}
+                >
+                  Logout
+                </Popconfirm>
+              ),
             },
-
           ]}
         />
       </Sider>
