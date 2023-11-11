@@ -35,6 +35,7 @@ import AddProduct from "./pages/admin/Product/Add-Product";
 import ListProduct from "./pages/admin/Product/List-Product";
 import EditProduct from "./pages/admin/Product/Edit-Product";
 import PrivateRouter from "./components/privateRouter/PrivateRouter";
+import Dashboard from "./pages/admin/Dashboard/Dashboard";
 
 export const router = createBrowserRouter([
   { path: "*", element: <NotFoundPage /> },
@@ -56,6 +57,7 @@ export const router = createBrowserRouter([
       {
         element: <LayoutAdmin />,
         children: [
+          { index: true, element: <Dashboard /> },
           { path: "rooms", element: <ListRooms /> },
           { path: "rooms/add", element: <AddRoom /> },
           { path: "rooms/:id/edit", element: <EditRoom /> },
