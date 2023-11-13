@@ -3,7 +3,7 @@ import {
   Button,
   DatePicker,
   Form,
-  Input,
+  Select,
   Spin,
   TimePicker,
   notification,
@@ -11,11 +11,31 @@ import {
 import { useCreateShowTimeMutation } from "../../../redux/api/showTimeApi";
 import { IShowTime } from "../../../interfaces/showtime";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { useGetAllMoviesQuery } from "../../../redux/api/movieApi";
+import { getAllRoom } from "../../../api/room";
+import { useNavigate } from "react-router";
 
 const CreateShowTime = () => {
   const [createShowTime, { isLoading, error }] = useCreateShowTimeMutation();
+  const { data, error: errorMovie }: any = useGetAllMoviesQuery();
+  const [roomData, setRoomData] = useState();
+  const [movieData, setMovieData] = useState();
+  const navigate = useNavigate();
   const timeFormat = "HH:mm:ss";
   const dateFormat = "YYYY/MM/DD";
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data: ListRoom } = await getAllRoom();
+        setRoomData(ListRoom.data);
+        setMovieData(data?.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [data]);
   const onFinish = ({
     movie_id,
     room_id,
@@ -30,44 +50,77 @@ const CreateShowTime = () => {
       start_time: dayjs(start_time).format(timeFormat),
       end_time: dayjs(end_time).format(timeFormat),
       show_date: dayjs(show_date).format(dateFormat),
-    }).then(() => {
-      return notification.success({ message: "Create show time sucessfuly!" });
-    });
+    })
+      .unwrap()
+      .then(() => {
+        try {
+          notification.success({
+            message: "Create show time sucessfuly!",
+          });
+          navigate("/admin/showtime");
+        } catch (error) {
+          console.error("error create showtime: ", error);
+        }
+      });
   };
-  console.error('error crate showtime: ',error)
+  if (error) {
+    console.error("error create showtime: ", error);
+  }
+  if (errorMovie) {
+    console.error("error list movie: ", errorMovie);
+  }
+
   return (
-    <div >
-      <h3>Create Show Time</h3>
+    <div>
+      <h3 className="my-3">Thêm Lịch Chiếu</h3>
       <Form onFinish={onFinish}>
         <Form.Item
           name={"room_id"}
           label={"Phòng chiếu"}
           rules={[
-            { message: "Trường room id không được để trống! ", required: true },
+            { message: "Trường room không được để trống! ", required: true },
           ]}
           style={{ width: 200 }}
         >
-          <Input />
+          <Select
+            style={{ width: 120 }}
+            placeholder="Select to room"
+            options={roomData?.map((items: any) => {
+              return {
+                value: items.id,
+                label: items.room_name,
+              };
+            })}
+          />
         </Form.Item>
         <Form.Item
           name={"movie_id"}
           label={"Chọn phim"}
           rules={[
             {
-              message: "Trường movie_id không được để trống! ",
+              message: "Trường movie không được để trống! ",
               required: true,
             },
           ]}
           style={{ width: 200 }}
         >
-          <Input />
+          <Select
+            style={{ width: 120 }}
+            placeholder="Select to movie"
+            options={movieData?.map((items: any) => {
+              return {
+                value: items.id,
+                label: items.name,
+              };
+            })}
+          />
         </Form.Item>
         <Form.Item
           name={"start_time"}
           label={"Giờ chiếu"}
           rules={[
             {
-              message: "Trường start time không được để trống! ",
+              message: "Trường Giờ chiếu không được để trống! ",
               required: true,
             },
           ]}
@@ -79,7 +132,7 @@ const CreateShowTime = () => {
           label={"Giờ kết thúc"}
           rules={[
             {
-              message: "Trường end time không được để trống! ",
+              message: "Trường Giờ kết thúc không được để trống! ",
               required: true,
             },
           ]}
@@ -91,7 +144,7 @@ const CreateShowTime = () => {
           label={"Ngày chiếu"}
           rules={[
             {
-              message: "Trường show_date không được để trống! ",
+              message: "Trường ngày chiếu không được để trống! ",
               required: true,
             },
           ]}

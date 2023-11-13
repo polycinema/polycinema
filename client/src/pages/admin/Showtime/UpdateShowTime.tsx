@@ -3,24 +3,43 @@ import {
   Button,
   DatePicker,
   Form,
-  Input,
+  Select,
   TimePicker,
   notification,
 } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   useGetByIdShowTimeQuery,
   useUpdateShowTimeMutation,
 } from "../../../redux/api/showTimeApi";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import dayjs from "dayjs";
 import IsLoading from "../../../utils/IsLoading";
+import { useGetAllMoviesQuery } from "../../../redux/api/movieApi";
+import { getAllRoom } from "../../../api/room";
 
 const UpdateShowTime = () => {
   const { id } = useParams();
   const [form] = Form.useForm();
   const [updateShowTime, { isLoading, error }] = useUpdateShowTimeMutation();
   const { data }: any = useGetByIdShowTimeQuery(id);
+  const { data: MovieData, error: errorMovie }: any = useGetAllMoviesQuery();
+  const [roomData, setRoomData] = useState();
+  const [movieData, setMovieData] = useState();
+  const navigate = useNavigate();
+
+  console.log("data update ", data);
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data: ListRoom } = await getAllRoom();
+        setRoomData(ListRoom.data);
+        setMovieData(MovieData?.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [MovieData]);
   useEffect(() => {
     (async () => {
       await form.setFieldsValue({
@@ -32,17 +51,21 @@ const UpdateShowTime = () => {
       });
     })();
   }, [data?.data, form]);
-  useEffect(() => {
-    if (error) {
-      return;
-    }
-  }, [error]);
+
   if (isLoading) {
     return (
       <>
         <IsLoading />
       </>
     );
+  }
+  if (errorMovie) {
+    notification.error({ message: "Get list movie error!" });
+    console.error("error get list movie: ", error);
+  }
+  if (error) {
+    notification.error({ message: "Update showtime error!" });
+    console.error("error update showtime: ", error);
   }
   const onFinish = ({
     start_time,
@@ -51,6 +74,8 @@ const UpdateShowTime = () => {
     room_id,
     show_date,
   }: any) => {
+    // console.log('room_id: ',room_id)
+    // console.log('movie_id: ',movie_id)
     updateShowTime({
       start_time: dayjs(start_time).format("HH:mm:ss"),
       end_time: dayjs(end_time).format("HH:mm:ss"),
@@ -58,33 +83,57 @@ const UpdateShowTime = () => {
       room_id,
       show_date: dayjs(show_date).format("YYYY/MM/DD"),
       id,
-    }).then(() => {
-      // console.log("value: ", values);
-      notification.success({ message: "update showtime successfully" });
-    });
+    })
+      .unwrap()
+      .then(() => {
+        try {
+          notification.success({ message: "update showtime successfully" });
+          navigate("/admin/showtime");
+        } catch (error) {
+          console.error("error update showtime: ", error);
+        }
+      });
   };
   return (
     <div>
       <Form onFinish={onFinish} form={form}>
         <Form.Item
           name={"movie_id"}
-          label={"Id Movie"}
+          label={"Movie"}
           rules={[
-            { message: "Trường id không được để trống! ", required: true },
+            { message: "Trường movie không được để trống! ", required: true },
           ]}
           style={{ width: 200 }}
         >
-          <Input />
+          <Select
+            style={{ width: 120 }}
+            placeholder="Select to movie"
+            options={movieData?.map((items: any) => {
+              return {
+                value: items.id,
+                label: items.name,
+              };
+            })}
+          />
         </Form.Item>
         <Form.Item
           name={"room_id"}
-          label={"ID Room"}
+          label={"Room"}
           rules={[
-            { message: "Trường room_id không được để trống! ", required: true },
+            { message: "Trường room không được để trống! ", required: true },
           ]}
           style={{ width: 200 }}
         >
-          <Input />
+          <Select
+            style={{ width: 120 }}
+            placeholder="Select to room"
+            options={roomData?.map((items: any) => {
+              return {
+                value: items.id,
+                label: items.room_name,
+              };
+            })}
+          />
         </Form.Item>
         <Form.Item
           name={"start_time"}

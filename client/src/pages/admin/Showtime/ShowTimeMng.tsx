@@ -1,4 +1,4 @@
-import { Button, Popconfirm, Table } from "antd";
+import { Button, Popconfirm, Table, notification } from "antd";
 import {
   useGetShowTimesQuery,
   useRemoveShowTimeMutation,
@@ -7,13 +7,33 @@ import { IShowTime } from "../../../interfaces/showtime";
 import { Link } from "react-router-dom";
 import { DeleteOutlined, EditFilled } from "@ant-design/icons";
 import IsLoading from "../../../utils/IsLoading";
+import { useEffect, useState } from "react";
 
 const ShowTimeMng = () => {
   const { data, isLoading, error }: any = useGetShowTimesQuery();
-  const [removeShowtime] = useRemoveShowTimeMutation();
-  console.log("error: ", error);
-  // if (isLoading) {
-  // }
+  const [removeShowtime, { error: ErrorRemove }] = useRemoveShowTimeMutation();
+  const [rooms, setRooms] = useState();
+  const [movies, setMovies] = useState();
+
+  console.log("id room: ", rooms);
+  console.log("id movies: ", movies);
+
+  useEffect(() => {
+    if (data) {
+      const roomIds = data.data.map(({ room_id }:any) => room_id);
+      const movieIds = data.data.map(({ movie_id }:any) => movie_id);
+      setRooms(roomIds); // Cập nhật giá trị của rooms
+      setMovies(movieIds); // Cập nhật giá trị của movies
+    }
+  }, [data]);
+  if (ErrorRemove) {
+    notification.error({ message: "Removie showtime error!" });
+    console.error("error remove: ", ErrorRemove);
+  }
+  if (error) {
+    notification.error({ message: "Get showtime error!" });
+    console.error("error list showtime: ", error);
+  }
   if (isLoading) {
     return (
       <>
@@ -34,15 +54,15 @@ const ShowTimeMng = () => {
       };
     }
   );
-  // console.log('dataSource: ',dataSource)
-  const columns = [
+  // console.log("dataSource: ", dataSource);
+  const columns: any[] = [
     {
-      title: "Room Id",
+      title: "Room",
       dataIndex: "room_id",
       key: "1",
     },
     {
-      title: "Movie Id",
+      title: "Movie",
       dataIndex: "movie_id",
       key: "2",
     },
@@ -66,20 +86,24 @@ const ShowTimeMng = () => {
       dataIndex: "actions",
       key: "6",
       render: (_: any, { key: id }: any) => {
-        console.log(id);
+        // console.log(id);
         return (
           <div className="space-x-3">
             <Link to={`/admin/showtime/${id}/edit`}>
-              <Button icon={<EditFilled />} />
+              <Button type="text" className="text-blue-500">
+                <EditFilled />
+              </Button>
             </Link>
             <Popconfirm
-              title="Delete the task"
-              description="Are you sure to delete this task?"
+              title="Xóa lịch chiếu"
+              description="Bạn có chắc muốn xóa?"
               onConfirm={() => removeShowtime(id)}
               okText="Yes"
               cancelText="No"
             >
-              <Button icon={<DeleteOutlined />} danger />
+              <Button type="text" danger>
+                <DeleteOutlined />
+              </Button>
             </Popconfirm>
           </div>
         );
@@ -89,9 +113,9 @@ const ShowTimeMng = () => {
   return (
     <div>
       <Button>
-          <Link to={"/admin/showtime/add"}>Create ShowTime</Link>
-        </Button>
-        <h1 className="text-2xl m-6 ">ShowTime</h1>
+        <Link to={"/admin/showtime/add"}>Thêm Lịch Chiếu</Link>
+      </Button>
+      <h1 className="text-2xl m-6 ">ShowTime</h1>
       <Table dataSource={dataSource} columns={columns} />;
     </div>
   );
