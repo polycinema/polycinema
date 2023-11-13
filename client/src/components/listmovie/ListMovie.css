@@ -110,26 +110,10 @@
 .movie-des .movie-des-1{
         font-weight: 700;
 }
-.btn-movie{
-        position: relative;
-        margin-top: 30px;
-        border-width: 0;
-        padding: 5px 10px;
-        width: 100%;
-        background-image: linear-gradient(to right, #0a64a7 0%, #258dcf 51%, #3db1f3 100%) !important;
-        color: #fff;
-        font-size: 24px;
-        border-radius: 10px;
-        
-    
-}
-.btn-movie-icon{
-        position: absolute;
-        left: 0;
-        top: 0;
-        transform: rotate(-50deg);
-        font-size: 50px;
-        opacity: 0.5;
+
+.modal-datghe .ant-tabs .tab-tabs-nav .ant-tabs-nav-wrap .ant-tabs-nav-list 
+.ant-tabs-tab .ant-tabs-tab-btn{
+        font-size: 30px !important;
 }
 @media (max-width: 480px) {
         .listmovie__container{

@@ -1,0 +1,40 @@
+.btn-movie{
+        position: relative;
+        margin-top: 30px;
+        border-width: 0;
+        padding: 5px 5px;
+        background-image: linear-gradient(to right, #0a64a7 0%, #258dcf 51%, #3db1f3 100%) !important;
+        color: #fff;
+        font-size: 20px;
+        border-radius: 5px;
+        
+}
+.btn-movie-icon{
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform: rotate(-50deg);
+        font-size: 40px;
+        opacity: 0.5;
+}
+@media (max-width: 480px) {
+        
+        .btn-movie{
+                margin-top: 10px;
+                padding: 5px 10px;
+                font-size: 16px;
+                border-radius: 10px;
+                
+            
+        }
+        .btn-movie-icon{
+                position: absolute;
+                left: 0;
+                top: 0;
+                transform: rotate(-50deg);
+                font-size: 30px;
+                opacity: 0.5;
+        }
+        
+        
+}
