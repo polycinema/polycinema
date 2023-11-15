@@ -25,7 +25,8 @@ class Seat extends Model
         // 'room_id',
         'showtime_id',
         'status',
-        'price'
+        'price',
+        'user_id'
     ];
     // public function room() {
     //     return $this->belongsTo(Room::class, 'room_id');
