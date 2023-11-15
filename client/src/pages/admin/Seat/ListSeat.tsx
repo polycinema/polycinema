@@ -10,7 +10,8 @@ interface DataType {
     seat_name: string;
         type: string;
         room_id: number;
-
+        price:number,
+        showtime_id:number,
 
 }
 const ListSeat = (props: Props) => {
@@ -48,9 +49,27 @@ const ListSeat = (props: Props) => {
 
         },
         {
-            title: 'ID room',
-            dataIndex: 'room_id',
-            key: 'room_id',
+            title: 'User id',
+            dataIndex: 'user_id',
+            key: 'user_id',
+
+        },
+        {
+            title: 'price',
+            dataIndex: 'price',
+            key: 'price',
+
+        },
+        {
+            title: 'showtime_id',
+            dataIndex: 'showtime_id',
+            key: 'showtime_id',
+
+        },
+        {
+            title: 'status',
+            dataIndex: 'status',
+            key: 'status',
 
         },
         {
@@ -99,7 +118,11 @@ const ListSeat = (props: Props) => {
            key:item.id,
             seat_name: item?.seat_name,
             type: item?.type,
-            room_id: item?.room.room_name,
+            user_id:item?.user_id,
+            price:item?.price,
+            showtime_id:item?.showtime_id,
+            status:item?.status,
+         
            
         }
     })
