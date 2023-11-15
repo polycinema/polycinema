@@ -4,12 +4,12 @@ import { Button, Form, Input,  Select, message } from 'antd';
 import { useNavigate } from 'react-router';
 import { pause } from '../../../utils/pause';
 import { ISeat, addSeat } from '../../../api/Seat';
-import { IRoom, getAllRoom } from '../../../api/room';
+import { ICount, getAllAcount } from '../../../api/Acount';
 
 type FieldType = {
         seat_name: string;
         type: string;
-        room_id: number;
+        // room_id: number;
 
 };
 const AddSeat = () => {
@@ -17,13 +17,13 @@ const AddSeat = () => {
         const [form] = Form.useForm()
         const [messageApi, contextHolder] = message.useMessage()
         const navigate = useNavigate();
-        const [rooms,setRooms]=useState()
+        const [acount,setAcount]=useState()
         useEffect(()=>{
                 (async()=>{
                     try {
                         
-                        const {data:dataRooms} = await getAllRoom()
-                        setRooms(dataRooms.data);
+                        const {data:dataAcount} = await getAllAcount()
+                        setAcount(dataAcount.data);
                        
                       
                         
@@ -103,9 +103,9 @@ const AddSeat = () => {
                     >
                         <Select
                             style={{ width: 120 }}
-                            options={rooms?.map((item:IRoom)=>{
+                            options={acount?.map((item:ICount)=>{
                                 return {
-                                    value: item.id, label: item.room_name
+                                    value: item.id,label:item.name
                                 }
                              })}
                         />

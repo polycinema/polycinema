@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { ISeat, getSeatById, updateSeat } from "../../../api/Seat";
 import { pause } from "../../../utils/pause";
-
 import { IRoom, getAllRoom } from '../../../api/room';
 type FieldType = {
         seat_name: string;
@@ -37,6 +36,9 @@ const { Option } = Select;
       seat_name: seat?.seat_name,
       type: seat?.type,
       room_id:seat?.room_id,
+      status:seat?.status,
+      price:seat?.price,
+      showtime_id:seat?.showtime_id,
     });
   }, [seat]);
   const [rooms,setRooms]=useState()
@@ -111,28 +113,34 @@ const { Option } = Select;
                                         <Option value="double">Ghế đôi</Option>
                                         <Option value="special">Ghế VIP</Option>
                                         </Select>
-                                </Form.Item>
-
-
-                                <Form.Item
-                        label="Room"
-                        name='room_id'
-                        rules={[{ required: true, message: 'Phòng không được để trống' }]}
-                    >
-                        <Select
-                            style={{ width: 120 }}
-                            options={rooms?.map((item:IRoom)=>{
-                                return {
-                                    value: item.id, label: item.room_name
-                                }
-                             })}
-                        />
-                    </Form.Item>
-
-
-
-
-
+                                        
+                                        </Form.Item>
+                                        <Form.Item<FieldType>
+                                                label="price"
+                                                name="price"
+                                                rules={[{ required: true, message: 'Please input your name!' }]}
+                                        >
+                                                <Input />
+                                        </Form.Item>
+                                        <Form.Item<FieldType>
+                                                label="showtime_id"
+                                                name="showtime_id"
+                                                rules={[{ required: true, message: 'Please input your name!' }]}
+                                        >
+                                                <Input />
+                                        </Form.Item>
+                                        <Form.Item
+                                         name="status"
+                                         label="status"
+                                        rules={[{ required: true, message: 'Please select the type!' }]}
+                                        >
+                                        <Select placeholder="Select type">
+                                        <Option value="Booked">Đã đặt </Option>
+                                        <Option value="Booking">Đang đặt</Option>
+                                        <Option value="unbook">Chưa đặt</Option>
+                                        </Select>
+                                        
+                                        </Form.Item>
                                         <Form.Item
                                                 wrapperCol={{ offset: 8, span: 16 }}
                                                 label="Tác vụ :"

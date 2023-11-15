@@ -2,8 +2,9 @@ import instance from "./instance";
 export interface ISeat {
         id?:number | undefined
         seat_name: string;
-        room_id: number;
-       
+        // room_id: number;
+        price:number,
+        showtime_id:number,
 }
 export const addSeat =async (Seat:ISeat)=>{
         return instance.post(`/seats`, Seat,{
