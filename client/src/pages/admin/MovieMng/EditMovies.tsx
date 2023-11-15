@@ -58,6 +58,7 @@ const UpdateMovie = () => {
             trailer: movie?.data.trailer,
             description: movie?.data.description,
             duration: movie?.data.duration,
+            status: movie?.data.status,
             director_id: movie?.data.director_id,
             release_date: dayjs(movie?.data.release_date, "YYYY/MM/DD HH:mm:ss")
 
@@ -104,8 +105,6 @@ const UpdateMovie = () => {
                         });
                         await pause(3000);
                         navigate("/admin/movies");
-
-
                     })
                     .catch(() => {
                         messageApi.open({
@@ -206,7 +205,7 @@ const UpdateMovie = () => {
                     <Form.Item
                         label="image"
                         name="image"
-                        rules={[{ required: true, message: 'Ảnh không được để trống' }]}
+                        
                     >
                         <Upload {...props}>
                             <Button icon={<UploadOutlined />}>Click to Upload</Button>
@@ -246,6 +245,20 @@ const UpdateMovie = () => {
                         />
                     </Form.Item>
                     <Form.Item
+                        label="Status"
+                        name='status'
+                        rules={[{ required: true, message: 'Status không được để trống' }]}
+                    >
+                        <Select
+                            style={{ width: 120 }}
+                            options={
+                                [{ value: 'screening', label: "Đang chiếu" }, { value: 'unscreen', label: "Đã chiếu" }, { value: "upcoming", label: "Sắp chiếu" }]
+                            }
+                        >
+
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
                         label=" Diễn viên"
                         name='actors'
                         rules={[{ required: true, message: 'Diễn viên không được để trống' }]}
@@ -268,10 +281,10 @@ const UpdateMovie = () => {
 
                     <Form.Item label="Tác vụ">
 
-                        <Button htmlType='submit'>{isUpdateLoading ? (
+                    <Button htmlType='submit'>{isUpdateLoading ? (
                             <AiOutlineLoading3Quarters className="animate-spin" />
                         ) : (
-                            "Cập nhật Movie"
+                            "Cập nhật Phim"
                         )} </Button>
 
                     </Form.Item>

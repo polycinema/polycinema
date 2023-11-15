@@ -15,35 +15,37 @@ import { IDirector, getAllDirector } from '../../../api/director';
 const AddMovies = () => {
     const [addMovies, { isLoading: isAddLoading }] = useAddMovieMutation()
     const [urlImage, setUrlImage] = useState<string>()
-    const [actors,setActors] = useState<IActor[]>()
-    const [genres,setGenres] = useState<IGenre[]>()
-    const [directors,setDirectors] = useState<IDirector[]>()
+    const [actors, setActors] = useState<IActor[]>()
+    const [genres, setGenres] = useState<IGenre[]>()
+    const [directors, setDirectors] = useState<IDirector[]>()
     const [form] = Form.useForm()
     const [messageApi, contextHolder] = message.useMessage()
     const navigate = useNavigate()
     const Format = "YYYY/MM/DD HH:mm:ss";
-    useEffect(()=>{
-        (async()=>{
+    useEffect(() => {
+        (async () => {
             try {
-                const {data:dataActors} = await getAllActor()
-                const {data:dataGenres} = await getAllGenre()
-                const {data:dataDirector} = await getAllDirector()
+                const { data: dataActors } = await getAllActor()
+                const { data: dataGenres } = await getAllGenre()
+                const { data: dataDirector } = await getAllDirector()
                 setActors(dataActors.data)
                 setGenres(dataGenres.data)
                 setDirectors(dataDirector.data)
-                
+
             } catch (error) {
                 console.log(error);
-                
+
             }
         })()
-    },[])
+    }, [])
     const onFinish = (value) => {
-        
-        addMovies({ ...value, 
-            image: urlImage, 
+console.log(value);
+
+        addMovies({
+            ...value,
+            image: urlImage,
             release_date:
-            dayjs(value.release_date).format(Format)
+                dayjs(value.release_date).format(Format)
         }).unwrap()
             .then(async () => {
                 form.resetFields()
@@ -53,23 +55,21 @@ const AddMovies = () => {
                 });
                 await pause(3000);
                 navigate("/admin/movies");
-
-
             })
             .catch(() => {
                 messageApi.open({
-                    type:"error",
-                    content:"Thêm sản phẩm thất bại vui lòng thử lại"
+                    type: "error",
+                    content: "Thêm sản phẩm thất bại vui lòng thử lại"
                 })
             });
     }
-    
-    
-    
+
+
+
     const props: UploadProps = {
         name: 'file',
         action: 'https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload',
-        data: {upload_preset: 'upload',},
+        data: { upload_preset: 'upload', },
         onChange(info) {
             if (info.file.status !== 'uploading') {
                 // console.log(info.file, info.fileList);
@@ -124,7 +124,7 @@ const AddMovies = () => {
                             mode="multiple"
                             style={{ width: '100%' }}
                             placeholder="Please select"
-                            options={ genres?.map((item:IGenre)=>{
+                            options={genres?.map((item: IGenre) => {
                                 return {
                                     value: item.id, label: item.name
                                 }
@@ -168,8 +168,8 @@ const AddMovies = () => {
                         rules={[{ required: true, message: 'Ngày khởi chiếu không được để trống' }]}
 
                     >
-                        
-                            <DatePicker showTime />
+
+                        <DatePicker showTime />
                     </Form.Item>
                     <Form.Item
                         label="Đạo Diễn"
@@ -178,12 +178,26 @@ const AddMovies = () => {
                     >
                         <Select
                             style={{ width: 120 }}
-                            options={directors?.map((item:IDirector)=>{
+                            options={directors?.map((item: IDirector) => {
                                 return {
                                     value: item.id, label: item.name
                                 }
                             })}
                         />
+                    </Form.Item>
+                    <Form.Item
+                        label="Status"
+                        name='status'
+                        rules={[{ required: true, message: 'Status không được để trống' }]}
+                    >
+                        <Select
+                            style={{ width: 120 }}
+                            options={
+                                [{ value: 'screening', label: "Đang chiếu" }, { value: 'unscreen', label: "Đã chiếu" }, { value: "upcoming", label: "Sắp chiếu" }]
+                            }
+                        >
+
+                        </Select>
                     </Form.Item>
                     <Form.Item
                         label=" Diễn viên"
@@ -194,7 +208,7 @@ const AddMovies = () => {
                             mode="multiple"
                             style={{ width: '100%' }}
                             placeholder="Please select"
-                            options={actors?.map((item:IActor)=>{
+                            options={actors?.map((item: IActor) => {
                                 return {
                                     value: item.id, label: item.name
                                 }

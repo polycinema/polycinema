@@ -9,6 +9,7 @@ const MovieTable = () => {
   const {data:movies, isLoading:isLoadingMovies} = useGetAllMoviesQuery()
   const [messageApi , contextHolder] = message.useMessage()
   const [remove] = useRemoveMovieMutation()
+  console.log(movies);
   
   
   
@@ -68,6 +69,11 @@ const MovieTable = () => {
       key: 'director_id',
     },
     {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+    },
+    {
       title: 'Actors',
       dataIndex: 'actors',
       key: 'actors',
@@ -115,6 +121,7 @@ const MovieTable = () => {
       description: item.description,
       release_date:item.release_date,
       duration: item.duration,
+      status: item.status,
       actors:item,
       director_id: item.director?.name,
     }
