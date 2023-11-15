@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamp('release_date');
             $table->integer('duration');
             $table->foreignId('director_id');
-
+            $table->enum('status', ['screening','unscreen','upcoming'])->default('upcoming');
             $table->softDeletes();
 
             $table->timestamps();

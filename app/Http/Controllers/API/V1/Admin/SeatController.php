@@ -19,7 +19,7 @@ class SeatController extends Controller
     public function index()
     {
         try{
-            $seats = Seat::query()->with('room')->get();
+            $seats = Seat::query()->get();
 
             return response()->json([
                 'data' => $seats
@@ -42,7 +42,9 @@ class SeatController extends Controller
             $validator = Validator::make($request->all(), [
                 'seat_name' => 'required',
                 'type' => 'required',
-                'room_id' => 'required'
+                'showtime_id' => 'required',
+                'status' => 'required',
+                'price' => 'required'
             ], [
                 'seat_name.required' => 'Trường tên ghế không được trống',
                 'type.required' => 'Trường loại ghế không được trống',

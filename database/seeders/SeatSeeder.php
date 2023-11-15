@@ -13,34 +13,13 @@ class SeatSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('seats')->insert([
-            'seat_name' => 'a1',
-            'type' => 'single',
-            'room_id' => 1
-        ]);
+        // DB::table('seats')->insert([
+        //     'seat_name' => 'A - 1',
+        //     'type' => 'single',
+        //     'showtime_id' => 1,
+        //     'status' => 'unbook',
+        //     'price' => 70000
+        // ]);
 
-        DB::table('seats')->insert([
-            'seat_name' => 'a2',
-            'type' => 'single',
-            'room_id' => 1
-        ]);
-
-        DB::table('seats')->insert([
-            'seat_name' => 'a3',
-            'type' => 'single',
-            'room_id' => 1
-        ]);
-
-        DB::table('seats')->insert([
-            'seat_name' => 'a4',
-            'type' => 'single',
-            'room_id' => 1
-        ]);
-
-        DB::table('seats')->insert([
-            'seat_name' => 'a5',
-            'type' => 'single',
-            'room_id' => 1
-        ]);
     }
 }

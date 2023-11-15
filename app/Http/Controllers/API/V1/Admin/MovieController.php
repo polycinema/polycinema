@@ -48,7 +48,8 @@ class MovieController extends Controller
                 'duration' => 'required|integer',
                 'director_id' => 'required|integer',
                 'actors' => 'required',
-                'genres' => 'required'
+                'genres' => 'required',
+                'status' => 'required'
             ], [
                 'name.required' => 'Vui lòng nhập tên.',
                 'title.required' => 'Vui lòng nhập tiêu đề.',
@@ -62,7 +63,8 @@ class MovieController extends Controller
                 'duration.integer' => 'Thời lượng phải là số nguyên.',
                 'director_id.required' => 'Vui lòng chọn đạo diễn.',
                 'director_id.integer' => 'Đạo diễn phải là số nguyên.',
-                'actors.required' => 'Vui lòng chọn diễn viên'
+                'actors.required' => 'Vui lòng chọn diễn viên',
+                'status.required' => 'Vui lòng chọn trạng thái phim',
             ]);
 
             if ($validator->fails()) {
@@ -141,7 +143,8 @@ class MovieController extends Controller
                 'duration' => 'required|integer',
                 'director_id' => 'required|integer',
                 'actors' => 'required',
-                'genres' => 'required'
+                'genres' => 'required',
+                'status' => 'required'
             ], [
                 'name.required' => 'Vui lòng nhập tên.',
                 'title.required' => 'Vui lòng nhập tiêu đề.',
@@ -154,7 +157,8 @@ class MovieController extends Controller
                 'duration.integer' => 'Thời lượng phải là số nguyên.',
                 'director_id.required' => 'Vui lòng chọn đạo diễn.',
                 'director_id.integer' => 'Đạo diễn phải là số nguyên.',
-                'actors.required' => 'Vui lòng chọn diễn viên'
+                'actors.required' => 'Vui lòng chọn diễn viên',
+                'status.required' => 'Vui lòng chọn trạng thái phim',
             ]);
 
             if ($validator->fails()) {

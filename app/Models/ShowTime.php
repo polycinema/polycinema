@@ -14,6 +14,10 @@ class ShowTime extends Model
         'room_id',
         'show_date',
         'start_time',
-        'end_time'
+        'end_time',
     ];
+
+    public function room(){
+        return $this->belongsTo(Room::class);
+    }
 }

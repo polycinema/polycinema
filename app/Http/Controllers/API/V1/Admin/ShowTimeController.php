@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Room;
+use App\Models\Seat;
 use App\Models\ShowTime;
 use Exception;
 use Illuminate\Http\Request;
@@ -43,7 +45,7 @@ class ShowTimeController extends Controller
                 'room_id' => 'required',
                 'show_date' => 'required|date_format:Y/m/d',
                 'start_time' => 'required|date_format:H:i:s',
-                'end_time' => 'required|date_format:H:i:s|different:start_time|after:start_time'
+                'end_time' => 'required|date_format:H:i:s|different:start_time|after:start_time',
             ], [
                 'movie_id.required' => 'Vui Lòng Chọn Phim',
                 'room_id.required' => 'Vui Lòng Chọn Phòng Chiếu',
@@ -62,7 +64,36 @@ class ShowTimeController extends Controller
                     'errors' => $validator->errors()
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
+
             $showtime = ShowTime::create($request->all());
+            
+            $showtime = ShowTime::query()->with('room')->find($showtime->id);
+            $capacity = $showtime->room->capacity;
+
+            if ($showtime) {
+                $type = 'single';
+                $price = Seat::TYPE['single'];
+
+                for ($i = 0; $i <= $capacity; $i++) {
+                    if ($i > 45) {
+                        $type = 'special';
+                        $price = Seat::TYPE['special'];
+                    } elseif ($i > 35 && $i <= 45) {
+                        $type = 'double';
+                        $price = Seat::TYPE['double'];
+                    } else {
+                        $type = 'single';
+                        $price = Seat::TYPE['single'];
+                    }
+                    Seat::create([
+                        'seat_name' => 'A' . ' - ' . $i,
+                        'type' => $type,
+                        'showtime_id' => $showtime->id,
+                        'status' => 'unbook',
+                        'price' => $price,
+                    ]);
+                }
+            }
 
             if ($showtime) {
                 return response()->json([
@@ -70,7 +101,6 @@ class ShowTimeController extends Controller
                     'message' => 'Tạo Thành Công Lịch Chiếu Phim'
                 ], Response::HTTP_OK);
             }
-
         } catch (Exception $exception) {
             Log::error('API/V1/Admin/ShowTimeController@store: ', [$exception->getMessage()]);
 
@@ -146,7 +176,6 @@ class ShowTimeController extends Controller
                     'message' => 'Tạo Cập Nhật Lịch Chiếu Phim'
                 ], Response::HTTP_OK);
             }
-
         } catch (Exception $exception) {
             Log::error('API/V1/Admin/ShowTimeController@update: ', [$exception->getMessage()]);
 
@@ -160,17 +189,16 @@ class ShowTimeController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(ShowTime $showtime)
-    {   
+    {
         try {
 
             $deleted = $showtime->delete();
 
-            if($deleted){
+            if ($deleted) {
                 return response()->json([
                     'message' => "Xoá lịch chiếu $showtime->show_date thành công"
                 ], Response::HTTP_OK);
             }
-            
         } catch (\Exception $exception) {
             Log::error('API/V1/Admin/ShowTimeController@destroy: ', [$exception->getMessage()]);
 
