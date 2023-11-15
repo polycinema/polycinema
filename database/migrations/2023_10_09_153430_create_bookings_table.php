@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('showtime_id');
             $table->foreignId('seat_id');
             $table->foreignId('product_id');
+            $table->bigInteger('product_quantity');
             $table->timestamps();
         });
     }

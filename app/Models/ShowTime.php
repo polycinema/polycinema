@@ -20,4 +20,8 @@ class ShowTime extends Model
     public function room(){
         return $this->belongsTo(Room::class);
     }
+
+    public function seats() {
+        return $this->hasMany(Seat::class,'showtime_id');
+    }
 }
