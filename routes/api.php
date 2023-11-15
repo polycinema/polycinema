@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\Auth\AuthenController;
 use App\Http\Controllers\API\V1\MovieController;
+use App\Http\Controllers\API\V1\SeatController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,7 +36,5 @@ Route::prefix('v1')->group(function () {
 
     include(base_path('routes/admin.php'));
 
-    // Route::get('movies', [MovieController::class, 'index'])->name('movies.index');
-
-    // Route::get('movies/{id}', [MovieController::class, 'show'])->name('movies.show');
+    Route::resource('/count', SeatController::class);
 });

@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('seat_name')->nullable();
             $table->enum('type', ['single', 'double', 'special'])->nullable();
-            $table->foreignId('room_id')->nullable();
+            // $table->foreignId('room_id')->nullable();
+            $table->foreignId('showtime_id');
+            $table->enum('status', ['unbook', 'booked', 'booking'])->default('unbook')->nullable();
+            $table->integer('price');
             $table->softDeletes();
             $table->timestamps();
         });

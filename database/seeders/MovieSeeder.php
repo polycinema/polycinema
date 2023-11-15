@@ -34,5 +34,7 @@ class MovieSeeder extends Seeder
             'duration' => 93,
             'director_id' => 1,
         ]);
+
+
     }
 }

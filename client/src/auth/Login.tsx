@@ -15,8 +15,9 @@ const Login = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (error) {
+      console.log(error)
       return notification.error({
-        message: error?.data.error,
+        message: error?.data,
       });
     }
   }, [error]);
