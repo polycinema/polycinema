@@ -44,11 +44,14 @@ class SeatController extends Controller
                 'type' => 'required',
                 'showtime_id' => 'required',
                 'status' => 'required',
-                'price' => 'required'
+                'price' => 'required',
+                'user_id' => 'nullable'
             ], [
                 'seat_name.required' => 'Trường tên ghế không được trống',
                 'type.required' => 'Trường loại ghế không được trống',
-                'room_id.required' => 'Trường phòng không được trống'
+                'showtime_id.required' => 'Trường lịch chiếu không được trống',
+                'status.required' => 'Trường trạng thái không được trống',
+                'price.required' => 'Trường giá không được trống',
             ]);
 
             if ($validator->fails()) {
@@ -104,11 +107,16 @@ class SeatController extends Controller
             $validator = Validator::make($request->all(), [
                 'seat_name' => 'required',
                 'type' => 'required',
-                'room_id' => 'required'
+                'showtime_id' => 'required',
+                'status' => 'required',
+                'price' => 'required',
+                'user_id' => 'nullable'
             ], [
                 'seat_name.required' => 'Trường tên ghế không được trống',
                 'type.required' => 'Trường loại ghế không được trống',
-                'room_id.required' => 'Trường phòng không được trống'
+                'showtime_id.required' => 'Trường lịch chiếu không được trống',
+                'status.required' => 'Trường trạng thái không được trống',
+                'price.required' => 'Trường giá không được trống',
             ]);
 
             if ($validator->fails()) {

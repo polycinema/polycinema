@@ -17,7 +17,8 @@ class Movie extends Model
         'description',
         'release_date',
         'duration',
-        'director_id'
+        'director_id',
+        'status'
     ];
 
     public function director() {

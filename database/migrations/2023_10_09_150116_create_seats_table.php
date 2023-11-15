@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('showtime_id');
             $table->enum('status', ['unbook', 'booked', 'booking'])->default('unbook')->nullable();
             $table->integer('price');
+            $table->foreignId('user_id')->nullable()->default(NULL);
             $table->softDeletes();
             $table->timestamps();
         });

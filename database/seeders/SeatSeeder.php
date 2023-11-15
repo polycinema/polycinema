@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Seat;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -13,13 +14,25 @@ class SeatSeeder extends Seeder
      */
     public function run(): void
     {
-        // DB::table('seats')->insert([
-        //     'seat_name' => 'A - 1',
-        //     'type' => 'single',
-        //     'showtime_id' => 1,
-        //     'status' => 'unbook',
-        //     'price' => 70000
-        // ]);
-
+        for ($i = 0; $i <= 50; $i++) {
+            if ($i > 45) {
+                $type = 'special';
+                $price = Seat::TYPE['special'];
+            } elseif ($i > 35 && $i <= 45) {
+                $type = 'double';
+                $price = Seat::TYPE['double'];
+            } else {
+                $type = 'single';
+                $price = Seat::TYPE['single'];
+            }
+            Seat::create([
+                'seat_name' => 'A' . ' - ' . $i,
+                'type' => $type,
+                'showtime_id' => 1,
+                'status' => 'unbook',
+                'price' => $price,
+            ]);
+        }
+        
     }
 }
