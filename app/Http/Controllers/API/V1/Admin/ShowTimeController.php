@@ -191,7 +191,6 @@ class ShowTimeController extends Controller
     public function destroy(ShowTime $showtime)
     {
         try {
-
             $deleted = $showtime->delete();
 
             if ($deleted) {

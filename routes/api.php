@@ -37,4 +37,6 @@ Route::prefix('v1')->group(function () {
     include(base_path('routes/admin.php'));
 
     Route::resource('/count', SeatController::class);
+
+    route::get('showtimes/{movie_id}',[MovieController::class, 'getShowTimeByMovie']);
 });

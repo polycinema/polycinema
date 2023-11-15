@@ -35,4 +35,6 @@ class Seat extends Model
     {
         return $this->belongsTo(ShowTime::class, 'showtime_id');
     }
+
+    
 }
