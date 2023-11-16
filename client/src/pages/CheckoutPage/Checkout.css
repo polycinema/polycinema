@@ -1,0 +1,61 @@
+
+.seat{
+        width: 40px;
+        height: 40px;
+        line-height: 35px;
+        display: inline-block;
+        font-size: 11px;
+        font-weight: normal;
+        text-align: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: bottom;
+        cursor: pointer;
+
+}
+/* @media (max-width: 768px)  {
+        .seat{
+                width: 30px;
+                height: 30px;
+                
+        
+        }
+} */
+.seat-normal{
+        background-image: url(../../../public/img/seat-unselect-normal.png);
+
+}
+.seat-normal-active{
+        background-image: url(../../../public/img/seat-select-normal.png);
+
+}
+.seat-normal-buy{
+        background-image: url(../../../public/img/seat-buy-normal.png);
+}
+.seat-double{
+        padding-top: 10px;
+        background-image: url(../../../public/img/seat-unselect-double.png);
+
+}
+.seat-double-active{
+        padding-top: 10px;
+        background-image: url(../../../public/img/seat-double-active.png);
+
+}
+.seat-double-buy{
+        padding-top: 10px;
+        background-image: url(../../../public/img/seat-double-by.png);
+
+}
+.seat-vip{
+        background-image: url(../../../public/img/seat-unselect-vip.png);
+  
+}
+.seat-vip-active{
+        background-image: url(../../../public/img/seat-select-vip.png);
+  
+}
+.seat-vip-buy{
+        background-image: url(../../../public/img/seat-buy-vip.png);
+  
+}

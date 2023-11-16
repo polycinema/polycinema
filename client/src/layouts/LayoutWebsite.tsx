@@ -18,7 +18,9 @@ const LayoutWebsite = () => {
     {
       label: (
         <div>
-          <UserOutlined /> Thông tin tài khoản{" "}
+          <Link to={"inforAcount"}>
+          <UserOutlined /> Thông tin tài khoản
+          </Link>
         </div>
       ),
       key: "0",
@@ -126,7 +128,7 @@ const LayoutWebsite = () => {
         <Outlet />
       </main>
 
-      <footer className="mt-24">
+      <footer className="">
         <hr />
 
         <div className="md:m-auto md:max-w-6xl md:py-4">
