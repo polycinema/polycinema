@@ -39,6 +39,10 @@ import AddSeat from "./pages/admin/Seat/AddSeat";
 import EditSeat from "./pages/admin/Seat/EditSeat";
 import ListSeat from "./pages/admin/Seat/ListSeat";
 import Dashboard from "./pages/admin/Dashboard/Dashboard";
+import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
+import InfoAccount from "./components/userinfo/InfoAccount";
+import SeatCheckout from "./components/SeatCheckout";
+import ProductCheckout from "./components/ProductCheckout";
 
 export const router = createBrowserRouter([
   { path: "*", element: <NotFoundPage /> },
@@ -51,6 +55,11 @@ export const router = createBrowserRouter([
       { path: "poly-acount", element: <Account /> },
       { path: "poly-news", element: <NewsPage /> },
       { path: "poly-moviesDetail/:id", element: <MovieDetail /> },
+      {path:"poly-checkout", element:<CheckoutPage/>, children:[
+        {path:"", element:<SeatCheckout/>},
+        {path:"product", element:<ProductCheckout/>}
+      ]},
+      {path:"inforAcount",element:<InfoAccount/>}
     ],
   },
   {

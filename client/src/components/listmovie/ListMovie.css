@@ -78,8 +78,8 @@
 
 .movie-img:hover .bg-movie{
         position: absolute;
-        width: 79%;
-        height: 69%;
+        width: 100%;
+        height: 100%;
         background-color: rgba(0, 0, 0,0.3);
         border-radius: 20px;
         z-index: 1;
