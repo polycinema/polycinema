@@ -41,36 +41,19 @@ class SeatController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function getSeatShowTime(string $showtimeId) {
+        try{
+            $seats = Seat::query()->where('showtime_id', $showtimeId)->get();
 
-    /**
-     * Display the specified resource. 
-     * Đếm số ghế ở trạng thái unbook(chưa đặt) theo room_id bảng showtimes
-     */
-    public function show(string $id)
-    {
-        
-    }
+            return response()->json([
+                'data' => $seats
+            ], Response::HTTP_OK);
+        }catch(Exception $exception) {
+            Log::error('SeatController@getSeatByMovie: ', [$exception->getMessage()]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

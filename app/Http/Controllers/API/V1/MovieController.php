@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
+use App\Models\Seat;
 use App\Models\ShowTime;
 use Exception;
 use Illuminate\Http\Request;
@@ -21,7 +22,10 @@ class MovieController extends Controller
     public function index()
     {
         try {
-            $movies = Movie::query()->where('release_date', '<=', now())->with('genres')->get();
+            $movies = Movie::query()->where('release_date', '<=', now())
+                ->with('genres')
+                ->with('showTimes')
+                ->get();
 
             return response()->json([
                 'data' => $movies
@@ -81,14 +85,34 @@ class MovieController extends Controller
 
             $groupedData = collect($showTimes)->groupBy('show_date')->map(function ($items) {
                 return $items->values();
-            })->all();
+            })->toArray();
 
             // $formattedData = [
             //     'data' => array_values($groupedData)
             // ];
 
+            $responseData = [];
+
+            foreach ($groupedData as $date => $data) {
+                $showtimes = [];
+                foreach ($data as $showtime) {
+                    $showtimeSeats = Seat::where('showtime_id', $showtime->id)->get();
+                    $availableSeats = $showtimeSeats->where('status', 'unbook')->count();
+
+                    $showtimes[] = [
+                        'showtime' => $showtime,
+                        'available_seats' => $availableSeats
+                    ];
+                }
+
+                $responseData[] = [
+                    'date' => $date,
+                    'showtimes' => $showtimes
+                ];
+            }
+
             return response()->json([
-                'data' => $groupedData,
+                'data' => $responseData,
                 'message' => "Danh Sách Lịch Chiếu Phim $movie_name"
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
