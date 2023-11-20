@@ -38,5 +38,11 @@ Route::prefix('v1')->group(function () {
 
     Route::resource('/count', SeatController::class);
 
-    route::get('showtimes/{movie_id}',[MovieController::class, 'getShowTimeByMovie']);
+    Route::get('movies', [MovieController::class, 'index'])->name('movies.index');
+
+    Route::get('movies/{id}', [MovieController::class, 'show'])->name('movies.show');
+
+    Route::get('showtimes/{movie_id}', [MovieController::class, 'getShowTimeByMovie'])->name('showtime');
+
+    Route::get('seats/{showtime_id}', [SeatController::class, 'getSeatShowTime'])->name('seats');
 });
