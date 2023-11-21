@@ -4,6 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router';
 import { pause } from '../../../utils/pause';
 import { INews, addNews } from '../../../api/News';
+import TextArea from 'antd/es/input/TextArea';
 
 type FieldType = {
         title: string;
@@ -105,7 +106,7 @@ const AddNews = () => {
                                                 name="description"
                                                 rules={[{ required: true, message: 'Please input your name!' }]}
                                         >
-                                                <Input />
+                                               <TextArea rows={5} />
                                         </Form.Item>
 
                                         <Form.Item<FieldType>
