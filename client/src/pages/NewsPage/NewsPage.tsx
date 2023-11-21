@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { INews, getAllNews } from '../../api/News'
+import { Link } from 'react-router-dom';
 
 
 const NewsPage = () => {
@@ -32,6 +33,7 @@ const NewsPage = () => {
             <div>
                 <h2 className='font-bold text-[15px] my-2'>{items.title}</h2>
                 <p className='text-justify'>{items.description}</p>
+               <Link to={`${items.id}`} className='hover:text-[#397EBA]'>Xem thêm... </Link>
             </div>
         </div>
                 )

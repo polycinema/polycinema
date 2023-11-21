@@ -43,6 +43,7 @@ import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
 import InfoAccount from "./components/userinfo/InfoAccount";
 import SeatCheckout from "./components/SeatCheckout";
 import ProductCheckout from "./components/ProductCheckout";
+import NewDetailPage from "./pages/NewsPage/NewDetailPage";
 
 export const router = createBrowserRouter([
   { path: "*", element: <NotFoundPage /> },
@@ -54,6 +55,7 @@ export const router = createBrowserRouter([
       { path: "poly-movies", element: <MoviePage /> },
       { path: "poly-acount", element: <Account /> },
       { path: "poly-news", element: <NewsPage /> },
+      { path: "poly-news/:id", element: <NewDetailPage /> },
       { path: "poly-moviesDetail/:id", element: <MovieDetail /> },
       {path:"poly-checkout", element:<CheckoutPage/>, children:[
         {path:"", element:<SeatCheckout/>},
