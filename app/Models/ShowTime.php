@@ -24,4 +24,8 @@ class ShowTime extends Model
     public function seats() {
         return $this->hasMany(Seat::class,'showtime_id');
     }
+
+    public function movie() {
+        return $this->belongsTo(Movie::class,'movie_id');
+    }
 }

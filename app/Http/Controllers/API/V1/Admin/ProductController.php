@@ -43,12 +43,14 @@ class ProductController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
                 'image' => 'required',
-                'price' => 'required|numeric'
+                'price' => 'required|numeric',
+                'description' => 'required'
             ], [
                 'name.required' => 'Trường tên sản phẩm không được trống',
                 'image.required' => 'Trường ảnh sản phẩm không được trống',
                 'price.required' => 'Trường giá sản phẩm không được để trống',
-                'price.numeric' => 'Trường giá sản phẩm phải là số nguyên'
+                'price.numeric' => 'Trường giá sản phẩm phải là số nguyên',
+                'description.required' => 'Trường mô tả là bắt buộc'
             ]);
             if ($validator->fails()) {
                 return response()->json([
@@ -115,14 +117,15 @@ class ProductController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
-                'image' => 'required|string',
-                'price' => 'required|numeric'
+                'image' => 'required',
+                'price' => 'required|numeric',
+                'description' => 'required'
             ], [
                 'name.required' => 'Trường tên sản phẩm không được trống',
-                'image.required' => 'Ảnh sản phẩm không được trống',
-                'image.string' => 'Ảnh sản phẩm không phù hợp',
+                'image.required' => 'Trường ảnh sản phẩm không được trống',
                 'price.required' => 'Trường giá sản phẩm không được để trống',
-                'price.numeric' => 'Trường giá sản phẩm phải là số nguyên'
+                'price.numeric' => 'Trường giá sản phẩm phải là số nguyên',
+                'description.required' => 'Trường mô tả là bắt buộc'
             ]);
 
             if ($validator->fails()) {
