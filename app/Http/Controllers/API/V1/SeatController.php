@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\API\V1\Seat;
+namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Room;
 use App\Models\Seat;
+use App\Models\ShowTime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -43,10 +44,10 @@ class SeatController extends Controller
 
     public function getSeatShowTime(string $showtimeId) {
         try{
-            $seats = Seat::query()->where('showtime_id', $showtimeId)->get();
-
+            // $seats = Seat::query()->where('showtime_id', $showtimeId)->get();
+            $showtimes = ShowTime::query()->with('seats')->with("room")->find($showtimeId);
             return response()->json([
-                'data' => $seats
+                'data' => $showtimes
             ], Response::HTTP_OK);
         }catch(Exception $exception) {
             Log::error('SeatController@getSeatByMovie: ', [$exception->getMessage()]);

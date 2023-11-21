@@ -14,5 +14,6 @@ class Booking extends Model
         'showtime_id',
         'seat_id',
         'product_id',
+        'total_price'
     ];
 }

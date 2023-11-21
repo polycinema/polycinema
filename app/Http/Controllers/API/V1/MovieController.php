@@ -70,6 +70,43 @@ class MovieController extends Controller
     public function getShowTimeByMovie($movieId)
     {
         try {
+            // $movie_name = Movie::find($movieId)->name;
+
+            // $showTimes = DB::table('show_times as t1')
+            //     ->join('show_times as t2', function ($join) use ($movieId) {
+            //         $join->on('t1.movie_id', '=', 't2.movie_id')
+            //             ->on('t1.show_date', '=', 't2.show_date')
+            //             ->where('t1.id', '<>', 't2.id')
+            //             ->where('t2.movie_id', '=', $movieId);
+            //     })
+            //     ->select('t1.*')
+            //     ->distinct()
+            //     ->get();
+
+            // $groupedData = collect($showTimes)->groupBy('show_date')->map(function ($items) {
+            //     return $items->values();
+            // })->toArray();
+
+            // // $formattedData = [
+            // //     'data' => array_values($groupedData)
+            // // ];
+
+            // $responseData = [];
+
+            // foreach ($groupedData as $date => $data) {
+            //     $responseData[] = [
+            //         'date' => $date,
+            //         'showtimes' => $data,
+            //     ];
+            // }
+
+            // return response()->json([
+            //     'data' => $responseData,
+            //     'message' => "Danh Sách Lịch Chiếu Phim $movie_name"
+            // ], Response::HTTP_OK);
+            // // $formattedData = [
+            // //     'data' => array_values($groupedData)
+            // // ];
             $movie_name = Movie::find($movieId)->name;
 
             $showTimes = DB::table('show_times as t1')
@@ -110,7 +147,6 @@ class MovieController extends Controller
                     'showtimes' => $showtimes
                 ];
             }
-
             return response()->json([
                 'data' => $responseData,
                 'message' => "Danh Sách Lịch Chiếu Phim $movie_name"
