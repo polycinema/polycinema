@@ -4,6 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router';
 import { INews, getNewsById, updateNews } from '../../../api/News';
 import { pause } from '../../../utils/pause';
+import TextArea from 'antd/es/input/TextArea';
 
 
 
@@ -126,8 +127,9 @@ const EditNews = () => {
         <>
             {contextHolder}
             <div >
-                <h1 className='text-4xl m-6'>Câp nhật Đạo Diễn</h1>
-                <div className='flex gap-40'>
+                <h1 className='text-4xl m-6'>Câp nhật Tin Tức</h1>
+                <div className='grid grid-cols-3 gap-4'>
+                    <div className='col-span-2 p-4'>
                     <Form
                         form={form}
                         name="basic"
@@ -162,7 +164,7 @@ const EditNews = () => {
                             name="description"
                             rules={[{ required: true, message: 'Please input your name!' }]}
                         >
-                            <Input />
+                             <TextArea rows={5} />
                         </Form.Item>
 
                         <Form.Item<FieldType>
@@ -190,7 +192,8 @@ const EditNews = () => {
                             </Button>
                         </Form.Item>
                     </Form>
-                    <div >
+                    </div>
+                    <div className='col-span-1  p-4'>
                         <h4 className='mb-2 text-xl'>Ảnh đạo diễn</h4>
                         <img className='w-72 rounded-sm' src={news?.image} alt="anh" />
 
