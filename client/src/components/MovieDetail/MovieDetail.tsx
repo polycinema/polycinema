@@ -5,7 +5,10 @@ import { useState, useEffect } from "react";
 import IsLoading from "../../utils/IsLoading";
 import YouTube from "react-youtube";
 const MovieDetail = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
+  const slugParams = slug?.split(".html") ?? [];
+  const temp = slugParams[0]?.split("-") as string;
+  const id = temp[temp.length - 1];
   const { data: movieById, isLoading, error } = useGetMovieByIdQuery(id);
   const [movie, setMovie] = useState<any>({});
   useEffect(() => {
@@ -23,7 +26,7 @@ const MovieDetail = () => {
       </>
     );
   }
-  console.log('data movie by id: ',movie)
+  console.log("data movie by id: ", movie);
   return (
     <>
       <div className="container">
@@ -32,11 +35,7 @@ const MovieDetail = () => {
         </h3>
         <div className="title1">
           <div className="title1-img">
-            <img
-              className="img"
-              src={movie.image}
-              alt=""
-            />
+            <img className="img" src={movie.image} alt="" />
           </div>
           <div className="title1-text">
             <h1>{movie.title}</h1>
@@ -54,7 +53,11 @@ const MovieDetail = () => {
                 <span className="director"> DIỄN VIÊN : </span>
               </div>
               {movie.actors?.map((itemsActors: any) => {
-                return <div className="text1-1" key={itemsActors.id}>{itemsActors.name}&nbsp;</div>;
+                return (
+                  <div className="text1-1" key={itemsActors.id}>
+                    {itemsActors.name}&nbsp;
+                  </div>
+                );
               })}
             </div>
 
@@ -63,7 +66,11 @@ const MovieDetail = () => {
                 <span className="director"> THỂ LOẠI : </span>
               </div>
               {movie.genres?.map((itemsGenres: any) => {
-                return <div className="text1-1" key={itemsGenres.id}>{itemsGenres.name }</div>;
+                return (
+                  <div className="text1-1" key={itemsGenres.id}>
+                    {itemsGenres.name}
+                  </div>
+                );
               })}
             </div>
 
@@ -87,8 +94,7 @@ const MovieDetail = () => {
       <div className="title2">
         <h1>TRAILER</h1>
         <div className="title2-video">
-        <YouTube videoId={movie.trailer} />
-          
+          <YouTube videoId={movie.trailer} />
         </div>
       </div>
     </>

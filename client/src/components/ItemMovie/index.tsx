@@ -7,6 +7,7 @@ import ButtonCustom from "../Button";
 import IsLoading from "../../utils/IsLoading";
 import dayjs from "dayjs";
 import { useGetShowTimeByMovieQuery } from "../../redux/api/checkoutApi";
+import { convertSlug } from "../../utils/convertSlug";
 type Props = {
   movie: any;
 };
@@ -75,7 +76,7 @@ const ItemMovie = ({ movie }: Props) => {
 
       <div className="movie-item-description">
         <h4 className="movie-name">
-          <Link to={`/poly-moviesDetail/${movie.id}`}>{movie.name}</Link>
+          <Link to={`movies/${convertSlug(movie.name)}-${movie.id}.html/detail`}>{movie.name}</Link>
         </h4>
         <div className="movie-des">
           <p className="movie-des-1">Thể loại:</p>

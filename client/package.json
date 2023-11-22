@@ -29,6 +29,7 @@
     "react-youtube": "^10.1.0",
     "redux-persist": "^6.0.0",
     "slick-carousel": "^1.8.1",
+    "slugify": "^1.6.6",
     "vite-tsconfig-paths": "^4.2.1"
   },
   "devDependencies": {

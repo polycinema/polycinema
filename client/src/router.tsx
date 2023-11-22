@@ -56,7 +56,7 @@ export const router = createBrowserRouter([
       { path: "poly-acount", element: <Account /> },
       { path: "poly-news", element: <NewsPage /> },
       { path: "poly-news/:id", element: <NewDetailPage /> },
-      { path: "poly-moviesDetail/:id", element: <MovieDetail /> },
+      { path: "movies/:slug/detail", element: <MovieDetail /> },
       {path:"poly-checkout/:id", element:<CheckoutPage/>, children:[
         {path:"", element:<SeatCheckout/>},
         {path:"product", element:<ProductCheckout/>}
