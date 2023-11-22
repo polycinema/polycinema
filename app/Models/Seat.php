@@ -26,11 +26,11 @@ class Seat extends Model
     protected $fillable = [
         'seat_name',
         'type',
-        // 'room_id',
         'showtime_id',
         'status',
         'price',
-        'user_id'
+        'user_id',
+        'booking_id'
     ];
 
     public function showtime()
