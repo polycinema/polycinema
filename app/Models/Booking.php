@@ -12,8 +12,10 @@ class Booking extends Model
     protected $fillable = [
         'user_id',
         'showtime_id',
-        'seat_id',
-        'product_id',
         'total_price'
     ];
+
+    public function products() {
+        return $this->belongsToMany(Product::class, 'product_bookings');
+    }
 }

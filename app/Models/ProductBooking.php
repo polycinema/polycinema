@@ -12,6 +12,6 @@ class ProductBooking extends Model
     protected $fillable = [
         'booking_id',
         'product_id',
-        'price',
+        'quantity',
     ];
 }

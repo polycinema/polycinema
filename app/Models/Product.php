@@ -15,4 +15,8 @@ class Product extends Model
         'price',
         'description'
     ];
+
+    public function bookings() {
+        return $this->belongsToMany(Booking::class, 'product_bookings');
+    }
 }

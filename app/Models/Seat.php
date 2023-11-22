@@ -19,14 +19,18 @@ class Seat extends Model
         'special' => 135000
     ];
 
+    const UNBOOK = 'unbook';
+    const BOOKED = 'booked';
+    const BOOKING = 'booking';
+
     protected $fillable = [
         'seat_name',
         'type',
-        // 'room_id',
         'showtime_id',
         'status',
         'price',
-        'user_id'
+        'user_id',
+        'booking_id'
     ];
 
     public function showtime()
