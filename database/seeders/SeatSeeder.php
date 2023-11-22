@@ -14,7 +14,7 @@ class SeatSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 0; $i <= 50; $i++) {
+        for ($i = 1; $i <= 50; $i++) {
             if ($i > 45) {
                 $type = 'special';
                 $price = Seat::TYPE['special'];
@@ -31,6 +31,8 @@ class SeatSeeder extends Seeder
                 'showtime_id' => 1,
                 'status' => 'unbook',
                 'price' => $price,
+                'user_id' => NULL,
+                'booking_id' => NULL,
             ]);
         }
         
