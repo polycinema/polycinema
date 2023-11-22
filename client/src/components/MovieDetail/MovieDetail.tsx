@@ -3,6 +3,7 @@ import "./MovieDetail.css";
 import { useGetMovieByIdQuery } from "../../redux/api/movieApi";
 import { useState, useEffect } from "react";
 import IsLoading from "../../utils/IsLoading";
+import YouTube from "react-youtube";
 const MovieDetail = () => {
   const { id } = useParams();
   const { data: movieById, isLoading, error } = useGetMovieByIdQuery(id);
@@ -27,13 +28,13 @@ const MovieDetail = () => {
     <>
       <div className="container">
         <h3 className="title">
-          Trang chủ <span className="nameMovie">{}4</span>
+          Trang chủ <span className="nameMovie">{}</span>
         </h3>
         <div className="title1">
           <div className="title1-img">
             <img
               className="img"
-              src="https://files.betacorp.vn/files/media%2fimages%2f2023%2f10%2f03%2fkumanthong-400x633-101044-031023-29.jpg"
+              src={movie.image}
               alt=""
             />
           </div>
@@ -53,7 +54,7 @@ const MovieDetail = () => {
                 <span className="director"> DIỄN VIÊN : </span>
               </div>
               {movie.actors?.map((itemsActors: any) => {
-                return <div className="text1-1" key={itemsActors.id}>{itemsActors.name}</div>;
+                return <div className="text1-1" key={itemsActors.id}>{itemsActors.name}&nbsp;</div>;
               })}
             </div>
 
@@ -86,15 +87,8 @@ const MovieDetail = () => {
       <div className="title2">
         <h1>TRAILER</h1>
         <div className="title2-video">
-          <iframe
-            width="760"
-            height="415"
-            src={movie?.trailer}
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
+        <YouTube videoId={movie.trailer} />
+          
         </div>
       </div>
     </>

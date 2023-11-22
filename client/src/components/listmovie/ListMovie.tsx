@@ -3,7 +3,7 @@ import { Tabs, TabsProps } from "antd";
 import { useGetAllMoviesQuery } from "../../redux/api/movieApi";
 import IsLoading from "../../utils/IsLoading";
 import ItemMovie from "../ItemMovie";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 const ListMovie = () => {
   const { data: Movies, isLoading, error } = useGetAllMoviesQuery();
   const [moviesFilter, setMoviesFilter] = useState([]);
@@ -28,19 +28,19 @@ const ListMovie = () => {
     },
   ];
   useEffect(() => {
-    const result = Movies?.data.filter((item) => item.status === "upcoming");
+    const result = Movies?.data.filter((item:any) => item.status === "upcoming");
     setMoviesFilter(result);
   }, [isLoading]);
 
-  const onChange = (value) => {
+  const onChange = (value:any) => {
     if (value === "1") {
-      const result = Movies.data.filter((item) => item.status === "upcoming");
+      const result = Movies.data.filter((item:any) => item.status === "upcoming");
       setMoviesFilter(result);
     } else if (value === "2") {
-      const result = Movies.data.filter((item) => item.status === "screening");
+      const result = Movies.data.filter((item:any) => item.status === "screening");
       setMoviesFilter(result);
     } else {
-      const result = Movies.data.filter((item) => item.status === "unscreen");
+      const result = Movies.data.filter((item:any) => item.status === "unscreen");
       setMoviesFilter(result);
     }
   };

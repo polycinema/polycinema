@@ -47,7 +47,7 @@ const ItemMovie = ({ movie }: Props) => {
         width={700}
         onCancel={handleCancel}
       >
-        <YouTube videoId="Wkdv3tUfs2k?si=jleY-5DkdxR0396Q" />
+        <YouTube videoId={movie.trailer} />
       </Modal>
       <div className="movie-img">
         <div className="bg-movie"></div>
