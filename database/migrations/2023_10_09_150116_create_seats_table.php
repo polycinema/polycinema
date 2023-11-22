@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('status', ['unbook', 'booked', 'booking'])->default('unbook')->nullable();
             $table->integer('price');
             $table->foreignId('user_id')->nullable()->default(NULL);
+            $table->foreignId('booking_id')->nullable()->default(NULL);
             $table->softDeletes();
             $table->timestamps();
         });
