@@ -13,7 +13,6 @@ import { setLogout } from "../redux/slices/authorizationSlice";
 const LayoutWebsite = () => {
   const { user }: any = useAppSelector((state) => state.Authorization);
   const dispatch = useAppDispatch();
-  console.log("user: ", user);
   const items: MenuProps["items"] = [
     {
       label: (

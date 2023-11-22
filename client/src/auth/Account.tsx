@@ -3,9 +3,9 @@ import Login from "./Login";
 import Register from "./Register";
 
 const Account = () => {
-  const onChange = (key: string) => {
-    console.log(key);
-  };
+  // const onChange = (key: string) => {
+  //   console.log(key);
+  // };
   const items: TabsProps['items'] = [
     {
       key: '1',

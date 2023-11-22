@@ -4,6 +4,7 @@ export interface IProduct {
         name: string;
         image: string;
         price: string;
+        description: string;
 }
 export const addProduct =async (product:IProduct)=>{
         return instance.post(`/products`, product,{

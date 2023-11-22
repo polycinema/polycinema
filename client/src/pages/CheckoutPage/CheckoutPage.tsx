@@ -1,5 +1,4 @@
 
-import "./Checkout.css";
 import CardCheckout from "../../components/CardCheckout";
 import { Outlet } from "react-router";
 const CheckoutPage = () => {

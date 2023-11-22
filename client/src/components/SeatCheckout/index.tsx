@@ -5,10 +5,21 @@ import seatdouble from "../../../public/img/seat-unselect-double.png";
 import seatnormal from "../../../public/img/seat-unselect-normal.png";
 import seatvip from "../../../public/img/seat-unselect-vip.png";
 import manhinh from "../../../public/img/ic-screen.png";
+import { useGetSeatsByShowTimeQuery } from "../../redux/api/checkoutApi";
+import { useParams } from "react-router";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
+import { setSeatActive, setValueCheckoutSeat } from "../../redux/slices/valueCheckoutSlice";
+import "./index.css"
 const SeatCheckout = () => {
-        const [seatNormal,setSeatNormal] = useState("seat-normal")
+        const [seatClass,setSeatClass] = useState("")
+        const {id} = useParams()
+        const dispatch = useAppDispatch()
+        const {data:Seats, isLoading} = useGetSeatsByShowTimeQuery(id || "")
+        
+
+        
   return (
-        <div >
+        <div className="w-full" >
         <div className="flex justify-center items-center space-x-9 p-4   ">
           <div className="flex items-center gap-2">
             <img className="w-8" src={seatnormal} alt="" />
@@ -24,12 +35,27 @@ const SeatCheckout = () => {
           </div>
         </div>
         <img src={manhinh} alt="" />
-        <div className=" overflow-x-hidden  ">
-          <div className="seat_container overflow-x-scroll md:mx-10 mt-4 ">
-            <div className="grid grid-cols-12 w-[700px] p-2 ">
-              <button className={`seat ${seatNormal} `} onClick={()=> seatNormal =="seat-normal"? setSeatNormal("seat-normal-active"):setSeatNormal("seat-normal")}>J15</button>
-              <button className="seat seat-vip">I15</button>
-              <button className="seat seat-double">I15</button>
+        <div className=" seat-hidden lg:w-full  ">
+          <div className="seat_container seat-scroll  mt-4 ">
+            <div className="grid grid-cols-6 md:grid-cols-10 lg:grid-cols-12   ">
+              {Seats?.data?.seats?.map((seat)=>(
+                <button className={`seat active:seat-normal-active
+                ${
+                  seat.type === "single" ? "seat-normal" : seat.type === "double" ? "seat-double" :  "seat-vip"
+                }
+                `}
+                onClick={()=>{
+                  dispatch(setValueCheckoutSeat({seat:seat}))
+                  }
+                    
+                    // seat.type === "single" ? setSeatNormal("seat-normal-active") : seat.type === "double" ?setSeatNormal("seat-double-active") :  setSeatNormal("seat-vip-active")
+                  
+                  // seatNormal == "seat-normal"? setSeatNormal("seat-normal-active"):setSeatNormal("seat-normal")
+                }
+                  >{seat.seat_name}</button>
+              ))}
+              
+              
             </div>
           </div>
         </div>

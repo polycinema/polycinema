@@ -1,4 +1,6 @@
-
+.seat_container{
+        width: 100%;
+}
 .seat{
         width: 40px;
         height: 40px;
@@ -11,18 +13,22 @@
         background-repeat: no-repeat;
         background-position: bottom;
         cursor: pointer;
+        margin: 0 auto;
 
 }
-/* @media (max-width: 768px)  {
-        .seat{
-                width: 30px;
-                height: 30px;
+@media (max-width: 768px)  {
+        .seat-hidden{
+                overflow-x: hidden;
                 
         
         }
-} */
+        .seat-scroll{
+                overflow-x: scroll;
+        }
+}
 .seat-normal{
         background-image: url(../../../public/img/seat-unselect-normal.png);
+        
 
 }
 .seat-normal-active{

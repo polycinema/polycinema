@@ -31,7 +31,6 @@ export const removeNews=async (id:number|string)=>{
 }
 export const getAllNews = ()=>{
         return instance.get(`/posts`)
-
 }
 export const getNewsById = (id:number|string)=>{
         return instance.get(`/posts/${id}`)
