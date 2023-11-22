@@ -16,4 +16,8 @@ class Booking extends Model
         'product_id',
         'total_price'
     ];
+
+    public function products() {
+        return $this->belongsToMany(Product::class, 'product_bookings');
+    }
 }

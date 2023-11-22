@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthenController;
+use App\Http\Controllers\API\V1\BookingController;
 use App\Http\Controllers\API\V1\MovieController;
 use App\Http\Controllers\API\V1\SeatController;
 use Illuminate\Http\Request;
@@ -38,11 +39,13 @@ Route::prefix('v1')->group(function () {
 
     Route::resource('/count', SeatController::class);
 
-    Route::get('movies', [MovieController::class, 'index'])->name('movies.index');
+    Route::get('movies', [MovieController::class, 'index'])->name('movies');
 
-    Route::get('movies/{id}', [MovieController::class, 'show'])->name('movies.show');
+    Route::get('movies/{id}', [MovieController::class, 'show'])->name('movies.detail');
 
     Route::get('showtimes/{movie_id}', [MovieController::class, 'getShowTimeByMovie'])->name('showtime');
 
     Route::get('seats/{showtime_id}', [SeatController::class, 'getSeatShowTime'])->name('seats');
+
+    Route::post('bookings', [BookingController::class, 'store'])->name('bookings.save');
 });

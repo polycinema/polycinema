@@ -19,6 +19,10 @@ class Seat extends Model
         'special' => 135000
     ];
 
+    const UNBOOK = 'unbook';
+    const BOOKED = 'booked';
+    const BOOKING = 'booking';
+
     protected $fillable = [
         'seat_name',
         'type',
