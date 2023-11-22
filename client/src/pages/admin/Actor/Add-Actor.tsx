@@ -1,7 +1,6 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { DatePicker, DatePickerProps, Form, Input, Space, Upload, UploadProps } from "antd";
+import { DatePicker, Form, Input, Upload, UploadProps } from "antd";
 import { Button, message } from "antd";
-import { RangePickerProps } from "antd/es/date-picker";
 import { useState } from "react";
 import { IActor, addActor } from "../../../api/actor";
 import { useNavigate } from "react-router";

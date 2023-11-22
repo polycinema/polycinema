@@ -1,5 +1,5 @@
 import { UploadOutlined } from '@ant-design/icons';
-import { DatePicker, Form, Input, InputNumber, Select, SelectProps, Upload, UploadProps } from 'antd';
+import { DatePicker, Form, Input, InputNumber, Select, Upload, UploadProps } from 'antd';
 import dayjs from "dayjs";
 import { Button, message } from 'antd';
 import { useEffect, useState } from 'react';

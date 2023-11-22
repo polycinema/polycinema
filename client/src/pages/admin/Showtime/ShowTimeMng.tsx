@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 
 const ShowTimeMng = () => {
   const { data, isLoading, error }: any = useGetShowTimesQuery();
+  console.log("showtime", data);
+
   const [removeShowtime, { error: ErrorRemove }] = useRemoveShowTimeMutation();
   const [rooms, setRooms] = useState();
   const [movies, setMovies] = useState();
@@ -20,8 +22,8 @@ const ShowTimeMng = () => {
 
   useEffect(() => {
     if (data) {
-      const roomIds = data.data.map(({ room_id }:any) => room_id);
-      const movieIds = data.data.map(({ movie_id }:any) => movie_id);
+      const roomIds = data.data.map(({ room_id }: any) => room_id);
+      const movieIds = data.data.map(({ movie_id }: any) => movie_id);
       setRooms(roomIds); // Cập nhật giá trị của rooms
       setMovies(movieIds); // Cập nhật giá trị của movies
     }

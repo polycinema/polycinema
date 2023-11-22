@@ -1,11 +1,19 @@
-import React from 'react'
+import React ,{useState} from 'react'
 import imgUser from '../../../public/img/ic-inforpayment.png'
 import imgProduct from '../../../public/img/ic-combo.png'
-import imgCombo1 from "../../../public/img/sweet-combo-154545-150623-48.png"
-import imgCombo2 from "../../../public/img/beta-combo-154428-150623-83.png"
 import {  InputNumber } from 'antd'
+import { useGetAllProductsQuery } from '../../redux/api/checkoutApi'
+import IsLoading from '../../utils/IsLoading'
+import { useAppDispatch } from '../../store/hook'
 const ProductCheckout = () => {
-  
+  const {data:products,isLoading} = useGetAllProductsQuery()
+  const [valueProduct,setValueProduct] = useState()
+  const dispacth  = useAppDispatch()
+  const onChange = (value) => {
+    console.log({...valueProduct, quantity:value});
+    
+
+  }
   return (
     <div>
         <div className='flex items-center gap-4'>
@@ -33,17 +41,26 @@ const ProductCheckout = () => {
             <tr>
               <td></td>
               <td className='text-center'>Tên Combo</td>
+              <td className='text-center'>Giá</td>
               <td className='text-center'>Mô Tả</td>
               <td className='text-center'>Số Lượng</td>
             </tr>
-            <tr>
-              <td className='text-center p-2'><img className='w-28' src={imgCombo1} alt="" /></td>
-              <td className='text-center p-2'>Poly Combo 203</td>
-              <td className='text-center p-2'>Tiết kiệm 23k Gồm : 1 Bắp + 1 nước</td>
-              <td className='text-center p-2 ' >
-                <InputNumber/>
-              </td>
-            </tr>
+            {isLoading?<IsLoading/>  : products?.data?.map((item)=>(
+                <tr key={item.id}>
+                <td className='text-center p-2'><img className='w-28' src={item?.image} alt="" /></td>
+                <td className='text-center p-2'>{item?.name}</td>
+                <td className='text-center p-2'>{item?.price}</td>
+                <td className='text-center p-2'>{item?.description}</td>
+                <td className='text-center p-2 ' >
+                  <InputNumber onClick={()=>console.log(1)} onChange={()=>onChange} min={1}  />
+                </td>
+              </tr>
+              ))
+              }
+              
+              
+            
+            
             
           </table>
           

@@ -1,7 +1,6 @@
 import { UploadOutlined } from "@ant-design/icons";
 import {
   DatePicker,
-  DatePickerProps,
   Form,
   Input,
   Upload,

@@ -32,11 +32,13 @@
 .product__movies{
         display: grid;
         grid-template-columns: repeat(4,25%);
+        gap: 4;
 }
 .product__movies-item{
         border-radius: 20px;
         padding: 0px 30px;
         position: relative;
+        margin: 10px;
 }
 .movie-img {
         position: relative;
@@ -102,59 +104,68 @@
         
 }
 .movie-des{
-        display: flex;
-        gap: 5px;
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
         font-size: 15px;
 
 }
 .movie-des .movie-des-1{
         font-weight: 700;
 }
+.movie-des .movie-des-1{
+        display: flex;
+        flex-wrap: wrap;
+}
 
 .modal-datghe .ant-tabs .tab-tabs-nav .ant-tabs-nav-wrap .ant-tabs-nav-list 
 .ant-tabs-tab .ant-tabs-tab-btn{
         font-size: 30px !important;
+}
+.ant-tabs-nav .ant-tabs-tab {
+        font-size:30px !important; /* Kích thước chữ */
+        
+      }
+@media (max-width: 1024px) {
+        .movie-play{
+                transform: translate(45px,-150px);
+        }
+}
+@media (max-width:736px) {
+        .product__movies{
+                display: grid;
+                grid-template-columns: repeat(2,1fr);
+                gap: 4;
+        }
+        .movie-play{
+                transform: translate(100px,-230px);
+        }
 }
 @media (max-width: 480px) {
         .listmovie__container{
                 max-width: 100%;
                 
         }
-        .tab-listmovie{
-                text-align: center;
-        }
-        .list-tab{
-                display:  inline-flex;
-                gap: 10px;
-        }
-        .item-tab{
-                padding: 5px 0px;
-        }
-        .item-tab a{
-                padding: 0px 10px;
-                font-size: 16px;
-        }
-        .item-tab a:active{
-                padding-bottom: 5px;
-        }
         .product__movies{
                 display: block;
         }
         .product__movies-item{
                 
-                display: flex;
+                display: grid;
+                grid-template-columns: repeat(2,1fr);
                 gap: 20px;
                 margin-bottom: 20px;
+                padding: 0px 0px;
+
         }
         .movie-img {
-                width: 60%;
+                width: 100%;
         }
         .movie-img .movie-img-item{
                 border-radius: 10px;
                 max-width: 100%;
         }
         .movie-play{
-                transform: translate(40px,-150px);
+                transform: translate(50px,-150px);
         }
         .movie-icon-tag{
                 transform: translate(10px, 10px);
@@ -192,6 +203,10 @@
                 font-size: 30px;
                 opacity: 0.5;
         }
+        .ant-tabs-nav .ant-tabs-tab {
+                font-size:20px !important; /* Kích thước chữ */
+                
+              }
         
         
 }

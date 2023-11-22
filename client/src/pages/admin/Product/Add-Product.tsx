@@ -4,12 +4,14 @@ import { UploadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router';
 import { pause } from '../../../utils/pause';
 import { IProduct, addProduct } from '../../../api/Product';
+const { TextArea } = Input;
 
 
 type FieldType = {
         name: string;
         image: string;
         price: string;
+        description: string;
 };
 
 const AddProduct = () => {
@@ -112,6 +114,13 @@ const AddProduct = () => {
                                     rules={[{ required: true, message: 'Please input your name!' }]}
                             >
                                     <Input />
+                            </Form.Item>
+                            <Form.Item<FieldType>
+                                    label="Mô tả"
+                                    name="description"
+                                    rules={[{ required: true, message: 'Please input your description!' }]}
+                            >
+                                    <TextArea rows={4}/>
                             </Form.Item>
 
 

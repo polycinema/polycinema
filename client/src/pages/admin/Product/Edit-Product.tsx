@@ -4,12 +4,13 @@ import { UploadOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router';
 import { pause } from '../../../utils/pause';
 import { IProduct, getProductById, updateProduct } from '../../../api/Product';
-
+const { TextArea } = Input;
 
 type FieldType = {
   name: string;
   image: string;
-  price: string
+  price: string;
+  description: string;
 };
 
 const EditProduct = () => {
@@ -41,6 +42,7 @@ const EditProduct = () => {
       name: product?.name,
       image: product?.image,
       price: product?.price,
+      description: product?.description
     });
   };
 
@@ -157,6 +159,13 @@ const EditProduct = () => {
               <InputNumber />
 
             </Form.Item>
+            <Form.Item<FieldType>
+                                    label="Mô tả"
+                                    name="description"
+                                    rules={[{ required: true, message: 'Please input your description!' }]}
+                            >
+                                    <TextArea rows={4}/>
+                            </Form.Item>
 
             <Form.Item label="Tác vụ">
               <>

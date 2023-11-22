@@ -26,7 +26,7 @@ class SeatSeeder extends Seeder
                 $price = Seat::TYPE['single'];
             }
             Seat::create([
-                'seat_name' => 'A' . ' - ' . $i,
+                'seat_name' => 'A'.$i,
                 'type' => $type,
                 'showtime_id' => 1,
                 'status' => 'unbook',

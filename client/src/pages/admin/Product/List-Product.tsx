@@ -47,6 +47,11 @@ const ListProduct = (props: Props) => {
       key: "price",
     },
     {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
       title: "Action",
       key: "action",
       render: ({ key: id }: { key: number | string }) => (
@@ -88,7 +93,8 @@ const ListProduct = (props: Props) => {
       key: item?.id,
       name: item?.name,
       image: item?.image,
-      price: item?.price
+      price: item?.price,
+      description: item?.description
     }
   })
   return (
