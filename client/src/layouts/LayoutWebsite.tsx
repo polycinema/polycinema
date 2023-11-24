@@ -10,7 +10,27 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { setLogout } from "../redux/slices/authorizationSlice";
+import { useEffect } from "react";
+
 const LayoutWebsite = () => {
+  useEffect(() => {
+    // Khai báo hàm để load Dialogflow Messenger
+    const loadChatbot = () => {
+      window.dfMessenger = {
+        intent: "WELCOME",
+        chatTitle: "BetaCinema",
+        agentId: "4c73e8f0-2ca2-48da-afd1-f8c2ee24a6bc",
+        languageCode: "vi",
+      };
+      const e = document.createElement("script");
+      e.src = "https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1";
+      e.async = true;
+      document.head.appendChild(e);
+    };
+
+    // Gọi hàm loadChatbot khi component được mount
+    loadChatbot();
+  }, []);
   const { user }: any = useAppSelector((state) => state.Authorization);
   const dispatch = useAppDispatch();
   const items: MenuProps["items"] = [
@@ -18,7 +38,7 @@ const LayoutWebsite = () => {
       label: (
         <div>
           <Link to={"inforAcount"}>
-          <UserOutlined /> Thông tin tài khoản
+            <UserOutlined /> Thông tin tài khoản
           </Link>
         </div>
       ),
@@ -52,19 +72,20 @@ const LayoutWebsite = () => {
     {
       label: (
         <Popconfirm
-        title="Đăng xuất tài khoản"
-        description="Bạn có muốn đăng xuất?"
-        okText="Yes"
-        cancelText="No"
-        onConfirm={() => dispatch(setLogout())}
-      >
-        <LogoutOutlined /> Đăng xuất
-      </Popconfirm>
+          title="Đăng xuất tài khoản"
+          description="Bạn có muốn đăng xuất?"
+          okText="Yes"
+          cancelText="No"
+          onConfirm={() => dispatch(setLogout())}
+        >
+          <LogoutOutlined /> Đăng xuất
+        </Popconfirm>
       ),
       key: "5",
     },
   ];
   return (
+
     <div className="m-auto">
       <div className="bg-black">
         <div className="text-white flex flex-row-reverse md:mx-40 md:-px-2">
@@ -126,7 +147,9 @@ const LayoutWebsite = () => {
       <main className="bg-[#F8F8F8]">
         <Outlet />
       </main>
-
+      <div >
+        <df-messenger intent="WELCOME" chat-title="BetaCinema" agent-id="4c73e8f0-2ca2-48da-afd1-f8c2ee24a6bc" language-code="vi"></df-messenger>
+      </div>
       <footer className="">
         <hr />
 
@@ -179,6 +202,7 @@ const LayoutWebsite = () => {
               <p className=" pt-2 text-[13px]">Phone: +8490 666 9169</p>
             </div>
           </div>
+
         </div>
       </footer>
     </div>

@@ -4,6 +4,7 @@ import { useGetMovieByIdQuery } from "../../redux/api/movieApi";
 import { useState, useEffect } from "react";
 import IsLoading from "../../utils/IsLoading";
 import YouTube from "react-youtube";
+import { FacebookProvider, Comments } from 'react-facebook';
 const MovieDetail = () => {
   const { slug } = useParams();
   const slugParams = slug?.split(".html") ?? [];
@@ -97,6 +98,17 @@ const MovieDetail = () => {
           <YouTube videoId={movie.trailer} />
         </div>
       </div>
+      <div className="title3">
+        <div className="title3_facebook">
+        <FacebookProvider appId="287337234293370">
+          <Comments href={`quanhongdo.ga/${slug}`} numPosts={20} />
+        </FacebookProvider>
+        </div>
+      </div>
+      
+      
+      
+      
     </>
   );
 };

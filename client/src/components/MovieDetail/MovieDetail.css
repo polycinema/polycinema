@@ -1,7 +1,7 @@
 
 .container{
     width: 80% !important;
-    max-width: 80% !important;
+    max-width: 1150px !important;
     margin: 0 auto;
     padding-top: 20px;
 }
@@ -54,13 +54,13 @@
     padding-right: 100px;
 }
 .title2{
-    background-color: #3c3e4d;
+    background-color: #ffffff;
     margin-top: 30px;
    padding-bottom: 100px;
 }
 
 .title2 h1{
-    color: white;
+    color: rgb(15, 13, 13);
     text-align: center;
     font-size: 30px;
     font-weight: bold;
@@ -74,6 +74,32 @@
     align-items: center;
     padding-top: 20px;
 }
+
+
+/* .title3{
+    background-color: #ffffff;
+    margin-top: 10px;
+    padding-bottom: 100px;
+} */
+.title3_facebook{
+  
+    /* max-width: 100%;
+    max-height: 100%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+}
+.title3_facebook {
+    /* height: 600px;
+    width: 300px;
+    padding-left: 990px; */
+    width: 100%; 
+}
+.title3_facebook iframe {
+    width: 100% !important; /* Thiết lập chiều rộng 100% cho iframe của hộp bình luận */
+    min-height: 400px; /* Đặt chiều cao tối thiểu cho hộp bình luận */
+  }
 @media (max-width: 550px) {
     .title1 {
         display: block;
@@ -116,7 +142,11 @@
         width: 95%;
         padding-left: 20px;
     }
+
 }
+
+    
+ 
 @media (max-width: 768px) {}
 @media (max-width: 992px) {
     .container{
