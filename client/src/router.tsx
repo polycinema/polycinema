@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import HomePage from "./pages/HomePage/HonePage";
+import HomePage from "./pages/HomePage/HomePage";
 import LayoutWebsite from "./layouts/LayoutWebsite";
 import MoviePage from "./pages/MoviePage/MoviePage";
 import Account from "./auth/Account";
@@ -16,7 +16,7 @@ import AddGenre from "./pages/admin/GenreMng/AddGenre";
 import EditGenre from "./pages/admin/GenreMng/EditGenre";
 import AddActor from "./pages/admin/Actor/Add-Actor";
 import EditActor from "./pages/admin/Actor/Edit-Actor";
-import MovieDetail from "./components/MovieDetail/MovieDetail";
+import MovieDetail from "./pages/MovieDetail/MovieDetail";
 import EditAcount from "./pages/admin/Acount/EditAcount";
 import ListAcount from "./pages/admin/Acount/ListAcount";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
@@ -44,6 +44,7 @@ import InfoAccount from "./components/userinfo/InfoAccount";
 import SeatCheckout from "./components/SeatCheckout";
 import ProductCheckout from "./components/ProductCheckout";
 import NewDetailPage from "./pages/NewsPage/NewDetailPage";
+import PaymentPage from "./pages/PaymentPage";
 
 export const router = createBrowserRouter([
   { path: "*", element: <NotFoundPage /> },
@@ -59,8 +60,9 @@ export const router = createBrowserRouter([
       { path: "movies/:slug/detail", element: <MovieDetail /> },
       {path:"poly-checkout/:id", element:<CheckoutPage/>, children:[
         {path:"", element:<SeatCheckout/>},
-        {path:"product", element:<ProductCheckout/>}
+        // {path:"", element:<ProductCheckout/>}
       ]},
+      {path:"poly-payment", element:<PaymentPage/>},
       {path:"inforAcount",element:<InfoAccount/>}
     ],
   },

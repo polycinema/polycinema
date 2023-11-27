@@ -148,7 +148,7 @@ const LayoutWebsite = () => {
         <Outlet />
       </main>
       <div >
-        <df-messenger intent="WELCOME" chat-title="BetaCinema" agent-id="4c73e8f0-2ca2-48da-afd1-f8c2ee24a6bc" language-code="vi"></df-messenger>
+        <df-messenger intent="WELCOME" chat-title="Polycinema" agent-id="4c73e8f0-2ca2-48da-afd1-f8c2ee24a6bc" language-code="vi"></df-messenger>
       </div>
       <footer className="">
         <hr />

@@ -1,5 +1,5 @@
 import React from "react";
-import logo1 from "../../public/img/logo1.png";
+import logo1 from "../../public/img/logo.jpg";
 import { Link, Outlet } from "react-router-dom";
 import { AppstoreOutlined, GroupOutlined, LogoutOutlined, TeamOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined, SolutionOutlined, ShopOutlined, FieldTimeOutlined } from "@ant-design/icons";
 import { Layout, Menu, Popconfirm, theme } from "antd";

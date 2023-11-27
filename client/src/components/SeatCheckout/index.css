@@ -12,8 +12,8 @@
         background-size: contain;
         background-repeat: no-repeat;
         background-position: bottom;
-        cursor: pointer;
         margin: 0 auto;
+        text-align: center;
 
 }
 @media (max-width: 768px)  {
@@ -28,8 +28,6 @@
 }
 .seat-normal{
         background-image: url(../../../public/img/seat-unselect-normal.png);
-        
-
 }
 .seat-normal-active{
         background-image: url(../../../public/img/seat-select-normal.png);
@@ -63,5 +61,4 @@
 }
 .seat-vip-buy{
         background-image: url(../../../public/img/seat-buy-vip.png);
-  
 }

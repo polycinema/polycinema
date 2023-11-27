@@ -20,10 +20,17 @@ const checkoutApi = createApi({
                 getAllProducts:build.query({
                         query:()=> `/admin/products`,
                         providesTags:['Checkout']
+                }),
+                checkoutBooking: build.mutation({
+                        query:(booking)=> ({
+                                url:`/bookings`,
+                                method: 'POST',
+                                body:booking
+                        }),
                 })
         })
 })
 
-export const {useGetShowTimeByMovieQuery,useGetSeatsByShowTimeQuery,useGetAllProductsQuery} = checkoutApi;
+export const {useGetShowTimeByMovieQuery,useGetSeatsByShowTimeQuery,useGetAllProductsQuery ,useCheckoutBookingMutation} = checkoutApi;
 export const checkoutReducer = checkoutApi.reducer;
 export default checkoutApi
