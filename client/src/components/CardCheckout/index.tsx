@@ -1,29 +1,57 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { FaTag } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
 import { FaDesktop } from "react-icons/fa6";
 import { FaCalendarDays } from "react-icons/fa6";
-import { FaLandmark } from "react-icons/fa6";
-import { FaGrip } from "react-icons/fa6";
 import Button from "../Button";
 import { useParams } from "react-router";
 import { useGetSeatsByShowTimeQuery } from "../../redux/api/checkoutApi";
 import dayjs from "dayjs";
-import { useAppSelector } from "../../store/hook";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { useGetMovieByIdQuery } from "../../redux/api/movieApi";
 import { Link } from "react-router-dom";
+import { setBooking, setTotalPrice } from "../../redux/slices/valueCheckoutSlice";
 const CardCheckout = () => {
   const { id } = useParams();
-  const { data: Seats, isLoading } = useGetSeatsByShowTimeQuery(id || "");
-  const { valueCheckout } = useAppSelector((state: any) => state.ValueCheckout);  
-  const { data: movie } = useGetMovieByIdQuery(Seats?.data?.movie_id || "");
+  const { data: showtime, isLoading } = useGetSeatsByShowTimeQuery(id || "");
+  const { valueSeatCheckout } = useAppSelector((state: any) => state.ValueCheckout); 
+  const { products,totalPrice } = useAppSelector((state: any) => state.ValueCheckout);
+  const {user} = useAppSelector((state: any) => state.Authorization);
+  const { data: movie } = useGetMovieByIdQuery(showtime?.data?.movie_id || "");
+  const [product,setProduct] = useState()
+  const [seat,setSeat] = useState()
+  const dispatch = useAppDispatch()
+  
+  useEffect(() => {
+    const resultProduct = products?.map((item)=>{      
+      return{
+        id:item?.id,
+        quantity:item?.quantity
+      }
+    })
+    const resultSeat = valueSeatCheckout?.map((item)=>{      
+      return{
+        id:item.payload?.id,
+      }
+    })
+    setProduct(resultProduct);
+    setSeat(resultSeat);
+    dispatch(setTotalPrice())
+
+},[products, valueSeatCheckout])
+  
+  const booking = (value)=>{
+    dispatch(setBooking(value))
+  }
+
+  
 
   return (
     <div>
       <div className="border-b-4 pb-8 border-dashed">
-        <div className="flex justify-between px-4">
+        <div className="flex  justify-between px-4">
           <img className="w-[150px]" src={movie?.data?.image} alt="" />
-          <h1 className="text-[#03599d] text-2xl font-bold pl-2">
+          <h1 className="text-[#03599d] text-xl font-bold pl-2">
             {movie?.data?.name}
           </h1>
         </div>
@@ -33,7 +61,7 @@ const CardCheckout = () => {
           </p>
           <p className="font-bold text-[14px]">
             {movie?.data?.genres?.map((item) => (
-              <span>{item?.name},</span>
+              <span key={item?.id}>{item?.name},</span>
             ))}
           </p>
         </div>
@@ -50,7 +78,7 @@ const CardCheckout = () => {
             <FaCalendarDays /> <span>Ngày chiếu</span>
           </p>
           <p className="font-bold text-[14px]">
-            {dayjs(Seats?.data.show_date).format("DD-MM")}
+            {dayjs(showtime?.data.show_date).format("DD-MM")}
           </p>
         </div>
 
@@ -58,14 +86,14 @@ const CardCheckout = () => {
           <p className="flex items-center text-[14px]">
             <FaHistory /> <span>Giờ chiếu</span>
           </p>
-          <p className="font-bold text-[14px]">{Seats?.data.start_time}</p>
+          <p className="font-bold text-[14px]">{showtime?.data.start_time}</p>
         </div>
         <div className="grid grid-cols-2 items-center ml-12  gap-14 mt-8">
           <p className="flex items-center text-[14px]">
             <FaDesktop /> <span>Phòng chiếu</span>
           </p>
           <p className="font-bold text-[14px]">
-            {Seats?.data?.room?.room_name}
+            {showtime?.data?.room?.room_name}
           </p>
         </div>
         <div
@@ -76,29 +104,21 @@ const CardCheckout = () => {
             <FaDesktop /> <span>Ghế ngồi</span>
           </p>
           <p className="flex flex-wrap font-bold text-[14px]">
-            {valueCheckout?.map((item) => (
-              <span>{item.payload.seat.seat_name},</span>
+            {valueSeatCheckout?.map((item) => (
+              <span>{item.payload.seat_name},</span>
             ))}
           </p>
         </div>
       </div>
       <div className="flex justify-center space-x-2">
-        <Link to={`/poly-checkout/${id}`}>
-          <Button width="100px">Quay lại</Button>
-        </Link>
-        <Link to={"product"}>
+        <Link to={"/poly-payment"}>
           <Button
             width="100px"
-            onClick={() => {
-              console.log("booking", {
-                id: 1,
-                showtime_id: Seats?.data.id,
-                seats: valueCheckout,
-                products: id,
-                valueProduct: 2,
-                total_price: "1000",
-              });
-            }}
+            onClick={() =>{
+              booking({products:product, movie_id:movie.data.id,user_id:user.id,showtime_id:showtime.data.id,total_price:totalPrice,seats:seat})
+            }
+              
+            }
           >
             Tiếp tục
           </Button>

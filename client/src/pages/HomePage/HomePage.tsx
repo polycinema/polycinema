@@ -2,14 +2,18 @@ import React, { useEffect } from 'react'
 import BannerMovie from '../../components/banner/BannerMovie'
 import ListMovie from '../../components/Listmovie/ListMovie'
 import { useAppDispatch } from '../../store/hook'
-import { deleteValueCheckoutSeat } from '../../redux/slices/valueCheckoutSlice'
+import { deleteValueCheckoutSeat, deleteValueProduct, deleteActionTogle, deleteTotalPrice } from '../../redux/slices/valueCheckoutSlice'
 
 
 
-const HonePage = () => {
+const HomePage = () => {
         const dispatch = useAppDispatch()
         useEffect(()=>{
                 dispatch(deleteValueCheckoutSeat())
+                dispatch(deleteValueProduct())
+                dispatch(deleteActionTogle())
+                dispatch(deleteTotalPrice());
+
         })
         return (
                 <>
@@ -20,4 +24,4 @@ const HonePage = () => {
         )
 }
 
-export default HonePage
+export default HomePage
