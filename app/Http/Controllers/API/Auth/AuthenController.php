@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\API\Auth;
 
+use App\Events\RegistedUser;
 use App\Http\Controllers\Controller;
+use App\Mail\WelcomeNewUserMail;
 use App\Models\User;
 use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 
@@ -75,7 +79,7 @@ class AuthenController extends Controller
                 'password'  => Hash::make($request->password)
             ]);
 
-            event(new Registered($user));
+            Mail::to($user->email)->send(new WelcomeNewUserMail($user));
 
             $token = $user->createToken(__CLASS__);
 
