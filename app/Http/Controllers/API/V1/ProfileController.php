@@ -12,20 +12,22 @@ use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
-    public function updateProfile(Request $request, string $id)
+    public function updateProfile(Request $request)
     {
         try {
-            $user = User::findOrFail($id);
+            $user_id = $request->user_id;
 
+            $user = User::find($user_id);
+            
             $profile_data = $request->all();
-
-            $oldData = $user->toArray();
-
+            
+            $oldData = $user;
+            
             $validator = Validator::make($request->all(), [
                 'image' => 'string',
                 'full_name' => 'string|max:255',
-                'phone' => 'string|numeric|regex:/^0\d{9}$/|unique:users,phone,' . $id,
-                'cccd' => 'numeric|min:9|unique:users,cccd,' . $id,
+                'phone' => 'string|numeric|regex:/^0\d{9}$/|unique:users,phone,' . $user_id,
+                'cccd' => 'numeric|min:9|unique:users,cccd,' . $user_id,
                 'date_of_birth' => 'date_format:Y/m/d',
                 'gender' => 'string',
                 'city' => 'string',
@@ -67,7 +69,7 @@ class ProfileController extends Controller
                 ], Response::HTTP_OK);
             }
         } catch (Exception $exception) {
-            Log::error('API/V1/UserController@updateProfile:, '[$exception->getMessage()]);
+            Log::error('API/V1/ProfileController@updateProfile:' ,[$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
