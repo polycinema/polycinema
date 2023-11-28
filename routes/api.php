@@ -4,6 +4,7 @@ use App\Http\Controllers\API\Auth\AuthenController;
 use App\Http\Controllers\API\V1\BookingController;
 use App\Http\Controllers\API\V1\MovieController;
 use App\Http\Controllers\API\V1\SeatController;
+use App\Http\Controllers\API\V1\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,4 +49,6 @@ Route::prefix('v1')->group(function () {
     Route::get('seats/{showtime_id}', [SeatController::class, 'getSeatShowTime'])->name('seats');
 
     Route::post('bookings', [BookingController::class, 'store'])->name('bookings.save');
+
+    Route::post('update-profile', [ProfileController::class, 'updateProfile']);
 });
