@@ -10,8 +10,7 @@ use App\Http\Controllers\API\V1\Admin\RoomController;
 use App\Http\Controllers\API\V1\Admin\SeatController;
 use App\Http\Controllers\API\V1\Admin\ShowTimeController;
 use App\Http\Controllers\API\V1\Admin\UserController;
-
-
+use App\Http\Controllers\API\V1\BannerController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function () {
@@ -35,5 +34,6 @@ Route::prefix('admin')->group(function () {
 
     Route::resource('posts', PostController::class)->except(['edit', 'create']);
 
+    Route::resource('banners', [BannerController::class])->except(['edit', 'create']);
 });
 
