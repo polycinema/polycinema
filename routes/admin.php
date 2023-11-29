@@ -34,6 +34,6 @@ Route::prefix('admin')->group(function () {
 
     Route::resource('posts', PostController::class)->except(['edit', 'create']);
 
-    Route::resource('banners', [BannerController::class])->except(['edit', 'create']);
+    Route::resource('banners', BannerController::class)->except(['edit', 'create']);
 });
 
