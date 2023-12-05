@@ -91,6 +91,11 @@ const LayoutAdmin: React.FC = () => {
             },
             {
               key: 12,
+              icon: <SolutionOutlined />,
+              label: <Link to={"banner"}>Banner</Link>,
+            },
+            {
+              key: 13,
               icon: <LogoutOutlined />,
               label: (
                 <Popconfirm
