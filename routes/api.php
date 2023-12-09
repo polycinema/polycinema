@@ -51,4 +51,8 @@ Route::prefix('v1')->group(function () {
     Route::post('bookings', [BookingController::class, 'store'])->name('bookings.save');
 
     Route::post('update-profile', [ProfileController::class, 'updateProfile']);
+
+    Route::post('vnpay-charge', [BookingController::class, 'createVNPayPayment']);
+
+    Route::post('seat-reservation/{seat_id}', [BookingController::class, 'updateSeatReservation']);
 });

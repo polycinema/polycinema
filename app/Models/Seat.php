@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use function PHPSTORM_META\type;
-
 class Seat extends Model
 {
     use HasFactory, SoftDeletes;
@@ -36,5 +34,9 @@ class Seat extends Model
     public function showtime()
     {
         return $this->belongsTo(ShowTime::class, 'showtime_id');
+    }
+
+    public function booking(): BelongsTo {
+        return $this->belongsTo(Booking::class);
     }
 }
