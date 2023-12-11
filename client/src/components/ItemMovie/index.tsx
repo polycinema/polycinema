@@ -71,7 +71,7 @@ const ItemMovie = ({ movie }: Props) => {
               "url(https://www.betacinemas.vn/assets/frontend/layout/img/hot.png)",
           }}
         ></div> : <div></div>}
-        
+
       </div>
 
       <div className="movie-item-description">
@@ -81,11 +81,11 @@ const ItemMovie = ({ movie }: Props) => {
         <div className="movie-des">
           <p className="movie-des-1">Thể loại:</p>
           <p className="movie-des-2">
-          {movie.genres.map((itemGenres:any) => {
-            return <span>{itemGenres.name},</span>;
-          })}
+            {movie?.genres?.map((itemGenres: any) => {
+              return <span key={itemGenres?.id}>{itemGenres?.name},</span>;
+            })}
           </p>
-          
+
         </div>
         <div className="movie-des">
           <p className="movie-des-1">Thời lượng:</p>
@@ -102,9 +102,9 @@ const ItemMovie = ({ movie }: Props) => {
           ) : (
             <div>
               <h4 className="text-center text-3xl my-2">Rạp PolyCinema</h4>
-              {showtimesAll?.data?.length === 0 ? <Empty /> :<Tabs
+              {showtimesAll?.data?.length === 0 ? <Empty /> : <Tabs
                 size="large"
-                items={showtimesAll?.data.map((item, length) => {
+                items={showtimesAll?.data?.map((item, length) => {
                   return {
                     key: length,
                     label: dayjs(item.date).format("DD/MM"),
@@ -159,17 +159,17 @@ const ItemMovie = ({ movie }: Props) => {
                               )}
                             </Modal>
                             <div className="flex gap-4">
-                              {item.showtimes.map((item) => (
-                                <div key={item.showtime.start_time}>
+                              {item.showtimes?.map((item, index) => (
+                                <div key={index}>
                                   <button
                                     onClick={() =>
-                                      showModalDatGhe(item.showtime)
+                                      showModalDatGhe(item?.showtime)
                                     }
                                     className="bg-[#e5e5e5] px-[17px] py-[5px] text[14px] "
                                   >
-                                    {item.showtime.start_time}
+                                    {item?.showtime?.start_time}
                                   </button>
-                                  <p>{item.available_seats} ghế trống</p>
+                                  <p>{item?.available_seats} ghế trống</p>
                                 </div>
                               ))}
                             </div>
@@ -180,19 +180,19 @@ const ItemMovie = ({ movie }: Props) => {
                   };
                 })}
               />}
-              
+
             </div>
           )}
         </Modal>
-        {movie.status === "upcoming" || movie.status === "unscreen" ? <div></div> :<ButtonCustom
+        {movie?.status === "upcoming" || movie?.status === "unscreen" ? <div></div> : <ButtonCustom
           onClick={() => {
-            showModalChonGio(movie.id);
+            showModalChonGio(movie?.id);
           }}
           width="100%"
         >
           Mua Vé
-        </ButtonCustom> }
-        
+        </ButtonCustom>}
+
       </div>
     </div>
   );

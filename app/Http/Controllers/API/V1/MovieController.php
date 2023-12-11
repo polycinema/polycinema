@@ -122,4 +122,44 @@ class MovieController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getShowtimes()
+    {
+        try {
+            $showtimes = ShowTime::query()
+                ->with(['movie', 'room'])
+                ->select('show_times.*')
+                ->selectRaw('(SELECT COUNT(*) FROM seats WHERE seats.showtime_id = show_times.id AND seats.status = "unbook") AS available_seat')
+                ->get();
+
+            $result = [];
+
+            foreach ($showtimes as $showtime) {
+                $moviesInDay = ShowTime::with(['movie', 'room'])
+                    ->where('show_date', $showtime->show_date)
+                    ->with(['movie', 'room'])
+                    ->select('show_times.*')
+                    ->selectRaw('(SELECT COUNT(*) FROM seats WHERE seats.showtime_id = show_times.id AND seats.status = "unbook") AS available_seat')
+                    ->get();
+
+
+                $result[] = [
+                    'show_date' => $showtime->show_date,
+                    'showtime' => $moviesInDay,
+                ];
+            }
+
+            return response()->json([
+                'data' => $result
+            ], Response::HTTP_OK);
+        } catch (Exception $e) {
+            Log::error("MovieController@getShowtimes: ", [$e->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    
 }

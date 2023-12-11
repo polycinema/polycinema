@@ -42,7 +42,6 @@ import Dashboard from "./pages/admin/Dashboard/Dashboard";
 import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
 import InfoAccount from "./components/userinfo/InfoAccount";
 import SeatCheckout from "./components/SeatCheckout";
-import ProductCheckout from "./components/ProductCheckout";
 import NewDetailPage from "./pages/NewsPage/NewDetailPage";
 import PaymentPage from "./pages/PaymentPage";
 

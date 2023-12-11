@@ -11,8 +11,6 @@ import { useEffect, useState } from "react";
 
 const ShowTimeMng = () => {
   const { data, isLoading, error }: any = useGetShowTimesQuery();
-  console.log("showtime", data);
-
   const [removeShowtime, { error: ErrorRemove }] = useRemoveShowTimeMutation();
   const [rooms, setRooms] = useState();
   const [movies, setMovies] = useState();

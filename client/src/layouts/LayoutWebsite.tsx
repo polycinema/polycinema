@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
-import logo from "../../public/img/logo.jpg";
+import logo from "../../public/img/logo.png";
 import { useAppDispatch, useAppSelector } from "../store/hook";
 import { Dropdown, MenuProps, Popconfirm } from "antd";
 import {
@@ -110,10 +110,10 @@ const LayoutWebsite = () => {
       </div>
       <div className="sticky top-0 z-50">
         <header className="border-b-[1px] border-[#E7E7E7] bg-white">
-          <div className="md:max-w-6xl md:flex md:mx-auto md:justify-between md:py-4">
+          <div className="md:max-w-6xl md:flex md:mx-auto md:justify-between  items-center">
             <div>
               <Link to={""}>
-                <img src={logo} alt="" />
+                <img className="w-[150px]" src={logo} alt="" />
               </Link>
             </div>
             <div>
@@ -147,7 +147,7 @@ const LayoutWebsite = () => {
       <main className="bg-[#F8F8F8]">
         <Outlet />
       </main>
-      <div >
+      <div>
         <df-messenger intent="WELCOME" chat-title="Polycinema" agent-id="4c73e8f0-2ca2-48da-afd1-f8c2ee24a6bc" language-code="vi"></df-messenger>
       </div>
       <footer className="">
@@ -157,7 +157,7 @@ const LayoutWebsite = () => {
           <div className="md:grid md:grid-cols-3 md:gap-8">
             <div className="text-center md:text-left text-xs md:text-base">
               <Link to={""}>
-                <img src={logo} alt="" className="h-12" />
+                <img  src={logo} alt="" className="w-[150px]" />
               </Link>
               <h2 className="md:px-4 md:pt-2 hover:text-[#397EBA]">
                 <Link to={""}>Tuyển dụng</Link>

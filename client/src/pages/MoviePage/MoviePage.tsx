@@ -1,9 +1,11 @@
 import React from 'react'
-import ListMovie from '../../components/Listmovie/ListMovie'
 import { Link } from 'react-router-dom'
 
-
 const MoviePage = () => {
+
+  // const {data} = useGetShowTimesMovieQuery()
+  // console.log(data?.data);
+  
   return (
     <div className='moviepage__container'>
       <div className="moviepage-date max-w-[1150px] mx-auto  border-b border-gray-400 p-4">
@@ -53,7 +55,7 @@ const MoviePage = () => {
         </ul>
 
       </div>
-      <ListMovie />
+      {/* <ListMovie /> */}
       <div className='bg-black px-4'>
         <div className='max-w-[1150px] mx-auto py-10 overflow-hidden'>
           <h4 className='mx-auto text-white md:text-4xl font-bold border-b-4 border-b-[#03599d] w-fit p-4 '>Phim Sắp Chiếu</h4>
