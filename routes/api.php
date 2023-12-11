@@ -51,4 +51,7 @@ Route::prefix('v1')->group(function () {
     Route::post('bookings', [BookingController::class, 'store'])->name('bookings.save');
 
     Route::post('update-profile', [ProfileController::class, 'updateProfile']);
+
+    Route::get('showtime', [MovieController::class, 'getShowtimes']);
+
 });
