@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Genre;
 use App\Models\Movie;
+use App\Models\MovieGenre;
 use App\Models\Seat;
 use App\Models\ShowTime;
 use Exception;
@@ -160,12 +162,18 @@ class MovieController extends Controller
             $result = [];
 
             foreach ($showtimes as $showtime) {
+
+                $genre = MovieGenre::where('movie_id', $showtime->movie->id)->select('genre_id')->get();
+
+                $genres = Genre::whereIn('id', $genre)->select('name')->get();
+
                 $result[$showtime->show_date][] = [
                     'movie' => $showtime->movie,
                     'room' => $showtime->room,
                     'start_time' => $showtime->start_time,
                     'end_time' => $showtime->end_time,
                     'available_seat' => $showtime->available_seat,
+                    'genre' => $genres,
                 ];
             }
 
