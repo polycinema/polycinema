@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
             DirectorSeeder::class,
             MovieSeeder::class,
             ShowTimeSeeder::class,
-            ActorSeeder::class
+            ActorSeeder::class,
+            CouponSeeder::class,
         ]);
     }
 }
