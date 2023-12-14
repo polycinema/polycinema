@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import YouTube from "react-youtube";
 import { useGetShowTimesMovieQuery } from "../../redux/api/showTimeApi";
 import { convertSlug } from "../../utils/convertSlug";
+import IsLoading from "../../utils/IsLoading";
 
 const MoviePage = () => {
   const [isModalOpenTrailer, setIsModalOpenTrailer] = useState(false);
@@ -17,6 +18,7 @@ const MoviePage = () => {
   // console.log("list movies: ", movies);
   // console.log("showtimesByChange: ", showtimesByChange);
   // console.log("index date: ", indexDate);
+
   useEffect(() => {
     if (data) {
       setShowtimes(data?.data);
@@ -32,6 +34,13 @@ const MoviePage = () => {
       setShowtime(showtime[0]);
     }
   }, [showtimesByChange]);
+  if (isLoading) {
+    return (
+      <>
+        <IsLoading />
+      </>
+    );
+  }
   const showModalTrailer = () => {
     setIsModalOpenTrailer(true);
   };
@@ -90,16 +99,17 @@ const MoviePage = () => {
                       {movie?.movie?.name}
                     </span>
                   </div>
-                  <div className="">
-                    {/* {
-                      movie?.movie?.genres?.map((items)=>{
+                  <div className="mt-2">
+                  <i className="fas fa-tags text-[#337ab7] mr-2"></i>
+                    {
+                      movie?.genre?.map((items:any,index:any)=>{
                         return (
-                          <span>{items?.name}</span>
+                          <span key={items.length} className="mr-2">{items?.name}{index <= length - 1 ? ',' : ''}</span>
                         )
                       })
-                    } */}
+                    }
                     <span className="">
-                      <i className="far fa-clock text-[#337ab7] mr-2"></i>
+                      <i className="far fa-clock text-[#337ab7] mr-1"></i>
                       {movie?.movie?.duration}
                     </span>
                   </div>
@@ -185,6 +195,7 @@ interface RootObject {
 interface Showtime {
   movie: Movie;
   room: Room;
+  genre: any;
   start_time: string;
   end_time: string;
   available_seat: number;
@@ -211,5 +222,4 @@ interface Movie {
   deleted_at?: any;
   created_at: string;
   updated_at: string;
-  genres: any;
 }
