@@ -1,6 +1,6 @@
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import YouTube from "react-youtube";
 import { useGetShowTimesMovieQuery } from "../../redux/api/showTimeApi";
 import { convertSlug } from "../../utils/convertSlug";
@@ -13,11 +13,13 @@ const MoviePage = () => {
   const [indexDate, setIndexDate] = useState(0);
   const [showtime, setShowtime] = useState([0]);
   const [showtimesByChange, setShowtimeByChange] = useState([]);
-
-  console.log("list showtime: ", showtime);
+  const [selectedMovie, setSelectedMovie] = useState<Movie>();
+  const navigate = useNavigate();
+  console.log("showtime by change: ", showtime);
   // console.log("list movies: ", movies);
   // console.log("showtimesByChange: ", showtimesByChange);
   // console.log("index date: ", indexDate);
+
 
   useEffect(() => {
     if (data) {
@@ -34,6 +36,10 @@ const MoviePage = () => {
       setShowtime(showtime[0]);
     }
   }, [showtimesByChange]);
+
+  if (error) {
+    console.error(error);
+  }
   if (isLoading) {
     return (
       <>
@@ -41,13 +47,21 @@ const MoviePage = () => {
       </>
     );
   }
-  const showModalTrailer = () => {
+
+  const showModalTrailer = (movies: Movie) => {
+    setSelectedMovie(movies);
     setIsModalOpenTrailer(true);
   };
   const handleCancel = () => {
     setIsModalOpenTrailer(false);
   };
-
+  const nextDetail = (movie: Movie) => {
+    if (movie) {
+      const name = movie?.name;
+      const id = movie?.id;
+      return navigate(`/movies/${convertSlug(name)}-${id}.html/detail`)
+    }
+  };
   return (
     <div className="moviepage__container">
       <div className="moviepage-date max-w-[1150px] mx-auto  border-b border-gray-400 p-4">
@@ -69,21 +83,21 @@ const MoviePage = () => {
       </div>
       <div className=""></div>
       {/* <ListMovie /> */}
-      {showtime?.map((movie: Showtime, index) => {
+      {showtime?.map((movie: Showtime, index: number) => {
         return (
           <div className="md:max-w-[1150px] max-w-xs mx-auto my-10" key={index}>
             <Modal
-              title={`Trailer: ${movie?.movie?.name}`}
+              title={`Trailer: ${selectedMovie?.name}`}
               open={isModalOpenTrailer}
               width={700}
               onCancel={handleCancel}
             >
-              <YouTube videoId={movie?.movie?.trailer} />
+              <YouTube videoId={selectedMovie?.trailer} />
             </Modal>
             <div className="grid grid-cols-2 md:grid-cols-3">
               <div
                 className="relative md:w-[310px] w-[130px] group"
-                onClick={showModalTrailer}
+                onClick={() => showModalTrailer(movie?.movie)}
               >
                 <img src={movie?.movie?.image} alt="" className="rounded-xl" />
                 <button className="absolute top-0 left-0 right-0 bottom-0 bg-black/40 hidden group-hover:block transition-all rounded-xl">
@@ -91,29 +105,28 @@ const MoviePage = () => {
                 </button>
               </div>
               <div className="">
-                <Link
-                  to={``}
-                >
-                  <div className="">
-                    <span className="md:text-4xl text-2xl text-[#03599d]">
-                      {movie?.movie?.name}
-                    </span>
-                  </div>
-                  <div className="mt-2">
+                {/* movies/${convertSlug(movie?.movie?.name)}-${movie?.movie?.id}.html/detail */}
+                <div className="cursor-pointer" onClick={() => nextDetail(movie?.movie)}>
+                  <span className="md:text-4xl text-2xl text-[#03599d]">
+                    {movie?.movie?.name}
+                  </span>
+                </div>
+                <div className="mt-2">
                   <i className="fas fa-tags text-[#337ab7] mr-2"></i>
-                    {
-                      movie?.genre?.map((items:any,index:any)=>{
-                        return (
-                          <span key={items.length} className="mr-2">{items?.name}{index <= length - 1 ? ',' : ''}</span>
-                        )
-                      })
-                    }
-                    <span className="">
-                      <i className="far fa-clock text-[#337ab7] mr-1"></i>
-                      {movie?.movie?.duration}
-                    </span>
-                  </div>
-                </Link>
+                  {movie?.genre?.map((items: any, index: any) => {
+                    return (
+                      <span key={items.length} className="mr-2">
+                        {items?.name}
+                        {index <= length - 1 ? "," : ""}
+                      </span>
+                    );
+                  })}
+                  <span className="">
+                    <i className="far fa-clock text-[#337ab7] mr-1"></i>
+                    {movie?.movie?.duration}
+                  </span>
+                </div>
+
                 <div className="space-y-2 mt-3">
                   <p>2D PHỤ ĐỀ</p>
                   <button className="bg-gray-300 px-2 py-1 ">
