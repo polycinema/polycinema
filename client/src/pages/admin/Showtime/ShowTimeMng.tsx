@@ -17,8 +17,8 @@ const ShowTimeMng = () => {
   const [rooms, setRooms] = useState();
   const [movies, setMovies] = useState();
 
-  console.log("id room: ", rooms);
-  console.log("id movies: ", movies);
+  // console.log("id room: ", rooms);
+  // console.log("id movies: ", movies);
 
   useEffect(() => {
     if (data) {
@@ -99,7 +99,13 @@ const ShowTimeMng = () => {
             <Popconfirm
               title="Xóa lịch chiếu"
               description="Bạn có chắc muốn xóa?"
-              onConfirm={() => removeShowtime(id)}
+              onConfirm={() =>
+                removeShowtime(id).unwrap().then(()=>{
+                  notification.success({
+                    message: "Delete showtime sucessfuly!",
+                  });
+                })
+              }
               okText="Yes"
               cancelText="No"
             >

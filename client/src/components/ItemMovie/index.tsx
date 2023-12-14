@@ -41,18 +41,18 @@ const ItemMovie = ({ movie }: Props) => {
   };
 
   return (
-    <div className="product__movies-item" key={movie.id}>
+    <div className="product__movies-item" key={movie?.id}>
       <Modal
-        title={`Trailer: ${movie.name}`}
+        title={`Trailer: ${movie?.name}`}
         open={isModalOpenTrailer}
         width={700}
         onCancel={handleCancel}
       >
-        <YouTube videoId={movie.trailer} />
+        <YouTube videoId={movie?.trailer} />
       </Modal>
       <div className="movie-img">
         <div className="bg-movie"></div>
-        <img className="movie-img-item" src={`${movie.image}`} alt="" />
+        <img className="movie-img-item" src={`${movie?.image}`} alt="" />
         <div className="movie-play">
           <Button onClick={showModalTrailer}>
             <AiFillPlayCircle />
@@ -64,7 +64,7 @@ const ItemMovie = ({ movie }: Props) => {
             alt=""
           />
         </div>
-        {movie.status === "upcoming" ? <div
+        {movie?.status === "upcoming" ? <div
           className="movie-icon-sale"
           style={{
             backgroundImage:
@@ -76,12 +76,12 @@ const ItemMovie = ({ movie }: Props) => {
 
       <div className="movie-item-description">
         <h4 className="movie-name">
-          <Link to={`movies/${convertSlug(movie.name)}-${movie.id}.html/detail`}>{movie.name}</Link>
+          <Link to={`movies/${convertSlug(movie?.name)}-${movie?.id}.html/detail`}>{movie?.name}</Link>
         </h4>
         <div className="movie-des">
           <p className="movie-des-1">Thể loại:</p>
           <p className="movie-des-2">
-          {movie.genres.map((itemGenres:any) => {
+          {movie?.genres.map((itemGenres:any) => {
             return <span>{itemGenres.name},</span>;
           })}
           </p>
@@ -89,7 +89,7 @@ const ItemMovie = ({ movie }: Props) => {
         </div>
         <div className="movie-des">
           <p className="movie-des-1">Thời lượng:</p>
-          <p className="movie-des-2">{movie.duration} phút</p>
+          <p className="movie-des-2">{movie?.duration} phút</p>
         </div>
         <Modal
           title={`Lịch chiếu `}
@@ -159,7 +159,7 @@ const ItemMovie = ({ movie }: Props) => {
                               )}
                             </Modal>
                             <div className="flex gap-4">
-                              {item.showtimes.map((item) => (
+                              {item?.showtimes?.map((item) => (
                                 <div key={item.showtime.start_time}>
                                   <button
                                     onClick={() =>
