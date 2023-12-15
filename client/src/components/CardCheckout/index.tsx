@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import { FaTag } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
 import { FaDesktop } from "react-icons/fa6";
@@ -10,41 +10,39 @@ import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { useGetMovieByIdQuery } from "../../redux/api/movieApi";
 import { Link } from "react-router-dom";
-import { setBooking, setTotalPrice } from "../../redux/slices/valueCheckoutSlice";
+import { setBooking } from "../../redux/slices/valueCheckoutSlice";
 const CardCheckout = () => {
   const { id } = useParams();
   const { data: showtime, isLoading } = useGetSeatsByShowTimeQuery(id || "");
-  const { valueSeatCheckout } = useAppSelector((state: any) => state.ValueCheckout); 
-  const { products,totalPrice } = useAppSelector((state: any) => state.ValueCheckout);
-  const {user} = useAppSelector((state: any) => state.Authorization);
+  const { products: stateProducts, valueSeatCheckout } = useAppSelector((state: any) => state.ValueCheckout);
+  const { user } = useAppSelector((state: any) => state.Authorization);
   const { data: movie } = useGetMovieByIdQuery(showtime?.data?.movie_id || "");
-  const [product,setProduct] = useState()
-  const [seat,setSeat] = useState()
+  const [product, setProduct] = useState()
+  const [seat, setSeat] = useState()
   const dispatch = useAppDispatch()
-  
+
   useEffect(() => {
-    const resultProduct = products?.map((item)=>{      
-      return{
-        id:item?.id,
-        quantity:item?.quantity
+    const resultProduct = stateProducts?.map((item) => {
+      return {
+        id: item?.id,
+        quantity: item?.quantity
       }
     })
-    const resultSeat = valueSeatCheckout?.map((item)=>{      
-      return{
-        id:item.payload?.id,
+    const resultSeat = valueSeatCheckout?.map((item) => {
+      return {
+        id: item.payload?.id
       }
     })
     setProduct(resultProduct);
     setSeat(resultSeat);
-    dispatch(setTotalPrice())
 
-},[products, valueSeatCheckout])
-  
-  const booking = (value)=>{
+  }, [stateProducts, valueSeatCheckout])
+
+  const booking = (value) => {
     dispatch(setBooking(value))
   }
 
-  
+
 
   return (
     <div>
@@ -104,8 +102,8 @@ const CardCheckout = () => {
             <FaDesktop /> <span>Ghế ngồi</span>
           </p>
           <p className="flex flex-wrap font-bold text-[14px]">
-            {valueSeatCheckout?.map((item) => (
-              <span>{item.payload.seat_name},</span>
+            {valueSeatCheckout?.map((item, index) => (
+              <span key={index}>{item.payload.seat_name},</span>
             ))}
           </p>
         </div>
@@ -114,10 +112,18 @@ const CardCheckout = () => {
         <Link to={"/poly-payment"}>
           <Button
             width="100px"
-            onClick={() =>{
-              booking({products:product, movie_id:movie.data.id,user_id:user.id,showtime_id:showtime.data.id,total_price:totalPrice,seats:seat})
+            onClick={() => {
+              booking({
+                products: product, movie_id: movie.data.id, user_id: user.id, showtime_id: showtime.data.id, total_price: stateProducts.reduce((sum: any, item: any) => {
+                  return sum + item.price * item.quantity;
+                }, 0) +
+                  valueSeatCheckout.reduce(
+                    (sum, seat) => sum + seat.payload.price,
+                    0
+                  ), seats: seat
+              })
             }
-              
+
             }
           >
             Tiếp tục

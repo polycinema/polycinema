@@ -8,6 +8,8 @@ import imgVip from "../../../public/img/seat-unselect-vip.png";
 import imgVipActive from "../../../public/img/seat-select-vip.png";
 import manhinh from "../../../public/img/ic-screen.png";
 import imgProduct from "../../../public/img/ic-combo.png";
+import imgUser from "../../../public/img/ic-inforpayment.png"
+
 import {
   useGetAllProductsQuery,
   useGetSeatsByShowTimeQuery,
@@ -16,13 +18,10 @@ import { useNavigate, useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import {
   decreaseProduct,
-  deleteTotalPrice,
-  deleteValueCheckoutSeat,
   increaseProduct,
   removeValueCheckoutSeat,
   setActionToggle,
   setToggle,
-  setTotalPrice,
   setValueCheckoutSeat,
 } from "../../redux/slices/valueCheckoutSlice";
 import IsLoading from "../../utils/IsLoading";
@@ -30,10 +29,7 @@ import { Button } from "antd";
 const SeatCheckout = () => {
   const { id } = useParams();
   const { data: products } = useGetAllProductsQuery();
-  const { toggleSeat, valueSeatCheckout } = useAppSelector(
-    (state) => state.ValueCheckout
-  );
-  const { products: stateProducts } = useAppSelector(
+  const { toggleSeat, valueSeatCheckout, products: stateProducts } = useAppSelector(
     (state) => state.ValueCheckout
   );
   const { data: showtime, isLoading } = useGetSeatsByShowTimeQuery(id || "");
@@ -42,7 +38,6 @@ const SeatCheckout = () => {
   const navigate = useNavigate();
   useEffect(() => {
     dispacth(setToggle(showtime?.data?.seats?.map(() => false)));
-    dispacth(deleteValueCheckoutSeat());
     const intervalId = setInterval(() => {
       setCountdown((prevCountdown) => prevCountdown - 1);
     }, 1000);
@@ -94,6 +89,24 @@ const SeatCheckout = () => {
 
   return (
     <div className="w-full">
+      <div className='m-4'>
+        <div className='flex items-center justify-center gap-4 p-2'>
+          <img className='w-10' src={imgUser} alt="" />
+          <div className='text-3xl '>THÔNG TIN THANH TOÁN</div>
+        </div>
+        <div className="flex justify-between my-4">
+          <div className="flex gap-2 text-xl">
+            <p>Họ Và Tên:</p>
+            <p>Nguyễn Nho Giang</p>
+          </div>
+          <div className="flex gap-2 text-xl">
+            <p>Email:</p>
+            <p>nhogiang03tg@gmail.com</p>
+          </div>
+        </div>
+
+
+      </div>
       <div className="flex justify-center items-center space-x-9 p-4   ">
         <div className="flex items-center gap-2">
           <img className="w-8" src={imgNormal} alt="" />
@@ -154,20 +167,7 @@ const SeatCheckout = () => {
         </div>
       </div>
       <div>
-        {/* <div className='flex items-center gap-4'>
-          <img className='w-10' src={imgUser} alt="" />
-          <div className='text-xl'>THÔNG TIN THANH TOÁN</div>
-        </div>
-          <table className='w-full mt-4'>
-            <tr>
-              <td className='font-bold'>Họ Tên :</td>
-              <td className='font-bold'>Email:</td>
-            </tr>
-            <tr>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-            </tr>
-          </table> */}
+
         <div className="table-product mt-20">
           <div className="flex items-center gap-4">
             <img className="w-10" src={imgProduct} alt="" />
@@ -201,8 +201,7 @@ const SeatCheckout = () => {
                     <td className="text-center p-2">{item?.price}</td>
                     <td className="text-center p-2">{item?.description}</td>
                     <td className="text-center p-2 ">
-                      {stateProducts.find((product) => product.id === item.id)
-                        ?.quantity || 0}
+                      {stateProducts.find((product) => product.id === item.id)?.quantity || 0}
                     </td>
                     <td>
                       <Button
@@ -224,15 +223,15 @@ const SeatCheckout = () => {
             <p className="text-2xl font-bold mt-2">Tổng tiền:</p>
             <p className="text-2xl font-bold mt-2">
               {stateProducts.reduce((sum: any, item: any) => {
-                    return sum + item.price * item.quantity;
-                  }, 0) +
-                    valueSeatCheckout.reduce(
-                      (sum, seat) => sum + seat.payload.price,
-                      0
-                    )
-                    }
-                
-              
+                return sum + item.price * item.quantity;
+              }, 0) +
+                valueSeatCheckout.reduce(
+                  (sum, seat) => sum + seat.payload.price,
+                  0
+                )
+              }
+
+
               đ
             </p>
           </div>

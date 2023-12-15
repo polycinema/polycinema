@@ -63,8 +63,8 @@ const ListMovie = () => {
             />
           </div>
           <div className="product__movies">
-            {moviesFilter?.map((item: any) => {
-              return <ItemMovie movie={item} />;
+            {moviesFilter?.map((item: any,index:number) => {
+              return <ItemMovie key={index} movie={item} />;
             })}
           </div>
         </>

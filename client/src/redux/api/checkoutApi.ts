@@ -27,6 +27,8 @@ const checkoutApi = createApi({
                                 method: 'POST',
                                 body:booking
                         }),
+                        invalidatesTags:['Checkout']
+
                 })
         })
 })

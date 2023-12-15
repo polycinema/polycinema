@@ -1,3 +1,4 @@
+
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,6 +20,7 @@ const MoviePage = () => {
   // console.log("list movies: ", movies);
   // console.log("showtimesByChange: ", showtimesByChange);
   // console.log("index date: ", indexDate);
+
 
 
   useEffect(() => {

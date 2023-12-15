@@ -25,6 +25,7 @@ const valueCheckout = createSlice({
             state.valueSeatCheckout = [];
         },
         increaseProduct: (state, actions) => {
+            
             const newProduct = actions.payload;
             const exitProductIndex = state.products.findIndex(
                 (item) => item.id == newProduct.id
@@ -34,6 +35,13 @@ const valueCheckout = createSlice({
             } else {
                 state.products[exitProductIndex].quantity++;
             }
+            state.totalPrice=state.products.reduce((sum: any, item: any) => {
+                return sum + item.price * item.quantity;
+              }, 0) +
+                state.valueSeatCheckout.reduce(
+                  (sum, seat) => sum + seat.payload.price,
+                  0
+                )
         },
         decreaseProduct(state: any, action) {
             const currentProduct = state.products.find(
@@ -50,6 +58,13 @@ const valueCheckout = createSlice({
                     ))
                     : (currentProduct.quantity = 1);
             }
+            state.totalPrice=state.products.reduce((sum: any, item: any) => {
+                return sum + item.price * item.quantity;
+              }, 0) +
+                state.valueSeatCheckout.reduce(
+                  (sum, seat) => sum + seat.payload.price,
+                  0
+                )
         },
         setBooking: (state, action) => {
             state.booking = action;
@@ -66,19 +81,6 @@ const valueCheckout = createSlice({
                 newSeatStates[action.payload] = !newSeatStates[action.payload];
                 state.toggleSeat = newSeatStates;
             }
-        },
-        setTotalPrice:(state)=>{
-            const totalProduct = state.products.reduce((sum: any, item: any) => {
-                return sum + item.price * item.quantity;
-              }, 0) 
-            const totalSeat = state.valueSeatCheckout.reduce(
-                      (sum, seat) => sum + seat.payload.price,
-                      0
-                    )
-                
-            state.totalPrice = totalSeat + totalProduct
-            
-            
         },
         deleteValueProduct: (state) => {
             state.products = [];

@@ -9,7 +9,7 @@ const showtimeApi = createApi({
         fetchFn: async (...arg) => {
             await pause(1500);
             return await fetch(...arg);
-          },
+        },
     }),
     endpoints: (build) => ({
         getShowTimes: build.query<IShowTime[], void>({
