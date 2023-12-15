@@ -44,6 +44,9 @@ import InfoAccount from "./components/userinfo/InfoAccount";
 import SeatCheckout from "./components/SeatCheckout";
 import NewDetailPage from "./pages/NewsPage/NewDetailPage";
 import PaymentPage from "./pages/PaymentPage";
+import ListBanner from "./pages/admin/Banner/List";
+import AddBanner from "./pages/admin/Banner/Add";
+import EditBanner from "./pages/admin/Banner/Edit";
 
 export const router = createBrowserRouter([
   { path: "*", element: <NotFoundPage /> },
@@ -103,6 +106,9 @@ export const router = createBrowserRouter([
           { path: 'seat', element: <ListSeat /> },
           { path: 'seat/add', element: <AddSeat /> },
           { path: 'seat/:id/edit', element: <EditSeat /> },
+          { path: 'banner', element: <ListBanner /> },
+          { path: 'banner/add', element: <AddBanner /> },
+          { path: 'banner/:id/edit', element: <EditBanner /> },
         ],
       },
     ],

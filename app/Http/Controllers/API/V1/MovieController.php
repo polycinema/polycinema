@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Genre;
 use App\Models\Movie;
+use App\Models\MovieGenre;
 use App\Models\Seat;
 use App\Models\ShowTime;
 use Exception;
@@ -126,6 +128,7 @@ class MovieController extends Controller
     public function getShowtimes()
     {
         try {
+
             $showtimes = ShowTime::query()
                 ->with(['movie', 'room'])
                 ->select('show_times.*')
@@ -135,22 +138,33 @@ class MovieController extends Controller
             $result = [];
 
             foreach ($showtimes as $showtime) {
-                $moviesInDay = ShowTime::with(['movie', 'room'])
-                    ->where('show_date', $showtime->show_date)
-                    ->with(['movie', 'room'])
-                    ->select('show_times.*')
-                    ->selectRaw('(SELECT COUNT(*) FROM seats WHERE seats.showtime_id = show_times.id AND seats.status = "unbook") AS available_seat')
-                    ->get();
 
 
-                $result[] = [
-                    'show_date' => $showtime->show_date,
-                    'showtime' => $moviesInDay,
+                $genre = MovieGenre::where('movie_id', $showtime->movie->id)->select('genre_id')->get();
+
+                $genres = Genre::whereIn('id', $genre)->select('name')->get();
+
+                $result[$showtime->show_date][] = [
+                    'movie' => $showtime->movie,
+                    'room' => $showtime->room,
+                    'start_time' => $showtime->start_time,
+                    'end_time' => $showtime->end_time,
+                    'available_seat' => $showtime->available_seat,
+                    'genre' => $genres,
+                ];
+            }
+
+            $response = [];
+
+            foreach ($result as $show_date => $showtimes) {
+                $response[] = [
+                    'show_date' => $show_date,
+                    'showtime' => $showtimes,
                 ];
             }
 
             return response()->json([
-                'data' => $result
+                'data' => $response
             ], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::error("MovieController@getShowtimes: ", [$e->getMessage()]);
@@ -161,5 +175,4 @@ class MovieController extends Controller
         }
     }
 
-    
 }

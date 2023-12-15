@@ -155,6 +155,17 @@ const UpdateShowTime = () => {
               message: "Trường end time không được để trống! ",
               required: true,
             },
+            ({ getFieldValue }) => ({
+              validator(_, values) {
+                const startTime = getFieldValue('start_time');
+          
+                if (!values || (startTime && startTime.isBefore(values))) {
+                  return Promise.resolve();
+                } else {
+                  return Promise.reject(new Error('Giờ kết thúc phải sau giờ chiếu'));
+                }
+              },
+            })
           ]}
         >
           <TimePicker format="HH:mm:ss" />

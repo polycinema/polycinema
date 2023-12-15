@@ -1,0 +1,239 @@
+.listmovie__container{
+  max-width: 1150px;
+  margin: 100px auto;
+  
+}
+
+.tab-listmovie{
+  text-align: center;
+}
+.list-tab{
+  display:  inline-flex;
+  margin: 0 auto;
+  gap: 16px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 30px;
+}
+.item-tab{
+  padding: 10px 0px;
+}
+.item-tab a{
+  padding: 0px 30px;
+  font-size: 30px;
+  font-weight: 300;
+  color: #000;
+  line-height: 1.5;
+}
+.item-tab a:active{
+  color:#03599d ;
+  border-bottom:2px solid #03599d ;
+  padding-bottom: 9px;
+}
+.product__movies{
+  display: grid;
+  grid-template-columns: repeat(4,25%);
+  gap: 4;
+}
+.product__movies-item{
+  border-radius: 20px;
+  padding: 0px 30px;
+  position: relative;
+  margin: 10px;
+}
+.movie-img {
+  position: relative;
+  border-radius: 20px;
+  max-width: 100%;
+}
+.movie-img .movie-img-item{
+  border-radius: 20px;
+  max-width: 100%;
+}
+.movie-play{
+  position: absolute;
+  transform: translate(67px,-190px);
+  color: white;
+  font-size: 50px;
+  z-index: 10;
+  display: none;
+  transition: all 0.3s;
+
+}
+.movie-icon-tag{
+  position: absolute;
+  transform: translate(30px, 10px);
+  top: 0;
+  left: 0;
+  width: 20%;
+  object-fit: cover;
+}
+.movie-icon-sale{
+  position: absolute;
+  background-repeat: no-repeat;
+  height: 30%;
+  width: 30%;
+  transform: translateX(4%);
+  top: 0;
+  right: 0;
+  object-fit: cover;
+}
+
+.movie-img:hover .bg-movie{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0,0.3);
+  border-radius: 20px;
+  z-index: 1;
+  transition: all 0.3s ease-in-out;
+}
+.movie-img:hover .movie-play{
+  display: block;
+  transition: all 0.3s;
+}
+.movie-item-description{
+  margin-top: 10px;
+}
+.movie-item-description .movie-name{
+  color: #337ab7;
+  max-height: 30px;
+  min-height: 30px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5rem;
+  
+}
+.movie-des{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  font-size: 15px;
+
+}
+.movie-des .movie-des-1{
+  font-weight: 700;
+}
+.movie-des .movie-des-1{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.modal-datghe .ant-tabs .tab-tabs-nav .ant-tabs-nav-wrap .ant-tabs-nav-list 
+.ant-tabs-tab .ant-tabs-tab-btn{
+  font-size: 30px !important;
+}
+.ant-tabs-nav .ant-tabs-tab {
+  font-size:30px !important; /* Kích thước chữ */
+  
+}
+@media (max-width: 1024px) {
+  .movie-play{
+          transform: translate(45px,-150px);
+  }
+}
+@media (max-width:736px) {
+  .product__movies{
+          display: grid;
+          grid-template-columns: repeat(2,1fr);
+          gap: 4;
+  }
+  .movie-play{
+          transform: translate(100px,-230px);
+  }
+}
+@media (max-width: 480px) {
+  .listmovie__container{
+          max-width: 100%;
+          
+  }
+  .product__movies{
+          display: block;
+  }
+  .product__movies-item{
+          
+          display: grid;
+          grid-template-columns: repeat(2,1fr);
+          gap: 20px;
+          margin-bottom: 20px;
+          padding: 0px 0px;
+
+  }
+  .movie-img {
+          width: 100%;
+  }
+  .movie-img .movie-img-item{
+          border-radius: 10px;
+          max-width: 100%;
+  }
+  .movie-play{
+          transform: translate(50px,-150px);
+  }
+  .movie-icon-tag{
+          transform: translate(10px, 10px);
+          width: 20%;
+  }
+  .movie-icon-sale{
+          height: 20%;
+          width: 30%;
+  }
+  
+  
+  .movie-item-description{
+          margin-top: 10px;
+          
+  }
+  
+  .movie-des{
+          margin-top: 20px;
+          
+  }
+  
+  .btn-movie{
+          margin-top: 10px;
+          padding: 5px 10px;
+          font-size: 16px;
+          border-radius: 10px;
+          
+      
+  }
+  .btn-movie-icon{
+          position: absolute;
+          left: 0;
+          top: 0;
+          transform: rotate(-50deg);
+          font-size: 30px;
+          opacity: 0.5;
+  }
+  .ant-tabs-nav .ant-tabs-tab {
+          font-size:20px !important; /* Kích thước chữ */
+          
+        }
+  
+  
+}
+/* custom css ant*/
+.ant-modal-header{
+  padding: 20px 0px;
+  margin-bottom: 20px;
+  border-bottom:1px solid gainsboro ;
+}
+.ant-modal-header .ant-modal-title{
+  font-size: 28px;
+}
+.ant-modal-body {
+  height: 350px;
+}
+.ant-modal-body iframe{
+  width: 100%;
+  height: 350px;
+}
+.ant-modal-footer .ant-btn{
+  display: none!important;
+}
+.movie-play .ant-btn{
+  border: none;
+  font-size: 50px;
+  color: #fff;
+}
+.movie-play .ant-btn:hover{
+  color: #fff !important;
+}

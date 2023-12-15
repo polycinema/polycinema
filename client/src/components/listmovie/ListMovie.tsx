@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 const ListMovie = () => {
   const { data: Movies, isLoading, error } = useGetAllMoviesQuery();
   const [moviesFilter, setMoviesFilter] = useState([]);
+  console.log('moviesFilter: ',moviesFilter)
   if (error) {
     console.error("error get movies: ", error);
   }
@@ -28,19 +29,22 @@ const ListMovie = () => {
     },
   ];
   useEffect(() => {
-    const result = Movies?.data.filter((item:any) => item.status === "upcoming");
-    setMoviesFilter(result);
-  }, [isLoading]);
+    const result = Movies?.data?.filter((item:any) => item.status === "upcoming");
+    console.log('result: ',result)
+    if(result){
+      setMoviesFilter(result);
+    }
+  }, [Movies]);
 
   const onChange = (value:any) => {
     if (value === "1") {
-      const result = Movies.data.filter((item:any) => item.status === "upcoming");
+      const result = Movies?.data?.filter((item:any) => item.status === "upcoming");
       setMoviesFilter(result);
     } else if (value === "2") {
-      const result = Movies.data.filter((item:any) => item.status === "screening");
+      const result = Movies?.data?.filter((item:any) => item.status === "screening");
       setMoviesFilter(result);
     } else {
-      const result = Movies.data.filter((item:any) => item.status === "unscreen");
+      const result = Movies?.data?.filter((item:any) => item.status === "unscreen");
       setMoviesFilter(result);
     }
   };

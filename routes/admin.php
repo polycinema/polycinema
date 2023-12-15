@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\V1\Admin\DirectorController;
 use App\Http\Controllers\API\V1\Admin\ActorController;
+use App\Http\Controllers\API\V1\Admin\CouponController;
 use App\Http\Controllers\API\V1\Admin\GenreController;
 use App\Http\Controllers\API\V1\Admin\MovieController;
 use App\Http\Controllers\API\V1\Admin\PostController;
@@ -10,8 +11,7 @@ use App\Http\Controllers\API\V1\Admin\RoomController;
 use App\Http\Controllers\API\V1\Admin\SeatController;
 use App\Http\Controllers\API\V1\Admin\ShowTimeController;
 use App\Http\Controllers\API\V1\Admin\UserController;
-
-
+use App\Http\Controllers\API\V1\BannerController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function () {
@@ -35,5 +35,8 @@ Route::prefix('admin')->group(function () {
 
     Route::resource('posts', PostController::class)->except(['edit', 'create']);
 
+    Route::resource('banners', BannerController::class)->except(['edit', 'create']);
+
+    Route::resource('coupons', CouponController::class)->except(['edit', 'create']);
 });
 
