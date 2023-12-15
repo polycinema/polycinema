@@ -18,15 +18,15 @@ class PaymentService
     {
         $attributes = $request->all();
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "https://localhost:3000";
-        $vnp_TmnCode = "X1GKNVAH"; // Mã website tại VNPAY
-        $vnp_HashSecret = "ZXMKHTLSNZBCXLMVFJEQNBIDIRCUMYRC"; // Chuỗi bí mật
+        $vnp_Returnurl = "http://localhost:3000/payment-return";
+        $vnp_TmnCode = "BTJGPMO6"; // Mã website tại VNPAY
+        $vnp_HashSecret = "PLDPDNGFCDCZORAIXGYVPVLFQODQKYEU"; // Chuỗi bí mật
 
         // Lấy các thông tin từ request
         $vnp_TxnRef = rand(1, 10000000);
         $vnp_OrderInfo = $attributes['vnp_OrderInfo'];
-        $vnp_Amount = $attributes['total_price'] * 100;
-        $vnp_BankCode = $attributes['bank_code'];
+        $vnp_Amount = $attributes['vnp_Amount'] * 100;
+        // $vnp_BankCode = $attributes['bank_code'];
 
         // Các thông tin khác cần thiết...
 

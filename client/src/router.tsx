@@ -47,6 +47,7 @@ import PaymentPage from "./pages/PaymentPage";
 import ListBanner from "./pages/admin/Banner/List";
 import AddBanner from "./pages/admin/Banner/Add";
 import EditBanner from "./pages/admin/Banner/Edit";
+import PayementReturnPage from "./pages/PaymentReturnPage";
 
 export const router = createBrowserRouter([
   { path: "*", element: <NotFoundPage /> },
@@ -65,6 +66,7 @@ export const router = createBrowserRouter([
         // {path:"", element:<ProductCheckout/>}
       ]},
       {path:"poly-payment", element:<PaymentPage/>},
+      {path:"payment-return", element:<PayementReturnPage/>},
       {path:"inforAcount",element:<InfoAccount/>}
     ],
   },
