@@ -26,7 +26,7 @@ const LayoutAdmin: React.FC = () => {
        
       >
         <div className="demo-logo-vertical" />
-        <Link to={""}>
+        <Link to={"/"}>
           <img src={logo1} alt="" className="w-32 mx-auto my-12" />
         </Link>
         <Menu

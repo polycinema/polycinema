@@ -78,6 +78,7 @@ export const router = createBrowserRouter([
         element: <LayoutAdmin />,
         children: [
           { index: true, element: <Dashboard /> },
+          { path: "dashboard", element: <Dashboard /> },
           { path: "rooms", element: <ListRooms /> },
           { path: "rooms/add", element: <AddRoom /> },
           { path: "rooms/:id/edit", element: <EditRoom /> },
