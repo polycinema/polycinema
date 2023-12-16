@@ -4,7 +4,8 @@ import { useGetMovieByIdQuery } from "../../redux/api/movieApi";
 import { useState, useEffect } from "react";
 import IsLoading from "../../utils/IsLoading";
 import YouTube from "react-youtube";
-import { FacebookProvider, Comments } from 'react-facebook';
+import { FacebookProvider, Comments } from "react-facebook";
+import { getDirectorById } from "../../api/director";
 const MovieDetail = () => {
   const { slug } = useParams();
   const slugParams = slug?.split(".html") ?? [];
@@ -12,10 +13,25 @@ const MovieDetail = () => {
   const id = temp[temp.length - 1];
   const { data: movieById, isLoading, error } = useGetMovieByIdQuery(id);
   const [movie, setMovie] = useState<any>({});
+  const [nameDuration, setNameDuration] = useState();
+  console.log("movieById: ", movieById);
   useEffect(() => {
     if (movieById) {
       setMovie(movieById.data);
     }
+  }, [movieById]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await getDirectorById(movieById?.data.director_id);
+        console.log("data director name: ", data?.data.name);
+        if (data) {
+          setNameDuration(data?.data.name);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
   }, [movieById]);
   if (error) {
     console.error("error get by id movies: ", error);
@@ -27,7 +43,7 @@ const MovieDetail = () => {
       </>
     );
   }
-  console.log("data movie by id: ", movie);
+  // console.log("data movie by id: ", movie);
   return (
     <>
       <div className="container">
@@ -46,17 +62,18 @@ const MovieDetail = () => {
               <div className="text-director">
                 <span className="director"> ĐẠO DIỄN : </span>
               </div>
-              <div className="text1-1">{movie.director_id}</div>
+              <div className="text1-1">{nameDuration}</div>
             </div>
 
             <div className="text1">
               <div className="text-director">
                 <span className="director"> DIỄN VIÊN : </span>
               </div>
-              {movie.actors?.map((itemsActors: any) => {
+              {movie.actors?.map((itemsActors: any, index: number) => {
                 return (
-                  <div className="text1-1" key={itemsActors.id}>
-                    {itemsActors.name}&nbsp;
+                  <div className="text1-1 mr-2" key={itemsActors.id}>
+                    {itemsActors.name}
+                    {index < movie.actors?.length - 1 ? "," : ""}
                   </div>
                 );
               })}
@@ -66,10 +83,11 @@ const MovieDetail = () => {
               <div className="text-director">
                 <span className="director"> THỂ LOẠI : </span>
               </div>
-              {movie.genres?.map((itemsGenres: any) => {
+              {movie.genres?.map((itemsGenres: any, index: number) => {
                 return (
-                  <div className="text1-1" key={itemsGenres.id}>
+                  <div className="text1-1 mr-2" key={itemsGenres.id}>
                     {itemsGenres.name}
+                    {index < movie.genres.length - 1 ? "," : ""}
                   </div>
                 );
               })}
@@ -100,15 +118,11 @@ const MovieDetail = () => {
       </div>
       <div className="title3">
         <div className="title3_facebook">
-        <FacebookProvider appId="287337234293370">
-          <Comments href={`quanhongdo.ga/${slug}`} numPosts={20} />
-        </FacebookProvider>
+          <FacebookProvider appId="287337234293370">
+            <Comments href={`quanhongdo.ga/${slug}`} numPosts={20} />
+          </FacebookProvider>
         </div>
       </div>
-      
-      
-      
-      
     </>
   );
 };

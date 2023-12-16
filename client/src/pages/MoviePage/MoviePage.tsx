@@ -1,4 +1,3 @@
-
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,15 +12,13 @@ const MoviePage = () => {
   const [showtimes, setShowtimes] = useState([]);
   const [indexDate, setIndexDate] = useState(0);
   const [showtime, setShowtime] = useState([0]);
-  const [showtimesByChange, setShowtimeByChange] = useState([]);
+  const [showtimesByChange, setShowtimeByChange] = useState<RootObject[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie>();
   const navigate = useNavigate();
-  console.log("showtime by change: ", showtime);
+  // console.log("showtime by change: ", showtimesByChange[0]);
   // console.log("list movies: ", movies);
   // console.log("showtimesByChange: ", showtimesByChange);
   // console.log("index date: ", indexDate);
-
-
 
   useEffect(() => {
     if (data) {
@@ -36,9 +33,9 @@ const MoviePage = () => {
     if (showtimesByChange.length) {
       const showtime = showtimesByChange.map((items: any) => items.showtime);
       setShowtime(showtime[0]);
+      // console.log(showtime[0].push({color: '#03599d'}))
     }
   }, [showtimesByChange]);
-
   if (error) {
     console.error(error);
   }
@@ -61,7 +58,7 @@ const MoviePage = () => {
     if (movie) {
       const name = movie?.name;
       const id = movie?.id;
-      return navigate(`/movies/${convertSlug(name)}-${id}.html/detail`)
+      return navigate(`/movies/${convertSlug(name)}-${id}.html/detail`);
     }
   };
   return (
@@ -71,12 +68,16 @@ const MoviePage = () => {
           {showtimes.map((items: RootObject, index) => {
             return (
               <li
-                className="px-4 py-2 text-center  active:text-[#03599d] active:border-b-4 border-b-[#03599d]"
+                className={`px-4 py-2 text-center ${
+                  indexDate === index
+                    ? "text-[#03599d] border-b-4 border-b-[#03599d] text-2xl"
+                    : "text-xl"
+                } `}
                 onClick={() => setIndexDate(index)}
                 key={index}
               >
                 <Link to={""}>
-                  <span className="text-2xl mr-3">{items.show_date}</span>
+                  <span className="mr-3">{items.show_date}</span>
                 </Link>
               </li>
             );
@@ -108,7 +109,10 @@ const MoviePage = () => {
               </div>
               <div className="">
                 {/* movies/${convertSlug(movie?.movie?.name)}-${movie?.movie?.id}.html/detail */}
-                <div className="cursor-pointer" onClick={() => nextDetail(movie?.movie)}>
+                <div
+                  className="cursor-pointer"
+                  onClick={() => nextDetail(movie?.movie)}
+                >
                   <span className="md:text-4xl text-2xl text-[#03599d]">
                     {movie?.movie?.name}
                   </span>
@@ -117,7 +121,7 @@ const MoviePage = () => {
                   <i className="fas fa-tags text-[#337ab7] mr-2"></i>
                   {movie?.genre?.map((items: any, index: any) => {
                     return (
-                      <span key={items.length} className="mr-2">
+                      <span key={index} className="mr-2">
                         {items?.name}
                         {index <= length - 1 ? "," : ""}
                       </span>
