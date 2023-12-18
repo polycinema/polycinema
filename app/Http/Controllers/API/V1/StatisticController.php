@@ -89,7 +89,7 @@ class StatisticController extends Controller
 
             return response()->json([
                 'data' => [
-                    'weekly_bookings' => $result,
+                    'daily_bookings' => $result,
                     'total_revenue' => $totalRevenue
                 ]
             ], Response::HTTP_OK);
@@ -186,7 +186,7 @@ class StatisticController extends Controller
                     ->sum('total_price');
 
                 $result[] = [
-                    'month' => $month,
+                    'date' => $month,
                     'booking_count' => $booking ? $booking->booking_count : 0,
                     'revenue' => $revenue
                 ];
@@ -196,7 +196,7 @@ class StatisticController extends Controller
 
             return response()->json([
                 'data' => [
-                    'monthly_bookings' => $result,
+                    'daily_bookings' => $result,
                     'total_revenue' => $totalRevenue
                 ]
             ], Response::HTTP_OK);
