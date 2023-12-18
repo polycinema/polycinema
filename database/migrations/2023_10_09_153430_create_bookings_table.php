@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
+            $table->string('booking_id');
             $table->foreignId('user_id');
             $table->foreignId('showtime_id');
             $table->integer('total_price');

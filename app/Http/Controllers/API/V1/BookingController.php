@@ -68,6 +68,7 @@ class BookingController extends Controller
 
             $booking = Booking::create([
                 'user_id' => $request->user_id,
+                'booking_id' => $request->booking_id,
                 'showtime_id' => $request->showtime_id,
                 'total_price' => $request->total_price
             ]);
