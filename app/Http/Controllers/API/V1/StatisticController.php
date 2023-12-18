@@ -181,8 +181,7 @@ class StatisticController extends Controller
                 $booking = $monthlyBookings->firstWhere('month', $month);
 
                 // Total revenue for a month
-                $revenue = (int) Booking::whereYear('created_at', $currentYear)
-                    ->whereMonth('created_at', Carbon::parse($month)->month)
+                $revenue = (int) Booking::whereMonth('created_at', Carbon::parse($month)->month)
                     ->sum('total_price');
 
                 $result[] = [
