@@ -24,13 +24,19 @@ class BookingController extends Controller
 
     public function index()
     {
-        try{
-            $bookings = Booking::query()->get();
+        try {
+            $bookings = Booking::query()
+                ->with('user')
+                ->with(['products' => function ($query) {
+                    $query->withPivot('quantity');
+                }])
+                ->with(['seats.showtime.room'])
+                ->get();
 
             return response()->json([
                 'data' => $bookings
             ], Response::HTTP_OK);
-        }catch(Exception $exception) {
+        } catch (Exception $exception) {
             Log::error('BookingController: ', [$exception->getMessage()]);
 
             return response()->json([
@@ -49,19 +55,26 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         try {
+
+            foreach($request->seats as $seat) {
+                $seatModel = Seat::query()->find($seat['id']);
+
+                if($seatModel->status == Seat::BOOKED) {
+                    return response()->json([
+                        'message' => 'Ghế đã được đặt'
+                    ]);
+                }
+            }
+
             $booking = Booking::create([
                 'user_id' => $request->user_id,
                 'showtime_id' => $request->showtime_id,
                 'total_price' => $request->total_price
             ]);
 
-            $products = [];
-
             foreach ($request->products as $product) {
                 $booking->products()->attach($product['id'], ['quantity' => $product['quantity']]);
             }
-
-            $booking->products()->attach($products);
 
             foreach ($request->seats as $seat) {
                 $seatModel = Seat::query()->find($seat['id']);
@@ -159,8 +172,9 @@ class BookingController extends Controller
         // }
     }
 
-    public function updateSeatReservation(Request $request, string $id) {
-        try{
+    public function updateSeatReservation(Request $request, string $id)
+    {
+        try {
             $seat = Seat::query()->find($id);
 
             $seat->update([
@@ -173,7 +187,7 @@ class BookingController extends Controller
             return response()->json([
                 'message' => 'Đã cập nhật thành công'
             ], Response::HTTP_OK);
-        }catch(Exception $exception) {
+        } catch (Exception $exception) {
             Log::error('BookingController@updateSeatReservation: ', [$exception->getMessage()]);
 
             return response()->json([

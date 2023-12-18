@@ -17,19 +17,24 @@ class Booking extends Model
         'total_price'
     ];
 
-    public function products() {
-        return $this->belongsToMany(Product::class, 'product_bookings');
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_bookings')
+            ->withPivot('quantity');
     }
 
-    public function seats(): HasMany {
+    public function seats(): HasMany
+    {
         return $this->hasMany(Seat::class);
     }
 
-    public function user(): BelongsTo {
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function showtime(): BelongsTo {
+    public function showtime(): BelongsTo
+    {
         return $this->belongsTo(showtime::class);
     }
 }

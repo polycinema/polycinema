@@ -5,6 +5,8 @@ use App\Http\Controllers\API\V1\BookingController;
 use App\Http\Controllers\API\V1\MovieController;
 use App\Http\Controllers\API\V1\SeatController;
 use App\Http\Controllers\API\V1\ProfileController;
+use App\Http\Controllers\API\V1\StatisticController;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -58,4 +60,13 @@ Route::prefix('v1')->group(function () {
 
     Route::get('showtimes', [MovieController::class, 'getShowtimes']);
 
+    Route::get('bookings', [BookingController::class, 'index']);
+
+    Route::get('statistc-in-day', [StatisticController::class, 'getStatisticInDay']);
+
+    Route::get('statistic-in-week', [StatisticController::class, 'getStatisticInWeek']);
+
+    Route::get('statistic-in-month', [StatisticController::class, 'getStatisticInMonth']);
+
+    Route::get('statistic-in-year', [StatisticController::class, 'getStatisticInYear']);
 });
