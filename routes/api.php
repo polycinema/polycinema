@@ -64,9 +64,9 @@ Route::prefix('v1')->group(function () {
 
     Route::get('statistc-in-day', [StatisticController::class, 'getStatisticInDay']);
 
-    Route::get('statistic-in-week', [StatisticController::class, 'getStatisticInWeek']);
+    Route::get('statistic-in-week', [StatisticController::class, 'getStatisticInLast7Days']);
 
-    Route::get('statistic-in-month', [StatisticController::class, 'getStatisticInMonth']);
+    Route::get('statistic-in-month', [StatisticController::class, 'getStatisticInLast28Days']);
 
     Route::get('statistic-in-year', [StatisticController::class, 'getStatisticInYear']);
 });

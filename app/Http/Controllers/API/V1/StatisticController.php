@@ -23,6 +23,18 @@ class StatisticController extends Controller
     public function getStatisticInDay()
     {
         try {
+            $today = now()->toDateString();
+
+            $bookingCount = Booking::whereDate('created_at', $today)->count();
+
+            $totalRevenue = Booking::whereDate('created_at', $today)->sum('total_price');
+
+            return response()->json([
+                'data' => [
+                    'booking_count' => $bookingCount,
+                    'total_revenue' => $totalRevenue
+                ]
+            ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('StatisticController@getStatisticInDay: ', [$exception->getMessage()]);
 
@@ -32,7 +44,7 @@ class StatisticController extends Controller
         }
     }
 
-    public function getStatisticInWeek()
+    public function getStatisticInLast7Days()
     {
         try {
             // $today = now()->toDateString();
@@ -90,9 +102,49 @@ class StatisticController extends Controller
         }
     }
 
-    public function getStatisticInMonth()
+    public function getStatisticInLast28Days()
     {
         try {
+            $startOfLast28Days = now()->subDays(27)->startOfDay(); // Start date is last 28 days
+            $endOfToday = now()->endOfDay();
+
+            $allDaysLast28Days = [];
+            $currentDay = clone $startOfLast28Days;
+            while ($currentDay <= $endOfToday) {
+                $allDaysLast28Days[] = $currentDay->toDateString();
+                $currentDay->addDay();
+            }
+
+            $dailyBookings = Booking::whereBetween('created_at', [$startOfLast28Days, $endOfToday])
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as booking_count'))
+                ->groupBy('date')
+                ->get();
+
+            // Create a new array with default value is 0 for all days in the last 28 days
+            $result = [];
+            $totalRevenue = 0;
+
+            foreach ($allDaysLast28Days as $day) {
+                $booking = $dailyBookings->firstWhere('date', $day);
+
+                // Total revenue a day
+                $revenue = (int) Booking::whereDate('created_at', $day)->sum('total_price');
+
+                $result[] = [
+                    'date' => $day,
+                    'booking_count' => $booking ? $booking->booking_count : 0,
+                    'revenue' => $revenue
+                ];
+
+                $totalRevenue += $revenue;
+            }
+
+            return response()->json([
+                'data' => [
+                    'daily_bookings' => $result,
+                    'total_revenue' => $totalRevenue
+                ]
+            ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('StatisticController@getStatisticInMonth: ', [$exception->getMessage()]);
 
