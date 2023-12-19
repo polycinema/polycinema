@@ -62,7 +62,7 @@ class BookingController extends Controller
                 if($seatModel->status == Seat::BOOKED) {
                     return response()->json([
                         'message' => 'Ghế đã được đặt'
-                    ]);
+                    ], Response::HTTP_BAD_REQUEST);
                 }
             }
 
@@ -89,7 +89,7 @@ class BookingController extends Controller
             return response()->json([
                 'data' => $booking,
                 'message' => 'Đặt vé thành công'
-            ]);
+            ], Response::HTTP_CREATED);
         } catch (Exception $exception) {
             Log::error('BookingController@store: ', [$exception->getMessage()]);
 
@@ -179,11 +179,11 @@ class BookingController extends Controller
             $seat = Seat::query()->find($id);
 
             $seat->update([
-                'status' => Seat::BOOKING,
-                'user_id' => $request->user()->id
+                'status' => $request->status,
+                'user_id' => $request->user_id
             ]);
 
-            event(new SeatReservation($id));
+            // event(new SeatReservation($seat));
 
             return response()->json([
                 'message' => 'Đã cập nhật thành công'
