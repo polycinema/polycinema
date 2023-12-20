@@ -47,6 +47,7 @@ import ListBanner from "./pages/admin/Banner/List";
 import AddBanner from "./pages/admin/Banner/Add";
 import EditBanner from "./pages/admin/Banner/Edit";
 import PayementReturnPage from "./pages/PaymentReturnPage";
+import MemberPage from "./pages/MemberPage";
 
 import PointUser from "./components/PointUser/PointUser";
 
@@ -62,18 +63,16 @@ export const router = createBrowserRouter([
       { path: "poly-acount", element: <Account /> },
       { path: "poly-news", element: <NewsPage /> },
       { path: "poly-news/:id", element: <NewDetailPage /> },
-
       { path: "movies/:slug/detail", element: <MovieDetail /> },
       {path:"poly-checkout/:id", element:<CheckoutPage/>},
       {path:"poly-payment", element:<PaymentPage/>},
       {path:"payment-return", element:<PayementReturnPage/>},
       {path:"inforAcount",element:<InfoAccount/>},
-
       { path: "poly-moviesDetail/:id", element: <MovieDetail /> },
       {path:"poly-checkout", element:<CheckoutPage/>},
       {path:"inforAcount",element:<InfoAccount/>},
-      {path:"pointUser",element:<PointUser/>}
-
+      {path:"pointUser",element:<PointUser/>},
+      {path:"poly-member", element:<MemberPage/>}
     ],
   },
   {
