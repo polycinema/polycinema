@@ -47,7 +47,7 @@ const Register = () => {
           name={"password"}
           rules={[
             { required: true, message: "Vui lòng nhập password" },
-            { min: 6, message: "Password tối thiểu 6 kí tự" },
+            { min: 8, message: "Password tối thiểu 8 kí tự" },
           ]}
         >
           <Input.Password prefix={<LockOutlined />} placeholder="Password"/>

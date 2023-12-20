@@ -59,7 +59,7 @@ const Login = () => {
         <Form.Item
           label="Password"
           name="password"
-          rules={[{ required: true, message: "Please input your Password!" }]}
+          rules={[{min: 6, required: true, message: "Please input your Password!" }]}
         >
           <Input.Password
             prefix={<LockOutlined className="site-form-item-icon" />}
