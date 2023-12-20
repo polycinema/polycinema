@@ -108,16 +108,22 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
         <div className="flex justify-between my-4">
           <div className="flex gap-2 text-xl">
             <p>Họ Và Tên:</p>
-            <p>Nguyễn Nho Giang</p>
+            <p>{user.name}</p>
           </div>
           <div className="flex gap-2 text-xl">
             <p>Email:</p>
-            <p>nhogiang03tg@gmail.com</p>
+            <p>{user.email}</p>
           </div>
         </div>
 
 
       </div>
+      <div className="flex items-center justify-center gap-5">
+          <p className="text-xl mt-2">Thời gian còn lại để chọn ghế:</p>
+          <p className="text-2xl mt-2 ">
+            {minutes}: {seconds}
+          </p>
+        </div>
       <div className="flex justify-center items-center space-x-9 p-4   ">
         <div className="flex items-center gap-2">
           <img className="w-8" src={imgNormal} alt="" />
@@ -173,13 +179,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
           <img className="w-14 h-10 object-center" src={imgDouble} alt="" />
           <p>Ghế đôi</p>
         </div>
-        <div className="">
-          <p className="text-xl mt-2">Thời gian còn lại để chọn ghế</p>
-          <p>
-            {" "}
-            {minutes}: {seconds}
-          </p>
-        </div>
+        
       </div>
       <div>
 

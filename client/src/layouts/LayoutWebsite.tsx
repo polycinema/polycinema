@@ -138,7 +138,7 @@ const LayoutWebsite = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to={""} className="hover:text-[#397EBA]">
+                  <Link to={"poly-member"} className="hover:text-[#397EBA]">
                     THÀNH VIÊN
                   </Link>
                 </li>
