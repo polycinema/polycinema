@@ -8,6 +8,8 @@ import {
   ShoppingOutlined,
   SketchOutlined,
   UserOutlined,
+  FacebookOutlined,
+  InstagramOutlined,
 } from "@ant-design/icons";
 import { setLogout } from "../redux/slices/authorizationSlice";
 import { useEffect } from "react";
@@ -56,7 +58,9 @@ const LayoutWebsite = () => {
     {
       label: (
         <div>
-          <AimOutlined /> Điểm beta
+        <Link to={"pointUser"}>
+         <AimOutlined /> Điểm beta
+        </Link>
         </div>
       ),
       key: "3",
@@ -160,46 +164,47 @@ const LayoutWebsite = () => {
                 <img  src={logo} alt="" className="w-[150px]" />
               </Link>
               <h2 className="md:px-4 md:pt-2 hover:text-[#397EBA]">
-                <Link to={""}>Tuyển dụng</Link>
+                <Link to={"poly-movies"}>Phim</Link>
               </h2>
               <h2 className="md:px-4 md:pt-2 hover:text-[#397EBA]">
                 <Link to={""}>Giới thiệu</Link>
               </h2>
+
               <h2 className="md:px-4 md:pt-2 hover:text-[#397EBA]">
-                <Link to={""}>Liên hệ</Link>
-              </h2>
-              <h2 className="md:px-4 md:pt-2 hover:text-[#397EBA]">
-                <Link to={""}>Liên hệ quảng cáo</Link>
+                <Link to={""}>Giá Vé</Link>
               </h2>
               <h2 className="md:px-4 md:pt-2 hover:text-[#397EBA]">
                 <Link to={""}>Hướng dẫn đặt vé online</Link>
               </h2>
+              <h2 className="md:px-4 md:pt-2 hover:text-[#397EBA]">
+                <Link to={""}>Thành Viên</Link>
+              </h2>
             </div>
             <div className="text-center md:text-left font-semibold text-lg text-[#333333] pt-4 md:pt-0">
               <h1>KẾT NỐI VỚI CHÚNG TÔI</h1>
+              <div className="md:flex md:space-x-4 ">
+              <h2 className="hover:text-[#397EBA] text-3xl"> <Link target="_blank" to={"https://www.facebook.com/profile.php?id=61553856092989&...d=LQQJ4d"}><FacebookOutlined /></Link></h2>
+               <h2 className="hover:text-[#397EBA] text-3xl"> <Link target="_blank" to={"https://www.instagram.com/pol_ycinema?igshid=OGQ5ZDc2ODk2ZA%3D%3D&utm_source=qr"}><InstagramOutlined /></Link></h2>
+              </div>
             </div>
             <div className="text-center md:text-left">
               <h1 className="md:text-lg md:font-semibold text-[#333333]">
                 LIÊN HỆ
               </h1>
               <h2 className="text-sm  text-[#333333] pt-2">
-                CÔNG TY CỔ PHẦN BETA MEDIA
+                CÔNG TY CỔ PHẦN 7 THÀNH VIÊN
               </h2>
+
               <p className="text-[10px] pt-2">
-                Giấy chứng nhận ĐKKD số: 0106633482 - Đăng ký lần đầu ngày
-                08/09/2014 tại Sở Kế hoạch và Đầu tư Thành phố Hà Nội
+                Địa chỉ trụ sở: Trụ sở chính Tòa nhà FPT Polytechnic, Phố Trịnh Văn Bô, Nam Từ Liêm, Hà Nội
               </p>
-              <p className="text-[10px] pt-2">
-                Địa chỉ trụ sở: Tầng 3, số 595, đường Giải Phóng, phường Giáp
-                Bát, quận Hoàng Mai, thành phố Hà Nội
-              </p>
-              <p className="text-[10px] pt-2">Hotline: 1900 636807</p>
-              <p className="text-[10px] pt-2">Email: cskh@betacorp.vn</p>
+              <p className="text-[10px] pt-2">Hotline: 1900 456789</p>
+              <p className="text-[10px] pt-2">Email: polycinemas@gmail.com</p>
               <p className="font-semibold text-[#333333]  pt-2">
                 Liên hệ hợp tác kinh doanh:
               </p>
-              <p className=" pt-2 text-[13px]">Email: phuongdh@betagroup.vn</p>
-              <p className=" pt-2 text-[13px]">Phone: +8490 666 9169</p>
+              <p className=" pt-2 text-[13px]">Email: polycinemas@gmail.com</p>
+              <p className=" pt-2 text-[13px]">Phone:  1900 456789 </p>
             </div>
           </div>
 
