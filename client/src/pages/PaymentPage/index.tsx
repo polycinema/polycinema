@@ -4,20 +4,17 @@ import { Modal } from 'antd'
 import { usePaymentBookingMutation } from '../../redux/api/paymentApi'
 import { useAppSelector } from '../../store/hook'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
-import { useNavigate } from 'react-router'
 
 
 const PaymentPage = () => {
-  const navigate = useNavigate()
   const { booking: valueBooking } = useAppSelector((state) => state.ValueCheckout)
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [paymentBooking, { isLoading }] = usePaymentBookingMutation()
   const onClickPaymentBooking = () => {
     paymentBooking({
-      vnp_TxnRef: "12346",
       vnp_OrderInfo: "Thanh toan ve xem phim",
       vnp_OrderType: "190000",
-      vnp_Amount: `${valueBooking.payload.total_price}`
+      vnp_Amount: `${valueBooking?.payload?.total_price}`
 
     })
       .unwrap()
@@ -25,7 +22,6 @@ const PaymentPage = () => {
       .catch((err) => console.log(err))
       
   }
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setIsModalOpen(true);

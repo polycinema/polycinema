@@ -2,30 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const valueCheckout = createSlice({
     name: "ValueCheckout",
     initialState: {
-        valueSeatCheckout: [],
         toggleSeat: [],
         products: [],
         booking: {},
-        totalPrice:0,
+        totalPrice: 0,
     },
     reducers: {
-        setValueCheckoutSeat: (state, actions) => {
-            state.valueSeatCheckout.length > 7
-                ? alert("Bạn chỉ được chọn 8 ghế")
-
-                : (state.valueSeatCheckout =
-                    state.valueSeatCheckout.concat(actions));
-        },
-        removeValueCheckoutSeat: (state, action) => {
-            state.valueSeatCheckout = state.valueSeatCheckout.filter(
-                (item) => item.payload.id !== action.payload
-            );
-        },
-        deleteValueCheckoutSeat: (state) => {
-            state.valueSeatCheckout = [];
-        },
         increaseProduct: (state, actions) => {
-            
+
             const newProduct = actions.payload;
             const exitProductIndex = state.products.findIndex(
                 (item) => item.id == newProduct.id
@@ -35,13 +19,6 @@ const valueCheckout = createSlice({
             } else {
                 state.products[exitProductIndex].quantity++;
             }
-            state.totalPrice=state.products.reduce((sum: any, item: any) => {
-                return sum + item.price * item.quantity;
-              }, 0) +
-                state.valueSeatCheckout.reduce(
-                  (sum, seat) => sum + seat.payload.price,
-                  0
-                )
         },
         decreaseProduct(state: any, action) {
             const currentProduct = state.products.find(
@@ -58,29 +35,10 @@ const valueCheckout = createSlice({
                     ))
                     : (currentProduct.quantity = 1);
             }
-            state.totalPrice=state.products.reduce((sum: any, item: any) => {
-                return sum + item.price * item.quantity;
-              }, 0) +
-                state.valueSeatCheckout.reduce(
-                  (sum, seat) => sum + seat.payload.price,
-                  0
-                )
+
         },
         setBooking: (state, action) => {
             state.booking = action;
-        },
-        setToggle: (state, action) => {
-            const result = action.payload;
-            state.toggleSeat = result;
-        },
-        setActionToggle: (state, action) => {
-            if (state.valueSeatCheckout.length > 7) {
-                alert("Bạn chỉ được chọn 8 ghế");
-            } else {
-                const newSeatStates = [...(state.toggleSeat || [])];
-                newSeatStates[action.payload] = !newSeatStates[action.payload];
-                state.toggleSeat = newSeatStates;
-            }
         },
         deleteValueProduct: (state) => {
             state.products = [];
@@ -94,15 +52,10 @@ const valueCheckout = createSlice({
     },
 });
 export const {
-    setValueCheckoutSeat,
     increaseProduct,
     decreaseProduct,
-    deleteValueCheckoutSeat,
     deleteValueProduct,
     setBooking,
-    removeValueCheckoutSeat,
-    setToggle,
-    setActionToggle,
     setTotalPrice,
     deleteActionTogle,
     deleteTotalPrice

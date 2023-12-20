@@ -23,6 +23,7 @@ import checkoutApi, { checkoutReducer } from "../redux/api/checkoutApi";
 import { valueCheckoutReducer } from "../redux/slices/valueCheckoutSlice";
 import showtimeMovieApi, { showtimeMovieReducer } from "../redux/api/showtimeMovieApi";
 import paymentApi,{paymentReducer} from "../redux/api/paymentApi";
+import statisticApi, { statisticReducer } from "../redux/api/statisticApi";
 
 const persistConfig = {
   key: "root",
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   [checkoutApi.reducerPath]: checkoutReducer,
   [showtimeMovieApi.reducerPath]: showtimeMovieReducer,
   [paymentApi.reducerPath]:paymentReducer,
+  [statisticApi.reducerPath]:statisticReducer,
   ValueCheckout: valueCheckoutReducer,
   Authorization: authorizationReducer
 });
@@ -45,7 +47,9 @@ const middleware = [
   movieApi.middleware,
   checkoutApi.middleware,
   showtimeMovieApi.middleware,
-  paymentApi.middleware
+  paymentApi.middleware,
+  statisticApi.middleware
+  
 ]
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

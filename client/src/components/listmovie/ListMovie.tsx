@@ -7,12 +7,10 @@ import { useState, useEffect } from "react";
 const ListMovie = () => {
   const { data: Movies, isLoading, error } = useGetAllMoviesQuery();
   const [moviesFilter, setMoviesFilter] = useState([]);
-  console.log('moviesFilter: ',moviesFilter)
   if (error) {
     console.error("error get movies: ", error);
   }
 
-  // console.log(Movies.data.filter(item=> item.status === "upcoming" ));
 
   const items: TabsProps["items"] = [
     {
@@ -30,7 +28,6 @@ const ListMovie = () => {
   ];
   useEffect(() => {
     const result = Movies?.data?.filter((item:any) => item.status === "upcoming");
-    console.log('result: ',result)
     if(result){
       setMoviesFilter(result);
     }

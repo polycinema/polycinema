@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Button, Pagination, Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { useGetAllBookingsQuery } from '../../redux/api/checkoutApi';
 
 interface DataType {
   key: string;
@@ -10,9 +11,11 @@ interface DataType {
   email: string;
   total: string | number;
 }
-type Props = {}
 
-const ListsBooking = (props: Props) => {
+const ListsBooking = () => {
+  const {data:bookings} = useGetAllBookingsQuery()
+  console.log(bookings);
+  
   const columns: ColumnsType<DataType> = [
     {
       title: 'Mã đơn hàng',
@@ -45,50 +48,62 @@ const ListsBooking = (props: Props) => {
     },
   ];
   
-  const dataTable: DataType[] = [
-    {
-      key: '1',
-      id:"1",
-      name: 'John Brown',
-      email: "hiihihihi",
-      total: '1000',
-    },
-    {
-      key: '1',
-      id:"1",
-      name: 'John Brown',
-      email: "hiihihihi",
-      total: '1000',
-    },
-    {
-      key: '1',
-      id:"1",
-      name: 'John Brown',
-      email: "hiihihihi",
-      total: '1000',
-    },
-    {
-      key: '1',
-      id:"1",
-      name: 'John Brown',
-      email: "hiihihihi",
-      total: '1000',
-    },
-    {
-      key: '1',
-      id:"1",
-      name: 'John Brown',
-      email: "hiihihihi",
-      total: '1000',
-    },
-    {
-      key: '1',
-      id:"1",
-      name: 'John Brown',
-      email: "hiihihihi",
-      total: '1000',
-    },
-  ];
+  const dataTable: DataType[] =  bookings?.data?.map((item)=>{
+    return {
+          key: item?.id,
+          id:item?.booking_id,
+          name: item?.user?.name,
+          email: item?.user?.email,
+          total: item?.total_price          ,
+    }
+  }) 
+  
+  
+  
+  // [
+  //   {
+  //     key: '1',
+  //     id:"1",
+  //     name: 'John Brown',
+  //     email: "hiihihihi",
+  //     total: '1000',
+  //   },
+  //   {
+  //     key: '1',
+  //     id:"1",
+  //     name: 'John Brown',
+  //     email: "hiihihihi",
+  //     total: '1000',
+  //   },
+  //   {
+  //     key: '1',
+  //     id:"1",
+  //     name: 'John Brown',
+  //     email: "hiihihihi",
+  //     total: '1000',
+  //   },
+  //   {
+  //     key: '1',
+  //     id:"1",
+  //     name: 'John Brown',
+  //     email: "hiihihihi",
+  //     total: '1000',
+  //   },
+  //   {
+  //     key: '1',
+  //     id:"1",
+  //     name: 'John Brown',
+  //     email: "hiihihihi",
+  //     total: '1000',
+  //   },
+  //   {
+  //     key: '1',
+  //     id:"1",
+  //     name: 'John Brown',
+  //     email: "hiihihihi",
+  //     total: '1000',
+  //   },
+  // ];
   return (
     <>
     <h1 className='text-center text-xl py-4'>Danh sách đặt vé</h1>
@@ -96,7 +111,7 @@ const ListsBooking = (props: Props) => {
     <Pagination
         style={{ marginTop: '16px', textAlign: 'center' }}
         defaultCurrent={1}
-        total={dataTable.length}
+        total={dataTable?.length}
         pageSize={10}
         showSizeChanger
         showQuickJumper
