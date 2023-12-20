@@ -183,7 +183,9 @@ class BookingController extends Controller
                 'user_id' => $request->user_id
             ]);
 
+
             // event(new SeatReservation($seat));
+
 
             return response()->json([
                 'message' => 'Đã cập nhật thành công'

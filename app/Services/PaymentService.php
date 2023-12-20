@@ -26,10 +26,10 @@ class PaymentService
         $vnp_TxnRef = rand(1, 10000000);
         $vnp_OrderInfo = $attributes['vnp_OrderInfo'];
         $vnp_Amount = $attributes['vnp_Amount'] * 100;
-        // $vnp_BankCode = $attributes['bank_code'];
+        $vnp_Amount = $attributes['vnp_Amount'] * 100;
+        $vnp_OrderType = $attributes['vnp_OrderType'];
 
         // Các thông tin khác cần thiết...
-
         $inputData = array(
             "vnp_Version" => "2.1.0",
             "vnp_TmnCode" => $vnp_TmnCode,
@@ -41,14 +41,11 @@ class PaymentService
             "vnp_OrderInfo" => $vnp_OrderInfo,
             "vnp_ReturnUrl" => $vnp_Returnurl,
             "vnp_TxnRef" => $vnp_TxnRef,
-            "vnp_OrderType" => "billpayment",
+            "vnp_OrderType" => $vnp_OrderType,
             "vnp_Locale" => "vn"
             // Thêm các thông tin khác...
         );
 
-        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
-            $inputData['vnp_BankCode'] = $vnp_BankCode;
-        }
 
         ksort($inputData);
         $query = "";

@@ -45,7 +45,7 @@ class SeatController extends Controller
     public function getSeatShowTime(string $showtimeId) {
         try{
             // $seats = Seat::query()->where('showtime_id', $showtimeId)->get();
-            $showtimes = ShowTime::query()->with('seats')->with("room")->find($showtimeId);
+            $showtimes = ShowTime::query()->with('seats')->with('movie.genres')->with("room")->find($showtimeId);
             return response()->json([
                 'data' => $showtimes
             ], Response::HTTP_OK);

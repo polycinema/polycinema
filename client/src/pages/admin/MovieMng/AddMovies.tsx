@@ -39,7 +39,6 @@ const AddMovies = () => {
         })()
     }, [])
     const onFinish = (value) => {
-console.log(value);
 
         addMovies({
             ...value,

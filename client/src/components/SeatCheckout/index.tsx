@@ -4,88 +4,99 @@ import imgNormalBuy from "../../../public/img/seat-buy-normal.png";
 import imgNormal from "../../../public/img/seat-unselect-normal.png";
 import imgDouble from "../../../public/img/seat-unselect-double.png";
 import imgDoubleActive from "../../../public/img/seat-double-active.png";
+import imgDoubleBuy from "../../../public/img/seat-double-by.png";
 import imgVip from "../../../public/img/seat-unselect-vip.png";
 import imgVipActive from "../../../public/img/seat-select-vip.png";
+import imgVipBuy from "../../../public/img/seat-buy-vip.png";
+import imgNormalGiu from "../../../public/img/img-seat-normal-giu.png";
+import imgDoubleGiu from "../../../public/img/img-seat-double-giu.png";
+import imgVipGiu from "../../../public/img/img-seat-vip-giu.png";
 import manhinh from "../../../public/img/ic-screen.png";
 import imgProduct from "../../../public/img/ic-combo.png";
 import imgUser from "../../../public/img/ic-inforpayment.png"
 
 import {
   useGetAllProductsQuery,
-  useGetSeatsByShowTimeQuery,
+  useUpdateSeatStatusMutation,
 } from "../../redux/api/checkoutApi";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import {
   decreaseProduct,
-  increaseProduct,
-  removeValueCheckoutSeat,
-  setActionToggle,
-  setToggle,
-  setValueCheckoutSeat,
+  increaseProduct
 } from "../../redux/slices/valueCheckoutSlice";
 import IsLoading from "../../utils/IsLoading";
 import { Button } from "antd";
-const SeatCheckout = () => {
-  const { id } = useParams();
+
+type Props = {
+  showtime: any,
+  isLoading: boolean,
+  user: any
+}
+const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
   const { data: products } = useGetAllProductsQuery();
-  const { toggleSeat, valueSeatCheckout, products: stateProducts } = useAppSelector(
+  const { products: stateProducts } = useAppSelector(
     (state) => state.ValueCheckout
   );
-  const { data: showtime, isLoading } = useGetSeatsByShowTimeQuery(id || "");
+  const [updateSeatStatus] = useUpdateSeatStatusMutation()
   const dispacth = useAppDispatch();
   const [countdown, setCountdown] = useState(8 * 60);
   const navigate = useNavigate();
   useEffect(() => {
-    dispacth(setToggle(showtime?.data?.seats?.map(() => false)));
     const intervalId = setInterval(() => {
       setCountdown((prevCountdown) => prevCountdown - 1);
     }, 1000);
-
     return () => {
       clearInterval(intervalId);
     };
   }, [showtime, navigate]);
   useEffect(() => {
     if (countdown === 0) {
+      const selectedSeats = showtime?.data?.seats.filter(item => item.status === "booking" && item.user_id === user.id);
+      selectedSeats?.map(seat => {
+        updateSeatStatus({ id: seat.id, status: "unbook", user_id: null });
+      });
       navigate("/");
     }
-  }, [countdown, navigate]);
+  }, [countdown, showtime, navigate]);
+
   const minutes = Math.floor(countdown / 60);
   const seconds = countdown % 60;
 
-  const handleClick = (i: number, seat: object) => {
-    dispacth(setActionToggle(i));
-    const seatIsSelected = toggleSeat[i];
-    if (seatIsSelected) {
-      dispacth(removeValueCheckoutSeat(seat.id));
+
+
+  const handleClick = (seat: any) => {
+    const selectedSeats = showtime?.data?.seats.filter(item => item.status === "booking" && item.user_id === user.id);
+
+    if (selectedSeats.length >= 8) {
+      updateSeatStatus({ id: seat.id, status: "unbook", user_id: null });
+      alert("Bạn chỉ được chọn tối đa 8 ghế vui lòng hủy một ghế để chọn ghế khác");
     } else {
-      dispacth(setValueCheckoutSeat(seat));
+      if (seat.status === "unbook") {
+        updateSeatStatus({ id: seat.id, status: "booking", user_id: user?.id });
+      } else if (seat.status === "booking") {
+        updateSeatStatus({ id: seat.id, status: "unbook", user_id: null });
+      }
     }
   };
 
   const getImageSource = (seatIndex: number) => {
-    if (showtime?.data?.seats && toggleSeat) {
-      if (showtime?.data?.seats.length > seatIndex) {
-        const seatType = showtime.data.seats[seatIndex].type;
-        switch (seatType) {
-          case "single":
-            return toggleSeat[seatIndex] || 0 || ""
-              ? imgNormalActive
-              : imgNormal;
-          case "double":
-            return toggleSeat[seatIndex] || 0 || ""
-              ? imgDoubleActive
-              : imgDouble;
-          case "special":
-            return toggleSeat[seatIndex] || 0 || "" ? imgVipActive : imgVip;
-          default:
-            return imgNormal;
-        }
-      }
+    const seatType = showtime?.data?.seats[seatIndex]?.type;
+    const seatStatus = showtime?.data?.seats[seatIndex]?.status;
+    const user_id = showtime?.data?.seats[seatIndex]?.user_id
+    switch (seatType) {
+      case 'single':
+        return seatStatus === 'booking' && user_id != user.id ? imgNormalGiu : seatStatus === 'booking' ? imgNormalActive : seatStatus === 'booked' ? imgNormalBuy : imgNormal;
+      case 'double':
+        return seatStatus === 'booking' && user_id != user.id ? imgDoubleGiu : seatStatus === 'booking' ? imgDoubleActive : seatStatus === 'booked' ? imgDoubleBuy : imgDouble;
+      case 'special':
+        return seatStatus === 'booking' && user_id != user.id ? imgVipGiu : seatStatus === 'booking' ? imgVipActive : seatStatus === 'booked' ? imgVipBuy : imgVip;
+      default:
+        return imgNormal;
     }
-    return imgNormal;
+
   };
+  
 
   return (
     <div className="w-full">
@@ -117,6 +128,10 @@ const SeatCheckout = () => {
           <p>Ghế đang chọn</p>
         </div>
         <div className="flex items-center gap-2">
+          <img className="w-8" src={imgNormalGiu} alt="" />
+          <p>Ghế đang giữ</p>
+        </div>
+        <div className="flex items-center gap-2">
           <img className="w-8" src={imgNormalBuy} alt="" />
           <p>Ghế đã bán</p>
         </div>
@@ -129,15 +144,15 @@ const SeatCheckout = () => {
               (seat: { id: number; seat_name: string }, i: number) => (
                 <button
                   key={seat.id}
-                  className="w-[40px] relative"
+                  className={`w-[40px] relative ${seat.status == "booking" && seat.user_id != user.id ? " pointer-events-none opacity-60 " : ""}`}
                   onClick={() => {
-                    handleClick(i, seat);
+                    handleClick(seat);
                   }}
                 >
                   <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center">
                     {seat?.seat_name}
                   </p>
-                  <img className="w-full" src={getImageSource(i)} alt="" />
+                  <img className={`w-full `} src={getImageSource(i)} alt="" />
                 </button>
               )
             )}
@@ -201,7 +216,7 @@ const SeatCheckout = () => {
                     <td className="text-center p-2">{item?.price}</td>
                     <td className="text-center p-2">{item?.description}</td>
                     <td className="text-center p-2 ">
-                      {stateProducts.find((product) => product.id === item.id)?.quantity || 0}
+                      {stateProducts.find((product: any) => product.id === item.id)?.quantity || 0}
                     </td>
                     <td>
                       <Button
@@ -225,8 +240,8 @@ const SeatCheckout = () => {
               {stateProducts.reduce((sum: any, item: any) => {
                 return sum + item.price * item.quantity;
               }, 0) +
-                valueSeatCheckout.reduce(
-                  (sum, seat) => sum + seat.payload.price,
+                showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user.id).reduce(
+                  (sum: any, seat: any) => sum + seat.price,
                   0
                 )
               }
