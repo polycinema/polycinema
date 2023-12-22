@@ -57,15 +57,15 @@ class BookingController extends Controller
     {
         try {
 
-            foreach($request->seats as $seat) {
-                $seatModel = Seat::query()->find($seat['id']);
+            // foreach($request->seats as $seat) {
+            //     $seatModel = Seat::query()->find($seat['id']);
 
-                if($seatModel->status == Seat::BOOKED) {
-                    return response()->json([
-                        'message' => 'Ghế đã được đặt'
-                    ], Response::HTTP_BAD_REQUEST);
-                }
-            }
+            //     if($seatModel->status == Seat::BOOKED) {
+            //         return response()->json([
+            //             'message' => 'Ghế đã được đặt'
+            //         ], Response::HTTP_BAD_REQUEST);
+            //     }
+            // }
 
             $booking = Booking::create([
                 'user_id' => $request->user_id,
@@ -85,8 +85,10 @@ class BookingController extends Controller
                     'status' => Seat::BOOKED,
                     'booking_id' => $booking->id
                 ]);
-            }
 
+            event(new SeatReservation($seatModel));
+
+            }
             return response()->json([
                 'data' => $booking,
                 'message' => 'Đặt vé thành công'
@@ -117,7 +119,7 @@ class BookingController extends Controller
             ]);
 
 
-            // event(new SeatReservation($seat));
+            event(new SeatReservation($seat));
 
 
             return response()->json([

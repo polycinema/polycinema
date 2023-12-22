@@ -13,7 +13,6 @@ const CheckoutPage = () => {
   const { user } = useAppSelector(
     (state) => state.Authorization
   );
-  
   useEffect(()=>{
     dispatch(deleteTotalPrice())
     dispatch(deleteValueProduct())
