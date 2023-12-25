@@ -145,6 +145,7 @@ class MovieController extends Controller
                 $genres = Genre::whereIn('id', $genre)->select('name')->get();
 
                 $result[$showtime->show_date][] = [
+                    'showtime_id' => $showtime->id,
                     'movie' => $showtime->movie,
                     'room' => $showtime->room,
                     'start_time' => $showtime->start_time,
