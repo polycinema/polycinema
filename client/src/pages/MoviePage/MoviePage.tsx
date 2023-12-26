@@ -1,32 +1,41 @@
-import { Modal } from "antd";
+import { Empty, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import YouTube from "react-youtube";
 import { useGetShowTimesMovieQuery } from "../../redux/api/showTimeApi";
 import { convertSlug } from "../../utils/convertSlug";
 import IsLoading from "../../utils/IsLoading";
+import ButtonCustom from "../../components/Button";
+import dayjs from "dayjs";
 
 const MoviePage = () => {
   const [isModalOpenTrailer, setIsModalOpenTrailer] = useState(false);
+  const [isModalOpenStartTime, setIsModalOpenStartTime] = useState(false);
   const { data, isLoading, error }: any = useGetShowTimesMovieQuery();
   const [showtimes, setShowtimes] = useState([]);
   const [indexDate, setIndexDate] = useState(0);
   const [showtime, setShowtime] = useState([0]);
   const [showtimesByChange, setShowtimeByChange] = useState<RootObject[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie>();
+  const [selectedMovieModalTime, setSelectedMovieModalTime] =
+    useState<Showtime>();
   const navigate = useNavigate();
   // console.log("showtime by change: ", showtimesByChange[0]);
-  // console.log("list movies: ", movies);
-  // console.log("showtimesByChange: ", showtimesByChange);
+  // console.log("selectedMovieModalTime: ", selectedMovieModalTime);
+  console.log("data: ", data);
   // console.log("index date: ", indexDate);
 
   useEffect(() => {
+    
     if (data) {
       setShowtimes(data?.data);
     }
     if (showtimes.length) {
       const index = showtimes.filter((items, index) => index === indexDate);
       setShowtimeByChange(index);
+    }
+    if(!showtimes.length){
+      <Empty/>
     }
   }, [data, showtimes, indexDate]);
   useEffect(() => {
@@ -46,13 +55,24 @@ const MoviePage = () => {
       </>
     );
   }
-
+  if(!showtimes.length){
+    return <div className="h-[50vh]">
+      <Empty/>
+    </div>
+  }
   const showModalTrailer = (movies: Movie) => {
     setSelectedMovie(movies);
     setIsModalOpenTrailer(true);
   };
   const handleCancel = () => {
     setIsModalOpenTrailer(false);
+  };
+  const handleCancelModalStartTime = () => {
+    setIsModalOpenStartTime(false);
+  };
+  const showModalStartTime = (movies) => {
+    setSelectedMovieModalTime(movies);
+    setIsModalOpenStartTime(true);
   };
   const nextDetail = (movie: Movie) => {
     if (movie) {
@@ -77,7 +97,9 @@ const MoviePage = () => {
                 key={index}
               >
                 <Link to={""}>
-                  <span className="mr-3">{items.show_date}</span>
+                  <span className="mr-3">
+                    {dayjs(items.show_date).format("DD/MM/YYYY")}
+                  </span>
                 </Link>
               </li>
             );
@@ -135,9 +157,45 @@ const MoviePage = () => {
 
                 <div className="space-y-2 mt-3">
                   <p>2D PHỤ ĐỀ</p>
-                  <button className="bg-gray-300 px-2 py-1 ">
+                  <button
+                    className="bg-gray-300 px-2 py-1 "
+                    onClick={() => showModalStartTime(movie)}
+                  >
                     {movie.start_time}
                   </button>
+                  <Modal
+                    title={`Bạn đang đặt vé xem phim`}
+                    open={isModalOpenStartTime}
+                    width={700}
+                    onCancel={handleCancelModalStartTime}
+                  >
+                    <>
+                      <h4 className="text-center text-3xl text-[#03599d] pt-4">
+                        {selectedMovieModalTime?.movie.name}
+                      </h4>
+                      <table className="w-full my-8 ">
+                        <tr className="text-center border-b  ">
+                          <td className="text-xl p-4">Ngày chiếu</td>
+                          <td className="text-xl p-4">Giờ Chiếu</td>
+                        </tr>
+                        <tr className="text-center">
+                          <td className="p-4 text-xl">
+                            {dayjs(showtimesByChange[0]?.show_date).format(
+                              "DD/MM"
+                            )}
+                          </td>
+                          <td className="p-4 text-xl">
+                            {selectedMovieModalTime?.start_time}
+                          </td>
+                        </tr>
+                      </table>
+                      <div className="text-center">
+                        <ButtonCustom width="20%">
+                          <Link to={`/poly-checkout/:id`}>Đồng Ý</Link>
+                        </ButtonCustom>
+                      </div>
+                    </>
+                  </Modal>
                 </div>
               </div>
             </div>
