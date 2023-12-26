@@ -27,11 +27,8 @@ class ProfileController extends Controller
                 'image' => 'string',
                 'full_name' => 'string|max:255',
                 'phone' => 'string|numeric|regex:/^0\d{9}$/|unique:users,phone,' . $user_id,
-                'cccd' => 'numeric|min:9|unique:users,cccd,' . $user_id,
                 'date_of_birth' => 'date_format:Y/m/d',
                 'gender' => 'string',
-                'city' => 'string',
-                'district' => 'string',
             ], [
                 'image.string' => 'Ảnh Không Hợp Lệ',
                 'full_name.string' => 'Họ Tên Không Hợp Lệ',
@@ -39,14 +36,8 @@ class ProfileController extends Controller
                 'phone.numeric' => 'Số Điện Thoại Không Hợp Lệ',
                 'phone.regex' => 'Số Điện Thoại Không Hợp Lệ',
                 'phone.unique' => 'Số Điện Thoại Đã Được Đăng Ký',
-                'cccd.numeric' => 'CCCD Không Hợp Lệ',
-                'cccd.min' => 'CCCD Không Hợp Lệ',
-                'cccd.unique' => 'CCCD Đã Được Đăng Ký',
                 'date_of_birth.date_format' => 'Định Dạng Sinh Nhật Yêu Cầu Năm/Tháng/Ngày',
-                'cccd.unique' => 'CCCD Đã Được Đăng Ký',
                 'gender.string' => 'Giới Tính Không Hợp Lệ',
-                'city.string' => 'Thành Phố Không Hợp Lệ',
-                'district.string' => 'Quận/Huyện Không Hợp Lệ',
             ]);
 
             if ($validator->fails()) {
