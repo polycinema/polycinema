@@ -22,11 +22,10 @@ const MoviePage = () => {
   const navigate = useNavigate();
   // console.log("showtime by change: ", showtimesByChange[0]);
   // console.log("selectedMovieModalTime: ", selectedMovieModalTime);
-  console.log("data: ", data);
+  console.log("showtime: ", showtime);
   // console.log("index date: ", indexDate);
 
   useEffect(() => {
-    
     if (data) {
       setShowtimes(data?.data);
     }
@@ -34,8 +33,8 @@ const MoviePage = () => {
       const index = showtimes.filter((items, index) => index === indexDate);
       setShowtimeByChange(index);
     }
-    if(!showtimes.length){
-      <Empty/>
+    if (!showtimes.length) {
+      <Empty />;
     }
   }, [data, showtimes, indexDate]);
   useEffect(() => {
@@ -55,10 +54,12 @@ const MoviePage = () => {
       </>
     );
   }
-  if(!showtimes.length){
-    return <div className="h-[50vh]">
-      <Empty/>
-    </div>
+  if (!showtimes.length) {
+    return (
+      <div className="h-[50vh]">
+        <Empty />
+      </div>
+    );
   }
   const showModalTrailer = (movies: Movie) => {
     setSelectedMovie(movies);
@@ -98,7 +99,7 @@ const MoviePage = () => {
               >
                 <Link to={""}>
                   <span className="mr-3">
-                    {dayjs(items.show_date).format("DD/MM/YYYY")}
+                    {dayjs(items.show_date).format("DD-MM-YYYY")}
                   </span>
                 </Link>
               </li>
@@ -158,11 +159,12 @@ const MoviePage = () => {
                 <div className="space-y-2 mt-3">
                   <p>2D PHỤ ĐỀ</p>
                   <button
-                    className="bg-gray-300 px-2 py-1 "
-                    onClick={() => showModalStartTime(movie)}
-                  >
-                    {movie.start_time}
-                  </button>
+                      className="bg-gray-300 px-2 py-1 "
+                      onClick={() => showModalStartTime(movie)}
+                    >
+                      {movie.start_time}
+                    </button>
+                    <p className="text-xs">{movie.available_seat} ghế trống</p>
                   <Modal
                     title={`Bạn đang đặt vé xem phim`}
                     open={isModalOpenStartTime}
@@ -191,7 +193,11 @@ const MoviePage = () => {
                       </table>
                       <div className="text-center">
                         <ButtonCustom width="20%">
-                          <Link to={`/poly-checkout/:id`}>Đồng Ý</Link>
+                          <Link
+                            to={`/poly-checkout/${selectedMovieModalTime?.showtime_id}`}
+                          >
+                            Đồng Ý
+                          </Link>
                         </ButtonCustom>
                       </div>
                     </>
@@ -276,6 +282,7 @@ interface Showtime {
   start_time: string;
   end_time: string;
   available_seat: number;
+  showtime_id: number | string;
 }
 interface Room {
   id: number;

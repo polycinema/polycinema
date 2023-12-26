@@ -52,6 +52,7 @@ const MovieTable = () => {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
+      render: (desc:any) => <p className='line-clamp-3'>{desc}</p>,
     },
     {
       title: 'Release Date',
