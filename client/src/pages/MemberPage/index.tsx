@@ -1,4 +1,3 @@
-import { Tabs, TabsProps } from "antd";
 import React, { useState } from "react";
 import InfoAccount from "../../components/userinfo/InfoAccount";
 import "./index.css";
@@ -13,7 +12,7 @@ const MemberPage = (props: Props) => {
   const { user } = useAppSelector((state) => state.Authorization);
         
   const [activeTab, setActiveTab] = useState(1);
-  const handleTabClick = (tabNumber) => {
+  const handleTabClick = (tabNumber:any) => {
     setActiveTab(tabNumber);
   };
 

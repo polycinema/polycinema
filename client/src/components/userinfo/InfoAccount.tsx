@@ -10,7 +10,6 @@ import {
   Upload,
 } from "antd";
 import { Option } from "antd/es/mentions";
-import React from "react";
 
 const InfoAccount = () => {
   return (
@@ -40,28 +39,6 @@ const InfoAccount = () => {
               <Input prefix={<PhoneOutlined />} placeholder="SĐT" />
             </Form.Item>
             <Form.Item
-              name={"birth"}
-              label="Ngày Sinh"
-              rules={[{ required: true, message: "Vui lòng nhập ngày sinh" }]}
-            >
-              <DatePicker />
-            </Form.Item>
-            <Form.Item
-              name={"city"}
-              label="Tỉnh/Thành phố"
-              rules={[
-                { required: true, message: "Vui lòng nhập tỉnh, thành phố" },
-              ]}
-            >
-              <Select placeholder="Tỉnh/Thành Phố" allowClear>
-                <Option value="male">Hà Nội</Option>
-                <Option value="female">Vĩnh Phúc</Option>
-                <Option value="other">Hải Dương</Option>
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
               name="email"
               label="Email"
               rules={[
@@ -74,18 +51,15 @@ const InfoAccount = () => {
             >
               <Input placeholder="Email" />
             </Form.Item>
+          </Col>
+          <Col span={12}>
+            
             <Form.Item
-              name="idcart"
-              label="CCCD/Hộ Chiếu"
-              rules={[
-                {
-                  required: true,
-                  type: "email",
-                  message: "Vui lòng nhập ID Cart",
-                },
-              ]}
+              name={"birth"}
+              label="Ngày Sinh"
+              rules={[{ required: true, message: "Vui lòng nhập ngày sinh" }]}
             >
-              <Input placeholder="CCCD/Hộ Chiếu" />
+              <DatePicker />
             </Form.Item>
             <Form.Item
               name={"gender"}
@@ -98,26 +72,9 @@ const InfoAccount = () => {
                 <Option value="other">Khác</Option>
               </Select>
             </Form.Item>
-            <Form.Item
-              name={"district"}
-              label="Quận/Huyện"
-              rules={[{ required: true, message: "Vui lòng nhập quận/huyện" }]}
-            >
-              <Select placeholder="Quận/Huyện" allowClear>
-                <Option value="male">Mê Linh</Option>
-                <Option value="female">Nam Từ Liêm</Option>
-                <Option value="other">Cầu Giấy</Option>
-              </Select>
-            </Form.Item>
           </Col>
         </Row>
-        <Form.Item
-          name={"address"}
-          label="Địa Chỉ"
-          rules={[{ required: true, message: "Vui lòng nhập địa chỉ" }]}
-        >
-          <Input.TextArea placeholder="Địa chỉ" />
-        </Form.Item>
+
         <Form.Item>
           <Button type="link">Đổi mật khẩu</Button>
         </Form.Item>
