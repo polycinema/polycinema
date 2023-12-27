@@ -19,6 +19,7 @@ const ItemMovie = ({ movie }: Props) => {
   const [showTimeById, setShowTimeById] = useState();
   const { data: showtimesAll, isLoading: isLoadingShowTime } =
     useGetShowTimeByMovieQuery(movieId || "");
+    console.log('showTimeById: ',showTimeById)
   const showModalTrailer = () => {
     setIsModalOpenTrailer(true);
   };
