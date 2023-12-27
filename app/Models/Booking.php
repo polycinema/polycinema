@@ -17,7 +17,11 @@ class Booking extends Model
         'showtime_id',
         'total_price',
         'coupon_code',
+        'status',
     ];
+
+    CONST SATISFIED = 'satisfied';
+    CONST NOT_YET = 'not_yet';
 
     public function products()
     {

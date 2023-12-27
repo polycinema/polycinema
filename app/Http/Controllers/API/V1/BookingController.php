@@ -69,7 +69,7 @@ class BookingController extends Controller
             //         ], Response::HTTP_BAD_REQUEST);
             //     }
             // }
-            
+
             // Tạo Booking
             $booking = Booking::create([
                 'user_id' => $request->user_id,
@@ -97,8 +97,7 @@ class BookingController extends Controller
                     'booking_id' => $booking->id
                 ]);
 
-            event(new SeatReservation($seatModel));
-
+                event(new SeatReservation($seatModel));
             }
             return response()->json([
                 'data' => $booking,
@@ -137,6 +136,50 @@ class BookingController extends Controller
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('BookingController@updateSeatReservation: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Chuyển đổi trạng thái đơn hàng từ chưa NOT_YET => SATISFIED
+    public function setStatusBookingToSatisfied(string $id)
+    {
+        try {
+            $booking = Booking::find($id);
+
+            $booking->status = Booking::SATISFIED ;
+
+            $booking->save();
+
+            return response()->json([
+                'message' => $booking
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('BookingController@setStatusBookingToSatisfied: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Chuyển đổi trạng thái đơn hàng từ đã SATISFIED => NOT_YET
+    public function setStatusBookingToNotYet(string $id)
+    {
+        try {
+            $booking = Booking::find($id);
+
+            $booking->status = Booking::NOT_YET ;
+
+            $booking->save();
+            
+            return response()->json([
+                'message' => " Cập nhật thành công đơn $booking->booking_id "
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('BookingController@setStatusBookingToSatisfied: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'

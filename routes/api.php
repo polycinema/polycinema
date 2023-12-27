@@ -72,7 +72,11 @@ Route::prefix('v1')->group(function () {
     Route::get('statistic-in-year', [StatisticController::class, 'getStatisticInYear']);
 
     Route::get('all-available-coupons/{user_id}', [CouponController::class, 'getAvailableCouponsByUser']);
-    
+
     Route::post('user-do-using-coupon', [CouponController::class, 'userUsingCoupon']);
+
+    Route::post('satisfied-booking/{booking_id}', [BookingController::class, 'setStatusBookingToSatisfied']);
+
+    Route::post('not-yet-booking/{booking_id}', [BookingController::class, 'setStatusBookingToNotYet']);
 
 });
