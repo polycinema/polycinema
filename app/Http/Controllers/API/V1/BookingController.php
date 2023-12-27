@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API\V1;
 use App\Events\SeatReservation;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\Coupon;
 use App\Models\Seat;
 use App\Services\PaymentService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -67,17 +69,20 @@ class BookingController extends Controller
             //     }
             // }
 
+            // Tạo Booking
             $booking = Booking::create([
                 'user_id' => $request->user_id,
                 'booking_id' => $request->booking_id,
                 'showtime_id' => $request->showtime_id,
-                'total_price' => $request->total_price
+                'total_price' => $request->total_price,
+                'coupon_code' => $request->coupon_code
             ]);
 
             foreach ($request->products as $product) {
                 $booking->products()->attach($product['id'], ['quantity' => $product['quantity']]);
             }
 
+            // Update trạng thái ghế 
             foreach ($request->seats as $seat) {
                 $seatModel = Seat::query()->find($seat['id']);
 
@@ -105,7 +110,6 @@ class BookingController extends Controller
     public function createVNPayPayment(Request $request)
     {
         return $this->paymentService->createVNPayPayment($request);
-        
     }
 
     public function updateSeatReservation(Request $request, string $id)

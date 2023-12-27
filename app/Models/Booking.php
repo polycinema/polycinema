@@ -15,7 +15,8 @@ class Booking extends Model
         'user_id',
         'booking_id',
         'showtime_id',
-        'total_price'
+        'total_price',
+        'coupon_code',
     ];
 
     public function products()
