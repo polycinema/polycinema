@@ -8,6 +8,7 @@ use App\Models\Movie;
 use App\Models\MovieGenre;
 use App\Models\Seat;
 use App\Models\ShowTime;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -74,6 +75,8 @@ class MovieController extends Controller
         try {
             $movie_name = Movie::find($movieId)->name;
 
+            $currentDate = Carbon::now()->toDateString();
+
             $showTimes = DB::table('show_times as t1')
                 ->join('show_times as t2', function ($join) use ($movieId) {
                     $join->on('t1.movie_id', '=', 't2.movie_id')
@@ -81,6 +84,7 @@ class MovieController extends Controller
                         ->where('t1.id', '<>', 't2.id')
                         ->where('t2.movie_id', '=', $movieId);
                 })
+                ->whereDate('t1.show_date', '>=', $currentDate)
                 ->select('t1.*')
                 ->distinct()
                 ->get();
@@ -175,5 +179,4 @@ class MovieController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
 }
