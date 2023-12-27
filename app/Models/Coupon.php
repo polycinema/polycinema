@@ -29,4 +29,8 @@ class Coupon extends Model
     const ONE_HUNDERED = 100 ;
     const ONE = 1 ;
     const EMPTY = "" ;
+
+    public function users(){
+         return $this->belongsToMany(User::class , 'coupon_bookings' );
+    }
 }

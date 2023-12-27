@@ -6,7 +6,9 @@ use App\Events\SeatReservation;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Coupon;
+use App\Models\CouponBooking;
 use App\Models\Seat;
+use App\Models\User;
 use App\Services\PaymentService;
 use Carbon\Carbon;
 use Exception;
@@ -58,7 +60,6 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         try {
-
             // foreach($request->seats as $seat) {
             //     $seatModel = Seat::query()->find($seat['id']);
 
@@ -68,7 +69,7 @@ class BookingController extends Controller
             //         ], Response::HTTP_BAD_REQUEST);
             //     }
             // }
-
+            
             // Tạo Booking
             $booking = Booking::create([
                 'user_id' => $request->user_id,
@@ -76,6 +77,11 @@ class BookingController extends Controller
                 'showtime_id' => $request->showtime_id,
                 'total_price' => $request->total_price,
                 'coupon_code' => $request->coupon_code
+            ]);
+
+            $coupon_user = CouponBooking::create([
+                'coupon_id' => $request->coupon_id,
+                'user_id' => $request->user_id,
             ]);
 
             foreach ($request->products as $product) {
