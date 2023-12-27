@@ -19,6 +19,7 @@ class CouponSeeder extends Seeder
             'type' => 'discount_percentage',
             'discount' => '40',
             'expires_at' => '2024/12/12',
+            'quantity' => '100',
         ]);
 
         DB::table('coupons')->insert([
@@ -27,6 +28,7 @@ class CouponSeeder extends Seeder
             'type' => 'discount_amount',
             'discount' => '50000',
             'expires_at' => '2024/12/12',
+            'quantity' => '100',
         ]);
 
         DB::table('coupons')->insert([
@@ -35,6 +37,7 @@ class CouponSeeder extends Seeder
             'type' => 'discount_percentage',
             'discount' => '20',
             'expires_at' => '2024/12/12',
+            'quantity' => '100',
         ]);
 
         DB::table('coupons')->insert([
@@ -43,6 +46,7 @@ class CouponSeeder extends Seeder
             'type' => 'discount_amount',
             'discount' => '70000',
             'expires_at' => '2024/12/12',
+            'quantity' => '100',
         ]);
     }
 }

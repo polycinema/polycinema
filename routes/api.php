@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\Auth\AuthenController;
 use App\Http\Controllers\API\V1\BookingController;
+use App\Http\Controllers\API\V1\CouponController;
 use App\Http\Controllers\API\V1\MovieController;
 use App\Http\Controllers\API\V1\SeatController;
 use App\Http\Controllers\API\V1\ProfileController;
@@ -69,4 +70,9 @@ Route::prefix('v1')->group(function () {
     Route::get('statistic-in-month', [StatisticController::class, 'getStatisticInLast28Days']);
 
     Route::get('statistic-in-year', [StatisticController::class, 'getStatisticInYear']);
+
+    Route::post('all-available-coupons', [CouponController::class, 'getAvailableCouponsByUser']);
+
+    Route::post('user-do-using-coupon', [CouponController::class, 'userUsingCoupon']);
+
 });

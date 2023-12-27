@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('description'); 
             $table->enum('type', ['discount_percentage', 'discount_amount'])->nullable(); 
             $table->bigInteger('discount'); 
-            $table->timestamp('expires_at')->nullable(); // ngày hết hạn
+            $table->timestamp('expires_at'); // ngày hết hạn
+            $table->bigInteger('quantity')->nullable(); // số lượng
             $table->timestamps();
         });
     }
