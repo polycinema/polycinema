@@ -16,10 +16,26 @@ class ShowTimeSeeder extends Seeder
     {
         DB::table('show_times')->insert([
             'movie_id' => 1,
-            'room_id' => 1,
+            'room_id' => 2,
             'show_date' => Carbon::now()->tomorrow(),
-            'start_time' => '17:30:00',
-            'end_time' => '18:30:00',
+            'start_time' => '13:00:00',
+            'end_time' => '15:00:00',
+        ]);
+
+        DB::table('show_times')->insert([
+            'movie_id' => 2,
+            'room_id' => 1,
+            'show_date' => Carbon::now()->yesterday(),
+            'start_time' => '06:00:00',
+            'end_time' => '08:00:00',
+        ]);
+
+        DB::table('show_times')->insert([
+            'movie_id' => 3,
+            'room_id' => 2,
+            'show_date' => Carbon::now()->tomorrow(),
+            'start_time' => '09:00:00',
+            'end_time' => '11:00:00',
         ]);
     }
 }

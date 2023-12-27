@@ -76,15 +76,18 @@ class MovieController extends Controller
             $movie_name = Movie::find($movieId)->name;
 
             $currentDate = Carbon::now()->toDateString();
+            // $currentTime = Carbon::now()->toTimeString();
 
             $showTimes = DB::table('show_times as t1')
                 ->join('show_times as t2', function ($join) use ($movieId) {
                     $join->on('t1.movie_id', '=', 't2.movie_id')
                         ->on('t1.show_date', '=', 't2.show_date')
+                        // ->on('t1.start_time', '=', 't2.start_time')
                         ->where('t1.id', '<>', 't2.id')
                         ->where('t2.movie_id', '=', $movieId);
                 })
                 ->whereDate('t1.show_date', '>=', $currentDate)
+                // ->whereTime('t1.start_time', '>=', $currentTime)
                 ->select('t1.*')
                 ->distinct()
                 ->get();

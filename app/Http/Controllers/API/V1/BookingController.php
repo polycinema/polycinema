@@ -179,7 +179,7 @@ class BookingController extends Controller
                 'message' => " Cập nhật thành công đơn $booking->booking_id "
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
-            Log::error('BookingController@setStatusBookingToSatisfied: ', [$exception->getMessage()]);
+            Log::error('BookingController@setStatusBookingToNotYet: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
