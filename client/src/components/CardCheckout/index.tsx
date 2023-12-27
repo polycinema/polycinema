@@ -93,8 +93,8 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
             <FaDesktop /> <span>Ghế ngồi</span>
           </p>
           <p className="flex flex-wrap font-bold text-[14px]">
-            {showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user.id).map((item: any) => <span>
-              {item.seat_name},
+            {showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id).map((item: any) => <span>
+              {item?.seat_name},
             </span>)}
           </p>
         </div>
@@ -109,12 +109,12 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
                 movie_id: showtime?.data?.movie.id,
                 user_id: user.id,
                 showtime_id: showtime.data.id,
-                seats: showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user.id),
+                seats: showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id),
                 total_price: stateProducts.reduce((sum: any, item: any) => {
-                  return sum + item.price * item.quantity;
+                  return sum + item?.price * item?.quantity;
                 }, 0) +
-                  showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user.id).reduce(
-                    (sum: any, seat: any) => sum + seat.price,
+                  showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id).reduce(
+                    (sum: any, seat: any) => sum + seat?.price,
                     0
                   )
               })

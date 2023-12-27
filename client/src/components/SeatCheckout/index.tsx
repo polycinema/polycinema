@@ -13,7 +13,7 @@ import imgDoubleGiu from "../../../public/img/img-seat-double-giu.png";
 import imgVipGiu from "../../../public/img/img-seat-vip-giu.png";
 import manhinh from "../../../public/img/ic-screen.png";
 import imgProduct from "../../../public/img/ic-combo.png";
-import imgUser from "../../../public/img/ic-inforpayment.png"
+import imgUser from "../../../public/img/ic-inforpayment.png";
 
 import {
   useGetAllProductsQuery,
@@ -23,25 +23,42 @@ import { useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import {
   decreaseProduct,
-  increaseProduct
+  increaseProduct,
 } from "../../redux/slices/valueCheckoutSlice";
 import IsLoading from "../../utils/IsLoading";
 import { Button } from "antd";
 
 type Props = {
-  showtime: any,
-  isLoading: boolean,
-  user: any
-}
+  showtime: any;
+  isLoading: boolean;
+  user: any;
+};
 const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
+  const [updateSeatStatus] = useUpdateSeatStatusMutation();
   const { data: products } = useGetAllProductsQuery();
   const { products: stateProducts } = useAppSelector(
     (state) => state.ValueCheckout
   );
-  const [updateSeatStatus] = useUpdateSeatStatusMutation()
+  const navigate = useNavigate();
   const dispacth = useAppDispatch();
   const [countdown, setCountdown] = useState(8 * 60);
-  const navigate = useNavigate();
+  const [seatDatas, setSeatDatas] = useState(showtime?.data?.seats || []);
+
+  useEffect(() => {
+    const channel = window.Echo.channel("seat-reservation");
+    const handleReservedEvent = (e) => {
+      const updatedSeat = e.seat;
+      setSeatDatas((prevSeatData: any) => {
+        return prevSeatData?.map((seat: any) =>
+          seat.id === updatedSeat.id ? updatedSeat : seat
+        );
+      });
+    };
+    channel.listen(".seat.reserved", handleReservedEvent);
+    if (showtime?.data?.seats && !seatDatas.length) {
+      setSeatDatas(showtime.data.seats);
+    }
+  });
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCountdown((prevCountdown) => prevCountdown - 1);
@@ -50,27 +67,33 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       clearInterval(intervalId);
     };
   }, [showtime, navigate]);
+
   useEffect(() => {
     if (countdown === 0) {
-      const selectedSeats = showtime?.data?.seats.filter(item => item.status === "booking" && item.user_id === user.id);
-      selectedSeats?.map(seat => {
+      const selectedSeats = seatDatas.filter(
+        (item) => item.status === "booking" && item.user_id === user.id
+      );
+      selectedSeats?.map((seat) => {
         updateSeatStatus({ id: seat.id, status: "unbook", user_id: null });
       });
       navigate("/");
+      
     }
   }, [countdown, showtime, navigate]);
 
   const minutes = Math.floor(countdown / 60);
   const seconds = countdown % 60;
 
-
-
   const handleClick = (seat: any) => {
-    const selectedSeats = showtime?.data?.seats.filter(item => item.status === "booking" && item.user_id === user.id);
-
-    if (selectedSeats.length >= 8) {
+    const selectedSeats = seatDatas.filter(
+      (item) => item.status === "booking" && item.user_id === user.id
+    );
+    if (selectedSeats.length >= 9) {
+      alert(
+        "Bạn chỉ được chọn tối đa 8 ghế vui lòng hủy một ghế để chọn ghế khác"
+      );
+    } else if (selectedSeats.length >= 8) {
       updateSeatStatus({ id: seat.id, status: "unbook", user_id: null });
-      alert("Bạn chỉ được chọn tối đa 8 ghế vui lòng hủy một ghế để chọn ghế khác");
     } else {
       if (seat.status === "unbook") {
         updateSeatStatus({ id: seat.id, status: "booking", user_id: user?.id });
@@ -81,29 +104,45 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
   };
 
   const getImageSource = (seatIndex: number) => {
-    const seatType = showtime?.data?.seats[seatIndex]?.type;
-    const seatStatus = showtime?.data?.seats[seatIndex]?.status;
-    const user_id = showtime?.data?.seats[seatIndex]?.user_id
+    const seatType = seatDatas[seatIndex]?.type;
+    const seatStatus = seatDatas[seatIndex]?.status;
+    const user_id = seatDatas[seatIndex]?.user_id;
     switch (seatType) {
-      case 'single':
-        return seatStatus === 'booking' && user_id != user.id ? imgNormalGiu : seatStatus === 'booking' ? imgNormalActive : seatStatus === 'booked' ? imgNormalBuy : imgNormal;
-      case 'double':
-        return seatStatus === 'booking' && user_id != user.id ? imgDoubleGiu : seatStatus === 'booking' ? imgDoubleActive : seatStatus === 'booked' ? imgDoubleBuy : imgDouble;
-      case 'special':
-        return seatStatus === 'booking' && user_id != user.id ? imgVipGiu : seatStatus === 'booking' ? imgVipActive : seatStatus === 'booked' ? imgVipBuy : imgVip;
+      case "single":
+        return seatStatus === "booking" && user_id != user.id
+          ? imgNormalGiu
+          : seatStatus === "booking"
+            ? imgNormalActive
+            : seatStatus === "booked"
+              ? imgNormalBuy
+              : imgNormal;
+      case "double":
+        return seatStatus === "booking" && user_id != user.id
+          ? imgDoubleGiu
+          : seatStatus === "booking"
+            ? imgDoubleActive
+            : seatStatus === "booked"
+              ? imgDoubleBuy
+              : imgDouble;
+      case "special":
+        return seatStatus === "booking" && user_id != user.id
+          ? imgVipGiu
+          : seatStatus === "booking"
+            ? imgVipActive
+            : seatStatus === "booked"
+              ? imgVipBuy
+              : imgVip;
       default:
         return imgNormal;
     }
-
   };
-  
 
   return (
     <div className="w-full">
-      <div className='m-4'>
-        <div className='flex items-center justify-center gap-4 p-2'>
-          <img className='w-10' src={imgUser} alt="" />
-          <div className='text-3xl '>THÔNG TIN THANH TOÁN</div>
+      <div className="m-4">
+        <div className="flex items-center justify-center gap-4 p-2">
+          <img className="w-10" src={imgUser} alt="" />
+          <div className="text-3xl ">THÔNG TIN THANH TOÁN</div>
         </div>
         <div className="flex justify-between my-4">
           <div className="flex gap-2 text-xl">
@@ -115,15 +154,13 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
             <p>{user.email}</p>
           </div>
         </div>
-
-
       </div>
       <div className="flex items-center justify-center gap-5">
-          <p className="text-xl mt-2">Thời gian còn lại để chọn ghế:</p>
-          <p className="text-2xl mt-2 ">
-            {minutes}: {seconds}
-          </p>
-        </div>
+        <p className="text-xl mt-2">Thời gian còn lại để chọn ghế:</p>
+        <p className="text-2xl mt-2 ">
+          {minutes}: {seconds}
+        </p>
+      </div>
       <div className="flex justify-center items-center space-x-9 p-4   ">
         <div className="flex items-center gap-2">
           <img className="w-8" src={imgNormal} alt="" />
@@ -146,11 +183,14 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       <div className=" seat-hidden lg:w-full  ">
         <div className="seat_container seat-scroll  mt-4 ">
           <div className="grid grid-cols-6 md:grid-cols-10 lg:grid-cols-12   ">
-            {showtime?.data?.seats?.map(
+            {seatDatas?.map(
               (seat: { id: number; seat_name: string }, i: number) => (
                 <button
                   key={seat.id}
-                  className={`w-[40px] relative ${seat.status == "booking" && seat.user_id != user.id ? " pointer-events-none opacity-60 " : ""}`}
+                  className={`w-[40px] relative ${seat.status == "booking" && seat.user_id != user.id
+                      ? " pointer-events-none opacity-60 "
+                      : ""
+                    }`}
                   onClick={() => {
                     handleClick(seat);
                   }}
@@ -179,10 +219,8 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
           <img className="w-14 h-10 object-center" src={imgDouble} alt="" />
           <p>Ghế đôi</p>
         </div>
-        
       </div>
       <div>
-
         <div className="table-product mt-20">
           <div className="flex items-center gap-4">
             <img className="w-10" src={imgProduct} alt="" />
@@ -216,7 +254,9 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
                     <td className="text-center p-2">{item?.price}</td>
                     <td className="text-center p-2">{item?.description}</td>
                     <td className="text-center p-2 ">
-                      {stateProducts.find((product: any) => product.id === item.id)?.quantity || 0}
+                      {stateProducts.find(
+                        (product: any) => product.id === item.id
+                      )?.quantity || 0}
                     </td>
                     <td>
                       <Button
@@ -240,13 +280,12 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
               {stateProducts.reduce((sum: any, item: any) => {
                 return sum + item.price * item.quantity;
               }, 0) +
-                showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user.id).reduce(
-                  (sum: any, seat: any) => sum + seat.price,
-                  0
-                )
-              }
-
-
+                showtime?.data?.seats
+                  ?.filter(
+                    (item: any) =>
+                      item?.status == "booking" && item?.user_id == user.id
+                  )
+                  .reduce((sum: any, seat: any) => sum + seat.price, 0)}
               đ
             </p>
           </div>

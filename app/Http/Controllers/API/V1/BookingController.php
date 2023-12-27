@@ -57,17 +57,17 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-        try {      
-            // Kiểm tra trạng thái ghế đã được đặt chưa
-            foreach ($request->seats as $seat) {
-                $seatModel = Seat::query()->find($seat['id']);
+        try {
 
-                if ($seatModel->status == Seat::BOOKED) {
-                    return response()->json([
-                        'message' => 'Ghế đã được đặt'
-                    ], Response::HTTP_BAD_REQUEST);
-                }
-            }
+            // foreach($request->seats as $seat) {
+            //     $seatModel = Seat::query()->find($seat['id']);
+
+            //     if($seatModel->status == Seat::BOOKED) {
+            //         return response()->json([
+            //             'message' => 'Ghế đã được đặt'
+            //         ], Response::HTTP_BAD_REQUEST);
+            //     }
+            // }
 
             // Tạo Booking
             $booking = Booking::create([
@@ -90,8 +90,10 @@ class BookingController extends Controller
                     'status' => Seat::BOOKED,
                     'booking_id' => $booking->id
                 ]);
-            }
 
+            event(new SeatReservation($seatModel));
+
+            }
             return response()->json([
                 'data' => $booking,
                 'message' => 'Đặt vé thành công'
@@ -121,7 +123,7 @@ class BookingController extends Controller
             ]);
 
 
-            // event(new SeatReservation($seat));
+            event(new SeatReservation($seat));
 
 
             return response()->json([
