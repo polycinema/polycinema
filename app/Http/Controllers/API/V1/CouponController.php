@@ -78,7 +78,7 @@ class CouponController extends Controller
         }
     }
 
-    public function getAvailableCouponsByUser(Request $request)
+    public function getAvailableCouponsByUser(string $id)
     {
         // Lấy tất cả các Coupon còn hạn sủ dụng và còn số lượng theo user_id
         // POST Request user_id 
@@ -87,7 +87,7 @@ class CouponController extends Controller
                 ->where('quantity', '>', 0)
                 ->get();
 
-            $used_coupons = CouponBooking::query()->where('user_id', $request->user_id)->with('coupon')->get();
+            $used_coupons = CouponBooking::query()->where('user_id', $id)->with('coupon')->get();
 
             $usedCouponIds = [];
 
