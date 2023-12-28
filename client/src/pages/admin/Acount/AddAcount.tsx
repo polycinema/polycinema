@@ -73,9 +73,9 @@ const AddAcount = () => {
                     </Form.Item>
 
                     <Form.Item<FieldType>
-                        label="Password"
+                        label="Mật khẩu"
                         name="password"
-                        rules={[{ required: true, message: 'Password không được để trống' }]}
+                        rules={[{ required: true, message: 'Mật khẩu không được để trống' }]}
                     >
                         <Input.Password />
                     </Form.Item>

@@ -5,6 +5,8 @@ import { useAppDispatch } from '../../store/hook'
 import { deleteValueProduct, deleteTotalPrice } from '../../redux/slices/valueCheckoutSlice'
 const HomePage = () => {
         const dispatch = useAppDispatch()
+        
+
         useEffect(()=>{
                 dispatch(deleteValueProduct())
                 dispatch(deleteTotalPrice());

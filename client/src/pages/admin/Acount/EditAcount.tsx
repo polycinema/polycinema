@@ -87,7 +87,7 @@ const EditAcount = (props: Props) => {
                 <>
                         {contextHolder}
                         <div>
-                                <h1 className='text-4xl m-6'>Cập nhật thể loại phim</h1>
+                                <h1 className='text-4xl m-6'>Cập nhật tài khoản</h1>
                                 <Form
                                         form={form}
                                         name="basic"
@@ -117,17 +117,17 @@ const EditAcount = (props: Props) => {
 
 
                                         <Form.Item<FieldType>
-                                                label="Password"
+                                                label="Mật khẩu"
                                                 name="password"
-                                                rules={[{ required: true, message: 'Password không được để trống' }]}
+                                                rules={[{ required: true, message: 'Mật khẩu không được để trống' }]}
                                         >
                                                 <Input.Password />
                                         </Form.Item>
 
                                         <Form.Item<FieldType>
-                                                label="Role"
+                                                label="Vai trò"
                                                 name="role"
-                                                rules={[{ required: true, message: 'Role không được để trống' }]}
+                                                rules={[{ required: true, message: 'Vai trò không được để trống' }]}
                                         >
                                                 <Select
                                                         showSearch

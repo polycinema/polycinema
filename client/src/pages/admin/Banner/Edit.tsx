@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Form, Input, InputNumber, Upload, UploadProps, message } from 'antd';
+import { Button, Form, Upload, UploadProps, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router';
 import { pause } from '../../../utils/pause';
 import { IBanner, getBannerById, updateBanner } from '../../../api/Banner';
-const { TextArea } = Input;
 
 type FieldType = {
     name: string;
@@ -93,12 +92,6 @@ const EditBanner = () => {
             // Thay đổi thành upload preset của bạn
         },
         onChange(info) {
-            if (info.file.status !== 'uploading') {
-
-                console.log(info.file, info.fileList);
-
-
-            }
             if (info.file.status === 'done') {
                 setUrlImage(info.file.response.url)
                 message.open({

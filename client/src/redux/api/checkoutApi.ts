@@ -19,7 +19,6 @@ const checkoutApi = createApi({
                 }),
                 getAllProducts:build.query({
                         query:()=> `/admin/products`,
-                        providesTags:['Checkout']
                 }),
                 checkoutBooking: build.mutation({
                         query:(booking)=> ({
@@ -33,6 +32,9 @@ const checkoutApi = createApi({
                         query:()=> `/bookings`,
                         providesTags:['Checkout']
                 }),
+                getBookingsByUser:build.query({
+                        query:(userID)=> `/bookings/user/${userID}`,
+                }),
                 updateSeatStatus:build.mutation({
                         query:(seat)=> ({
                                 url:`seat-reservation/${seat.id}`,
@@ -41,10 +43,11 @@ const checkoutApi = createApi({
                         }),
                         invalidatesTags:['Checkout']
 
+
                 }),
         })
 })
 
-export const {useGetShowTimeByMovieQuery,useGetSeatsByShowTimeQuery,useGetAllProductsQuery ,useCheckoutBookingMutation,useGetAllBookingsQuery,useUpdateSeatStatusMutation} = checkoutApi;
+export const {useGetShowTimeByMovieQuery,useGetSeatsByShowTimeQuery,useGetAllProductsQuery ,useCheckoutBookingMutation,useGetAllBookingsQuery,useUpdateSeatStatusMutation,useGetBookingsByUserQuery} = checkoutApi;
 export const checkoutReducer = checkoutApi.reducer;
 export default checkoutApi

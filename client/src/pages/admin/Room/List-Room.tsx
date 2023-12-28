@@ -29,19 +29,19 @@ const ListRooms = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "Name",
+      title: "Tên phòng",
       dataIndex: "room_name",
       key: "room_name",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Capacity",
+      title: "Ghế ngồi",
       dataIndex: "capacity",
       key: "capacity",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">

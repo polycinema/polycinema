@@ -1,4 +1,16 @@
 import React, { useEffect, useState } from "react";
+import {
+  useGetAllProductsQuery,
+  useUpdateSeatStatusMutation,
+} from "../../redux/api/checkoutApi";
+import { useNavigate } from "react-router";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
+import {
+  decreaseProduct,
+  increaseProduct,
+} from "../../redux/slices/valueCheckoutSlice";
+import IsLoading from "../../utils/IsLoading";
+import { Button } from "antd";
 import imgNormalActive from "../../../public/img/seat-select-normal.png";
 import imgNormalBuy from "../../../public/img/seat-buy-normal.png";
 import imgNormal from "../../../public/img/seat-unselect-normal.png";
@@ -14,20 +26,7 @@ import imgVipGiu from "../../../public/img/img-seat-vip-giu.png";
 import manhinh from "../../../public/img/ic-screen.png";
 import imgProduct from "../../../public/img/ic-combo.png";
 import imgUser from "../../../public/img/ic-inforpayment.png";
-
-import {
-  useGetAllProductsQuery,
-  useUpdateSeatStatusMutation,
-} from "../../redux/api/checkoutApi";
-import { useNavigate } from "react-router";
-import { useAppDispatch, useAppSelector } from "../../store/hook";
-import {
-  decreaseProduct,
-  increaseProduct,
-} from "../../redux/slices/valueCheckoutSlice";
-import IsLoading from "../../utils/IsLoading";
-import { Button } from "antd";
-
+import { formatCurrency } from "../../utils/formatVND";
 type Props = {
   showtime: any;
   isLoading: boolean;
@@ -43,7 +42,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
   const dispacth = useAppDispatch();
   const [countdown, setCountdown] = useState(8 * 60);
   const [seatDatas, setSeatDatas] = useState(showtime?.data?.seats || []);
-
+  
   useEffect(() => {
     const channel = window.Echo.channel("seat-reservation");
     const handleReservedEvent = (e) => {
@@ -77,7 +76,6 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
         updateSeatStatus({ id: seat.id, status: "unbook", user_id: null });
       });
       navigate("/");
-      
     }
   }, [countdown, showtime, navigate]);
 
@@ -88,18 +86,48 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
     const selectedSeats = seatDatas.filter(
       (item) => item.status === "booking" && item.user_id === user.id
     );
+
     if (selectedSeats.length >= 9) {
       alert(
-        "Bạn chỉ được chọn tối đa 8 ghế vui lòng hủy một ghế để chọn ghế khác"
+        "Bạn chỉ được chọn tối đa 8 ghế, vui lòng hủy một ghế để chọn ghế khác"
       );
-    } else if (selectedSeats.length >= 8) {
+      return;
+    } else if (selectedSeats.length >= 8 && seat.status === "booking") {
       updateSeatStatus({ id: seat.id, status: "unbook", user_id: null });
-    } else {
-      if (seat.status === "unbook") {
-        updateSeatStatus({ id: seat.id, status: "booking", user_id: user?.id });
-      } else if (seat.status === "booking") {
-        updateSeatStatus({ id: seat.id, status: "unbook", user_id: null });
+
+      return;
+    } else if (selectedSeats.length >= 8) {
+      alert("Bạn đã chọn đủ 8 ghế, không thể chọn thêm.");
+      return;
+    }
+
+    if (selectedSeats.length > 0) {
+      const lastSelectedSeat = selectedSeats[selectedSeats.length - 1];
+      const distance = Math.abs(
+        seatDatas.indexOf(seat) - seatDatas.indexOf(lastSelectedSeat)
+      );
+
+      if (distance === 2) {
+        const middleSeatIndex =
+          Math.min(
+            seatDatas.indexOf(seat),
+            seatDatas.indexOf(lastSelectedSeat)
+          ) + 1;
+        const middleSeat = seatDatas[middleSeatIndex];
+
+        if (middleSeat && middleSeat.status === "unbook") {
+          alert(
+            "Không thể chọn 2 ghế cách nhau một ghế khi có ghế trống ở giữa."
+          );
+          return;
+        }
       }
+    }
+
+    if (seat.status === "unbook") {
+      updateSeatStatus({ id: seat.id, status: "booking", user_id: user?.id });
+    } else if (seat.status === "booking") {
+      updateSeatStatus({ id: seat.id, status: "unbook", user_id: null });
     }
   };
 
@@ -112,26 +140,26 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
         return seatStatus === "booking" && user_id != user.id
           ? imgNormalGiu
           : seatStatus === "booking"
-            ? imgNormalActive
-            : seatStatus === "booked"
-              ? imgNormalBuy
-              : imgNormal;
+          ? imgNormalActive
+          : seatStatus === "booked"
+          ? imgNormalBuy
+          : imgNormal;
       case "double":
         return seatStatus === "booking" && user_id != user.id
           ? imgDoubleGiu
           : seatStatus === "booking"
-            ? imgDoubleActive
-            : seatStatus === "booked"
-              ? imgDoubleBuy
-              : imgDouble;
+          ? imgDoubleActive
+          : seatStatus === "booked"
+          ? imgDoubleBuy
+          : imgDouble;
       case "special":
         return seatStatus === "booking" && user_id != user.id
           ? imgVipGiu
           : seatStatus === "booking"
-            ? imgVipActive
-            : seatStatus === "booked"
-              ? imgVipBuy
-              : imgVip;
+          ? imgVipActive
+          : seatStatus === "booked"
+          ? imgVipBuy
+          : imgVip;
       default:
         return imgNormal;
     }
@@ -187,10 +215,11 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
               (seat: { id: number; seat_name: string }, i: number) => (
                 <button
                   key={seat.id}
-                  className={`w-[40px] relative ${seat.status == "booking" && seat.user_id != user.id
+                  className={`w-[40px] relative ${
+                    seat.status == "booking" && seat.user_id != user.id
                       ? " pointer-events-none opacity-60 "
                       : ""
-                    }`}
+                  }`}
                   onClick={() => {
                     handleClick(seat);
                   }}
@@ -277,7 +306,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
           <div className="flex justify-end gap-1 mt-2 text-xl">
             <p className="text-2xl font-bold mt-2">Tổng tiền:</p>
             <p className="text-2xl font-bold mt-2">
-              {stateProducts.reduce((sum: any, item: any) => {
+              {formatCurrency(stateProducts.reduce((sum: any, item: any) => {
                 return sum + item.price * item.quantity;
               }, 0) +
                 showtime?.data?.seats
@@ -285,8 +314,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
                     (item: any) =>
                       item?.status == "booking" && item?.user_id == user.id
                   )
-                  .reduce((sum: any, seat: any) => sum + seat.price, 0)}
-              đ
+                  .reduce((sum: any, seat: any) => sum + seat.price, 0))}
             </p>
           </div>
         </div>

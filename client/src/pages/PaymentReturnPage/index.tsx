@@ -5,23 +5,24 @@ import Button from '../../components/Button';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../store/hook';
 import { useCheckoutBookingMutation } from '../../redux/api/checkoutApi';
+import { formatCurrency } from '../../utils/formatVND';
 
 const PayementReturnPage = () => {
-        const {booking}= useAppSelector((state) => state.ValueCheckout);
-        console.log(booking);
-        
+        const {booking}= useAppSelector((state) => state.ValueCheckout); 
         const[ addBooking] = useCheckoutBookingMutation()
         const location = useLocation();
         const queryParams = new URLSearchParams(location.search);
         const vnpAmount = queryParams.get('vnp_Amount');
         const vnpTransactionStatus = queryParams.get('vnp_TransactionStatus');
         const vnpTxnRef = queryParams.get('vnp_TxnRef')
-        const formatCurrency = (amount) => {
-                return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount/100);
-        };
+        
+        
         useEffect(()=>{
-                addBooking({...booking.payload, booking_id:vnpTxnRef})
-                
+                addBooking(
+                        {...booking.payload, 
+                        booking_id:vnpTxnRef,
+                        coupon_id:"1"
+                })
         },[booking])
         return (
                 <>
@@ -47,7 +48,7 @@ const PayementReturnPage = () => {
                                 </div>
                                 <div className='flex gap-1 text-xl'>
                                         <p className='font-bold'>Tổng tiền:</p>
-                                        <p>{formatCurrency(vnpAmount)}</p>
+                                        <p>{formatCurrency(vnpAmount/100)}</p>
                                 </div>
                         </div>
                         <div className='text-center my-10  text-xl'>Kiểu thanh toán : Online</div>
