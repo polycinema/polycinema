@@ -119,8 +119,8 @@ class ShowTimeController extends Controller
     public function show(string $id)
     {
         try {
-            $showtime = ShowTime::find($id);
-
+            $showtime = ShowTime::with('seats')->find($id);
+            
             if (!$showtime) {
                 return response()->json([
                     'message' => 'NOT FOUND'
