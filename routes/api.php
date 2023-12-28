@@ -69,4 +69,6 @@ Route::prefix('v1')->group(function () {
     Route::get('statistic-in-month', [StatisticController::class, 'getStatisticInLast28Days']);
 
     Route::get('statistic-in-year', [StatisticController::class, 'getStatisticInYear']);
+
+    Route::get('bookings/{id}', [BookingController::class, 'show']);
 });

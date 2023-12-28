@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Events\SeatReservation;
 use App\Http\Controllers\Controller;
+use App\Mail\BookingInformationMail;
 use App\Models\Booking;
 use App\Models\Seat;
 use App\Services\PaymentService;
@@ -11,6 +12,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -86,9 +88,11 @@ class BookingController extends Controller
                     'booking_id' => $booking->id
                 ]);
 
-            event(new SeatReservation($seatModel));
-
+                event(new SeatReservation($seatModel));
             }
+
+            Mail::to($booking->user->email)->send(new BookingInformationMail($booking));
+
             return response()->json([
                 'data' => $booking,
                 'message' => 'Đặt vé thành công'
@@ -105,7 +109,6 @@ class BookingController extends Controller
     public function createVNPayPayment(Request $request)
     {
         return $this->paymentService->createVNPayPayment($request);
-        
     }
 
     public function updateSeatReservation(Request $request, string $id)
@@ -127,6 +130,36 @@ class BookingController extends Controller
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('BookingController@updateSeatReservation: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     *
+     * @var string $id
+     *
+     */
+
+    public function show(string $id)
+    {
+        try {
+            $booking = Booking::query()
+                ->with('user')
+                ->with('showtime.movie')
+                ->with(['products' => function ($query) {
+                    $query->withPivot('quantity');
+                }])
+                ->with(['seats.showtime.room'])
+                ->find($id);
+
+            return response()->json([
+                'data' => $booking
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('BookingController@show: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
