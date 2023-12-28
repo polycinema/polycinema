@@ -80,4 +80,6 @@ Route::prefix('v1')->group(function () {
     Route::post('not-yet-booking/{booking_id}', [BookingController::class, 'setStatusBookingToNotYet']);
 
     Route::get('bookings/{id}', [BookingController::class, 'show']);
+
+    Route::get('bookings/user/{userId}', [BookingController::class, 'bookingsByUser']);
 });

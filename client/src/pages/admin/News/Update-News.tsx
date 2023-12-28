@@ -104,12 +104,6 @@ const EditNews = () => {
             // Thay đổi thành upload preset của bạn
         },
         onChange(info) {
-            if (info.file.status !== 'uploading') {
-
-                console.log(info.file, info.fileList);
-
-
-            }
             if (info.file.status === 'done') {
                 setUrlImage(info.file.response.url)
                 message.open({
@@ -160,7 +154,7 @@ const EditNews = () => {
 
 
                         <Form.Item<FieldType>
-                            label="Miêu tả"
+                            label="Mô tả"
                             name="description"
                             rules={[{ required: true, message: 'Please input your name!' }]}
                         >

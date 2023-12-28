@@ -54,39 +54,37 @@ const ShowTimeMng = () => {
       };
     }
   );
-  // console.log("dataSource: ", dataSource);
   const columns: any[] = [
     {
-      title: "Room",
+      title: "Phòng chiếu",
       dataIndex: "room_id",
       key: "1",
     },
     {
-      title: "Movie",
+      title: "Phim",
       dataIndex: "movie_id",
       key: "2",
     },
     {
-      title: "Start Time",
+      title: "Thời gian bắt đầu",
       dataIndex: "start_time",
       key: "3",
     },
     {
-      title: "End Time",
+      title: "Thời gian kết thúc",
       dataIndex: "end_time",
       key: "4",
     },
     {
-      title: "Show date",
+      title: "Ngày chiếu",
       dataIndex: "show_date",
       key: "5",
     },
     {
-      title: "Actions",
+      title: "Hành động",
       dataIndex: "actions",
       key: "6",
       render: (_: any, { key: id }: any) => {
-        // console.log(id);
         return (
           <div className="space-x-3">
             <Link to={`/admin/showtime/${id}/edit`}>
@@ -121,7 +119,7 @@ const ShowTimeMng = () => {
       <Button>
         <Link to={"/admin/showtime/add"}>Thêm Lịch Chiếu</Link>
       </Button>
-      <h1 className="text-2xl m-6 ">ShowTime</h1>
+      <h1 className="text-2xl m-6 ">Danh sách lịch chiếu</h1>
       <Table dataSource={dataSource} columns={columns} />;
     </div>
   );

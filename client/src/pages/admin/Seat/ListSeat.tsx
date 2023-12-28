@@ -14,7 +14,7 @@ interface DataType {
         showtime_id:number,
 
 }
-const ListSeat = (props: Props) => {
+const ListSeat = () => {
     const [seat, setSeat] = useState<ISeat[]>()
     const [messageApi, contextHolder] = message.useMessage()
     useEffect(() => {
@@ -37,43 +37,43 @@ const ListSeat = (props: Props) => {
 
     const columns: ColumnsType<DataType> = [
         {
-            title: 'Seat name',
+            title: 'Tên ghế',
             dataIndex: 'seat_name',
             key: 'seat_name',
 
         },
         {
-            title: 'Type',
+            title: 'Dạng ghế',
             dataIndex: 'type',
             key: 'type',
 
         },
         {
-            title: 'User id',
+            title: 'Tài khoản',
             dataIndex: 'user_id',
             key: 'user_id',
 
         },
         {
-            title: 'price',
+            title: 'Giá ghế',
             dataIndex: 'price',
             key: 'price',
 
         },
         {
-            title: 'showtime_id',
+            title: 'Lịch chiếu',
             dataIndex: 'showtime_id',
             key: 'showtime_id',
 
         },
         {
-            title: 'status',
+            title: 'Trạng thái',
             dataIndex: 'status',
             key: 'status',
 
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             key: 'action',
             render: ({ key: id }: { key: number | string }) => (
                 <Space size="middle">

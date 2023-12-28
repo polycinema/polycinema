@@ -35,31 +35,31 @@ const ListPost = (props: Props) => {
 
     const columns: ColumnsType<DataType> = [
         {
-            title: 'Title',
+            title: 'Tiêu đề tin tức',
             dataIndex: 'title',
             key: 'title',
 
         },
         {
-            title: 'Summary',
+            title: 'Tóm tắt',
             dataIndex: 'summary',
             key: 'summary',
 
         },
         {
-            title: 'Description',
+            title: 'Mô tả',
             dataIndex: 'description',
             key: 'description',
 
         },
         {
-            title: 'Image',
+            title: 'Ảnh tin tức',
             dataIndex: 'image',
             key: 'image',
             render: (img) => <img className='w-40' src={img} alt="anh" />,
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             key: 'action',
             render: ({ key: id }: { key: number | string }) => (
                 <Space size="middle">

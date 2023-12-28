@@ -19,7 +19,6 @@ const ItemMovie = ({ movie }: Props) => {
   const [showTimeById, setShowTimeById] = useState();
   const { data: showtimesAll, isLoading: isLoadingShowTime } =
     useGetShowTimeByMovieQuery(movieId || "");
-    console.log('showTimeById: ',showTimeById)
   const showModalTrailer = () => {
     setIsModalOpenTrailer(true);
   };
@@ -76,7 +75,7 @@ const ItemMovie = ({ movie }: Props) => {
       </div>
 
       <div className="movie-item-description">
-        <h4 className="movie-name">
+        <h4 className="movie-name my-4">
           <Link to={`movies/${convertSlug(movie?.name)}-${movie?.id}.html/detail`}>{movie?.name}</Link>
         </h4>
         <div className="movie-des">
@@ -107,6 +106,7 @@ const ItemMovie = ({ movie }: Props) => {
               {showtimesAll?.data?.length === 0 ? <Empty /> : <Tabs
                 size="large"
                 items={showtimesAll?.data?.map((item, length) => {
+                  
                   return {
                     key: length,
                     label: dayjs(item.date).format("DD/MM"),
@@ -128,7 +128,7 @@ const ItemMovie = ({ movie }: Props) => {
                               ) : (
                                 <>
                                   <h4 className="text-center text-3xl text-[#03599d] pt-4">
-                                    Quỷ Linh Nhi
+                                    {movie?.name}
                                   </h4>
                                   <table className="w-full my-8 ">
                                     <tr className="text-center border-b  ">
@@ -186,7 +186,8 @@ const ItemMovie = ({ movie }: Props) => {
             </div>
           )}
         </Modal>
-        {movie?.status === "upcoming" || movie?.status === "unscreen" ? <div></div> : <ButtonCustom
+        {movie?.status === "upcoming" || movie?.status === "unscreen" ? <div></div> 
+        : <ButtonCustom
           onClick={() => {
             showModalChonGio(movie?.id);
           }}

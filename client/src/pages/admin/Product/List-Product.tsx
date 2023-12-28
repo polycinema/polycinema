@@ -31,28 +31,28 @@ const ListProduct = (props: Props) => {
   }, [])
   const columns: ColumnsType<DataType> = [
     {
-      title: "Name",
+      title: "Tên sản phẩm",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Image",
+      title: "Ảnh sản phẩm",
       dataIndex: "image",
       key: "image",
       render: (img) => <img className="w-40" src={img} alt="anh" />,
     },
     {
-      title: "Price",
+      title: "Giá sản phẩm",
       dataIndex: "price",
       key: "price",
     },
     {
-      title: "Description",
+      title: "Mô tả",
       dataIndex: "description",
       key: "description",
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">

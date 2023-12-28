@@ -30,13 +30,13 @@ const ListBanner = (props: Props) => {
   }, [])
   const columns: ColumnsType<DataType> = [
     {
-      title: "Image",
+      title: "Ảnh banner",
       dataIndex: "image",
       key: "image",
       render: (img) => <img className="w-40" src={img} alt="anh" />,
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">

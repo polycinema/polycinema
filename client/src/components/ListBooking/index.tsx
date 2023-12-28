@@ -38,7 +38,7 @@ const ListsBooking = () => {
       key: 'total',
     },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
@@ -58,52 +58,6 @@ const ListsBooking = () => {
     }
   }) 
   
-  
-  
-  // [
-  //   {
-  //     key: '1',
-  //     id:"1",
-  //     name: 'John Brown',
-  //     email: "hiihihihi",
-  //     total: '1000',
-  //   },
-  //   {
-  //     key: '1',
-  //     id:"1",
-  //     name: 'John Brown',
-  //     email: "hiihihihi",
-  //     total: '1000',
-  //   },
-  //   {
-  //     key: '1',
-  //     id:"1",
-  //     name: 'John Brown',
-  //     email: "hiihihihi",
-  //     total: '1000',
-  //   },
-  //   {
-  //     key: '1',
-  //     id:"1",
-  //     name: 'John Brown',
-  //     email: "hiihihihi",
-  //     total: '1000',
-  //   },
-  //   {
-  //     key: '1',
-  //     id:"1",
-  //     name: 'John Brown',
-  //     email: "hiihihihi",
-  //     total: '1000',
-  //   },
-  //   {
-  //     key: '1',
-  //     id:"1",
-  //     name: 'John Brown',
-  //     email: "hiihihihi",
-  //     total: '1000',
-  //   },
-  // ];
   return (
     <>
     <h1 className='text-center text-xl py-4'>Danh sách đặt vé</h1>
