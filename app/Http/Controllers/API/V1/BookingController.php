@@ -88,7 +88,7 @@ class BookingController extends Controller
                 $booking->products()->attach($product['id'], ['quantity' => $product['quantity']]);
             }
 
-            // Update trạng thái ghế 
+            // Update trạng thái ghế
             foreach ($request->seats as $seat) {
                 $seatModel = Seat::query()->find($seat['id']);
 
@@ -149,7 +149,7 @@ class BookingController extends Controller
         try {
             $booking = Booking::find($id);
 
-            $booking->status = Booking::SATISFIED ;
+            $booking->status = Booking::SATISFIED;
 
             $booking->save();
 
@@ -174,12 +174,42 @@ class BookingController extends Controller
             $booking->status = Booking::NOT_YET ;
 
             $booking->save();
-            
+
             return response()->json([
                 'message' => " Cập nhật thành công đơn $booking->booking_id "
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('BookingController@setStatusBookingToNotYet: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     *
+     * @var string $id
+     *
+     */
+
+    public function show(string $id)
+    {
+        try {
+            $booking = Booking::query()
+                ->with('user')
+                ->with('showtime.movie')
+                ->with(['products' => function ($query) {
+                    $query->withPivot('quantity');
+                }])
+                ->with(['seats.showtime.room'])
+                ->find($id);
+
+            return response()->json([
+                'data' => $booking
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('BookingController@show: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
