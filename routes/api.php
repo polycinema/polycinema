@@ -79,4 +79,5 @@ Route::prefix('v1')->group(function () {
 
     Route::post('not-yet-booking/{booking_id}', [BookingController::class, 'setStatusBookingToNotYet']);
 
+    Route::get('get-movie-have-showtime', [MovieController::class, 'getMovieHaveShowTime']);
 });

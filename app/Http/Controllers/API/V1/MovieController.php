@@ -182,4 +182,44 @@ class MovieController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    // Lấy những Movie có ShowTime để list lên trang chủ
+    public function getMovieHaveShowTime()
+    {
+        try {
+            $currentDate = Carbon::now();
+            $yesterday = Carbon::now()->yesterday();
+
+            $moviesScreening = Movie::query()
+                ->has('showtimes')
+                ->whereHas('showtimes', function ($query) use ($currentDate) {
+                    $query->whereDate('show_date', '>=', $currentDate);
+                })
+                // ->with(['showtimes' => function ($query) use ($currentDate) {
+                //     $query->whereDate('show_date', '>=', $currentDate);
+                // }])
+                ->get();
+
+            $yesterdayMovies = Movie::query()
+                ->has('showtimes')
+                ->whereHas('showtimes', function ($query) use ($yesterday) {
+                    $query->whereDate('show_date', '=', $yesterday);
+                })
+                // ->with(['showtimes' => function ($query) use ($yesterday) {
+                //     $query->whereDate('show_date', '=', $yesterday);
+                // }])
+                ->get();
+
+            return response()->json([
+                'screening' => $moviesScreening, // phim đang chiếu 
+                'yesterday_movie' => $yesterdayMovies // phim đã chiếu ngày hôm qua
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/MovieController@getMovieHaveShowTime: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
