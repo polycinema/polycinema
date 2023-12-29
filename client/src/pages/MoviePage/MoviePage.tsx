@@ -22,7 +22,7 @@ const MoviePage = () => {
   const navigate = useNavigate();
   // console.log("showtime by change: ", showtimesByChange[0]);
   // console.log("selectedMovieModalTime: ", selectedMovieModalTime);
-  console.log("showtime: ", showtime);
+  // console.log("showtime: ", showtime);
   // console.log("index date: ", indexDate);
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const MoviePage = () => {
   const handleCancelModalStartTime = () => {
     setIsModalOpenStartTime(false);
   };
-  const showModalStartTime = (movies) => {
+  const showModalStartTime = (movies:any) => {
     setSelectedMovieModalTime(movies);
     setIsModalOpenStartTime(true);
   };

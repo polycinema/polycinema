@@ -1,7 +1,7 @@
 import React from "react";
 import logo1 from "../../public/img/logo.png";
 import { Link, Outlet } from "react-router-dom";
-import { AppstoreOutlined, GroupOutlined, LogoutOutlined, TeamOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined, SolutionOutlined, ShopOutlined, FieldTimeOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, GroupOutlined, LogoutOutlined, TeamOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined, SolutionOutlined, ShopOutlined, FieldTimeOutlined, CalendarOutlined } from "@ant-design/icons";
 import { Layout, Menu, Popconfirm, theme } from "antd";
 import { useAppDispatch } from "../store/hook";
 import { setLogout } from "../redux/slices/authorizationSlice";
@@ -41,61 +41,66 @@ const LayoutAdmin: React.FC = () => {
             },
             {
               key: 2,
+              icon: <CalendarOutlined />,
+              label: <Link to={"booking"}>Booking</Link>,
+            },
+            {
+              key: 3,
               icon: <TeamOutlined />,
               label: <Link to={"actors"}>Actors</Link>,
             },
             {
-              key: 3,
+              key: 4,
               icon: <GroupOutlined />,
               label: <Link to={"genres"}>Genres</Link>,
             },
             {
-              key: 4,
+              key: 5,
               icon: <VideoCameraOutlined />,
               label: <Link to={"movies"}>Movies</Link>,
             },
             {
-              key: 5,
+              key: 6,
               icon: <UserSwitchOutlined />,
               label: <Link to={"director"}>Director</Link>,
             },
             {
-              key: 6,
+              key: 7,
               icon: <UserOutlined />,
               label: <Link to={"acount"}>User</Link>,
             },
             {
-              key: 7,
+              key: 8,
               icon: <SolutionOutlined />,
               label: <Link to={"rooms"}>Room</Link>,
             },
             {
-              key: 8,
+              key: 9,
               icon: <GroupOutlined />,
               label: <Link to={"news"}>New</Link>,
             },
             {
-              key: 9,
+              key: 10,
               icon: <ShopOutlined />,
               label: <Link to={"products"}>Product</Link>,
             },
             {
-              key: 10,
+              key: 11,
               icon: <FieldTimeOutlined />,
               label: <Link to={"showtime"}>ShowTime</Link>,
             },
             {
-              key: 11,
+              key: 12,
               icon: <CiBoxes />,
               label: <Link to={"seat"}>Seat</Link>,
             },
             {
-              key: 12,
+              key: 13,
               icon: <SolutionOutlined />,
               label: <Link to={"banner"}>Banner</Link>,
             },
             {
-              key: 13,
+              key: 14,
               icon: <LogoutOutlined />,
               label: (
                 <Popconfirm

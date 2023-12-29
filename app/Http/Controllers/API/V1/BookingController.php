@@ -78,11 +78,13 @@ class BookingController extends Controller
                 'total_price' => $request->total_price,
                 'coupon_code' => $request->coupon_code
             ]);
-
-            $coupon_user = CouponBooking::create([
-                'coupon_id' => $request->coupon_id,
-                'user_id' => $request->user_id,
-            ]);
+            if($request->coupon_id){
+                $coupon_user = CouponBooking::create([
+                    'coupon_id' => $request->coupon_id,
+                    'user_id' => $request->user_id,
+                ]);
+            }
+           
 
             foreach ($request->products as $product) {
                 $booking->products()->attach($product['id'], ['quantity' => $product['quantity']]);
