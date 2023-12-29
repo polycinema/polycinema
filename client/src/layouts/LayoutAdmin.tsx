@@ -1,7 +1,7 @@
 import React from "react";
 import logo1 from "../../public/img/logo.png";
 import { Link, Outlet } from "react-router-dom";
-import { AppstoreOutlined, GroupOutlined, LogoutOutlined, TeamOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined, SolutionOutlined, ShopOutlined, FieldTimeOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, GroupOutlined, LogoutOutlined, TeamOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined, SolutionOutlined, ShopOutlined, FieldTimeOutlined, CalendarOutlined } from "@ant-design/icons";
 import { Layout, Menu, Popconfirm, theme } from "antd";
 import { useAppDispatch } from "../store/hook";
 import { setLogout } from "../redux/slices/authorizationSlice";
@@ -41,61 +41,66 @@ const LayoutAdmin: React.FC = () => {
             },
             {
               key: 2,
-              icon: <TeamOutlined />,
-              label: <Link to={"actors"}>Actors</Link>,
+              icon: <CalendarOutlined />,
+              label: <Link to={"booking"}>Booking</Link>,
             },
             {
               key: 3,
-              icon: <GroupOutlined />,
-              label: <Link to={"genres"}>Genres</Link>,
+              icon: <TeamOutlined />,
+              label: <Link to={"actors"}>Quản lý diễn viên</Link>,
             },
             {
               key: 4,
-              icon: <VideoCameraOutlined />,
-              label: <Link to={"movies"}>Movies</Link>,
+              icon: <GroupOutlined />,
+              label: <Link to={"genres"}>Quản lý thể loại</Link>,
             },
             {
               key: 5,
-              icon: <UserSwitchOutlined />,
-              label: <Link to={"director"}>Director</Link>,
+              icon: <VideoCameraOutlined />,
+              label: <Link to={"movies"}>Quản lý phim</Link>,
             },
             {
               key: 6,
-              icon: <UserOutlined />,
-              label: <Link to={"acount"}>User</Link>,
+              icon: <UserSwitchOutlined />,
+              label: <Link to={"director"}>Quản lý đạo diễn</Link>,
             },
             {
               key: 7,
-              icon: <SolutionOutlined />,
-              label: <Link to={"rooms"}>Room</Link>,
+              icon: <UserOutlined />,
+              label: <Link to={"acount"}>Quản lý tài khoản</Link>,
             },
             {
               key: 8,
-              icon: <GroupOutlined />,
-              label: <Link to={"news"}>New</Link>,
+              icon: <SolutionOutlined />,
+              label: <Link to={"rooms"}>Quản lý phòng</Link>,
             },
             {
               key: 9,
-              icon: <ShopOutlined />,
-              label: <Link to={"products"}>Product</Link>,
+              icon: <GroupOutlined />,
+              label: <Link to={"news"}>Quản lý tin tức</Link>,
             },
             {
               key: 10,
-              icon: <FieldTimeOutlined />,
-              label: <Link to={"showtime"}>ShowTime</Link>,
+              icon: <ShopOutlined />,
+              label: <Link to={"products"}>Quản lý sản phẩm</Link>,
             },
             {
               key: 11,
-              icon: <CiBoxes />,
-              label: <Link to={"seat"}>Seat</Link>,
+              icon: <FieldTimeOutlined />,
+              label: <Link to={"showtime"}>Quản lý lịch chiếu</Link>,
             },
             {
               key: 12,
-              icon: <SolutionOutlined />,
-              label: <Link to={"banner"}>Banner</Link>,
+              icon: <CiBoxes />,
+              label: <Link to={"seat"}>Quản lý ghế ngồi</Link>,
             },
             {
               key: 13,
+              icon: <SolutionOutlined />,
+              label: <Link to={"banner"}>Quản lý banner</Link>,
+            },
+            {
+              key: 14,
               icon: <LogoutOutlined />,
               label: (
                 <Popconfirm
@@ -105,7 +110,7 @@ const LayoutAdmin: React.FC = () => {
                   cancelText="No"
                   onConfirm={() => dispatch(setLogout())}
                 >
-                  Logout
+                  Đăng xuất
                 </Popconfirm>
               ),
             },
@@ -126,7 +131,7 @@ const LayoutAdmin: React.FC = () => {
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2023 Created by Ant UED
+          PolyCinema ©2023 
         </Footer>
       </Layout>
     </Layout>

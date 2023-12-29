@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { Button, Popconfirm, Space, Table, message } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom';
-import { CiPickerEmpty, CiTrash } from "react-icons/ci";
 import { ICount, getAllAcount, removeAcount } from '../../../api/Acount';
 
 
@@ -36,7 +35,7 @@ const ListAcount = () => {
 
     const columns: ColumnsType<DataType> = [
         {
-            title: 'Name',
+            title: 'Tên tài khoản',
             dataIndex: 'name',
             key: 'name',
             render: (text) => <a>{text}</a>,
@@ -48,13 +47,13 @@ const ListAcount = () => {
             render: (text) => <a>{text}</a>,
         },
         {
-            title: 'Role',
+            title: 'Vai trò',
             dataIndex: 'role',
             key: 'role',
             render: (text) => <a>{text}</a>,
         },
         {
-            title: 'Action',
+            title: 'Hành động',
             key: 'action',
             render: ({ key: id }: { key: number | string }) => (
                 <Space size="middle">
@@ -104,7 +103,7 @@ const ListAcount = () => {
             <div>
                 <h1 className='text-2xl m-6 '>Danh sách tài khoản</h1>
                 <div>
-                    <Button type="primary" danger>
+                    <Button type='default'>
                     <Link to={`/admin/addAcount`}>Thêm tài khoản</Link>
                     </Button>
                 </div>

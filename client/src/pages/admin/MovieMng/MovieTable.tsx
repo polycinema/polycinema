@@ -1,7 +1,6 @@
 import React from 'react';
 import { Table, Button, Space, Popconfirm, message } from 'antd';
-import { Link } from 'react-router-dom'
-import { CiPickerEmpty, CiTrash } from "react-icons/ci";
+import { Link } from 'react-router-dom';
 import { useGetAllMoviesQuery, useRemoveMovieMutation } from '../../../redux/api/movieApi';
 import IsLoading from '../../../utils/IsLoading';
 
@@ -21,23 +20,23 @@ const MovieTable = () => {
       key: 'id',
     },
     {
-      title: 'Name',
+      title: 'Tên phim',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: 'Title',
+      title: 'Tiêu đề',
       dataIndex: 'title',
       key: 'title',
     },
     {
-      title: 'Genres',
+      title: 'Thể loại',
       dataIndex: 'genres',
       key: 'genres',
       render:({genres})=> genres.map(item=><span className='m-1'>{item.name}</span>)
     },
     {
-      title: 'Image',
+      title: 'Ảnh phim',
       dataIndex: 'image',
       key: 'image',
       render: (image:any) => <img src={image} alt="Movie Image" style={{ width: '50px' }} />,
@@ -49,39 +48,39 @@ const MovieTable = () => {
   
     },
     {
-      title: 'Description',
+      title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
       render: (desc:any) => <p className='line-clamp-3'>{desc}</p>,
     },
     {
-      title: 'Release Date',
+      title: 'Ngày khởi chiếu',
       dataIndex: 'release_date',
       key: 'release_date',
     },
     {
-      title: 'Duration',
+      title: 'Thời lượng',
       dataIndex: 'duration',
       key: 'duration',
     },
     {
-      title: 'Director',
+      title: 'Đạo diễn',
       dataIndex: 'director_id',
       key: 'director_id',
     },
     {
-      title: 'Status',
+      title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
     },
     {
-      title: 'Actors',
+      title: 'Diễn viên',
       dataIndex: 'actors',
       key: 'actors',
       render:({actors})=> actors.map(item=><span className='m-1'>{item.name}</span>)
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">

@@ -7,7 +7,7 @@ const movieApi = createApi({
         reducerPath:"movie",
         tagTypes:['Movie'],
         baseQuery:fetchBaseQuery({
-                baseUrl:"http://localhost:8000/api/v1/admin",
+                baseUrl:import.meta.env.VITE_API_URL,
                 fetchFn:async(...arg)=>{
                         await pause(3000)
                         return fetch(...arg)
@@ -15,7 +15,7 @@ const movieApi = createApi({
         }),
         endpoints:(build)=>({
                 getAllMovies: build.query({
-                        query:()=> `/movies`,
+                        query:()=> `/admin/movies`,
                         providesTags:['Movie']
                 }),
                 getMovieById:build.query({
@@ -24,7 +24,7 @@ const movieApi = createApi({
                 }),
                 addMovie:build.mutation({
                         query:(movie)=>({
-                                url:`/movies`,
+                                url:`/admin/movies`,
                                 method: 'POST',
                                 body:movie
                         }),
@@ -32,7 +32,7 @@ const movieApi = createApi({
                 }),
                 updateMovie:build.mutation({
                         query:(movie)=>({
-                                url:`/movies/${movie.id}`,
+                                url:`/admin/movies/${movie.id}`,
                                 method: 'PATCH',
                                 body:movie
                         }),
@@ -41,7 +41,7 @@ const movieApi = createApi({
                 }),
                 removeMovie:build.mutation({
                         query:(id)=>({
-                                url:`/movies/${id}`,
+                                url:`/admin/movies/${id}`,
                                 method:'DELETE'
                         }),
                         invalidatesTags:['Movie']

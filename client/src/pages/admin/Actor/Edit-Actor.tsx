@@ -81,9 +81,6 @@ const EditActor = () => {
     
     data: {upload_preset: "upload",},
     onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
       if (info.file.status === "done") {
         setUrlImage(info.file.response.url);
         message.open({

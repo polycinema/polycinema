@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Popconfirm, Space, Table, message } from "antd";
 import { Link } from "react-router-dom";
-import { CiPickerEmpty, CiTrash } from "react-icons/ci";
 import { IActor, getAllActor, removeActor } from "../../../api/actor";
 import { ColumnsType } from "antd/es/table";
 interface DataType {
@@ -26,23 +25,23 @@ const ListActor = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "Name",
+      title: "Tên diễn viên",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Image",
+      title: "Ảnh diễn viên",
       dataIndex: "image",
       key: "image",
       render: (img) => <img className="w-40" src={img} alt="anh" />,
     },
     {
-      title: "Date",
+      title: "Ngày sinh",
       dataIndex: "date_of_birth",
       key: "date_of_birth",
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">

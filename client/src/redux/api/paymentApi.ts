@@ -3,7 +3,7 @@ const paymentApi = createApi({
         reducerPath:"payment",
         tagTypes:['Payment'],
         baseQuery:fetchBaseQuery({
-                baseUrl:"http://localhost:8000/api/v1",
+                baseUrl:import.meta.env.VITE_API_URL,
                 // fetchFn:async(...arg)=>{
                 //         return fetch(...arg)
                 // }

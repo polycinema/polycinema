@@ -18,7 +18,7 @@ import { pause } from '../../../utils/pause';
 const UpdateMovie = () => {
     const { id } = useParams()
     const { data: movie } = useGetMovieByIdQuery(id || "")
-    const [update, { idLoading: isUpdateLoading }] = useUpdateMovieMutation()
+    const [update, { isLoading: isUpdateLoading }] = useUpdateMovieMutation()
     const [urlImage, setUrlImage] = useState<string>()
     const [actors, setActors] = useState<IActor[]>()
     const [genres, setGenres] = useState<IGenre[]>()
@@ -119,9 +119,6 @@ const UpdateMovie = () => {
         action: 'https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload',
         data: { upload_preset: 'upload', },
         onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
             if (info.file.status === 'done') {
                 setUrlImage(info.file.response.url)
                 message.open({
@@ -164,7 +161,7 @@ const UpdateMovie = () => {
                         <Input />
                     </Form.Item>
                     <Form.Item
-                        label="Title"
+                        label="Tiêu đề"
                         name='title'
                         rules={[{ required: true, message: 'Title không được để trống' }]}
                     >
@@ -203,7 +200,7 @@ const UpdateMovie = () => {
                         <InputNumber />
                     </Form.Item>
                     <Form.Item
-                        label="image"
+                        label="Ảnh phim"
                         name="image"
                         
                     >
@@ -213,7 +210,7 @@ const UpdateMovie = () => {
 
                     </Form.Item>
                     <Form.Item
-                        label="description"
+                        label="Mô tả"
                         name='description'
                         rules={[{ required: true, message: 'Mô tả không được để trống' }]}
                     >
@@ -245,7 +242,7 @@ const UpdateMovie = () => {
                         />
                     </Form.Item>
                     <Form.Item
-                        label="Status"
+                        label="Trạng thái"
                         name='status'
                         rules={[{ required: true, message: 'Status không được để trống' }]}
                     >
@@ -273,9 +270,6 @@ const UpdateMovie = () => {
                                 }
                             })}
                         />
-                        {/* <span >{movie?.data?.actors.map((item:IActor)=>(
-                        <span>{item.name}</span>
-                    ))}</span> */}
                     </Form.Item>
 
 

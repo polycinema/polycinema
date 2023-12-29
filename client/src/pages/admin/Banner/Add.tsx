@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import { Button, Form, Input, Upload, UploadProps, message } from 'antd';
+import { Button, Form, Upload, UploadProps, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router';
 import { pause } from '../../../utils/pause';
-import { IBanner, addBanner } from '../../../api/Banner';
-const { TextArea } = Input;
 
 
 type FieldType = {
@@ -56,9 +54,6 @@ const AddBanner = () => {
             // Thay đổi thành upload preset của bạn
         },
         onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
             if (info.file.status === 'done') {
                 setUrlImage(info.file.response.url)
                 message.open({
@@ -88,7 +83,7 @@ const AddBanner = () => {
                 >
 
                     <Form.Item<FieldType>
-                        label="Ảnh sản phẩm"
+                        label="Ảnh banner"
                         name="name"
                         rules={[{ required: true, message: "Please input your image!" }]}
                     >
