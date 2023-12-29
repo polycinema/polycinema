@@ -34,7 +34,6 @@ import EditNews from "./pages/admin/News/Update-News";
 import AddProduct from "./pages/admin/Product/Add-Product";
 import ListProduct from "./pages/admin/Product/List-Product";
 import EditProduct from "./pages/admin/Product/Edit-Product";
-import PrivateRouter from "./components/privateRouter/PrivateRouter";
 import AddSeat from "./pages/admin/Seat/AddSeat";
 import EditSeat from "./pages/admin/Seat/EditSeat";
 import ListSeat from "./pages/admin/Seat/ListSeat";
@@ -48,9 +47,10 @@ import AddBanner from "./pages/admin/Banner/Add";
 import EditBanner from "./pages/admin/Banner/Edit";
 import PayementReturnPage from "./pages/PaymentReturnPage";
 import MemberPage from "./pages/MemberPage";
-
 import PointUser from "./components/PointUser/PointUser";
 import ListsBooking from "./pages/admin/ListBooking";
+import PrivateRouterAdmin from "./components/privateRouter/PrivateRouterAdmin";
+import PrivateRouterCheckout from "./components/privateRouter/PrivateRouterCheckout";
 
 
 export const router = createBrowserRouter([
@@ -65,20 +65,26 @@ export const router = createBrowserRouter([
       { path: "poly-news", element: <NewsPage /> },
       { path: "poly-news/:id", element: <NewDetailPage /> },
       { path: "movies/:slug/detail", element: <MovieDetail /> },
-      {path:"poly-checkout/:id", element:<CheckoutPage/>},
-      {path:"poly-payment", element:<PaymentPage/>},
-      {path:"payment-return", element:<PayementReturnPage/>},
-      {path:"inforAcount",element:<InfoAccount/>},
       { path: "poly-moviesDetail/:id", element: <MovieDetail /> },
-      {path:"poly-checkout", element:<CheckoutPage/>},
-      {path:"inforAcount",element:<InfoAccount/>},
-      {path:"pointUser",element:<PointUser/>},
-      {path:"poly-member", element:<MemberPage/>}
+      {
+        path: "",
+        element: <PrivateRouterCheckout />,
+        children: [
+          { path: "poly-checkout/:id", element: <CheckoutPage /> },
+          { path: "poly-payment", element: <PaymentPage /> },
+          { path: "payment-return", element: <PayementReturnPage /> },
+          { path: "inforAcount", element: <InfoAccount /> },
+          // { path: "poly-checkout", element: <CheckoutPage /> },
+          { path: "pointUser", element: <PointUser /> },
+          { path: "poly-member", element: <MemberPage /> }
+        ]
+      },
+
     ],
   },
   {
     path: "/admin",
-    element: <PrivateRouter />,
+    element: <PrivateRouterAdmin />,
     children: [
       {
         element: <LayoutAdmin />,
@@ -123,9 +129,5 @@ export const router = createBrowserRouter([
       },
     ],
   },
-
-
-
-
 ])
 
