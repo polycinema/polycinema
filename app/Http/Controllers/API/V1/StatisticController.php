@@ -207,4 +207,29 @@ class StatisticController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    public function getTopMoviesByRevenue()
+    {
+        try {
+            $topMovies = DB::table('bookings')
+                ->select('movies.id', 'movies.title', 'movies.name', 'movies.image', 'movies.trailer', 'movies.description', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status', DB::raw('SUM(bookings.total_price) as total_revenue'))
+                ->join('show_times', 'bookings.showtime_id', '=', 'show_times.id')
+                ->join('movies', 'show_times.movie_id', '=', 'movies.id')
+                ->groupBy('movies.id', 'movies.title', 'movies.name', 'movies.image', 'movies.trailer', 'movies.description', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status') // Liệt kê tất cả các trường từ bảng movies ở đây
+                ->orderByDesc('total_revenue')
+                ->limit(10)
+                ->get();
+
+            return response()->json([
+                'data' => $topMovies,
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('StatisticController@getTopMoviesByRevenue: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

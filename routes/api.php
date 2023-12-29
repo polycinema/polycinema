@@ -82,9 +82,8 @@ Route::prefix('v1')->group(function () {
     Route::get('bookings/{id}', [BookingController::class, 'show']);
 
     Route::get('bookings/user/{userId}', [BookingController::class, 'bookingsByUser']);
-  
+
     Route::get('get-movie-have-showtime', [MovieController::class, 'getMovieHaveShowTime']);
 
-
-
+    Route::get('top-movies', [StatisticController::class, 'getTopMoviesByRevenue']);
 });
