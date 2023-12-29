@@ -1,12 +1,14 @@
 import {createApi,fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import { pause } from '../../utils/pause';
 const checkoutApi = createApi({
         reducerPath:"checkout",
         tagTypes:['Checkout'],
         baseQuery:fetchBaseQuery({
-                baseUrl:"http://localhost:8000/api/v1",
-                // fetchFn:async(...arg)=>{
-                //         return fetch(...arg)
-                // }
+                baseUrl:import.meta.env.VITE_API_URL,
+                fetchFn: async (...arg) => {
+                        await pause(1500);
+                        return await fetch(...arg);
+                      },
         }),
         endpoints:(build)=>({
                 getShowTimeByMovie: build.query({
@@ -45,9 +47,26 @@ const checkoutApi = createApi({
 
 
                 }),
+                updateSatisfied: build.mutation({
+                        query:(booking)=>({
+                                url: `/satisfied-booking/${booking.key}`,
+                                method: 'POST',
+                                body: booking
+                        }),
+                        invalidatesTags:['Checkout']
+                }),
+                updateNotYet: build.mutation({
+                        query:(booking)=>({
+                                url: `/not-yet-booking/${booking.key}`,
+                                method: 'POST',
+                                body: booking
+                        }),
+                        invalidatesTags:['Checkout']
+                }),
         })
 })
 
-export const {useGetShowTimeByMovieQuery,useGetSeatsByShowTimeQuery,useGetAllProductsQuery ,useCheckoutBookingMutation,useGetAllBookingsQuery,useUpdateSeatStatusMutation,useGetBookingsByUserQuery} = checkoutApi;
+
+export const {useGetShowTimeByMovieQuery,useGetSeatsByShowTimeQuery,useGetAllProductsQuery ,useCheckoutBookingMutation,useGetAllBookingsQuery,useUpdateSeatStatusMutation,useUpdateNotYetMutation,useUpdateSatisfiedMutation} = checkoutApi;
 export const checkoutReducer = checkoutApi.reducer;
 export default checkoutApi

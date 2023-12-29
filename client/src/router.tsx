@@ -50,6 +50,7 @@ import PayementReturnPage from "./pages/PaymentReturnPage";
 import MemberPage from "./pages/MemberPage";
 
 import PointUser from "./components/PointUser/PointUser";
+import ListsBooking from "./pages/admin/ListBooking";
 
 
 export const router = createBrowserRouter([
@@ -84,6 +85,7 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <Dashboard /> },
           { path: "dashboard", element: <Dashboard /> },
+          { path: "booking", element: <ListsBooking /> },
           { path: "rooms", element: <ListRooms /> },
           { path: "rooms/add", element: <AddRoom /> },
           { path: "rooms/:id/edit", element: <EditRoom /> },
