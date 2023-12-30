@@ -128,29 +128,6 @@ const CreateShowTime = () => {
           <TimePicker />
         </Form.Item>
         <Form.Item
-          name={"end_time"}
-          label={"Giờ kết thúc"}
-          rules={[
-            {
-              message: "Trường Giờ kết thúc không được để trống! ",
-              required: true,
-            },
-            ({ getFieldValue }) => ({
-              validator(_, values) {
-                const startTime = getFieldValue('start_time');
-          
-                if (!values || (startTime && startTime.isBefore(values))) {
-                  return Promise.resolve();
-                } else {
-                  return Promise.reject(new Error('Giờ kết thúc phải sau giờ chiếu'));
-                }
-              },
-            })
-          ]}
-        >
-          <TimePicker />
-        </Form.Item>
-        <Form.Item
           name={"show_date"}
           label={"Ngày chiếu"}
           rules={[
