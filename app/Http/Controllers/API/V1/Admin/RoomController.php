@@ -40,12 +40,14 @@ class RoomController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'room_name' => 'required',
-                'capacity' => 'required|numeric|min:0'
+                'single_seat' => 'numeric',
+                'double_seat' => 'numeric',
+                'special_seat' => 'numeric'
             ], [
                 'room_name.required' => 'Trường tên phòng không được trống',
-                'capacity.required' => 'Trường sức chứa của phòng không được trống',
-                'capacity.numeric' => 'Trường sức chứa của phòng phải là số nguyên',
-                'capacity.min' => 'Trường sức chứa của phòng phải lớn hơn 0'
+                'single_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
+                'double_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
+                'special_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
             ]);
 
             if ($validator->fails()) {
@@ -55,7 +57,14 @@ class RoomController extends Controller
             }
 
             if ($request->isMethod('POST')) {
-                $room = Room::create($request->all());
+
+                $room = Room::create([
+                    'room_name' => $request->room_name,
+                    'single_seat' => $request->single_seat,
+                    'double_seat' => $request->double_seat,
+                    'special_seat' => $request->special_seat,
+                    'capacity' => $request->single_seat + $request->double_seat + $request->special_seat,
+                ]);
 
                 if ($room) {
                     return response()->json([
@@ -105,12 +114,14 @@ class RoomController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'room_name' => 'required',
-                'capacity' => 'required|numeric|min:1'
+                'single_seat' => 'numeric',
+                'double_seat' => 'numeric',
+                'special_seat' => 'numeric'
             ], [
                 'room_name.required' => 'Trường tên phòng không được trống',
-                'capacity.required' => 'Trường sức chứa của phòng không được trống',
-                'capacity.numeric' => 'Trường sức chứa của phòng phải là số nguyên',
-                'capacity.min' => 'Trường sức chứa của phòng phải lớn hơn 0'
+                'single_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
+                'double_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
+                'special_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
             ]);
 
             if ($validator->fails()) {
@@ -119,8 +130,13 @@ class RoomController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-            $room->fill($request->all());
-            $room->save();
+            $room->update([
+                'room_name' => $request->room_name,
+                'single_seat' => $request->single_seat,
+                'double_seat' => $request->double_seat,
+                'special_seat' => $request->special_seat,
+                'capacity' => $request->single_seat + $request->double_seat + $request->special_seat,
+            ]);
 
             return response()->json([
                 'data' => $room,

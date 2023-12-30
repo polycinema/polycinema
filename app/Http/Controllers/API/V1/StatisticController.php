@@ -284,7 +284,9 @@ class StatisticController extends Controller
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('StatisticController@getStatisticInRange: ', [$exception->getMessage()]);
-
+        }
+    }
+    
     public function getTopMoviesByRevenue()
     {
         try {

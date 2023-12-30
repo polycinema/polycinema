@@ -13,14 +13,14 @@ class RoomSeader extends Seeder
      */
     public function run(): void
     {
-        DB::table('rooms')->insert([
-            'room_name' => 'A - 1',
-            'capacity' => 50
-        ]);
-        DB::table('rooms')->insert([
-            'room_name' => 'A - 2',
-            'capacity' => 50
-        ]);
+        // DB::table('rooms')->insert([
+        //     'room_name' => 'A - 1',
+        //     'capacity' => 50
+        // ]);
+        // DB::table('rooms')->insert([
+        //     'room_name' => 'A - 2',
+        //     'capacity' => 50
+        // ]);
     }
 
 }
