@@ -27,7 +27,7 @@ const valueCheckout = createSlice({
             currentProduct.quantity--;
             if (currentProduct.quantity < 1) {
                 const confirm = window.confirm(
-                    "Are you sure you want to decrease"
+                    "Bạn có muốn hủy sản phẩm này không"
                 );
                 confirm
                     ? (state.products = state.products.filter(

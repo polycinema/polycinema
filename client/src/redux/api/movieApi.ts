@@ -1,5 +1,4 @@
 import {createApi,fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-import { pause } from '../../utils/pause';
 
 
 
@@ -9,7 +8,6 @@ const movieApi = createApi({
         baseQuery:fetchBaseQuery({
                 baseUrl:import.meta.env.VITE_API_URL,
                 fetchFn:async(...arg)=>{
-                        await pause(3000)
                         return fetch(...arg)
                 }
         }),
