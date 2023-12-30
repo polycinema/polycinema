@@ -4,9 +4,9 @@ const paymentApi = createApi({
         tagTypes:['Payment'],
         baseQuery:fetchBaseQuery({
                 baseUrl:import.meta.env.VITE_API_URL,
-                // fetchFn:async(...arg)=>{
-                //         return fetch(...arg)
-                // }
+                fetchFn:async(...arg)=>{
+                        return fetch(...arg)
+                }
         }),
         endpoints:(build)=>({
                 paymentBooking: build.mutation({
