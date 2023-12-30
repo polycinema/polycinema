@@ -208,6 +208,82 @@ class StatisticController extends Controller
         }
     }
 
+    // get Statistic trong khoảng ngày $request->from đến $request->to
+    public function getStatisticInRange(Request $request)
+    {
+        try {
+            // $fromDay = $request->from;
+            // $toDay = $request->to;
+
+            // // Lấy dữ liệu số lượng booking và doanh thu từ $fromDay đến $toDay
+            // $bookings = Booking::select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date'), DB::raw('COUNT(*) as booking_count'), DB::raw('SUM(total_price) as revenue'))
+            //     ->whereBetween('created_at', [$fromDay, $toDay])
+            //     ->groupBy('date')
+            //     ->orderBy('date')
+            //     ->get();
+
+            // $dailyBookings = [];
+
+            // $currentDate = $fromDay;
+            // while ($currentDate <= $toDay) {
+            //     $booking = $bookings->firstWhere('date', $currentDate);
+
+            //     $dailyBookings[] = [
+            //         'date' => $currentDate,
+            //         'booking_count' => $booking ? $booking->booking_count : 0,
+            //         'revenue' => $booking ? $booking->revenue : "0",
+            //     ];
+
+            //     $currentDate = date('Y-m-d', strtotime($currentDate . ' + 1 day'));
+            // }
+
+            // // Tính tổng doanh thu
+            // $totalRevenue = $bookings->sum('revenue');
+
+            // return response()->json([
+            //     'data' => [
+            //         'daily_bookings' => $dailyBookings,
+            //         'total_revenue' => $totalRevenue,
+            //     ],
+            // ], Response::HTTP_OK);
+
+            $fromDay = $request->from;
+            $toDay = $request->to;
+
+            // Lấy dữ liệu số lượng booking và doanh thu từ $from đến $to
+            $bookingData = DB::table('bookings')
+                ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date'), DB::raw('COUNT(*) as booking_count'), DB::raw('CAST(SUM(total_price) AS CHAR) as revenue'))
+                ->whereBetween('created_at', [$fromDay, $toDay])
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get();
+
+            // Tạo mảng dữ liệu hàng ngày
+            $dailyBookings = [];
+            $currentDate = $fromDay;
+            while ($currentDate <= $toDay) {
+                $booking = $bookingData->firstWhere('date', $currentDate);
+
+                $dailyBookings[] = [
+                    'date' => $currentDate,
+                    'booking_count' => $booking ? $booking->booking_count : 0,
+                    'revenue' => $booking ? $booking->revenue : "0",
+                ];
+
+                $currentDate = date('Y-m-d', strtotime($currentDate . ' + 1 day'));
+            }
+
+            // Tính tổng doanh thu
+            $totalRevenue = $bookingData->sum('revenue');
+
+            return response()->json([
+                'data' => [
+                    'daily_bookings' => $dailyBookings,
+                    'total_revenue' => $totalRevenue,
+                ],
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('StatisticController@getStatisticInRange: ', [$exception->getMessage()]);
 
     public function getTopMoviesByRevenue()
     {
