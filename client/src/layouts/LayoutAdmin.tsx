@@ -42,7 +42,7 @@ const LayoutAdmin: React.FC = () => {
             {
               key: 2,
               icon: <CalendarOutlined />,
-              label: <Link to={"booking"}>Booking</Link>,
+              label: <Link to={"booking"}>Quản lý đặt vé</Link>,
             },
             {
               key: 3,
