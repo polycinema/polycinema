@@ -15,8 +15,7 @@ const ShowTimeMng = () => {
   const [rooms, setRooms] = useState();
   const [movies, setMovies] = useState();
 
-  // console.log("id room: ", rooms);
-  // console.log("id movies: ", movies);
+  
 
   useEffect(() => {
     if (data) {
@@ -43,13 +42,12 @@ const ShowTimeMng = () => {
   }
 
   const dataSource: IShowTime[] = data?.data?.map(
-    ({ room_id, movie_id, start_time, end_time, id, show_date }: IShowTime) => {
+    ({ room_id, movie_id, start_time, id, show_date }: IShowTime) => {
       return {
         key: id,
         room_id,
         movie_id,
         start_time,
-        end_time,
         show_date,
       };
     }
@@ -69,11 +67,6 @@ const ShowTimeMng = () => {
       title: "Thời gian bắt đầu",
       dataIndex: "start_time",
       key: "3",
-    },
-    {
-      title: "Thời gian kết thúc",
-      dataIndex: "end_time",
-      key: "4",
     },
     {
       title: "Ngày chiếu",

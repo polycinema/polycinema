@@ -47,7 +47,6 @@ const UpdateShowTime = () => {
         room_id: data?.data.room_id,
         show_date: dayjs(data?.data?.show_date, "YYYY/MM/DD"),
         start_time: dayjs(data?.data?.start_time, "HH:mm:ss"),
-        end_time: dayjs(data?.data?.end_time, "HH:mm:ss"),
       });
     })();
   }, [data?.data, form]);
@@ -69,7 +68,6 @@ const UpdateShowTime = () => {
   }
   const onFinish = ({
     start_time,
-    end_time,
     movie_id,
     room_id,
     show_date,
@@ -78,7 +76,6 @@ const UpdateShowTime = () => {
     // console.log('movie_id: ',movie_id)
     updateShowTime({
       start_time: dayjs(start_time).format("HH:mm:ss"),
-      end_time: dayjs(end_time).format("HH:mm:ss"),
       movie_id,
       room_id,
       show_date: dayjs(show_date).format("YYYY/MM/DD"),
@@ -143,29 +140,6 @@ const UpdateShowTime = () => {
               message: "Trường start time không được để trống! ",
               required: true,
             },
-          ]}
-        >
-          <TimePicker format="HH:mm:ss" />
-        </Form.Item>
-        <Form.Item
-          name={"end_time"}
-          label={"End time"}
-          rules={[
-            {
-              message: "Trường end time không được để trống! ",
-              required: true,
-            },
-            ({ getFieldValue }) => ({
-              validator(_, values) {
-                const startTime = getFieldValue('start_time');
-          
-                if (!values || (startTime && startTime.isBefore(values))) {
-                  return Promise.resolve();
-                } else {
-                  return Promise.reject(new Error('Giờ kết thúc phải sau giờ chiếu'));
-                }
-              },
-            })
           ]}
         >
           <TimePicker format="HH:mm:ss" />

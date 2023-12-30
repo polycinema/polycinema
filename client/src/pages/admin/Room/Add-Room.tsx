@@ -1,12 +1,14 @@
 // import { UploadOutlined } from "@ant-design/icons";
-import { Form, Input } from "antd";
+import { Form, Input, InputNumber } from "antd";
 import { Button, message } from "antd";
 import { addRoom } from "../../../api/room";
 import { useNavigate } from "react-router";
 import { pause } from "../../../utils/pause";
 type FieldType = {
   room_name?: string;
-  capacity?: number;
+  single_seat?: number;
+  double_seat?: number;
+  special_seat?: number;
 };
 const AddRoom = () => {
   const [form] = Form.useForm();
@@ -51,11 +53,25 @@ const AddRoom = () => {
         </Form.Item>
 
         <Form.Item<FieldType>
-          label="Số Phòng"
-          name="capacity"
+          label="Ghế thường"
+          name="single_seat"
           rules={[{ required: true, message: "Please input your room!" }]}
         >
-          <Input />
+          <InputNumber min={0} max={60} defaultValue={0}/>
+        </Form.Item>
+        <Form.Item<FieldType>
+          label="Ghế đôi"
+          name="double_seat"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber min={0} max={30} defaultValue={0}/>
+        </Form.Item>
+        <Form.Item<FieldType>
+          label="Ghế VIP"
+          name="special_seat"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber min={0} max={20} defaultValue={0}/>
         </Form.Item>
         <Form.Item label="Tác vụ">
           <>

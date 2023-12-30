@@ -8,8 +8,10 @@ import { IRoom, getAllRoom, removeRoom } from "../../../api/room";
 
 interface DataType {
   key: string;
-  room_name: string;
-  capacity: number;
+  room_name?: string;
+  single_seat?: number |string;
+  double_seat?: number |string;
+  special_seat?: number |string;
 }
 const ListRooms = () => {
   const [rooms, setRooms] = useState<IRoom[]>();
@@ -35,9 +37,21 @@ const ListRooms = () => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Ghế ngồi",
-      dataIndex: "capacity",
-      key: "capacity",
+      title: "Ghế thường",
+      dataIndex: "single_seat",
+      key: "single_seat",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Ghế đôi",
+      dataIndex: "double_seat",
+      key: "double_seat",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Ghế VIP",
+      dataIndex: "special_seat",
+      key: "special_seat",
       render: (text) => <a>{text}</a>,
     },
     {
@@ -76,7 +90,9 @@ const ListRooms = () => {
     return {
       key: item?.id,
       room_name: item?.room_name,
-      capacity: item?.capacity,
+      single_seat: item?.single_seat,
+      double_seat: item?.double_seat,
+      special_seat: item?.special_seat,
     };
   });
   return (

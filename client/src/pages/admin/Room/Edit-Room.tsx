@@ -1,5 +1,5 @@
 // import { UploadOutlined } from "@ant-design/icons";
-import { Form, Input } from "antd";
+import { Form, Input, InputNumber } from "antd";
 import { Button, message } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -7,7 +7,9 @@ import { IRoom, getRoomById, updateRoom } from "../../../api/room";
 import { pause } from "../../../utils/pause";
 type FieldType = {
   room_name?: string;
-  capacity?: number;
+  single_seat?: number;
+  double_seat?: number;
+  special_seat?: number;
 };
 const EditRoom = (props: Props) => {
   const { id } = useParams();
@@ -30,7 +32,10 @@ const EditRoom = (props: Props) => {
     form.setFieldsValue({
       id: room?.id,
       room_name: room?.room_name,
-      capacity: room?.capacity,
+      single_seat: room?.single_seat,
+      double_seat: room?.double_seat,
+      special_seat: room?.special_seat
+
     });
   }, [room]);
 
@@ -79,12 +84,26 @@ const EditRoom = (props: Props) => {
           </Form.Item>
 
           <Form.Item<FieldType>
-            label="Số Phòng"
-            name="capacity"
-            rules={[{ required: true, message: "Please input your room!" }]}
-          >
-            <Input />
-          </Form.Item>
+          label="Ghế thường"
+          name="single_seat"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber min={0} max={60} defaultValue={0}/>
+        </Form.Item>
+        <Form.Item<FieldType>
+          label="Ghế đôi"
+          name="double_seat"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber min={0} max={30} defaultValue={0}/>
+        </Form.Item>
+        <Form.Item<FieldType>
+          label="Ghế VIP"
+          name="special_seat"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber min={0} max={20} defaultValue={0}/>
+        </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 16 }} label="Tác vụ">
             {contextHolder}

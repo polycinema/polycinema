@@ -243,7 +243,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
                 <button
                   key={seat.id}
                   className={`w-[40px] relative ${
-                    seat.status == "booking" && seat.user_id != user.id
+                    seat.status == "booking"  && seat.user_id != user.id
                       ? " pointer-events-none opacity-60 "
                       : ""
                   }`}
