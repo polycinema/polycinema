@@ -38,11 +38,9 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
   const { products: stateProducts } = useAppSelector(
     (state) => state.ValueCheckout
   );
-  const navigate = useNavigate();
   const dispacth = useAppDispatch();
-  const [countdown, setCountdown] = useState(8 * 60);
   const [seatDatas, setSeatDatas] = useState(showtime?.data?.seats || []);
-  
+
   useEffect(() => {
     const channel = window.Echo.channel("seat-reservation");
     const handleReservedEvent = (e) => {
@@ -58,31 +56,11 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       setSeatDatas(showtime.data.seats);
     }
   });
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCountdown((prevCountdown) => prevCountdown - 1);
-    }, 1000);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [showtime, navigate]);
-
-  useEffect(() => {
-    if (countdown === 0) {
-      const selectedSeats = seatDatas.filter(
-        (item) => item.status === "booking" && item.user_id === user.id
-      );
-      selectedSeats?.map((seat) => {
-        updateSeatStatus({ id: seat.id, status: "unbook", user_id: null });
-      });
-      navigate("/");
-    }
-  }, [countdown, showtime, navigate]);
-
-  const minutes = Math.floor(countdown / 60);
-  const seconds = countdown % 60;
 
   const handleClick = (seat: any) => {
+    const currentTime = new Date().toISOString();
+    localStorage.setItem("seatSelectionTime", currentTime);
+
     const selectedSeats = seatDatas.filter(
       (item) => item.status === "booking" && item.user_id === user.id
     );
@@ -94,13 +72,11 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       return;
     } else if (selectedSeats.length >= 8 && seat.status === "booking") {
       updateSeatStatus({ id: seat.id, status: "unbook", user_id: null });
-
       return;
     } else if (selectedSeats.length >= 8) {
       alert("Bạn đã chọn đủ 8 ghế, không thể chọn thêm.");
       return;
     }
-
     if (selectedSeats.length > 0) {
       const lastSelectedSeat = selectedSeats[selectedSeats.length - 1];
       const distance = Math.abs(
@@ -131,10 +107,10 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
     }
   };
 
-  const getImageSource = (seatIndex: number) => {
-    const seatType = seatDatas[seatIndex]?.type;
-    const seatStatus = seatDatas[seatIndex]?.status;
-    const user_id = seatDatas[seatIndex]?.user_id;
+  const getImageSource = (id: number | string) => {
+    const seatType = seatDatas?.find((item) => item?.id == id)?.type;
+    const seatStatus = seatDatas?.find((item) => item?.id == id)?.status;
+    const user_id = seatDatas?.find((item) => item?.id == id)?.user_id;
     switch (seatType) {
       case "single":
         return seatStatus === "booking" && user_id != user.id
@@ -185,9 +161,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       </div>
       <div className="flex items-center justify-center gap-5">
         <p className="text-xl mt-2">Thời gian còn lại để chọn ghế:</p>
-        <p className="text-2xl mt-2 ">
-          {minutes}: {seconds}
-        </p>
+        <p className="text-2xl mt-2 ">8:00</p>
       </div>
       <div className="flex justify-center items-center space-x-9 p-4   ">
         <div className="flex items-center gap-2">
@@ -210,9 +184,10 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       <img src={manhinh} alt="" />
       <div className=" seat-hidden lg:w-full  ">
         <div className="seat_container seat-scroll  mt-4 ">
-          <div className="grid grid-cols-6 md:grid-cols-10 lg:grid-cols-12   ">
-            {seatDatas?.map(
-              (seat: { id: number; seat_name: string }, i: number) => (
+          <div className="flex flex-wrap gap-3 justify-center">
+            {seatDatas
+              ?.filter((item) => item?.type == "single")
+              ?.map((seat: { id: number; seat_name: string }, i: number) => (
                 <button
                   key={seat.id}
                   className={`w-[40px] relative ${
@@ -227,10 +202,65 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
                   <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center">
                     {seat?.seat_name}
                   </p>
-                  <img className={`w-full `} src={getImageSource(i)} alt="" />
+                  <img
+                    className={`w-full `}
+                    src={getImageSource(seat?.id)}
+                    alt=""
+                  />
                 </button>
-              )
-            )}
+              ))}
+          </div>
+          <div className="flex flex-wrap gap-3 justify-center mt-2">
+            {seatDatas
+              ?.filter((item) => item?.type == "special")
+              ?.map((seat: { id: number; seat_name: string }, i: number) => (
+                <button
+                  key={seat.id}
+                  className={`w-[40px] relative ${
+                    seat.status == "booking" && seat.user_id != user.id
+                      ? " pointer-events-none opacity-60 "
+                      : ""
+                  }`}
+                  onClick={() => {
+                    handleClick(seat);
+                  }}
+                >
+                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center">
+                    {seat?.seat_name}
+                  </p>
+                  <img
+                    className={`w-full `}
+                    src={getImageSource(seat?.id)}
+                    alt=""
+                  />
+                </button>
+              ))}
+          </div>
+          <div className="flex flex-wrap gap-3 justify-center mt-2">
+            {seatDatas
+              ?.filter((item) => item?.type == "double")
+              ?.map((seat: { id: number; seat_name: string }, i: number) => (
+                <button
+                  key={seat.id}
+                  className={`w-[40px] relative ${
+                    seat.status == "booking" && seat.user_id != user.id
+                      ? " pointer-events-none opacity-60 "
+                      : ""
+                  }`}
+                  onClick={() => {
+                    handleClick(seat);
+                  }}
+                >
+                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center">
+                    {seat?.seat_name}
+                  </p>
+                  <img
+                    className={`w-full `}
+                    src={getImageSource(seat?.id)}
+                    alt=""
+                  />
+                </button>
+              ))}
           </div>
         </div>
       </div>
@@ -280,7 +310,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
                       <img className="w-28" src={item?.image} alt="" />
                     </td>
                     <td className="text-center p-2">{item?.name}</td>
-                    <td className="text-center p-2">{item?.price}</td>
+                    <td className="text-center p-2">{formatCurrency(item?.price)}</td>
                     <td className="text-center p-2">{item?.description}</td>
                     <td className="text-center p-2 ">
                       {stateProducts.find(
@@ -306,15 +336,17 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
           <div className="flex justify-end gap-1 mt-2 text-xl">
             <p className="text-2xl font-bold mt-2">Tổng tiền:</p>
             <p className="text-2xl font-bold mt-2">
-              {formatCurrency(stateProducts.reduce((sum: any, item: any) => {
-                return sum + item.price * item.quantity;
-              }, 0) +
-                showtime?.data?.seats
-                  ?.filter(
-                    (item: any) =>
-                      item?.status == "booking" && item?.user_id == user.id
-                  )
-                  .reduce((sum: any, seat: any) => sum + seat.price, 0))}
+              {formatCurrency(
+                stateProducts.reduce((sum: any, item: any) => {
+                  return sum + item.price * item.quantity;
+                }, 0) +
+                  showtime?.data?.seats
+                    ?.filter(
+                      (item: any) =>
+                        item?.status == "booking" && item?.user_id == user.id
+                    )
+                    .reduce((sum: any, seat: any) => sum + seat.price, 0)
+              )}
             </p>
           </div>
         </div>

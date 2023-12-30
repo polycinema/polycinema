@@ -2,14 +2,14 @@ import { Navigate, Outlet, useNavigate } from "react-router";
 import { useAppSelector } from "../../store/hook";
 import { useEffect } from "react";
 const PrivateRouterAdmin = () => {
-  const { isAuth,user } = useAppSelector((state) => state.Authorization);
+  const { user } = useAppSelector((state) => state.Authorization);
   const navigate = useNavigate();
   useEffect(() => {
-    if (user?.role !== "admin" && !isAuth ) {      
+    if (user?.role !== "admin" ) {      
       navigate("/");
     }
-  }, [user,isAuth]);
-  return isAuth ? <Outlet /> : <Navigate to={"/"} />;
+  }, [user]);
+  return user?.role == "admin" ? <Outlet /> : <Navigate to={"/"} />;
 };
 
 export default PrivateRouterAdmin;

@@ -3,21 +3,26 @@ import { useLocation } from "react-router";
 import icon_v from "../../../public/img/img-v.png";
 import Button from "../../components/Button";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../store/hook";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { useCheckoutBookingMutation } from "../../redux/api/checkoutApi";
 import { formatCurrency } from "../../utils/formatVND";
+import { deleteTotalPrice, deleteValueProduct } from "../../redux/slices/valueCheckoutSlice";
 
 const PayementReturnPage = () => {
   const { booking } = useAppSelector((state) => state.ValueCheckout);
   const [addBooking] = useCheckoutBookingMutation();
   const location = useLocation();
+  const dispatch = useAppDispatch()
   const queryParams = new URLSearchParams(location.search);
   const vnpAmount = queryParams.get("vnp_Amount");
   const vnpTransactionStatus = queryParams.get("vnp_TransactionStatus");
   const vnpTxnRef = queryParams.get("vnp_TxnRef");
 
   useEffect(() => {
-    addBooking({ ...booking.payload, booking_id: vnpTxnRef, coupon_id: "1" });
+    addBooking({ ...booking.payload, booking_id: vnpTxnRef, coupon_id: "1" }).unwrap().then(() => {
+      dispatch(deleteValueProduct())
+      dispatch(deleteTotalPrice());
+    })
   }, [booking]);
   return (
     <>

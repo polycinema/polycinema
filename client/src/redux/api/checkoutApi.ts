@@ -1,12 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { pause } from "../../utils/pause";
 const checkoutApi = createApi({
     reducerPath: "checkout",
     tagTypes: ["Checkout"],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_API_URL,
         fetchFn: async (...arg) => {
-            await pause(1500);
             return await fetch(...arg);
         },
     }),
