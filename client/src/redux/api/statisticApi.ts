@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { ITop10Movie } from "../../interfaces/top10movie";
 
 const statisticApi = createApi({
     reducerPath: "statistic",
@@ -22,6 +23,10 @@ const statisticApi = createApi({
             query: () => `/statistic-in-year`,
             providesTags: ["Statistic"],
         }),
+        getTop10Movie : build.query<ITop10Movie[],void>({
+            query: () => `/top-movies`,
+            providesTags: ["Statistic"],
+        })
     }),
 });
 
@@ -29,6 +34,7 @@ export const {
     useGetStatisticMonthQuery,
     useGetStatisticWeekQuery,
     useGetStatisticyearQuery,
+    useGetTop10MovieQuery
 } = statisticApi;
 export const statisticReducer = statisticApi.reducer;
 export default statisticApi;

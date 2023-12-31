@@ -96,6 +96,7 @@ const ShowTimeMng = () => {
                 })
               }
               okText="Yes"
+              okType="default"
               cancelText="No"
             >
               <Button type="text" danger>

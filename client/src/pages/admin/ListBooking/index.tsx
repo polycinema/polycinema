@@ -42,7 +42,9 @@ const ListsBooking = () => {
   const [BookingById, setBookingById] = useState<RootBooking>();
   const [isModalOpenModal, setIsModalOpenModal] = useState(false);
 
-  // console.log("listBooking: ", listBooking);
+  console.log("listBooking: ", listBooking);
+  // console.log("isloading: ",isLoading);
+  // console.log("error: ",error);
   useEffect(() => {
     if (bookings) {
       setListBooking(bookings.data);

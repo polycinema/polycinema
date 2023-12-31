@@ -80,6 +80,7 @@ const LayoutWebsite = () => {
           description="Bạn có muốn đăng xuất?"
           okText="Yes"
           cancelText="No"
+          okType="default"
           onConfirm={() => dispatch(setLogout())}
         >
           <LogoutOutlined /> Đăng xuất
