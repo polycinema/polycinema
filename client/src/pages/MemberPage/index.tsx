@@ -8,6 +8,7 @@ import { useAppSelector } from "../../store/hook";
 import dayjs from "dayjs";
 import { BiSolidShow } from "react-icons/bi";
 import { formatCurrency } from "../../utils/formatVND";
+import { FaDotCircle } from "react-icons/fa";
 type Props = {};
 
 const MemberPage = (props: Props) => {
@@ -71,6 +72,7 @@ const MemberPage = (props: Props) => {
                   <th className="border border-gray-400 p-2">Rạp chiếu</th>
                   <th className="border border-gray-400 p-2">Chỗ ngồi</th>
                   <th className="border border-gray-400 p-2">Combo</th>
+                  <th className="border border-gray-400 p-2">Giờ đặt</th>
                   <th className="border border-gray-400 p-2">Ngày đặt</th>
                   <th className="border border-gray-400 p-2"></th>
                 </tr>
@@ -92,10 +94,13 @@ const MemberPage = (props: Props) => {
                           {item?.seats?.map(item => <span key={item?.id} className="mx-2">{item?.seat_name},</span>)}
                         </td>
                         <td className="border border-gray-400 p-2 text-center">
-                          {item?.products.map(item => <span className="mx-2">{item?.name},</span>)}
+                          {item?.products.map(item => <span key={item?.id} className="mx-2">{item?.name},</span>)}
                         </td>
                         <td className="border border-gray-400 p-2 text-center">
                           {dayjs(item?.created_at).format("DD/MM.YYYY")}
+                        </td>
+                        <td className="border border-gray-400 p-2 text-center">
+                          {dayjs(item?.created_at).format("HH:mm:ss")}
                         </td>
                         <td className="p-3 border-b border-gray-400 flex justify-center items-center text-xl text-[#42a5f5] ">
                           <button onClick={() => onHandleDetail(item)}>
@@ -116,7 +121,7 @@ const MemberPage = (props: Props) => {
         )}
       </div>
       <Modal
-        title="Chi tiết đơn hàng"
+        title={`Chi tiết đơn hàng`}
         open={isModalOpen}
         onCancel={handleCancel}
         bodyStyle={{ height: '600px', overflow: 'auto' }}
@@ -164,6 +169,20 @@ const MemberPage = (props: Props) => {
               <span className="text-gray-600">{detailBooking?.products?.map((item)=>(
                 <span key={item?.id}>{item?.name},</span>
               ))}</span>
+            </div>
+            <div className="border-b p-2 text-lg">
+              <span className="block mb-2 font-semibold">Trạng thái:</span>
+              <span className="text-gray-600">{detailBooking?.status === "not_yet" ? (
+          <div className="flex items-center content-center gap-x-3 justify-center">
+            <FaDotCircle className="text-red-500" />
+            <span>Chưa lấy vé</span>
+          </div>
+        ) : (
+          <div className="flex items-center content-center gap-x-3 justify-center">
+            <FaDotCircle className="text-green-500" />
+            <span>Đã lấy vé</span>
+          </div>
+        )}</span>
             </div>
             <div className="p-2 text-xl">
               <span className="block mb-2 font-semibold ">Tổng tiền:</span>
