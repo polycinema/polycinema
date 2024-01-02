@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { Link } from "react-router-dom";
 import { setBooking } from "../../redux/slices/valueCheckoutSlice";
+import { message } from "antd";
 type Props = {
   showtime: any,
   isLoading: boolean,
@@ -86,8 +87,7 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
           </p>
         </div>
         <div
-          className="grid grid-cols-2 items-center ml-12  gap-14 mt-8 
-                                "
+          className="grid grid-cols-2 items-center ml-12  gap-14 mt-8 "
         >
           <p className="flex items-center text-[14px] ">
             <FaDesktop /> <span>Ghế ngồi</span>
@@ -100,7 +100,9 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
         </div>
       </div>
       <div className="flex justify-center space-x-2">
-        <Link to={"/poly-payment"}>
+      {showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id).length === 0 
+        ? (message.success('Chọn ghế để tiếp tục thanh toán', 5), null) 
+        :<Link to={"/poly-payment"}>
           <Button
             width="100px"
             onClick={() => {
@@ -123,6 +125,8 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
             Tiếp tục
           </Button>
         </Link>
+        }
+        
       </div>
     </div>
   );
