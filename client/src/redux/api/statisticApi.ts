@@ -23,18 +23,6 @@ const statisticApi = createApi({
             query: () => `/statistic-in-year`,
             providesTags: ["Statistic"],
         }),
-        getTop10Movie : build.query<ITop10Movie[],void>({
-            query: () => `/top-movies`,
-            providesTags: ["Statistic"],
-        }),
-        StatisticCustom : build.mutation({
-            query: (date) => ({
-                url:'/statistc-in-range',
-                method:"POST",
-                body:date
-            }),
-            invalidatesTags: ["Statistic"],
-        })
     }),
 });
 
@@ -42,8 +30,6 @@ export const {
     useGetStatisticMonthQuery,
     useGetStatisticWeekQuery,
     useGetStatisticyearQuery,
-    useGetTop10MovieQuery,
-    useStatisticCustomMutation
 } = statisticApi;
 export const statisticReducer = statisticApi.reducer;
 export default statisticApi;

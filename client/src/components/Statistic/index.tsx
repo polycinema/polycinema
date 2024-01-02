@@ -153,7 +153,7 @@ const Statistic = () => {
                     0)}</span>
         </div>
       </div>
-      <Bar data={data} options={options} />;
+      <Bar data={data} options={options} className='max-w-xl'/>;
     </>
   );
 }
