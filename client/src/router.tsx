@@ -52,6 +52,9 @@ import ListsBooking from "./pages/admin/ListBooking";
 import PrivateRouterAdmin from "./components/privateRouter/PrivateRouterAdmin";
 import PrivateRouterCheckout from "./components/privateRouter/PrivateRouterCheckout";
 import ResetPassword from "./auth/ResetPassword";
+import CouponMng from "./pages/admin/Coupon/CouponMng";
+import AddCoupon from "./pages/admin/Coupon/AddCoupon";
+import EditCoupon from "./pages/admin/Coupon/EditCoupon";
 
 
 export const router = createBrowserRouter([
@@ -127,6 +130,9 @@ export const router = createBrowserRouter([
           { path: 'banner', element: <ListBanner /> },
           { path: 'banner/add', element: <AddBanner /> },
           { path: 'banner/:id/edit', element: <EditBanner /> },
+          { path: 'coupon', element: <CouponMng /> },
+          { path: 'coupon/add', element: <AddCoupon /> },
+          { path: 'coupon/:id/edit', element: <EditCoupon /> },
         ],
       },
     ],

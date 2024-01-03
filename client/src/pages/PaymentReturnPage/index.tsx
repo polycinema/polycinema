@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { useCheckoutBookingMutation } from "../../redux/api/checkoutApi";
 import { formatCurrency } from "../../utils/formatVND";
-import { deleteTotalPrice, deleteValueProduct } from "../../redux/slices/valueCheckoutSlice";
+import {  deleteCoupon, deleteValueBooking, deleteValueProduct } from "../../redux/slices/valueCheckoutSlice";
 
 const PayementReturnPage = () => {
-  const { booking } = useAppSelector((state) => state.ValueCheckout);
+  const { booking,coupon } = useAppSelector((state) => state.ValueCheckout);
   const [addBooking] = useCheckoutBookingMutation();
   const location = useLocation();
   const dispatch = useAppDispatch()
@@ -18,12 +18,14 @@ const PayementReturnPage = () => {
   const vnpTransactionStatus = queryParams.get("vnp_TransactionStatus");
   const vnpTxnRef = queryParams.get("vnp_TxnRef");
 
+
   useEffect(() => {
-    addBooking({ ...booking.payload, booking_id: vnpTxnRef, coupon_id: "1" }).unwrap().then(() => {
+    addBooking({ ...booking.payload, booking_id: vnpTxnRef, coupon_id:coupon?.id}).unwrap().then(() => {
       dispatch(deleteValueProduct())
-      dispatch(deleteTotalPrice());
+      dispatch(deleteValueBooking())
+      dispatch(deleteCoupon())
     })
-  }, [booking]);
+  }, []);
   return (
     <>
       <div className="max-w-[1150px] mx-auto my-20 py-10">
