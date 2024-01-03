@@ -31,6 +31,8 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
   }, [stateProducts])
 
   const booking = (value) => {
+    console.log(value);
+    
     dispatch(setBooking(value))
   }
 
@@ -93,7 +95,7 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
             <FaDesktop /> <span>Ghế ngồi</span>
           </p>
           <p className="flex flex-wrap font-bold text-[14px]">
-            {showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id).map((item: any) => <span>
+            {showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id).map((item: any) => <span key={item?.id}>
               {item?.seat_name},
             </span>)}
           </p>
@@ -101,7 +103,7 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
       </div>
       <div className="flex justify-center space-x-2">
       {showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id).length === 0 
-        ? (message.success('Chọn ghế để tiếp tục thanh toán', 5), null) 
+        ? null 
         :<Link to={"/poly-payment"}>
           <Button
             width="100px"

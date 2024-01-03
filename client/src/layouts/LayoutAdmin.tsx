@@ -101,6 +101,11 @@ const LayoutAdmin: React.FC = () => {
             },
             {
               key: 14,
+              icon: <SolutionOutlined />,
+              label: <Link to={"coupon"}>Quản lý mã giảm</Link>,
+            },
+            {
+              key: 15,
               icon: <LogoutOutlined />,
               label: (
                 <Popconfirm
