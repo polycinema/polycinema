@@ -4,26 +4,102 @@ import {
   Col,
   DatePicker,
   Form,
+  Image,
   Input,
   Row,
   Select,
   Upload,
+  UploadProps,
+  message,
+  notification,
 } from "antd";
 import { Option } from "antd/es/mentions";
+import { useAppSelector } from "../../store/hook";
+import { useEffect, useState } from "react";
+import {
+  useGetUserByIdQuery,
+  useUpdateProfileMutation,
+} from "../../redux/api/authApi";
+import dayjs from "dayjs";
 
 const InfoAccount = () => {
+  const { user }: any = useAppSelector((state) => state.Authorization);
+  const [form] = Form.useForm();
+  const [updateProfile, { isLoading, error }] = useUpdateProfileMutation();
+  const [urlImage, setUrlImage] = useState<string>();
+  const { data: UserById } = useGetUserByIdQuery(user.id);
+
+  useEffect(() => {
+    (async () => {
+      await form.setFieldsValue({
+        name: UserById?.data.name,
+        phone: UserById?.data.phone,
+        email: UserById?.data.email,
+        date_of_birth: dayjs(UserById?.data.date_of_birth),
+        gender: UserById?.data.gender,
+        // image: UserById?.data.image,
+        // UserById_id: user?.id
+      });
+    })();
+  }, [UserById]);
+  const onFinish = (value: User) => {
+    console.log("value: ", value);
+
+    updateProfile({
+      name: value.name,
+      phone: value.phone,
+      email: value.email,
+      date_of_birth: dayjs(value.date_of_birth).format("YYYY/MM/DD"),
+      image: urlImage,
+      gender: value.gender,
+      user_id: user.id,
+    })
+      .unwrap()
+      .then((user) => {
+        try {
+          console.log("user update: ", user);
+          notification.success({ message: "update profile successfully" });
+          // navigate("/admin/showtime");
+        } catch (error) {
+          console.error("error update profile: ", error);
+        }
+      });
+  };
+  const props: UploadProps = {
+    name: "file",
+    action: "https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload",
+    data: { upload_preset: "upload" },
+    onChange(info) {
+      if (info.file.status !== "uploading") {
+        // console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        setUrlImage(info.file.response.url);
+        message.open({
+          type: "success",
+          content: "Upload ảnh thành công",
+        });
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
   return (
     <div className="max-w-4xl mx-auto">
-      <Form layout="vertical">
+      <Form layout="vertical" form={form} onFinish={onFinish}>
         <Form.Item>
-          <Upload>
+          <Upload {...props}>
             <Button icon={<UploadOutlined />}>Click to Upload</Button>
           </Upload>
+          <Image
+            width={200}
+            src={UserById?.data.image}
+          />
         </Form.Item>
         <Row gutter={32}>
           <Col span={12}>
             <Form.Item
-              name={"username"}
+              name={"name"}
               label="Họ Tên"
               rules={[{ required: true, message: "Vui lòng nhập họ tên" }]}
             >
@@ -53,9 +129,8 @@ const InfoAccount = () => {
             </Form.Item>
           </Col>
           <Col span={12}>
-            
             <Form.Item
-              name={"birth"}
+              name={"date_of_birth"}
               label="Ngày Sinh"
               rules={[{ required: true, message: "Vui lòng nhập ngày sinh" }]}
             >
@@ -87,3 +162,18 @@ const InfoAccount = () => {
 };
 
 export default InfoAccount;
+interface User {
+  id: number;
+  name: string;
+  full_name?: any;
+  image?: any;
+  email: string;
+  email_verified_at?: any;
+  role: string;
+  phone?: any;
+  date_of_birth?: any;
+  gender?: any;
+  deleted_at?: any;
+  created_at: string;
+  updated_at: string;
+}
