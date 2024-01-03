@@ -2,10 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const valueCheckout = createSlice({
     name: "ValueCheckout",
     initialState: {
-        toggleSeat: [],
         products: [],
         booking: {},
-        totalPrice: 0,
+        coupon:{}
     },
     reducers: {
         increaseProduct: (state, actions) => {
@@ -35,7 +34,6 @@ const valueCheckout = createSlice({
                     ))
                     : (currentProduct.quantity = 1);
             }
-
         },
         setBooking: (state, action) => {
             state.booking = action;
@@ -43,12 +41,15 @@ const valueCheckout = createSlice({
         deleteValueProduct: (state) => {
             state.products = [];
         },
-        deleteActionTogle: (state) => {
-            state.toggleSeat = [];
+        deleteValueBooking: (state) => {
+            state.booking = {}
         },
-        deleteTotalPrice: (state) => {
-            state.totalPrice = 0
-        }
+        setCoupon:(state,action)=>{
+            state.coupon = action.payload
+        },
+        deleteCoupon:(state)=>{
+            state.coupon = {}
+        },
     },
 });
 export const {
@@ -56,8 +57,8 @@ export const {
     decreaseProduct,
     deleteValueProduct,
     setBooking,
-    setTotalPrice,
-    deleteActionTogle,
-    deleteTotalPrice
+    deleteValueBooking,
+    setCoupon,
+    deleteCoupon
 } = valueCheckout.actions;
 export const valueCheckoutReducer = valueCheckout.reducer;

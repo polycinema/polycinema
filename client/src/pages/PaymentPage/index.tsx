@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import ButtonCustom from '../../components/Button';
 import { Modal } from 'antd';
 import { usePaymentBookingMutation } from '../../redux/api/paymentApi';
-import { useAppSelector } from '../../store/hook';
+import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router';
 import './index.css';
-import { useGetCouponByIdQuery } from '../../redux/api/couponApi';
+import { useGetCouponByIdQuery, useGetCouponByIdUserQuery } from '../../redux/api/couponApi';
 import { formatCurrency } from '../../utils/formatVND';
+import { setCoupon } from '../../redux/slices/valueCheckoutSlice';
 
 const PaymentPage = () => {
   const [paymentBooking, { isLoading }] = usePaymentBookingMutation();
-  
   const { booking } = useAppSelector((state) => state.ValueCheckout);
   const { user } = useAppSelector((state) => state.Authorization);
-  const { data: coupon, isLoading: isLoadingCoupon } = useGetCouponByIdQuery(user?.id || 0);
+  const { data: coupon, isLoading: isLoadingCoupon } = useGetCouponByIdUserQuery(user?.id || 0);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
   const [selectedCoupon, setSelectedCoupon] = useState(null);
   const calculateDiscount = (coupon) => {
     if (coupon.type === "discount_percentage") {
@@ -45,6 +46,8 @@ const PaymentPage = () => {
 
   const onChangeCoupon = (selectedCoupon) => {
     setSelectedCoupon(selectedCoupon);
+    dispatch(setCoupon(selectedCoupon));
+    
   };
 
   const clearSelectedCoupon = () => {

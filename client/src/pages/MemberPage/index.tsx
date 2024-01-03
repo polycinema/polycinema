@@ -52,7 +52,7 @@ const MemberPage = (props: Props) => {
           className={`p-2 focus:outline-none ${activeTab === 3 ? "bg-[#03599D] text-white" : "bg-gray-200"
             }`}
         >
-          Điểm Poly
+          Kho Voucher
         </button>
       </div>
 
