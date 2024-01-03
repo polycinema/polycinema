@@ -28,6 +28,12 @@ const showtimeApi = createApi({
             }),
             providesTags:['showtime']
         }),
+        getShowtimeByIDMovie: build.query({
+            query: (mvId) => ({
+                url: `/showtimes/${mvId}`,
+            }),
+            providesTags:['showtime']
+        }),
         CreateShowTime: build.mutation({
             query: (showtime) => ({
                 url: `/admin/showtime`,
@@ -59,7 +65,8 @@ export const {
     useCreateShowTimeMutation,
     useRemoveShowTimeMutation,
     useUpdateShowTimeMutation,
-    useGetShowTimesMovieQuery
+    useGetShowTimesMovieQuery,
+    useGetShowtimeByIDMovieQuery
 } = showtimeApi;
 export const showtimeReducer = showtimeApi.reducer;
 export default showtimeApi
