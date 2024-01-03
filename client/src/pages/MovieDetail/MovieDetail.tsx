@@ -6,20 +6,58 @@ import IsLoading from "../../utils/IsLoading";
 import YouTube from "react-youtube";
 import { FacebookProvider, Comments } from "react-facebook";
 import { getDirectorById } from "../../api/director";
+import { useGetShowtimeByIDMovieQuery } from "../../redux/api/showTimeApi";
+import dayjs from "dayjs";
+import { Modal } from "antd";
+import ButtonCustom from "../../components/Button";
+import { Link } from "react-router-dom";
+
 const MovieDetail = () => {
   const { slug } = useParams();
   const slugParams = slug?.split(".html") ?? [];
   const temp = slugParams[0]?.split("-") as string;
   const id = temp[temp.length - 1];
   const { data: movieById, isLoading, error } = useGetMovieByIdQuery(id);
+  const {
+    data: showtimeByMovieId,
+    isLoading: loadingShowtimeBMVID,
+    error: errShowtimeBMVID,
+  } = useGetShowtimeByIDMovieQuery(id);
   const [movie, setMovie] = useState<any>({});
   const [nameDuration, setNameDuration] = useState();
-  console.log("movieById: ", movieById);
+  const [shotimeBMVID, setShowtimeBMVID] = useState<Datum[]>();
+  const [shotimeChange, setShowtimeChange] = useState<Datum>();
+  const [shotimeDate, setShowtimeDate] = useState<string>();
+  const [showtimeIdPrimary, SetShowtimeIdPrimary] = useState<Datum>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dateChange,setDateChange] = useState<Showtime>()
+  console.log("dateChange: ", dateChange);
+  useEffect(() => {
+    if (showtimeIdPrimary) {
+      setShowtimeDate(showtimeIdPrimary.date);
+    }
+  }, [showtimeIdPrimary]);
+  useEffect(() => {
+    if (shotimeBMVID?.length > 0) {
+      SetShowtimeIdPrimary(shotimeBMVID[0]);
+    }
+  }, [shotimeBMVID]);
   useEffect(() => {
     if (movieById) {
       setMovie(movieById.data);
     }
-  }, [movieById]);
+    if (showtimeByMovieId) {
+      setShowtimeBMVID(showtimeByMovieId.data);
+    }
+  }, [movieById, showtimeByMovieId]);
+  useEffect(() => {
+    if (shotimeDate) {
+      const showtimeChange = shotimeBMVID?.filter(
+        (items: Datum) => items.date === shotimeDate
+      );
+      setShowtimeChange(showtimeChange[0]);
+    }
+  }, [shotimeDate, shotimeBMVID]);
   useEffect(() => {
     (async () => {
       try {
@@ -43,7 +81,13 @@ const MovieDetail = () => {
       </>
     );
   }
-  // console.log("data movie by id: ", movie);
+  const handleCancelModal = () => {
+    setIsModalOpen(false);
+  };
+  const showModal = (dateMovie:Showtime) => {
+    setIsModalOpen(true);
+    setDateChange(dateMovie)
+  };
   return (
     <>
       <div className="container">
@@ -108,6 +152,42 @@ const MovieDetail = () => {
             </div>
           </div>
         </div>
+        <div className="space-y-6 md:mt-6 px-6 md:px-0">
+          <div className="border-b-2 border-gray-400 space-x-6 ">
+            {shotimeBMVID?.map((items: Datum) => (
+              <button
+                className="pb-2"
+                onClick={() => setShowtimeDate(items.date)}
+              >
+                <span
+                  className={
+                    items.date === shotimeDate
+                      ? "text-[#03599d] border-b border-b-[#03599d] pb-2 mr-3 text-2xl"
+                      : " pb-2 mr-3 text-xl"
+                  }
+                >
+                  {dayjs(items.date).format("DD-MM-YYYY")}
+                </span>
+              </button>
+            ))}
+          </div>
+          <div className="space-y-3">
+            <p>2D PHỤ ĐỀ</p>
+            <div className="space-x-6">
+              {shotimeChange?.showtimes?.map((items: Showtime2) => (
+                <button
+                  className="space-y-2"
+                  onClick={() => showModal(items.showtime)}
+                >
+                  <span className="bg-gray-300 px-6 py-1 rounded-sm">
+                    {items.showtime.start_time}
+                  </span>
+                  <p className="text-xs">{items.available_seats} ghế trống</p>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="title2">
@@ -123,8 +203,57 @@ const MovieDetail = () => {
           </FacebookProvider>
         </div>
       </div>
+      <Modal
+        title={`Bạn đang đặt vé xem phim`}
+        open={isModalOpen}
+        width={700}
+        onCancel={handleCancelModal}
+      >
+        <>
+          <h4 className="text-center text-3xl text-[#03599d] pt-4">
+            {movie.name}
+          </h4>
+          <table className="w-full my-8 ">
+            <tr className="text-center border-b  ">
+              <td className="text-xl p-4">Ngày chiếu</td>
+              <td className="text-xl p-4">Giờ Chiếu</td>
+            </tr>
+            <tr className="text-center">
+              <td className="p-4 text-xl">
+                {dayjs(dateChange?.show_date).format("DD/MM")}
+              </td>
+              <td className="p-4 text-xl">
+                {dateChange?.start_time}
+              </td>
+            </tr>
+          </table>
+          <div className="text-center">
+            <ButtonCustom width="20%">
+              <Link to={`/poly-checkout/${dateChange?.id}`}>Đồng Ý</Link>
+            </ButtonCustom>
+          </div>
+        </>
+      </Modal>
     </>
   );
 };
 
 export default MovieDetail;
+interface Datum {
+  date: string;
+  showtimes: Showtime2[];
+}
+interface Showtime2 {
+  showtime: Showtime;
+  available_seats: number;
+}
+interface Showtime {
+  id: number;
+  movie_id: number;
+  room_id: number;
+  show_date: string;
+  start_time: string;
+  end_time: string;
+  created_at: string;
+  updated_at: string;
+}
