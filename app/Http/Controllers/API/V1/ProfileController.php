@@ -24,11 +24,11 @@ class ProfileController extends Controller
             $oldData = $user;
             
             $validator = Validator::make($request->all(), [
-                'image' => 'string',
-                'full_name' => 'string|max:255',
-                'phone' => 'string|numeric|regex:/^0\d{9}$/|unique:users,phone,' . $user_id,
-                'date_of_birth' => 'date_format:Y/m/d',
-                'gender' => 'string',
+                'image' => 'nullable|string',
+                'full_name' => 'nullable|string|max:255',
+                'phone' => 'nullable|string|numeric|regex:/^0\d{9}$/|unique:users,phone,' . $user_id,
+                'date_of_birth' => 'nullable|date_format:Y/m/d',
+                'gender' => 'nullable|string',
             ], [
                 'image.string' => 'Ảnh Không Hợp Lệ',
                 'full_name.string' => 'Họ Tên Không Hợp Lệ',
@@ -47,7 +47,7 @@ class ProfileController extends Controller
             }
 
             foreach ($profile_data as $key => $value) {
-                if ($value === $oldData[$key]) {
+                if ($value === $oldData[$key] || $value == "") {
                     unset($profile_data[$key]);
                 }
             }
