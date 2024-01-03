@@ -6,12 +6,12 @@ const Account = () => {
   const items: TabsProps['items'] = [
     {
       key: '1',
-      label: 'Login',
+      label: 'Đăng nhập',
       children: <Login/>,
     },
     {
       key: '2',
-      label: 'Register',
+      label: 'Đăng kí',
       children: <Register/>,
     },
   ];

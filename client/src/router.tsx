@@ -51,6 +51,7 @@ import PointUser from "./components/PointUser/PointUser";
 import ListsBooking from "./pages/admin/ListBooking";
 import PrivateRouterAdmin from "./components/privateRouter/PrivateRouterAdmin";
 import PrivateRouterCheckout from "./components/privateRouter/PrivateRouterCheckout";
+import ResetPassword from "./auth/ResetPassword";
 
 
 export const router = createBrowserRouter([
@@ -62,6 +63,7 @@ export const router = createBrowserRouter([
       { path: "", element: <HomePage /> },
       { path: "poly-movies", element: <MoviePage /> },
       { path: "poly-acount", element: <Account /> },
+      { path: "reset-password", element: <ResetPassword /> },
       { path: "poly-news", element: <NewsPage /> },
       { path: "poly-news/:id", element: <NewDetailPage /> },
       { path: "movies/:slug/detail", element: <MovieDetail /> },
