@@ -50,11 +50,12 @@ class ShowTimeController extends Controller
                     function ($attribute, $value, $fail) use ($request) {
                         $hour = date('H', strtotime($value));
                         $existingShowtime = Showtime::where('show_date', $request->show_date)
+                            ->where('room_id', $request->room_id)
                             ->whereRaw("HOUR(start_time) = $hour")
                             ->first();
-
+                        
                         if ($existingShowtime) {
-                            $fail("Thời gian bắt đầu đã được sử dụng cho một suất chiếu khác");
+                            $fail("Đã có 1 xuất chiếu khác vào" . " " . explode(':', $request->start_time)[0] . "h " . "hoặc phòng $request->room_id");
                         }
                     },
                 ],
