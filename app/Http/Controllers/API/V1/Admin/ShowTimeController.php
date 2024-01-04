@@ -44,8 +44,20 @@ class ShowTimeController extends Controller
                 'movie_id' => 'required',
                 'room_id' => 'required',
                 'show_date' => 'required|date_format:Y/m/d|after_or_equal:today',
-                'start_time' => 'required|date_format:H:i:s',
-                // 'end_time' => 'required|date_format:H:i:s|different:start_time|after:start_time',
+                'start_time' => [
+                    'required',
+                    'date_format:H:i:s',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $hour = date('H', strtotime($value));
+                        $existingShowtime = Showtime::where('show_date', $request->show_date)
+                            ->whereRaw("HOUR(start_time) = $hour")
+                            ->first();
+
+                        if ($existingShowtime) {
+                            $fail("Thời gian bắt đầu đã được sử dụng cho một suất chiếu khác");
+                        }
+                    },
+                ],
             ], [
                 'movie_id.required' => 'Vui Lòng Chọn Phim',
                 'room_id.required' => 'Vui Lòng Chọn Phòng Chiếu',
@@ -54,10 +66,6 @@ class ShowTimeController extends Controller
                 'show_date.after_or_equal' => 'Ngày Chiếu Phải Là Ngày Hôm Nay Hoặc Ngày Trong Tương Lai',
                 'start_time.required' => 'Vui Lòng Chọn Giờ Chiếu Phim',
                 'start_time.date_format' => 'Định Dạng Giờ Chiếu Yêu Cầu Giờ/Phút/Giây',
-                // 'end_time.required' => 'Vui Lòng Chọn Giờ Kết Thúc Chiếu Phim',
-                // 'end_time.date_format' => 'Định Dạng Giờ Kết Thúc Chiếu Phim Yêu Cầu Giờ/Phút/Giây',
-                // 'end_time.different' => 'Giờ Kết Thúc Chiếu Phim Không Được Trùng Giờ Chiếu Phim',
-                // 'end_time.after' => 'Giờ Kết Thúc Chiếu Phim Phải Sau Giờ Chiếu Phim',
             ]);
 
             if ($validator->fails()) {
@@ -67,7 +75,6 @@ class ShowTimeController extends Controller
             }
 
             $showtime = ShowTime::create($request->all());
-            
             $showtime = ShowTime::query()->with('room')->find($showtime->id);
 
             $single_seat = $showtime->room->single_seat;
@@ -138,7 +145,7 @@ class ShowTimeController extends Controller
     {
         try {
             $showtime = ShowTime::with('seats')->find($id);
-            
+
             if (!$showtime) {
                 return response()->json([
                     'message' => 'NOT FOUND'
