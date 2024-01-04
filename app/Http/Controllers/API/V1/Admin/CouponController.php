@@ -67,7 +67,7 @@ class CouponController extends Controller
                 'description.string' => 'Trường Mô Tả Mã Giảm Giá Phải Là Một Chuỗi',
                 'type.required' => 'Trường Loại Mã Giảm Giá Không Được Để Trống',
                 'expires_at.required' => 'Trường Thời Hạn Mã Giảm Giá Không Được Để Trống',
-                'expires_at.date' => 'Trường Thời Hạn Mã Giảm Giá Phải Theo Dạng YYYY/MM/DD hh:mm:ss',
+                'expires_at.date' => 'Trường Thời Hạn Mã Giảm Giá Phải Theo Dạng YYYY/MM/DD',
                 'quantity.required' => 'Trường Số Lượng Không Được Để Trống',
                 'quantity.numeric' => 'Số Lượng Mã Giảm Giá Không Hợp Lệ',
                 'quantity.min' => 'Số Lượng Mã Giảm Giá Phải Lớn Hơn 0',

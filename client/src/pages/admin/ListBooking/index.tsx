@@ -38,11 +38,11 @@ const ListsBooking = () => {
   const { data: bookingById, error: errBookingById } =
     useGetBookingByIdQuery(idBooking);
 
-  const [listBooking, setListBooking] = useState<RootBooking>();
+  const [listBooking, setListBooking] = useState<c>();
   const [BookingById, setBookingById] = useState<RootBooking>();
   const [isModalOpenModal, setIsModalOpenModal] = useState(false);
 
-  console.log("listBooking: ", listBooking);
+  // console.log("listBooking: ", listBooking);
   // console.log("isloading: ",isLoading);
   // console.log("error: ",error);
   useEffect(() => {
@@ -75,6 +75,46 @@ const ListsBooking = () => {
   if (errBookingById) {
     console.error(errBookingById);
   }
+  const inforBooking = listBooking?.map((items: RootBooking) => {
+    return {
+      booking_id: items.booking_id,
+      total_price: items.total_price,
+      status: items.status,
+      user: items.user.name,
+      email: items.user.email,
+      phone: items.user.phone,
+      movieName: items.showtime?.movie.name,
+      showtime: items.showtime?.show_date,
+      showDate: items.showtime?.show_date,
+      startTime: items.showtime?.start_time,
+    };
+  });
+  console.log("inforBooking: ", inforBooking);
+  const titleVN_XLSX = {
+    booking_id: "Mã vé đặt",
+    total_price: "Tổng tiền",
+    status: "Trạng thái",
+    user: "Khách hàng",
+    email: "Email",
+    phone: "Số điện thoại",
+    showtime: "Lịch chiếu",
+    movieName: "Tên phim",
+    showDate: "Ngày đặt",
+    startTime: "Giờ chiếu",
+    // seatName: "Ghế ngồi",
+    // typeSeat: "Loại ghế",
+    // roonName: "Phòng chiếu",
+  };
+  const dataXLSX = inforBooking?.map((items: RootBooking) => {
+    const translatedData = {};
+    Object.keys(items).forEach((key) => {
+      const translatedKey = titleVN_XLSX[key] || key;
+      translatedData[translatedKey] = items[key];
+    });
+
+    return translatedData;
+  });
+  // console.log('dataXLSX: ',dataXLSX)
   const columns: ColumnsType<any> = [
     {
       title: "Mã đơn hàng",
@@ -184,7 +224,7 @@ const ListsBooking = () => {
           title="Export excel"
           description="Bạn có muốn xuất file xlsx?"
           icon={<QuestionCircleOutlined style={{ color: "red" }} />}
-          onConfirm={() => dowloadExcel(listBooking)}
+          onConfirm={() => dowloadExcel(dataXLSX)}
           onCancel={cancel}
           okType="text"
           okText="Yes"

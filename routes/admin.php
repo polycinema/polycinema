@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\V1\Admin\DirectorController;
 use App\Http\Controllers\API\V1\Admin\ActorController;
+use App\Http\Controllers\API\V1\Admin\BookingController;
 use App\Http\Controllers\API\V1\Admin\CouponController;
 use App\Http\Controllers\API\V1\Admin\GenreController;
 use App\Http\Controllers\API\V1\Admin\MovieController;
@@ -38,5 +39,8 @@ Route::prefix('admin')->group(function () {
     Route::resource('banners', BannerController::class)->except(['edit', 'create']);
 
     Route::resource('coupons', CouponController::class)->except(['edit', 'create']);
+
+    Route::resource('bookings', BookingController::class)->except(['edit', 'create']);
+
 });
 
