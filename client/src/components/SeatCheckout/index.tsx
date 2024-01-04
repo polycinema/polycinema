@@ -64,7 +64,6 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
     const selectedSeats = seatDatas.filter(
       (item) => item.status === "booking" && item.user_id === user.id
     );
-
     if (selectedSeats.length >= 9) {
       alert(
         "Bạn chỉ được chọn tối đa 8 ghế, vui lòng hủy một ghế để chọn ghế khác"
