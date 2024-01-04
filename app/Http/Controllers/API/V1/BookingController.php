@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Events\SeatReservation;
 use App\Http\Controllers\Controller;
+use App\Mail\BookingInformationMail;
 use App\Models\Booking;
 use App\Models\Coupon;
 use App\Models\CouponBooking;
@@ -15,6 +16,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -78,13 +80,13 @@ class BookingController extends Controller
                 'total_price' => $request->total_price,
                 'coupon_code' => $request->coupon_code
             ]);
-            if($request->coupon_id){
+            if ($request->coupon_id) {
                 $coupon_user = CouponBooking::create([
                     'coupon_id' => $request->coupon_id,
                     'user_id' => $request->user_id,
                 ]);
             }
-           
+
 
             foreach ($request->products as $product) {
                 $booking->products()->attach($product['id'], ['quantity' => $product['quantity']]);
@@ -101,6 +103,9 @@ class BookingController extends Controller
 
                 event(new SeatReservation($seatModel));
             }
+
+            Mail::to($booking->user->email)->send(new BookingInformationMail($booking));
+
             return response()->json([
                 'data' => $booking,
                 'message' => 'Đặt vé thành công'
@@ -173,7 +178,7 @@ class BookingController extends Controller
         try {
             $booking = Booking::find($id);
 
-            $booking->status = Booking::NOT_YET ;
+            $booking->status = Booking::NOT_YET;
 
             $booking->save();
 
@@ -236,7 +241,24 @@ class BookingController extends Controller
                 'data' => $bookings
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
-            Log::error('BookingController: ', [$exception->getMessage()]);
+            Log::error('BookingController@bookingsByUser: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function delete(Booking $booking)
+    {
+        try {
+            $booking->delete();
+
+            return response()->json([
+                'message' => 'Xoá thành công'
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('BookingController@delete: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'

@@ -20,7 +20,7 @@ class ShowTimeController extends Controller
     public function index()
     {
         try {
-            $showtimes = ShowTime::query()->get();
+            $showtimes = ShowTime::query()->with('movie')->get();
 
             return response()->json([
                 'data' => $showtimes
@@ -67,7 +67,7 @@ class ShowTimeController extends Controller
             }
 
             $showtime = ShowTime::create($request->all());
-            
+
             $showtime = ShowTime::query()->with('room')->find($showtime->id);
 
             $single_seat = $showtime->room->single_seat;
@@ -138,7 +138,7 @@ class ShowTimeController extends Controller
     {
         try {
             $showtime = ShowTime::with('seats')->find($id);
-            
+
             if (!$showtime) {
                 return response()->json([
                     'message' => 'NOT FOUND'

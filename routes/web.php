@@ -14,13 +14,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return ['Laravel' => app()->version()];
+    return [
+        'locale' => app()->getLocale(),
+        'laravel' => app()->version()
+    ];
 });
 
-Route::get('mail', function() {
+Route::get('mail', function () {
     return view('mails.welcome-new-user');
 });
 
-Route::get('mail-booking', function() {
+Route::get('mail-booking', function () {
     return view('mails.booking-information');
 });
