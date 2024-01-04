@@ -1,4 +1,4 @@
-import React, { JSXElementConstructor, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import Statistic from "../../../components/Statistic";
 import { Modal, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
@@ -17,7 +17,7 @@ const Dashboard = () => {
   const [movie,setMovie] = useState<ITop10Movie>()
   // console.log("isloading: ",isloading);
   // console.log("error: ",error);
-  // console.log('top10movie: ',top10movie)
+  console.log('data: ',data)
   useEffect(()=>{
     if(data){
       setTop10Movie(data.data)
@@ -49,6 +49,7 @@ const Dashboard = () => {
       total_revenue: items.total_revenue,
     }
   })
+  console.log("dataSource: ",dataSource)
   const columns: ColumnsType<ColumnTypeTopMovie> = [
     {
       title: 'Tên Phim',
