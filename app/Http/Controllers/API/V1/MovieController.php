@@ -190,6 +190,21 @@ class MovieController extends Controller
                 ];
             }
 
+            // ngày hiện tại
+            $yearMonthDay = date('Y-m-d');
+
+            // sắp xếp lại sao cho đối tượng có 'show_date' gần với ngày hôm nay nhất
+            usort($response, function ($a, $b) use ($yearMonthDay) {
+                $dateA = strtotime($a['show_date']);
+                $dateB = strtotime($b['show_date']);
+            
+                if ($dateA == $dateB) {
+                    return 0;
+                }
+            
+                return abs(strtotime($yearMonthDay) - $dateA) < abs(strtotime($yearMonthDay) - $dateB) ? -1 : 1;
+            });
+
             return response()->json([
                 'data' => $response
             ], Response::HTTP_OK);
