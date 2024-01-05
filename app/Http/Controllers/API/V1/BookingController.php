@@ -29,7 +29,7 @@ class BookingController extends Controller
     public function index()
     {
         try {
-            $bookings = Booking::query()
+            $bookings = Booking::query()->where('level', 'show')
                 ->with('user')
                 ->with('showtime.movie')
                 ->with(['products' => function ($query) {
@@ -78,13 +78,13 @@ class BookingController extends Controller
                 'total_price' => $request->total_price,
                 'coupon_code' => $request->coupon_code
             ]);
-            if($request->coupon_id){
+            if ($request->coupon_id) {
                 $coupon_user = CouponBooking::create([
                     'coupon_id' => $request->coupon_id,
                     'user_id' => $request->user_id,
                 ]);
             }
-           
+
 
             foreach ($request->products as $product) {
                 $booking->products()->attach($product['id'], ['quantity' => $product['quantity']]);
@@ -173,7 +173,7 @@ class BookingController extends Controller
         try {
             $booking = Booking::find($id);
 
-            $booking->status = Booking::NOT_YET ;
+            $booking->status = Booking::NOT_YET;
 
             $booking->save();
 
@@ -236,7 +236,62 @@ class BookingController extends Controller
                 'data' => $bookings
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
-            Log::error('BookingController: ', [$exception->getMessage()]);
+            Log::error('BookingController@bookingsByUser: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Ẩn hiện booking 
+    public function changeLevelBooking(string $booking_id)
+    {
+        try {
+            $booking = Booking::find($booking_id);
+
+            $level_booking = $booking->level;
+
+            switch ($level_booking) {
+                case Booking::LEVEL_HIDE:
+                    $booking->level = Booking::LEVEL_SHOW;
+                    $message = "Đã thêm đơn $booking->booking_id vào thùng rác";
+                    break;
+                case Booking::LEVEL_SHOW:
+                    $booking->level = Booking::LEVEL_HIDE;
+                    $message = "Đã khôi phục đơn $booking->booking_id";
+                    break;
+            }
+
+            $booking->save();
+
+            return response()->json([
+                'message' => $message   
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('BookingController@changeLevelBooking: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Search Booking by booking_id (cái mã đơn hàng chứ không phải id bảng booking)
+    public function findBookingByBookingID(Request $request)
+    {
+        try {
+            $booking_id = $request->booking_id;
+
+            $booking = Booking::query()->where('booking_id', $booking_id)
+            ->with('seats','products','showtime','user')
+            ->first();
+
+            return response()->json([
+                'data' => $booking   
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('BookingController@findBookingByBookingID: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'

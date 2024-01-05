@@ -24,6 +24,8 @@ class Booking extends Model
 
     CONST SATISFIED = 'satisfied';
     CONST NOT_YET = 'not_yet';
+    CONST LEVEL_HIDE = 'hide';
+    CONST LEVEL_SHOW = 'show';
 
     public function products()
     {
