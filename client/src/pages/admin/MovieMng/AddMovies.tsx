@@ -1,4 +1,4 @@
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import {
   DatePicker,
   Form,
@@ -18,6 +18,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IActor, getAllActor } from "../../../api/actor";
 import { IGenre, getAllGenre } from "../../../api/genre";
 import { IDirector, getAllDirector } from "../../../api/director";
+import swal from "sweetalert";
 
 const AddMovies = () => {
   const [addMovies, { isLoading: isAddLoading }] = useAddMovieMutation();
@@ -52,18 +53,11 @@ const AddMovies = () => {
       .unwrap()
       .then(async () => {
         form.resetFields();
-        messageApi.open({
-          type: "success",
-          content: "Thêm sản phẩm thành công . Chuyển trang sau 3s",
-        });
-        await pause(3000);
+        await swal("Thành công!", "Thêm phim thành công!", "success");
         navigate("/admin/movies");
       })
       .catch(() => {
-        messageApi.open({
-          type: "error",
-          content: "Thêm sản phẩm thất bại vui lòng thử lại",
-        });
+        swal("Thất bại!", "Thêm phim thất bại , Vui lòng thử lại !", "error");
       });
   };
 
@@ -91,9 +85,8 @@ const AddMovies = () => {
         <h2 className="text-xl uppercase font-bold mb-4">Thêm Phim Mới </h2>
         <Form
           name="basic"
-          labelCol={{ span: 8 }}
+          labelCol={{ span: 5 }}
           wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
           autoComplete="off"
@@ -103,14 +96,14 @@ const AddMovies = () => {
             name="name"
             rules={[{ required: true, message: "Tên không được để trống" }]}
           >
-            <Input />
+            <Input placeholder="Tên phim ..." />
           </Form.Item>
           <Form.Item
             label="Tiêu đề"
             name="title"
             rules={[{ required: true, message: "Title không được để trống" }]}
           >
-            <Input />
+            <Input placeholder="Tiêu đề phim" />
           </Form.Item>
           <Form.Item
             label="Thể Loại"
@@ -136,7 +129,7 @@ const AddMovies = () => {
             name="trailer"
             rules={[{ required: true, message: "Trailer không được để trống" }]}
           >
-            <Input />
+            <Input placeholder="Trailer phim..." />
           </Form.Item>
           <Form.Item
             label="Thời lượng"
@@ -145,7 +138,10 @@ const AddMovies = () => {
               { required: true, message: "Thời lượng không được để trống" },
             ]}
           >
-            <InputNumber />
+            <InputNumber
+              style={{ width: "100%" }}
+              placeholder="Thời lượng phim..."
+            />
           </Form.Item>
           <Form.Item
             label="Ảnh phim"
@@ -161,7 +157,7 @@ const AddMovies = () => {
             name="description"
             rules={[{ required: true, message: "Mô tả không được để trống" }]}
           >
-            <Input.TextArea />
+            <Input.TextArea placeholder="Mô tả phim..." size={`large`} />
           </Form.Item>
           <Form.Item
             label="Ngày khởi chiếu"
@@ -173,7 +169,7 @@ const AddMovies = () => {
               },
             ]}
           >
-            <DatePicker showTime />
+            <DatePicker showTime style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item
             label="Đạo Diễn"
@@ -183,7 +179,8 @@ const AddMovies = () => {
             ]}
           >
             <Select
-              style={{ width: 120 }}
+              style={{ width: "100%" }}
+              placeholder="Đạo diễn phim ..."
               options={directors?.map((item: IDirector) => {
                 return {
                   value: item.id,
@@ -198,7 +195,8 @@ const AddMovies = () => {
             rules={[{ required: true, message: "Status không được để trống" }]}
           >
             <Select
-              style={{ width: 120 }}
+              style={{ width: "100%" }}
+              placeholder="Trạng thái phim ..."
               options={[
                 { value: "screening", label: "Đang chiếu" },
                 { value: "unscreen", label: "Đã chiếu" },
@@ -231,7 +229,7 @@ const AddMovies = () => {
               {isAddLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />
               ) : (
-                "Thêm Phim"
+                <VerticalAlignTopOutlined />
               )}{" "}
             </Button>
           </Form.Item>

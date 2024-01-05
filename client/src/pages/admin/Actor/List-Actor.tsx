@@ -54,10 +54,7 @@ const ListActor = () => {
               description="Bạn có chắc chắn muốn xóa sản phẩm"
               onConfirm={() => {
                 removeActor(id).then(() => {
-
-                  setActors(
-                    actors?.filter((item: IActor) => item?.id !== id)
-                  );
+                  setActors(actors?.filter((item: IActor) => item?.id !== id));
                   messageApi.open({
                     type: "success",
                     content: "Xóa sản phẩm thành công",

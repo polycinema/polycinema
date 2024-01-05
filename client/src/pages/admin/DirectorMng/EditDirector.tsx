@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Upload, UploadProps, message } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router";
 import {
   IDirector,
@@ -8,6 +8,7 @@ import {
   updateDirector,
 } from "../../../api/director";
 import { pause } from "../../../utils/pause";
+import swal from "sweetalert";
 
 type FieldType = {
   name: string;
@@ -46,36 +47,25 @@ const EditDirector = () => {
   const onFinish = async (value: IDirector) => {
     urlImage === undefined
       ? updateDirector({ id: id, ...value })
-          .then(async () => {
-            form.resetFields();
-            messageApi.open({
-              type: "success",
-              content: "Thêm đạo diễn thành công , Chuyển trang sau 1s",
-            });
-            await pause(1000);
-            navigate("/admin/director");
-          })
-          .catch((err) => {
-            console.log(err.message);
-          })
+      .then(async () => {
+        form.resetFields();
+        await swal("Thành công!", "Cập nhật đạo diễn thành công!", "success");
+        navigate("/admin/director");
+      })
+      .catch(() => {
+        swal("Thất bại!", "Cập nhật tài khoản thất bại , Vui lòng thử lại !", "error");
+      })
       : updateDirector({ id: id, ...value, image: urlImage })
-          .then(async () => {
-            form.resetFields();
-            messageApi.open({
-              type: "success",
-              content: "Thêm đạo diễn thành công , Chuyển trang sau 1s",
-            });
-            await pause(1000);
-            navigate("/admin/director");
-          })
-          .catch((err) => {
-            console.log(err.message);
-          });
+      .then(async () => {
+        form.resetFields();
+        await swal("Thành công!", "Cập nhật đạo diễn thành công!", "success");
+        navigate("/admin/director");
+      })
+      .catch(() => {
+        swal("Thất bại!", "Cập nhật tài khoản thất bại , Vui lòng thử lại !", "error");
+      });
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
 
   const props: UploadProps = {
     name: "file",
@@ -96,19 +86,16 @@ const EditDirector = () => {
 
   return (
     <>
-      {contextHolder}
       <div>
         <h1 className="text-4xl m-6">Câp nhật Đạo Diễn</h1>
-        <div className="flex gap-40">
+        <div className="grid grid-cols-2 gap-40">
           <Form
             form={form}
             name="basic"
-            labelCol={{ span: 8 }}
+            labelCol={{ span: 5 }}
             wrapperCol={{ span: 16 }}
-            style={{ maxWidth: 600 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             autoComplete="off"
             className="mx-5"
           >
@@ -129,13 +116,19 @@ const EditDirector = () => {
               </Upload>
             </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }} label="Tác vụ :">
-              <Button htmlType="submit">Cập nhật Đạo Diễn</Button>
+            <Form.Item label="Tác vụ :">
+              <Button htmlType="submit">
+                <VerticalAlignTopOutlined />
+              </Button>
             </Form.Item>
           </Form>
           <div>
             <h4 className="mb-2 text-xl">Ảnh đạo diễn</h4>
-            <img className="w-72 rounded-sm" src={director?.image} alt="anh" />
+            <img
+              className="w-full rounded-sm"
+              src={director?.image}
+              alt="anh"
+            />
           </div>
         </div>
       </div>

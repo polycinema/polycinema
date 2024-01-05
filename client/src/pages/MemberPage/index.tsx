@@ -17,6 +17,7 @@ const MemberPage = (props: Props) => {
   const [activeTab, setActiveTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [detailBooking, setDetailBooking] = useState()
+  console.log(booking?.data);
   
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
@@ -71,9 +72,9 @@ const MemberPage = (props: Props) => {
                   <th className="border border-gray-400 p-2">Phim</th>
                   <th className="border border-gray-400 p-2">Rạp chiếu</th>
                   <th className="border border-gray-400 p-2">Chỗ ngồi</th>
-                  <th className="border border-gray-400 p-2">Combo</th>
-                  <th className="border border-gray-400 p-2">Giờ đặt</th>
-                  <th className="border border-gray-400 p-2">Ngày đặt</th>
+                  <th className="border border-gray-400 p-2">Phòng chiếu</th>
+                  <th className="border border-gray-400 p-2">Giờ chiếu</th>
+                  <th className="border border-gray-400 p-2">Ngày chiếu</th>
                   <th className="border border-gray-400 p-2"></th>
                 </tr>
               </thead>
@@ -94,7 +95,7 @@ const MemberPage = (props: Props) => {
                           {item?.seats?.map(item => <span key={item?.id} className="mx-2">{item?.seat_name},</span>)}
                         </td>
                         <td className="border border-gray-400 p-2 text-center">
-                          {item?.products.map(item => <span key={item?.id} className="mx-2">{item?.name},</span>)}
+                          {item?.seats[0]?.showtime?.room?.room_name}
                         </td>
                         <td className="border border-gray-400 p-2 text-center">
                           {dayjs(item?.created_at).format("DD/MM.YYYY")}
@@ -124,53 +125,53 @@ const MemberPage = (props: Props) => {
         title={`Chi tiết đơn hàng`}
         open={isModalOpen}
         onCancel={handleCancel}
-        bodyStyle={{ height: '600px', overflow: 'auto' }}
+        bodyStyle={{ height: '500px', }}
       >
 
         <div className=" mx-auto p-4 w-full">
-          <div className="bg-white p-4 rounded shadow-md">
-            <div className=" border-b pb-4 p-2 text-lg">
+          <div className="bg-white  rounded shadow-md   grid grid-cols-1  md:grid-cols-2 lg:grid-cols-2 gap-2">
+            <div className=" border-b pb-4 p-2 text-lg flex gap-2">
               <span className="block font-semibold">Mã thanh toán:</span>
               <span className="text-gray-600">#{detailBooking?.booking_id}</span>
             </div>
-            <div className=" border-b pb-4 p-2 text-lg">
+            <div className=" border-b pb-4 p-2 text-lg flex gap-2">
               <span className="block font-semibold">Tên phim:</span>
               <span className="text-gray-600">{detailBooking?.showtime?.movie?.name}</span>
             </div>
-            <div className=" border-b pb-4 p-2 text-lg">
+            <div className=" border-b pb-4 p-2 text-lg flex gap-2">
               <span className="block mb-2 font-semibold">Rạp chiếu:</span>
               <span className="text-gray-600">Polycinema</span>
             </div>
-            <div className=" border-b pb-4 p-2 text-lg">
+            <div className=" border-b pb-4 p-2 text-lg flex gap-2">
               <span className="block mb-2 font-semibold">Phòng chiếu:</span>
-              <span className="text-gray-600">{detailBooking?.seats[1]?.showtime?.room?.room_name}</span>
+              <span className="text-gray-600">{detailBooking?.seats[0]?.showtime?.room?.room_name}</span>
             </div>
-            <div className=" border-b pb-4 p-2 text-lg">
+            <div className=" border-b pb-4 p-2 text-lg flex gap-2">
               <span className="block mb-2 font-semibold">Chỗ ngồi:</span>
               <span className="text-gray-600">{detailBooking?.seats?.map((seat)=>(
                 <span key={seat?.id}>{seat?.seat_name},</span>
               ))}</span>
             </div>
-            <div className=" border-b pb-4 p-2 text-lg">
+            <div className=" border-b pb-4 p-2 text-lg flex gap-2">
               <span className="block mb-2 font-semibold">Giờ chiếu:</span>
               <span className="text-gray-600">{detailBooking?.showtime?.start_time}</span>
             </div>
-            <div className=" border-b pb-4 p-2 text-lg">
+            <div className=" border-b pb-4 p-2 text-lg flex gap-2">
               <span className="block mb-2 font-semibold">Ngày đặt:</span>
               <span className="text-gray-600">{dayjs(detailBooking?.created_at).format("DD/MM.YYYY")}</span>
             </div>
 
-            <div className="border-b p-2 text-lg">
+            <div className="border-b p-2 text-lg flex gap-2">
               <span className="block mb-2 font-semibold">Giờ đặt:</span>
               <span className="text-gray-600">{dayjs(detailBooking?.created_at).format('HH:mm:ss')}</span>
             </div>
-            <div className="border-b p-2 text-lg">
+            <div className="border-b p-2 text-lg flex gap-2">
               <span className="block mb-2 font-semibold">Combo:</span>
               <span className="text-gray-600">{detailBooking?.products?.map((item)=>(
                 <span key={item?.id}>{item?.name},</span>
               ))}</span>
             </div>
-            <div className="border-b p-2 text-lg">
+            <div className="border-b p-2 text-lg flex gap-2">
               <span className="block mb-2 font-semibold">Trạng thái:</span>
               <span className="text-gray-600">{detailBooking?.status === "not_yet" ? (
           <div className="flex items-center content-center gap-x-3 justify-center">
@@ -184,7 +185,7 @@ const MemberPage = (props: Props) => {
           </div>
         )}</span>
             </div>
-            <div className="p-2 text-xl">
+            <div className="p-2 text-xl flex gap-2">
               <span className="block mb-2 font-semibold ">Tổng tiền:</span>
               <span className="text-gray-600">{formatCurrency(detailBooking?.total_price)}</span>
             </div>

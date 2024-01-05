@@ -15,8 +15,6 @@ const ShowTimeMng = () => {
   const [rooms, setRooms] = useState();
   const [movies, setMovies] = useState();
 
-  
-
   useEffect(() => {
     if (data) {
       const roomIds = data.data.map(({ room_id }: any) => room_id);
@@ -89,11 +87,13 @@ const ShowTimeMng = () => {
               title="Xóa lịch chiếu"
               description="Bạn có chắc muốn xóa?"
               onConfirm={() =>
-                removeShowtime(id).unwrap().then(()=>{
-                  notification.success({
-                    message: "Delete showtime sucessfuly!",
-                  });
-                })
+                removeShowtime(id)
+                  .unwrap()
+                  .then(() => {
+                    notification.success({
+                      message: "Delete showtime sucessfuly!",
+                    });
+                  })
               }
               okText="Yes"
               okType="default"

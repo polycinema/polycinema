@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button, Form, Input, Upload, UploadProps, message } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
-import { pause } from "../../../utils/pause";
 import { INews, addNews } from "../../../api/News";
 import TextArea from "antd/es/input/TextArea";
+import swal from "sweetalert";
 
 type FieldType = {
   title: string;
@@ -14,7 +14,6 @@ type FieldType = {
 };
 const AddNews = () => {
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
   const [urlImage, setUrlImage] = useState("");
 
@@ -22,22 +21,13 @@ const AddNews = () => {
     addNews({ ...value, image: urlImage })
       .then(async () => {
         form.resetFields();
-        messageApi.open({
-          type: "success",
-          content: "Thêm tin tức thành công , Chuyển trang sau 3s",
-        });
-        await pause(3000);
+        await swal("Thành công!", "Thêm tin tức thành công!", "success");
         navigate("/admin/news");
       })
-      .catch((err) => {
-        console.log(err.message);
+      .catch(() => {
+        swal("Thất bại!", "Thêm tin tức thất bại , Vui lòng thử lại !", "error");
       });
   };
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
-
   const props: UploadProps = {
     name: "file",
     action: "https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload",
@@ -67,17 +57,14 @@ const AddNews = () => {
 
   return (
     <>
-      {contextHolder}
       <div>
         <h1 className="text-4xl m-6">Thêm Tin Tức</h1>
         <Form
           name="basic"
-          labelCol={{ span: 8 }}
+          labelCol={{ span: 5 }}
           wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item<FieldType>
@@ -114,8 +101,10 @@ const AddNews = () => {
             </Upload>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }} label="Tác vụ :">
-            <Button htmlType="submit">Thêm tin tức</Button>
+          <Form.Item label="Tác vụ :">
+            <Button htmlType="submit">
+              <VerticalAlignTopOutlined />
+            </Button>
           </Form.Item>
         </Form>
       </div>

@@ -31,8 +31,6 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
   }, [stateProducts])
 
   const booking = (value) => {
-    console.log(value);
-    
     dispatch(setBooking(value))
   }
 
@@ -111,8 +109,9 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
               booking({
                 products: product,
                 movie_id: showtime?.data?.movie.id,
+                showtime:showtime?.data,
                 user_id: user.id,
-                showtime_id: showtime.data.id,
+                showtime_id: showtime?.data?.id,
                 seats: showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id),
                 total_price: stateProducts.reduce((sum: any, item: any) => {
                   return sum + item?.price * item?.quantity;

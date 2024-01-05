@@ -1,49 +1,37 @@
 import React from "react";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router";
-import { pause } from "../../../utils/pause";
 import { addGenre } from "../../../api/genre";
+import { VerticalAlignTopOutlined } from "@ant-design/icons";
+import swal from "sweetalert";
 type FieldType = {
   name?: string;
 };
 
 const AddGenre = () => {
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
-
   const onFinish = (values) => {
     addGenre(values)
       .then(async () => {
         form.resetFields();
-        messageApi.open({
-          type: "success",
-          content: "Thêm thể loại thành công , Chuyển trang sau 3s",
-        });
-        await pause(3000);
+        await swal("Thành công!", "Thêm thể loại thành công!", "success");
         navigate("/admin/genres");
       })
-      .catch((err) => {
-        console.log(err.message);
+      .catch(() => {
+        swal("Thất bại!", "Thêm thể loại thất bại , Vui lòng thử lại !", "error");
       });
-  };
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
   };
   return (
     <>
-      {contextHolder}
       <div>
         <h1 className="text-4xl m-6">Thêm thể loại phim</h1>
         <Form
           name="basic"
-          labelCol={{ span: 8 }}
+          labelCol={{ span: 5 }}
           wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item<FieldType>
@@ -54,8 +42,8 @@ const AddGenre = () => {
             <Input />
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }} label="Tác vụ :">
-            <Button htmlType="submit">Thêm thể loại</Button>
+          <Form.Item  label="Tác vụ :">
+            <Button htmlType="submit"><VerticalAlignTopOutlined /></Button>
           </Form.Item>
         </Form>
       </div>
