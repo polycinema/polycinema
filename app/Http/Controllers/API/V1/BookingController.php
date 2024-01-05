@@ -78,6 +78,7 @@ class BookingController extends Controller
                 'total_price' => $request->total_price,
                 'coupon_code' => $request->coupon_code
             ]);
+            
             if ($request->coupon_id) {
                 $coupon_user = CouponBooking::create([
                     'coupon_id' => $request->coupon_id,

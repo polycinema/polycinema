@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('discount'); 
             $table->timestamp('expires_at'); // ngày hết hạn
             $table->bigInteger('quantity')->nullable(); // số lượng
+            $table->bigInteger('min_order_value')->nullable();
             $table->timestamps();
         });
     }
