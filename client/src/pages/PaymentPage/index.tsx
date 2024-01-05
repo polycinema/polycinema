@@ -91,19 +91,27 @@ const PaymentPage = () => {
             </div>
             <div className="flex items-center text-xl">
               <span className="font-semibold mr-2">Phim:</span>
-              <span className="text-gray-600">Avengers: Endgame</span>
+              <span className="text-gray-600">{booking?.payload?.showtime?.movie?.name}</span>
             </div>
             <div className="flex items-center text-xl">
               <span className="font-semibold mr-2">Ghế ngồi:</span>
-              <span className="text-gray-600"></span>
+              <span className="text-gray-600">{booking?.payload?.seats?.map((seat)=>(<span key={seat?.id}>{seat?.seat_name}</span>))}</span>
             </div>
             <div className="flex items-center text-xl">
               <span className="font-semibold mr-2">Phòng:</span>
-              <span className="text-gray-600"></span>
+              <span className="text-gray-600">{booking?.payload?.showtime?.room?.room_name}</span>
             </div>
             <div className="flex items-center text-xl">
-              <span className="font-semibold mr-2">Thời gian bắt đầu:</span>
-              <span className="text-gray-600">, ngày </span>
+              <span className="font-semibold mr-2">Giờ chiếu:</span>
+              <span className="text-gray-600">{booking?.payload?.showtime?.start_time} </span>
+            </div>
+            <div className="flex items-center text-xl">
+              <span className="font-semibold mr-2">Combo kèm theo:</span>
+              <span className="text-gray-600">{booking?.payload?.products?.map((product)=>(<span key={product?.id}>{product?.name}</span>))} </span>
+            </div>
+            <div className="flex items-center text-xl">
+              <span className="font-semibold mr-2">Ngày chiếu:</span>
+              <span className="text-gray-600">{dayjs(booking?.payload?.showtime?.show_date).format("DD/MM/YYYY")}</span>
             </div>
             <div className=" text-xl space-y-2">
               <div>

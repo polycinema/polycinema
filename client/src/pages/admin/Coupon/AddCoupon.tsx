@@ -5,6 +5,8 @@ import dayjs from 'dayjs';
 import { useAddCouponMutation } from '../../../redux/api/couponApi';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { useNavigate } from 'react-router';
+import { VerticalAlignTopOutlined } from '@ant-design/icons';
+import swal from 'sweetalert';
 type FieldType = {
   coupon_code?: string;
   description?: string;
@@ -15,22 +17,20 @@ type FieldType = {
 };
 
 const AddCoupon = () => {
+  const [form] = Form.useForm()
   const [addCoupon, { isLoading }] = useAddCouponMutation()
   const navigate = useNavigate();
   const onFinish = (values: any) => {
-    addCoupon({ ...values, expires_at: dayjs(values.expires_at).format('YYYY/MM/DD') }).unwrap().then(() => {
-
-      message.open({
-        type: "success",
-        content: "Thêm mã giảm thành công . Chuyển trang sau 3s"
-      });
+    addCoupon({ ...values, expires_at: dayjs(values.expires_at).format('YYYY/MM/DD') }).unwrap()
+    .then(async() => {
+      form.resetFields()
+      await swal("Thành công!", "Thêm mã giảm thành công!", "success");
       navigate("/admin/coupon");
 
     })
-  };
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+    .catch(()=>{
+      swal("Thất bại!", "Thêm mã giảm thất bại , Vui lòng thử lại !", "error");
+    })
   };
 
   return (
@@ -38,12 +38,10 @@ const AddCoupon = () => {
       <h1 className="text-xl uppercase font-bold mb-4">Thêm mã giảm giá</h1>
       <Form
         name="basic"
-        labelCol={{ span: 8 }}
+        labelCol={{ span: 5 }}
         wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item<FieldType>
@@ -69,7 +67,7 @@ const AddCoupon = () => {
 
           <Select
             placeholder="Chọn kiểu mã giảm"
-            style={{ width: 120 }}
+            style={{ width: "100%" }}
             options={[
               { value: 'discount_percentage', label: 'Giảm theo phần trăm' },
               { value: 'discount_amount', label: 'Giảm theo giá trị' },
@@ -83,7 +81,7 @@ const AddCoupon = () => {
           rules={[{ required: true, message: 'Please input your discount_amount!' }]}
         >
 
-          <InputNumber placeholder='0' min={0} />
+          <InputNumber style={{ width: "100%" }} placeholder='0' min={0} />
         </Form.Item>
         <Form.Item<FieldType>
           label="Ngày hết hạn"
@@ -91,7 +89,7 @@ const AddCoupon = () => {
           rules={[{ required: true, message: 'Please input your expires_at!' }]}
         >
 
-          <DatePicker />
+          <DatePicker style={{ width: "100%" }} />
         </Form.Item>
         <Form.Item<FieldType>
           label="Số lượng mã giảm"
@@ -99,17 +97,17 @@ const AddCoupon = () => {
           rules={[{ required: true, message: 'Please input your quantity!' }]}
         >
 
-          <InputNumber placeholder='0' min={0} />
+          <InputNumber style={{ width: "100%" }} placeholder='0' min={0} />
         </Form.Item>
 
 
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+        <Form.Item label="Tác vụ">
           <Button htmlType="submit">
             {isLoading ? (
               <AiOutlineLoading3Quarters className="animate-spin" />
             ) : (
-              "Thêm mã giảm"
+              <VerticalAlignTopOutlined />
             )}{" "}
 
           </Button>

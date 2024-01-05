@@ -9,9 +9,9 @@ import { IRoom, getAllRoom, removeRoom } from "../../../api/room";
 interface DataType {
   key: string;
   room_name?: string;
-  single_seat?: number |string;
-  double_seat?: number |string;
-  special_seat?: number |string;
+  single_seat?: number | string;
+  double_seat?: number | string;
+  special_seat?: number | string;
 }
 const ListRooms = () => {
   const [rooms, setRooms] = useState<IRoom[]>();
@@ -59,8 +59,10 @@ const ListRooms = () => {
       key: "action",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
-
-            <Link to={`/admin/rooms/${id}/edit`}>  <Button> Edit </Button></Link>
+          <Link to={`/admin/rooms/${id}/edit`}>
+            {" "}
+            <Button> Edit </Button>
+          </Link>
 
           <div>
             <Popconfirm
@@ -98,7 +100,7 @@ const ListRooms = () => {
   return (
     <>
       {contextHolder}
-      <div >
+      <div>
         <Button>
           <Link to={"/admin/rooms/add"}>Thêm phòng</Link>
         </Button>

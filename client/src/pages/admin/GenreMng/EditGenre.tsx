@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input } from "antd";
 import { useNavigate, useParams } from "react-router";
-import { pause } from "../../../utils/pause";
 import { IGenre, getGenreById, updateGenre } from "../../../api/genre";
+import { VerticalAlignTopOutlined } from "@ant-design/icons";
+import swal from "sweetalert";
 type FieldType = {
   name?: string;
 };
 const EditGenre = () => {
   const { id } = useParams();
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
   const [genre, setGenre] = useState<IGenre>();
 
@@ -35,37 +35,27 @@ const EditGenre = () => {
 
   const onFinish = (values) => {
     updateGenre({ id: id, ...values })
-      .then(async () => {
-        form.resetFields();
-        messageApi.open({
-          type: "success",
-          content: "Cập nhật thể loại thành công , Chuyển trang sau 3s",
-        });
-        await pause(3000);
-        navigate("/admin/genres");
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    .then(async () => {
+      form.resetFields();
+      await swal("Thành công!", "Cập nhật thể loại thành công!", "success");
+      navigate("/admin/genres");
+    })
+    .catch(() => {
+      swal("Thất bại!", "Cập nhật thể loại thất bại , Vui lòng thử lại !", "error");
+    });
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
   return (
     <>
-      {contextHolder}
       <div>
         <h1 className="text-4xl m-6">Cập nhật thể loại phim</h1>
         <Form
           form={form}
           name="basic"
-          labelCol={{ span: 8 }}
+          labelCol={{ span: 5 }}
           wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item<FieldType>
@@ -76,8 +66,10 @@ const EditGenre = () => {
             <Input />
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }} label="Tác vụ :">
-            <Button htmlType="submit">Cập nhật thể loại</Button>
+          <Form.Item label="Tác vụ :">
+            <Button htmlType="submit">
+              <VerticalAlignTopOutlined />
+            </Button>
           </Form.Item>
         </Form>
       </div>
