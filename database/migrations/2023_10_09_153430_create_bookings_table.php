@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('total_price');
             $table->string('coupon_code')->nullable();
             $table->enum('status', ['not_yet','satisfied'])->default('not_yet'); // Chưa lấy vé, đã lấy vé
+            $table->softDeletes();
             $table->timestamps();
         });
     }
