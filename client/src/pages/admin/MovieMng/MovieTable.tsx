@@ -1,83 +1,86 @@
-import React from 'react';
-import { Table, Button, Space, Popconfirm, message } from 'antd';
-import { Link } from 'react-router-dom';
-import { useGetAllMoviesQuery, useRemoveMovieMutation } from '../../../redux/api/movieApi';
-import IsLoading from '../../../utils/IsLoading';
+import React from "react";
+import { Table, Button, Space, Popconfirm, message } from "antd";
+import { Link } from "react-router-dom";
+import {
+  useGetAllMoviesQuery,
+  useRemoveMovieMutation,
+} from "../../../redux/api/movieApi";
+import IsLoading from "../../../utils/IsLoading";
 
 const MovieTable = () => {
-  const {data:movies, isLoading:isLoadingMovies} = useGetAllMoviesQuery()
-  const [messageApi , contextHolder] = message.useMessage()
-  const [remove] = useRemoveMovieMutation()
+  const { data: movies, isLoading: isLoadingMovies } = useGetAllMoviesQuery();
+  const [messageApi, contextHolder] = message.useMessage();
+  const [remove] = useRemoveMovieMutation();
   console.log(movies);
-  
-  
-  
+
   const columns = [
-  
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
     },
     {
-      title: 'Tên phim',
-      dataIndex: 'name',
-      key: 'name',
+      title: "Tên phim",
+      dataIndex: "name",
+      key: "name",
     },
     {
-      title: 'Tiêu đề',
-      dataIndex: 'title',
-      key: 'title',
+      title: "Tiêu đề",
+      dataIndex: "title",
+      key: "title",
     },
     {
-      title: 'Thể loại',
-      dataIndex: 'genres',
-      key: 'genres',
-      render:({genres})=> genres.map(item=><span className='m-1'>{item.name}</span>)
+      title: "Thể loại",
+      dataIndex: "genres",
+      key: "genres",
+      render: ({ genres }) =>
+        genres.map((item) => <span className="m-1">{item.name}</span>),
     },
     {
-      title: 'Ảnh phim',
-      dataIndex: 'image',
-      key: 'image',
-      render: (image:any) => <img src={image} alt="Movie Image" style={{ width: '50px' }} />,
+      title: "Ảnh phim",
+      dataIndex: "image",
+      key: "image",
+      render: (image: any) => (
+        <img src={image} alt="Movie Image" style={{ width: "50px" }} />
+      ),
     },
     {
-      title: 'Trailer',
-      dataIndex: 'trailer',
-      key: 'trailer',
-  
+      title: "Trailer",
+      dataIndex: "trailer",
+      key: "trailer",
     },
     {
-      title: 'Mô tả',
-      dataIndex: 'description',
-      key: 'description',
-      render: (desc:any) => <p className='line-clamp-3'>{desc}</p>,
+      title: "Mô tả",
+      dataIndex: "description",
+      key: "description",
+      render: (desc: any) => <p className="line-clamp-3">{desc}</p>,
     },
     {
-      title: 'Ngày khởi chiếu',
-      dataIndex: 'release_date',
-      key: 'release_date',
+      title: "Ngày khởi chiếu",
+      dataIndex: "release_date",
+      key: "release_date",
     },
     {
-      title: 'Thời lượng',
-      dataIndex: 'duration',
-      key: 'duration',
+      title: "Thời lượng",
+      dataIndex: "duration",
+      key: "duration",
     },
     {
-      title: 'Đạo diễn',
-      dataIndex: 'director_id',
-      key: 'director_id',
+      title: "Đạo diễn",
+      dataIndex: "director_id",
+      key: "director_id",
     },
     {
-      title: 'Trạng thái',
-      dataIndex: 'status',
-      key: 'status',
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
     },
     {
-      title: 'Diễn viên',
-      dataIndex: 'actors',
-      key: 'actors',
-      render:({actors})=> actors.map(item=><span className='m-1'>{item.name}</span>)
+      title: "Diễn viên",
+      dataIndex: "actors",
+      key: "actors",
+      render: ({ actors }) =>
+        actors.map((item) => <span className="m-1">{item.name}</span>),
     },
     {
       title: "Hành động",
@@ -92,12 +95,14 @@ const MovieTable = () => {
               title="Xóa sản phẩm"
               description="Bạn có chắc chắn muốn xóa sản phẩm"
               onConfirm={() => {
-                remove(id).unwrap().then(()=>{
-                  messageApi.open({
-                    type:"success",
-                    content:"Xóa phim thành công"
-                  })
-                })
+                remove(id)
+                  .unwrap()
+                  .then(() => {
+                    messageApi.open({
+                      type: "success",
+                      content: "Xóa phim thành công",
+                    });
+                  });
               }}
               okText="Có"
               cancelText="Không"
@@ -108,37 +113,39 @@ const MovieTable = () => {
         </Space>
       ),
     },
-  ]; 
-  
-  const dataSource = movies?.data?.map((item)=>{
+  ];
+
+  const dataSource = movies?.data?.map((item) => {
     return {
-      key:item.id,
-      name:item.name,
+      key: item.id,
+      name: item.name,
       title: item.title,
-      genres:item,
+      genres: item,
       image: item.image,
       trailer: item.trailer,
       description: item.description,
-      release_date:item.release_date,
+      release_date: item.release_date,
       duration: item.duration,
       status: item.status,
-      actors:item,
+      actors: item,
       director_id: item.director?.name,
-    }
-  })
-  
+    };
+  });
+
   return (
     <>
-    {contextHolder}
-    {
-    isLoadingMovies ? <IsLoading/>:
-    <div>
-      <Button className='m-2'>
-        <Link to={"/admin/movies/create"}>Thêm Phim</Link>
-      </Button>
-      <h1 className='text-xl uppercase font-bold mb-4' >Danh sách phim </h1>
-      <Table dataSource={dataSource} columns={columns} />;
-    </div>}
+      {contextHolder}
+      {isLoadingMovies ? (
+        <IsLoading />
+      ) : (
+        <div>
+          <Button className="m-2">
+            <Link to={"/admin/movies/create"}>Thêm Phim</Link>
+          </Button>
+          <h1 className="text-xl uppercase font-bold mb-4">Danh sách phim </h1>
+          <Table dataSource={dataSource} columns={columns} />;
+        </div>
+      )}
     </>
   );
 };

@@ -4,6 +4,8 @@ import { Button, message } from "antd";
 import { addRoom } from "../../../api/room";
 import { useNavigate } from "react-router";
 import { pause } from "../../../utils/pause";
+import { VerticalAlignTopOutlined } from "@ant-design/icons";
+import swal from "sweetalert";
 type FieldType = {
   room_name?: string;
   single_seat?: number;
@@ -12,37 +14,26 @@ type FieldType = {
 };
 const AddRoom = () => {
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
-
   const onFinish = (values) => {
     addRoom(values)
       .then(async () => {
         form.resetFields();
-        messageApi.open({
-          type: "success",
-          content: "Thêm phòng mới thành công, Chuyển trang sau 3s",
-        });
-        await pause(3000);
+        await swal("Thành công!", "Thêm phòng thành công!", "success");
         navigate("/admin/rooms");
       })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed", errorInfo);
+      .catch(() => {
+        swal("Thất bại!", "Thêm phòng thất bại, Vui lòng thử lại !", "error");
+      })
   };
   return (
     <div className="addFilmAdmin">
       <h2 className="text-xl uppercase font-bold mb-4">Thêm Phòng mới </h2>
       <Form
-        // onSubmitCapture={formik.handleSubmit}
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 10 }}
+        labelCol={{ span: 5 }}
+        wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
       >
         <Form.Item<FieldType>
           label="Tên phòng"
@@ -57,26 +48,43 @@ const AddRoom = () => {
           name="single_seat"
           rules={[{ required: true, message: "Please input your room!" }]}
         >
-          <InputNumber min={0} max={60} defaultValue={0}/>
+          <InputNumber
+            style={{ width: "100%" }}
+            min={0}
+            max={60}
+            defaultValue={0}
+          />
         </Form.Item>
         <Form.Item<FieldType>
           label="Ghế đôi"
           name="double_seat"
           rules={[{ required: true, message: "Please input your room!" }]}
         >
-          <InputNumber min={0} max={30} defaultValue={0}/>
+          <InputNumber
+            style={{ width: "100%" }}
+            min={0}
+            max={30}
+            defaultValue={0}
+          />
         </Form.Item>
         <Form.Item<FieldType>
           label="Ghế VIP"
           name="special_seat"
           rules={[{ required: true, message: "Please input your room!" }]}
         >
-          <InputNumber min={0} max={20} defaultValue={0}/>
+          <InputNumber
+            style={{ width: "100%" }}
+            min={0}
+            max={20}
+            defaultValue={0}
+          />
         </Form.Item>
         <Form.Item label="Tác vụ">
           <>
             {contextHolder}
-            <Button htmlType="submit">Thêm phòng </Button>
+            <Button htmlType="submit">
+              <VerticalAlignTopOutlined />{" "}
+            </Button>
           </>
         </Form.Item>
       </Form>

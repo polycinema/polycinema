@@ -15,12 +15,14 @@ import { useEffect, useState } from "react";
 import { useGetAllMoviesQuery } from "../../../redux/api/movieApi";
 import { getAllRoom } from "../../../api/room";
 import { useNavigate } from "react-router";
+import swal from "sweetalert";
 
 const CreateShowTime = () => {
   const [createShowTime, { isLoading, error }] = useCreateShowTimeMutation();
   const { data, error: errorMovie }: any = useGetAllMoviesQuery();
   const [roomData, setRoomData] = useState();
   const [movieData, setMovieData] = useState();
+  const [form] = Form.useForm()
   const navigate = useNavigate();
   const timeFormat = "HH:mm:ss";
   const dateFormat = "YYYY/MM/DD";
@@ -52,16 +54,14 @@ const CreateShowTime = () => {
       show_date: dayjs(show_date).format(dateFormat),
     })
       .unwrap()
-      .then(() => {
-        try {
-          notification.success({
-            message: "Create show time sucessfuly!",
-          });
-          navigate("/admin/showtime");
-        } catch (error) {
-          console.error("error create showtime: ", error);
-        }
-      });
+      .then(async () => {
+        form.resetFields()
+        await swal("Thành công!", "Thêm lịch chiếu thành công!", "success");
+        navigate("/admin/showtime");
+      })
+      .catch((err) => {
+        swal("Thất bại!", `${err.message}`, "error");
+      })
   };
   if (error) {
     console.error("error create showtime: ", error);
@@ -72,18 +72,23 @@ const CreateShowTime = () => {
 
   return (
     <div>
-      <h3 className="my-3">Thêm Lịch Chiếu</h3>
-      <Form onFinish={onFinish}>
+      <h3 className="my-3 text-4xl p-4">Thêm Lịch Chiếu</h3>
+      <Form
+        name="basic"
+        labelCol={{ span: 5 }}
+        wrapperCol={{ span: 16 }}
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+      >
         <Form.Item
           name={"room_id"}
           label={"Phòng chiếu"}
           rules={[
             { message: "Trường room không được để trống! ", required: true },
           ]}
-          style={{ width: 200 }}
         >
           <Select
-            style={{ width: 120 }}
+            style={{ width: "100%" }}
             placeholder="Select to room"
             options={roomData?.map((items: any) => {
               return {
@@ -102,10 +107,9 @@ const CreateShowTime = () => {
               required: true,
             },
           ]}
-          style={{ width: 200 }}
         >
           <Select
-            style={{ width: 120 }}
+            style={{ width: "100%" }}
             placeholder="Select to movie"
             options={movieData?.map((items: any) => {
               return {
@@ -125,7 +129,7 @@ const CreateShowTime = () => {
             },
           ]}
         >
-          <TimePicker />
+          <TimePicker style={{ width: "100%" }} />
         </Form.Item>
         <Form.Item
           name={"show_date"}
@@ -137,9 +141,9 @@ const CreateShowTime = () => {
             },
           ]}
         >
-          <DatePicker />
+          <DatePicker style={{ width: "100%" }} />
         </Form.Item>
-        <Form.Item>
+        <Form.Item label="Tác vụ">
           <Button htmlType="submit">
             {isLoading ? <Spin /> : <VerticalAlignTopOutlined />}
           </Button>
