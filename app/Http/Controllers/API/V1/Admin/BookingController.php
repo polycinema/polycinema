@@ -17,7 +17,7 @@ class BookingController extends Controller
     public function index()
     {
         try {
-            $bookings = Booking::query()
+            $bookings = Booking::query()->where('level', 'show')
                 ->with('user')
                 ->with('showtime.movie')
                 ->with(['products' => function ($query) {
