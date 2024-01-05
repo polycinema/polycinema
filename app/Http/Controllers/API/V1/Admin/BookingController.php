@@ -53,15 +53,15 @@ class BookingController extends Controller
     {
         try {
             $booking = Booking::query()->where('id', $id)
-            ->with('user')
-            ->with('showtime.movie')
-            ->with(['products' => function ($query) {
-                $query->withPivot('quantity');
-            }])
-            ->with(['seats.showtime.room'])
-            ->get();
+                ->with('user')
+                ->with('showtime.movie')
+                ->with(['products' => function ($query) {
+                    $query->withPivot('quantity');
+                }])
+                ->with(['seats.showtime.room'])
+                ->get();
 
-            if($booking->isEmpty()){
+            if ($booking->isEmpty()) {
                 return response()->json([
                     'message' => "Đơn hàng không tồn tại"
                 ], Response::HTTP_OK);
@@ -91,11 +91,11 @@ class BookingController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {            
+    {
         try {
             $booking = Booking::find($id);
 
-            if($booking ==  NULL){
+            if ($booking ==  NULL) {
                 return response()->json([
                     'message' => "Đơn hàng không tồn tại"
                 ], Response::HTTP_OK);
@@ -106,7 +106,6 @@ class BookingController extends Controller
             return response()->json([
                 'message' => "Xoá thành công đơn hàng $booking->booking_id"
             ], Response::HTTP_OK);
-
         } catch (Exception $exception) {
             Log::error('API/V1/Admin/BookingController@destroy:', [$exception->getMessage()]);
 

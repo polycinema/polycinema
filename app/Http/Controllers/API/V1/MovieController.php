@@ -113,15 +113,30 @@ class MovieController extends Controller
                         'available_seats' => $availableSeats
                     ];
                 }
-
+                
                 $responseData[] = [
                     'date' => $date,
                     'showtimes' => $showtimes
                 ];
             }
+            // ngày hiện tại
+            $currentDate = date('Y-m-d');
+
+            // sắp xếp lại sao cho đối tượng có 'date' gần với ngày hôm nay nhất
+            usort($responseData, function ($a, $b) use ($currentDate) {
+                $dateA = strtotime($a['date']);
+                $dateB = strtotime($b['date']);
+            
+                if ($dateA == $dateB) {
+                    return 0;
+                }
+            
+                return abs(strtotime($currentDate) - $dateA) < abs(strtotime($currentDate) - $dateB) ? -1 : 1;
+            });
+
             return response()->json([
                 'data' => $responseData,
-                'message' => "Danh Sách Lịch Chiếu Phim $movie_name"
+                // 'message' => "Danh Sách Lịch Chiếu Phim $movie_name"
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('API/V1/MovieController@getShowTimeByMovie: ', [$exception->getMessage()]);
