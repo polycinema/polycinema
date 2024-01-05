@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ShowTime extends Model
+class   ShowTime extends Model
 {
     use HasFactory;
     use SoftDeletes;

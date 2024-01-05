@@ -23,7 +23,6 @@ return new class extends Migration
             $table->foreignId('director_id');
             $table->enum('status', ['screening','unscreen','upcoming'])->default('upcoming');
             $table->softDeletes();
-
             $table->timestamps();
         });
     }

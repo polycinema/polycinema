@@ -93,4 +93,8 @@ Route::prefix('v1')->group(function () {
     Route::post('forgot-password', [NewpasswordController::class, 'forgotPassword']);
 
     Route::post('reset-password', [NewpasswordController::class, 'reset']);
+
+    Route::post('statistc-by-movie/{movie_id}', [StatisticController::class, 'getStatisticByMovie']);
+
+    
 });
