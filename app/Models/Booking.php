@@ -20,6 +20,7 @@ class Booking extends Model
         'total_price',
         'coupon_code',
         'status',
+        'level'
     ];
 
     CONST SATISFIED = 'satisfied';
