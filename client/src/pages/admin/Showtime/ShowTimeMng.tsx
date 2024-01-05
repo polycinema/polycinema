@@ -3,26 +3,23 @@ import {
   useGetShowTimesQuery,
   useRemoveShowTimeMutation,
 } from "../../../redux/api/showTimeApi";
-import { IShowTime } from "../../../interfaces/showtime";
+import { IShowtime } from "../../../interfaces/showtime";
 import { Link } from "react-router-dom";
 import { DeleteOutlined, EditFilled } from "@ant-design/icons";
 import IsLoading from "../../../utils/IsLoading";
 import { useEffect, useState } from "react";
+import GarbageComponent from "../../../components/Garbage";
 
 const ShowTimeMng = () => {
   const { data, isLoading, error }: any = useGetShowTimesQuery();
   const [removeShowtime, { error: ErrorRemove }] = useRemoveShowTimeMutation();
-  const [rooms, setRooms] = useState();
-  const [movies, setMovies] = useState();
-
+  const [showtime, setShowtime] = useState([]);
   useEffect(() => {
     if (data) {
-      const roomIds = data.data.map(({ room_id }: any) => room_id);
-      const movieIds = data.data.map(({ movie_id }: any) => movie_id);
-      setRooms(roomIds); // Cập nhật giá trị của rooms
-      setMovies(movieIds); // Cập nhật giá trị của movies
+      setShowtime(data.data);
     }
   }, [data]);
+  console.log("showtime: ", showtime);
   if (ErrorRemove) {
     notification.error({ message: "Removie showtime error!" });
     console.error("error remove: ", ErrorRemove);
@@ -39,17 +36,15 @@ const ShowTimeMng = () => {
     );
   }
 
-  const dataSource: IShowTime[] = data?.data?.map(
-    ({ room_id, movie_id, start_time, id, show_date }: IShowTime) => {
-      return {
-        key: id,
-        room_id,
-        movie_id,
-        start_time,
-        show_date,
-      };
-    }
-  );
+  const dataSource: IShowtime[] = showtime?.map((items: IShowtime) => {
+    return {
+      key: items.id,
+      room_id: items?.room?.room_name,
+      movie_id: items?.movie.name,
+      start_time: items?.start_time,
+      show_date: items?.show_date,
+    };
+  });
   const columns: any[] = [
     {
       title: "Phòng chiếu",
@@ -110,9 +105,14 @@ const ShowTimeMng = () => {
   ];
   return (
     <div>
-      <Button>
-        <Link to={"/admin/showtime/add"}>Thêm Lịch Chiếu</Link>
-      </Button>
+      <div className="md:flex justify-between items-center">
+        <Button>
+          <Link to={"/admin/showtime/add"}>Thêm Lịch Chiếu</Link>
+        </Button>
+        <div className="">
+          <GarbageComponent />
+        </div>
+      </div>
       <h1 className="text-2xl m-6 ">Danh sách lịch chiếu</h1>
       <Table dataSource={dataSource} columns={columns} />;
     </div>

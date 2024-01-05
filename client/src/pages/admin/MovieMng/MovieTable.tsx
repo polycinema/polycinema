@@ -6,6 +6,7 @@ import {
   useRemoveMovieMutation,
 } from "../../../redux/api/movieApi";
 import IsLoading from "../../../utils/IsLoading";
+import GarbageComponent from "../../../components/Garbage";
 
 const MovieTable = () => {
   const { data: movies, isLoading: isLoadingMovies } = useGetAllMoviesQuery();
@@ -139,9 +140,14 @@ const MovieTable = () => {
         <IsLoading />
       ) : (
         <div>
-          <Button className="m-2">
-            <Link to={"/admin/movies/create"}>Thêm Phim</Link>
-          </Button>
+          <div className="md:flex justify-between items-center">
+            <Button className="m-2">
+              <Link to={"/admin/movies/create"}>Thêm Phim</Link>
+            </Button>
+            <div className="">
+              <GarbageComponent />
+            </div>
+          </div>
           <h1 className="text-xl uppercase font-bold mb-4">Danh sách phim </h1>
           <Table dataSource={dataSource} columns={columns} />;
         </div>
