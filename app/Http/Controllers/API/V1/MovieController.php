@@ -137,6 +137,8 @@ class MovieController extends Controller
         try {
 
             $showtimes = ShowTime::query()
+                ->has('movie')
+                ->has('room')
                 ->with(['movie', 'room'])
                 ->select('show_times.*')
                 ->selectRaw('(SELECT COUNT(*) FROM seats WHERE seats.showtime_id = show_times.id AND seats.status = "unbook") AS available_seat')

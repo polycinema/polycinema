@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\Movie;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -286,7 +287,7 @@ class StatisticController extends Controller
             Log::error('StatisticController@getStatisticInRange: ', [$exception->getMessage()]);
         }
     }
-    
+
     public function getTopMoviesByRevenue()
     {
         try {
@@ -304,6 +305,51 @@ class StatisticController extends Controller
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('StatisticController@getTopMoviesByRevenue: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getStatisticByMovie(string $movie_id)
+    {
+        try {
+            $movie = Movie::find($movie_id);
+            if(!$movie){
+                return response()->json([
+                    'message' => 'Phim không tồn tại'
+                ], Response::HTTP_OK);
+            }
+
+            $bookings = Booking::whereHas('showtime', function ($query) use ($movie_id) {
+                $query->where('movie_id', $movie_id);
+            })->with('showtime')->with('user')->get();
+
+            // đếm số lượng booking
+            $count = $bookings->count();
+            // Tổng doanh thu
+            $total_price = collect($bookings)->sum('total_price');
+            // Tổng đơn hàng đã lấy vé 
+            $satisfied = collect($bookings)->where('status', 'satisfied')->count();
+            // Tổng đơn hàng không lấy vé 
+            $not_yet = collect($bookings)->where('status', 'not_yet')->count();
+            // Phần trăm đơn hàng đã lấy vé
+            $satisfied_percentage = ($satisfied / $count) * 100;
+            // Phần trăm đơn hàng chưa lấy vé
+            $notyet_percentage = ($not_yet / $count) * 100;
+
+            return response()->json([
+                'data' => $bookings,
+                'total_booking' => $count,
+                'total_price' => $total_price,
+                'status_not_yet' => $not_yet,
+                'status_satisfied' => $satisfied,
+                'satisfied_percentage' => $satisfied_percentage,
+                'notyet_percentage' => $notyet_percentage,
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('StatisticController@getStatisticByMovie: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
