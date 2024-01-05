@@ -37,7 +37,7 @@ const EditBanner = () => {
     const setFields = () => {
         form.setFieldsValue({
             id: banner?.id,
-            image: banner?.name,
+            name: banner?.name,
 
         });
     };
@@ -45,7 +45,7 @@ const EditBanner = () => {
 
     const onFinish = async (value: IBanner) => {
         urlImage === undefined ?
-            updateBanner({ id: id, ...value })
+            updateBanner({  id: id, name:banner?.name })
                 .then(async () => {
                     form.resetFields()
                     messageApi.open({
@@ -53,12 +53,12 @@ const EditBanner = () => {
                         content: "Sửa banner thành công , Chuyển trang sau 1s"
                     })
                     await pause(1000)
-                    navigate("/admin/products")
+                    navigate("/admin/banner")
                 })
                 .catch((err) => {
                     console.log(err.message);
 
-                }) : updateBanner({ id: id, ...value, name: urlImage })
+                }) : updateBanner({ id: id, name: urlImage })
                     .then(async () => {
                         form.resetFields()
                         messageApi.open({
@@ -74,6 +74,8 @@ const EditBanner = () => {
                     })
     };
 
+    
+
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
@@ -81,23 +83,10 @@ const EditBanner = () => {
     const props: UploadProps = {
         name: 'file',
         action: 'https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload',
-        // Thay đổi thành URL API của Cloudinary
-        headers: {
-            // Authorization: 'Bearer 773215578244178',
-            // "Access-Control-Allow-Origin":"*"
-            // Thay đổi thành API key của bạn
-        },
-        data: {
-            // Thêm các dữ liệu cần thiết như upload preset
-            upload_preset: 'upload',
-            // Thay đổi thành upload preset của bạn
-        },
+        data: {upload_preset: 'upload'},
         onChange(info) {
             if (info.file.status !== 'uploading') {
-
                 console.log(info.file, info.fileList);
-
-
             }
             if (info.file.status === 'done') {
                 setUrlImage(info.file.response.url)
@@ -136,7 +125,6 @@ const EditBanner = () => {
                         <Form.Item<FieldType>
                             label="Ảnh sản phẩm"
                             name="name"
-                            rules={[{ required: true, message: "Please input your image!" }]}
                         >
                             <Upload {...props}>
                                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
