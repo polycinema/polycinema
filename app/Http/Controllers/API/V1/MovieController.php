@@ -136,7 +136,7 @@ class MovieController extends Controller
 
             return response()->json([
                 'data' => $responseData,
-                // 'message' => "Danh Sách Lịch Chiếu Phim $movie_name"
+                'message' => "Danh Sách Lịch Chiếu Phim $movie_name"
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('API/V1/MovieController@getShowTimeByMovie: ', [$exception->getMessage()]);
@@ -150,6 +150,7 @@ class MovieController extends Controller
     public function getShowtimes()
     {
         try {
+            $currentDate = Carbon::now()->toDateString();
 
             $showtimes = ShowTime::query()
                 ->has('movie')
@@ -157,6 +158,7 @@ class MovieController extends Controller
                 ->with(['movie', 'room'])
                 ->select('show_times.*')
                 ->selectRaw('(SELECT COUNT(*) FROM seats WHERE seats.showtime_id = show_times.id AND seats.status = "unbook") AS available_seat')
+                ->whereDate('show_date', '>=', $currentDate)
                 ->get();
 
             $result = [];
