@@ -82,7 +82,7 @@ const AddMovies = () => {
     <>
       {contextHolder}
       <div className="addFilmAdmin">
-        <h2 className="text-xl uppercase font-bold mb-4">Thêm Phim Mới </h2>
+        <h2 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">Thêm Phim Mới </h2>
         <Form
           name="basic"
           labelCol={{ span: 5 }}
@@ -90,6 +90,7 @@ const AddMovies = () => {
           initialValues={{ remember: true }}
           onFinish={onFinish}
           autoComplete="off"
+          className="bg-white p-4 rounded-md shadow-md"
         >
           <Form.Item
             label="Tên phim"

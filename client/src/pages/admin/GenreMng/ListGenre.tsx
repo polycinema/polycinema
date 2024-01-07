@@ -76,8 +76,8 @@ const ListGenre = () => {
         <Button>
           <Link to={"/admin/genres/add"}>Thêm thể loại</Link>
         </Button>
-        <h1 className="text-2xl m-6 ">Danh sách thể loại</h1>
-        <Table columns={columns} dataSource={dataConfig} />
+        <h1 className="text-2xl mb-6 mt-2 bg-white p-4 rounded-md shadow-md ">Danh sách thể loại</h1>
+        <Table columns={columns} dataSource={dataConfig}  className="bg-white p-4 rounded-md shadow-md"/>
       </div>
     </>
   );

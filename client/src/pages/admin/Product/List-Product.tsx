@@ -95,8 +95,8 @@ const ListProduct = (props: Props) => {
         <Button>
           <Link to={"/admin/products/add"}>Thêm sản phẩm</Link>
         </Button>
-        <h1 className="text-2xl m-6 ">Danh sách sản phẩm</h1>
-        <Table columns={columns} dataSource={data} />;
+        <h1 className="text-2xl my-6 bg-white p-4 rounded-md shadow-md ">Danh sách sản phẩm</h1>
+        <Table columns={columns} dataSource={data} className="bg-white p-4 rounded-md shadow-md" />;
       </div>
     </>
   );

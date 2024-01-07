@@ -184,7 +184,7 @@ const MovieDetail = () => {
                   </span>
                   <p className="text-xs">{items.available_seats} ghế trống</p>
                 </button>
-              ))}
+              )) ?? 'Không có giờ chiếu'}
             </div>
           </div>
         </div>

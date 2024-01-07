@@ -85,11 +85,11 @@ const ListActor = () => {
     <>
       {contextHolder}
       <div>
-        <Button>
+        <Button className="m-4">
           <Link to={"/admin/actors/add"}>Thêm diễn viên</Link>
         </Button>
-        <h1 className="text-2xl m-6 ">Danh sách diễn viên</h1>
-        <Table columns={columns} dataSource={data} />;
+        <h1 className="text-2xl mb-6 bg-white p-4 rounded-md shadow-md ">Danh sách diễn viên</h1>
+        <Table columns={columns} dataSource={data} className="bg-white p-4 rounded-md shadow-md" />
       </div>
     </>
   );

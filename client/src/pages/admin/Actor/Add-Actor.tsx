@@ -53,7 +53,7 @@ const AddActor = () => {
   return (
     <>
       <div className="addFilmAdmin">
-        <h2 className="text-xl uppercase font-bold mb-4">Thêm Diễn Viên </h2>
+        <h2 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">Thêm Diễn Viên </h2>
         <Form
           name="basic"
           labelCol={{ span: 5 }}
@@ -61,7 +61,8 @@ const AddActor = () => {
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
-          autoComplete="off"
+          autoComplete="off" 
+          className="bg-white p-4 rounded-md shadow-md"
         >
           <Form.Item
             label="Tên Diễn Viên"

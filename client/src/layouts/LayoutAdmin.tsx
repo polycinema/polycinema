@@ -123,13 +123,12 @@ const LayoutAdmin: React.FC = () => {
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
         <Content style={{ margin: "24px 16px 0" }}>
           <div
             style={{
               padding: 24,
               minHeight: "100%",
-              background: colorBgContainer,
+              
             }}
           >
             <Outlet />

@@ -48,13 +48,13 @@ const PaymentPage = () => {
   };
 
   const handleCancel = () => {
-    navigate("/");
+    navigate("/poly-movies");
   };
 
   const onClickCoupon = (coupon) => {
     selectedCoupon?.coupon_code === coupon?.coupon_code
-    ?dispatch(setCoupon(null))
-    :dispatch(setCoupon(coupon))
+      ? dispatch(setCoupon(null))
+      : dispatch(setCoupon(coupon))
   };
 
   return (
@@ -95,7 +95,7 @@ const PaymentPage = () => {
             </div>
             <div className="flex items-center text-xl">
               <span className="font-semibold mr-2">Ghế ngồi:</span>
-              <span className="text-gray-600">{booking?.payload?.seats?.map((seat)=>(<span key={seat?.id}>{seat?.seat_name}</span>))}</span>
+              <span className="text-gray-600">{booking?.payload?.seats?.map((seat) => (<span key={seat?.id}>{seat?.seat_name}</span>))}</span>
             </div>
             <div className="flex items-center text-xl">
               <span className="font-semibold mr-2">Phòng:</span>
@@ -107,7 +107,7 @@ const PaymentPage = () => {
             </div>
             <div className="flex items-center text-xl">
               <span className="font-semibold mr-2">Combo kèm theo:</span>
-              <span className="text-gray-600">{booking?.payload?.products?.map((product)=>(<span key={product?.id}>{product?.name}</span>))} </span>
+              <span className="text-gray-600">{booking?.payload?.products?.map((product) => (<span key={product?.id}>{product?.name}</span>))} </span>
             </div>
             <div className="flex items-center text-xl">
               <span className="font-semibold mr-2">Ngày chiếu:</span>
@@ -145,7 +145,7 @@ const PaymentPage = () => {
                 placeholder="Nhập mã voucher..."
                 className="border border-gray-300 p-2 w-[500px]"
               />
-              <button className="p-2 bg-white mx-2 ">Áp dụng</button>
+              <Button className=" m-2 border border-[#0D5D9F] ">Áp dụng</Button>
             </form>
           </div>
 
@@ -188,13 +188,15 @@ const PaymentPage = () => {
                         </span>
                       </p>
                     </div>
+                    <div style={{ display: coupon?.min_order_value <= booking?.payload?.total_price ? 'none' : 'block' }}>
+                      <Button
+                        className={`border border-[#0D5D9F]`}
+                        onClick={() => onClickCoupon(coupon)}
+                      >
+                        {selectedCoupon?.coupon_code === coupon.coupon_code ? 'Hủy' : 'Áp dụng'}
+                      </Button>
+                    </div>
 
-                    <Button
-                      className=" border border-[#0D5D9F]"
-                      onClick={() => onClickCoupon(coupon)}
-                    >
-                      {selectedCoupon?.coupon_code === coupon.coupon_code ? 'Hủy' : 'Áp dụng'}
-                    </Button>
                   </div>
                 </div>
               ))
