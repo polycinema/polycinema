@@ -99,10 +99,10 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
           </p>
         </div>
       </div>
-      <div className="flex justify-center space-x-2">
-      {showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id).length === 0 
-        ? null 
-        :<Link to={"/poly-payment"}>
+      <div className={`flex justify-center space-x-2 ${showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id).length === 0 
+        ? "pointer-events-none opacity-60" 
+        :""}`}>
+      <Link to={"/poly-payment"}>
           <Button
             width="100px"
             onClick={() => {
@@ -126,7 +126,7 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
             Tiếp tục
           </Button>
         </Link>
-        }
+        
         
       </div>
     </div>
