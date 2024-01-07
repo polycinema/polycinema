@@ -72,17 +72,8 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
+        // POST : booking_id, user_id, showtime_id, total_price, coupon_code, seats, products
         try {
-            // foreach($request->seats as $seat) {
-            //     $seatModel = Seat::query()->find($seat['id']);
-
-            //     if($seatModel->status == Seat::BOOKED) {
-            //         return response()->json([
-            //             'message' => 'Ghế đã được đặt'
-            //         ], Response::HTTP_BAD_REQUEST);
-            //     }
-            // }
-
             // Tạo Booking
             $booking = Booking::create([
                 'user_id' => $request->user_id,
@@ -92,11 +83,17 @@ class BookingController extends Controller
                 'coupon_code' => $request->coupon_code
             ]);
 
-            if ($request->coupon_id) {
+            if ($request->coupon_code) {
+
+                $coupon = Coupon::query()->where('coupon_code', $request->coupon_code)->first();
+
                 $coupon_user = CouponBooking::create([
-                    'coupon_id' => $request->coupon_id,
+                    'coupon_id' => $coupon->id,
                     'user_id' => $request->user_id,
                 ]);
+                // Trừ 1 số lượng mã giảm giá
+                $coupon->quantity = $coupon->quantity - 1;
+                $coupon->save();
             }
 
 
