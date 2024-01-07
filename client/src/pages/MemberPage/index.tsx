@@ -79,7 +79,7 @@ const MemberPage = (props: Props) => {
                 </tr>
               </thead>
               <tbody>
-                {booking?.data?.map((item: any) => {
+                {booking?.data?.bookings?.map((item: any) => {
                     return (
                       <tr key={item?.id}>
                         <td className="border border-gray-400 p-2 text-center">
@@ -129,7 +129,7 @@ const MemberPage = (props: Props) => {
       >
 
         <div className=" mx-auto p-4 w-full">
-          <div className="bg-white  rounded shadow-md   grid grid-cols-1  md:grid-cols-2 lg:grid-cols-2 gap-2">
+          <div className="bg-white  rounded shadow-md   grid grid-cols-1  md:grid-cols-2 lg:grid-cols-2 gap-1">
             <div className=" border-b pb-4 p-2 text-lg flex gap-2">
               <span className="block font-semibold">Mã thanh toán:</span>
               <span className="text-gray-600">#{detailBooking?.booking_id}</span>
