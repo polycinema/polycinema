@@ -5,6 +5,7 @@ import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
 
 import { IRoom, getAllRoom, removeRoom } from "../../../api/room";
+import GarbageComponent from "../../../components/Garbage";
 
 interface DataType {
   key: string;
@@ -101,11 +102,17 @@ const ListRooms = () => {
     <>
       {contextHolder}
       <div>
-        <Button>
-          <Link to={"/admin/rooms/add"}>Thêm phòng</Link>
-        </Button>
+         <div className="md:flex justify-between items-center">
+          <Button>
+            <Link to={"/admin/rooms/add"}>Thêm phòng</Link>
+          </Button>
+          <div className="">
+            <GarbageComponent />
+          </div>
+        </div>
         <h1 className="text-2xl my-6  bg-white p-4 rounded-md shadow-md">Danh sách phòng </h1>
         <Table columns={columns} dataSource={dataConfig} className="bg-white p-4 rounded-md shadow-md" />
+
       </div>
     </>
   );

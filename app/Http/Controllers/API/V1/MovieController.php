@@ -113,12 +113,27 @@ class MovieController extends Controller
                         'available_seats' => $availableSeats
                     ];
                 }
-
+                
                 $responseData[] = [
                     'date' => $date,
                     'showtimes' => $showtimes
                 ];
             }
+            // ngày hiện tại
+            $currentDate = date('Y-m-d');
+
+            // sắp xếp lại sao cho đối tượng có 'date' gần với ngày hôm nay nhất
+            usort($responseData, function ($a, $b) use ($currentDate) {
+                $dateA = strtotime($a['date']);
+                $dateB = strtotime($b['date']);
+            
+                if ($dateA == $dateB) {
+                    return 0;
+                }
+            
+                return abs(strtotime($currentDate) - $dateA) < abs(strtotime($currentDate) - $dateB) ? -1 : 1;
+            });
+
             return response()->json([
                 'data' => $responseData,
                 'message' => "Danh Sách Lịch Chiếu Phim $movie_name"
@@ -135,11 +150,15 @@ class MovieController extends Controller
     public function getShowtimes()
     {
         try {
+            $currentDate = Carbon::now()->toDateString();
 
             $showtimes = ShowTime::query()
+                ->has('movie')
+                ->has('room')
                 ->with(['movie', 'room'])
                 ->select('show_times.*')
                 ->selectRaw('(SELECT COUNT(*) FROM seats WHERE seats.showtime_id = show_times.id AND seats.status = "unbook") AS available_seat')
+                ->whereDate('show_date', '>=', $currentDate)
                 ->get();
 
             $result = [];
@@ -170,6 +189,21 @@ class MovieController extends Controller
                     'showtime' => $showtimes,
                 ];
             }
+
+            // ngày hiện tại
+            $yearMonthDay = date('Y-m-d');
+
+            // sắp xếp lại sao cho đối tượng có 'show_date' gần với ngày hôm nay nhất
+            usort($response, function ($a, $b) use ($yearMonthDay) {
+                $dateA = strtotime($a['show_date']);
+                $dateB = strtotime($b['show_date']);
+            
+                if ($dateA == $dateB) {
+                    return 0;
+                }
+            
+                return abs(strtotime($yearMonthDay) - $dateA) < abs(strtotime($yearMonthDay) - $dateB) ? -1 : 1;
+            });
 
             return response()->json([
                 'data' => $response

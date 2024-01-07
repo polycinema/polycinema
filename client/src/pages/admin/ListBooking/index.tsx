@@ -28,6 +28,7 @@ import { FcOk } from "react-icons/fc";
 import { FcHighPriority } from "react-icons/fc";
 import { FcFilm } from "react-icons/fc";
 import { FcInfo } from "react-icons/fc";
+import GarbageComponent from "../../../components/Garbage";
 const ListsBooking = () => {
   const { data: bookings, isLoading } = useGetAllBookingsQuery();
   const [
@@ -41,11 +42,11 @@ const ListsBooking = () => {
   const { data: bookingById, error: errBookingById } =
     useGetBookingByIdQuery(idBooking);
 
-  const [listBooking, setListBooking] = useState<c>();
+  const [listBooking, setListBooking] = useState();
   const [BookingById, setBookingById] = useState<RootBooking>();
   const [isModalOpenModal, setIsModalOpenModal] = useState(false);
 
-  // console.log("listBooking: ", listBooking);
+  console.log("BookingById: ", BookingById);
   // console.log("isloading: ",isLoading);
   // console.log("error: ",error);
   useEffect(() => {
@@ -78,6 +79,7 @@ const ListsBooking = () => {
   if (errBookingById) {
     console.error(errBookingById);
   }
+
   const inforBooking = listBooking?.map((items: RootBooking) => {
     return {
       booking_id: items?.booking_id,
@@ -153,7 +155,7 @@ const ListsBooking = () => {
         status === "not_yet" ? (
           <div className="flex items-center content-center gap-x-3 justify-center">
             <FaDotCircle className="text-red-500" />
-            <span>{status}</span>
+            <span>Chưa lấy vé</span>
             <button
               onClick={() => updateSatisfied(booking)}
               className="bg-red-500 px-3 py-1 rounded-md text-white"
@@ -164,7 +166,7 @@ const ListsBooking = () => {
         ) : (
           <div className="flex items-center content-center gap-x-3 justify-center">
             <FaDotCircle className="text-green-500" />
-            <span>{status}</span>
+            <span>Đã lấy vé</span>
             <button
               onClick={() => updateNotYet(booking)}
               className="bg-green-500 px-3 py-1 rounded-md text-white"
@@ -253,21 +255,26 @@ const ListsBooking = () => {
       </div>
       <div className="mb-2">
         <h1 className="text-center text-xl py-4 ">Danh sách vé đặt</h1>
-        <Popconfirm
-          title="Export excel"
-          description="Bạn có muốn xuất file xlsx?"
-          icon={<QuestionCircleOutlined style={{ color: "red" }} />}
-          onConfirm={() => dowloadExcel(dataXLSX)}
-          onCancel={cancel}
-          okType="text"
-          okText="Yes"
-          cancelText="No"
-        >
-          <button className="flex gap-x-2 justify-center items-center py-1 px-4 bg-[#11235A] text-white rounded-md">
-            <FaFileExport />
-            Excel
-          </button>
-        </Popconfirm>
+        <div className="md:flex gap-x-3 justify-between">
+          <Popconfirm
+            title="Export excel"
+            description="Bạn có muốn xuất file xlsx?"
+            icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+            onConfirm={() => dowloadExcel(dataXLSX)}
+            onCancel={cancel}
+            okType="text"
+            okText="Yes"
+            cancelText="No"
+          >
+            <button className="flex gap-x-2 justify-center items-center py-1 px-4 bg-[#11235A] text-white rounded-md">
+              <FaFileExport />
+              Excel
+            </button>
+          </Popconfirm>
+          <div className="">
+            <GarbageComponent />
+          </div>
+        </div>
       </div>
       <Table className="shadow-md rounded-md" columns={columns} dataSource={dataTable} pagination={false} />
       <Pagination
@@ -292,7 +299,7 @@ const ListsBooking = () => {
                 <div className=" border-b pb-4 p-2 text-base">
                   <span className="block font-semibold">Mã thanh toán:</span>
                   <span className="text-gray-600">
-                    #{BookingById?.booking_id}
+                    #{BookingById?.booking_id ?? "Không có"}
                   </span>
                 </div>
                 <div className=" border-b pb-4 p-2 text-base">
@@ -306,7 +313,7 @@ const ListsBooking = () => {
                 <div className=" border-b pb-4 p-2 text-base">
                   <span className="block font-semibold">Tên phim:</span>
                   <span className="text-gray-600 line-clamp-1">
-                    {BookingById?.showtime?.movie?.name}
+                    {BookingById?.showtime?.movie?.name ?? "Không có"}
                   </span>
                 </div>
                 <div className=" border-b pb-4 p-2 text-base">
@@ -316,7 +323,8 @@ const ListsBooking = () => {
                 <div className=" border-b pb-4 p-2 text-base">
                   <span className="block mb-2 font-semibold">Phòng chiếu:</span>
                   <span className="text-gray-600">
-                    {BookingById?.seats[1]?.showtime?.room?.room_name}
+                    {BookingById?.seats[0]?.showtime?.room?.room_name ??
+                      "Không có"}
                   </span>
                 </div>
               </div>
@@ -325,35 +333,37 @@ const ListsBooking = () => {
                   <span className="block  font-semibold">Chỗ ngồi:</span>
                   <span className="text-gray-600">
                     {BookingById?.seats?.map((seat) => (
-                      <span key={seat?.id}>{seat?.seat_name}</span>
-                    ))}
+                      <span key={seat?.id}>
+                        {seat?.seat_name}
+                      </span>
+                    )) ?? "Không có"}
                   </span>
                 </div>
                 <div className=" border-b pb-4 p-2 text-base">
                   <span className="block font-semibold">Giờ chiếu:</span>
                   <span className="text-gray-600">
-                    {BookingById?.showtime?.start_time}
+                    {BookingById?.showtime?.start_time ?? "Không có"}
                   </span>
                 </div>
                 <div className=" border-b pb-4 p-2 text-base">
                   <span className="block font-semibold">Ngày đặt:</span>
                   <span className="text-gray-600">
-                    {dayjs(BookingById?.created_at).format("DD/MM.YYYY")}
+                    {dayjs(BookingById?.created_at).format("DD/MM.YYYY") ?? "Không có"}
                   </span>
                 </div>
 
                 <div className="border-b pb-4 p-2 text-base">
                   <span className="block mb-2 font-semibold">Giờ đặt:</span>
                   <span className="text-gray-600">
-                    {dayjs(BookingById?.created_at).format("HH:mm:ss")}
+                    {dayjs(BookingById?.created_at).format("HH:mm:ss") ?? "Không có"}
                   </span>
                 </div>
                 <div className="border-b pb-4 p-2 text-base">
                   <span className="block mb-2 font-semibold">Combo:</span>
                   <span className="text-gray-600">
                     {BookingById?.products?.map((item) => (
-                      <span key={item?.id}>{item?.name},</span>
-                    ))}
+                      <span key={item?.id}>{item?.name}</span>
+                    )) ?? "Không có"}
                   </span>
                 </div>
               </div>

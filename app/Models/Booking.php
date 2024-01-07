@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Booking extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -18,10 +20,13 @@ class Booking extends Model
         'total_price',
         'coupon_code',
         'status',
+        'level'
     ];
 
     CONST SATISFIED = 'satisfied';
     CONST NOT_YET = 'not_yet';
+    CONST LEVEL_HIDE = 'hide';
+    CONST LEVEL_SHOW = 'show';
 
     public function products()
     {
