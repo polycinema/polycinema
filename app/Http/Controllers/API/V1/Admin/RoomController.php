@@ -39,12 +39,13 @@ class RoomController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'room_name' => 'required',
+                'room_name' => 'required|unique:rooms,room_name',
                 'single_seat' => 'numeric',
                 'double_seat' => 'numeric',
                 'special_seat' => 'numeric'
             ], [
                 'room_name.required' => 'Trường tên phòng không được trống',
+                'room_name.unique' => "Phòng $request->room_name đã tồn tại ",
                 'single_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
                 'double_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
                 'special_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
@@ -113,12 +114,13 @@ class RoomController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'room_name' => 'required',
+                'room_name' => 'required|unique:rooms,room_name,'. $room->id,
                 'single_seat' => 'numeric',
                 'double_seat' => 'numeric',
                 'special_seat' => 'numeric'
             ], [
                 'room_name.required' => 'Trường tên phòng không được trống',
+                'room_name.unique' => "Phòng $request->room_name đã tồn tại ",
                 'single_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
                 'double_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
                 'special_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
