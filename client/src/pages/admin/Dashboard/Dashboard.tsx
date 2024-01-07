@@ -8,6 +8,7 @@ import IsLoading from "../../../utils/IsLoading";
 import { formatCurrency } from "../../../utils/formatVND";
 import { FaEye } from "react-icons/fa";
 import YouTube from "react-youtube";
+import StatisticTopMovie from "../../../components/Statistic/StatisticTopMovie";
 
 
 const Dashboard = () => {
@@ -108,16 +109,19 @@ const Dashboard = () => {
   ];
   return (
     <>
-      <h1 className="text-2xl p-2">Dashboard</h1>
-      <div className="flex">
-        <div className="flex-none w-[700px]">
+      <h1 className="text-4xl mb-2 bg-white p-2 rounded-md shadow-md">Dashboard</h1>
+      <div className="grid grid-cols-2 gap-6">
+        <div className="bg-white p-2 rounded-md shadow-md">
           <Statistic />
         </div>
-        <div className="space-y-6">
-          <span className="text-2xl">Top 10 phim có doanh thu cao nhất</span>
-          <Table dataSource={dataSource} columns={columns} />;
+        <div className="bg-white p-2 rounded-md shadow-md">
+          <StatisticTopMovie/>
         </div>
       </div>
+      <div className="space-y-6 mt-4 bg-white p-2 rounded-md shadow-md">
+          <span className="text-2xl">Top 10 phim có doanh thu cao nhất</span>
+          <Table dataSource={dataSource} columns={columns} />
+        </div>
       <Modal
         title={`Trailer: ${movie?.name}`}
         open={isModalOpenTrailer}

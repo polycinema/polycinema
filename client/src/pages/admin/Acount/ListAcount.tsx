@@ -90,14 +90,14 @@ const ListAcount = () => {
     <>
       {contextHolder}
       <div>
-        <h1 className="text-2xl m-6 ">Danh sách tài khoản</h1>
-        <div>
+        <h1 className="text-2xl mb-6 bg-white p-2 rounded-md shadow-md">Danh sách tài khoản</h1>
+        <div className="p-4">
           <Button type="default">
             <Link to={`/admin/addAcount`}>Thêm tài khoản</Link>
           </Button>
         </div>
 
-        <Table columns={columns} dataSource={dataConfig} />
+        <Table columns={columns} dataSource={dataConfig} className="bg-white p-2 rounded-md shadow-md" />
       </div>
     </>
   );

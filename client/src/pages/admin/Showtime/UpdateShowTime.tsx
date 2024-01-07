@@ -79,7 +79,7 @@ const UpdateShowTime = () => {
   };
   return (
     <div>
-      <h1 className="p-4 text-4xl">Cập nhật lịch chiếu</h1>
+      <h1 className="bg-white p-4 rounded-md shadow-md my-4 text-4xl">Cập nhật lịch chiếu</h1>
       <Form
         name="basic"
         labelCol={{ span: 5 }}
@@ -87,6 +87,7 @@ const UpdateShowTime = () => {
         initialValues={{ remember: true }}
         onFinish={onFinish}
         form={form}
+        className="bg-white p-4 rounded-md shadow-md"
       >
         <Form.Item
           name={"movie_id"}

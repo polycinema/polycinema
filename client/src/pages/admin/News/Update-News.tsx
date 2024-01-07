@@ -103,9 +103,9 @@ const EditNews = () => {
   return (
     <>
       <div>
-        <h1 className="text-4xl m-6">Câp nhật Tin Tức</h1>
+        <h1 className="text-4xl mb-6 bg-white p-4 rounded-md shadow-md">Câp nhật Tin Tức</h1>
         <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-2 p-4">
+          <div className="col-span-2 p-4 bg-white p-4 rounded-md shadow-md">
             <Form
               form={form}
               name="basic"
@@ -159,7 +159,7 @@ const EditNews = () => {
               </Form.Item>
             </Form>
           </div>
-          <div className="col-span-1  p-4 w-full">
+          <div className="col-span-1  w-full bg-white p-4 rounded-md shadow-md">
             <h4 className="mb-2 text-xl">Ảnh tin tức</h4>
             <img className="w-full rounded-sm" src={news?.image} alt="anh" />
           </div>

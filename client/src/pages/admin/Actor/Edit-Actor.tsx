@@ -92,10 +92,10 @@ const EditActor = () => {
   return (
     <>
       <div className="addFilmAdmin">
-        <h2 className="text-xl uppercase font-bold mb-4">
-          Cập nhật diễn viên{" "}
+        <h2 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">
+          Cập nhật diễn viên
         </h2>
-        <div className="grid grid-cols-2 gap-40 w-full">
+        <div className="grid grid-cols-2 gap-10 w-full">
           <Form
             form={form}
             name="basic"
@@ -106,6 +106,7 @@ const EditActor = () => {
             autoComplete="off"
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
+            className="bg-white p-4 rounded-md shadow-md"
           >
             <Form.Item
               label="Tên Diễn Viên"
@@ -141,7 +142,7 @@ const EditActor = () => {
               </>
             </Form.Item>
           </Form>
-          <div>
+          <div className="bg-white p-4 rounded-md shadow-md">
             <h4 className="mb-2 text-xl">Ảnh diễn viên</h4>
             <img className="w-72 rounded-sm" src={actor?.image} alt="anh" />
           </div>

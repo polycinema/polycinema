@@ -53,7 +53,7 @@ const EditRoom = () => {
   return (
     <>
       <div className="addFilmAdmin">
-        <h2 className="text-xl uppercase font-bold mb-4">Cập nhật Phòng </h2>
+        <h2 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">Cập nhật Phòng </h2>
         <Form
           form={form}
           name="basic"
@@ -62,6 +62,7 @@ const EditRoom = () => {
           initialValues={{ remember: true }}
           onFinish={onFinish}
           autoComplete="off"
+          className="bg-white p-4 rounded-md shadow-md"
         >
           <Form.Item<FieldType>
             label="Tên phòng"
@@ -109,7 +110,6 @@ const EditRoom = () => {
           </Form.Item>
 
           <Form.Item label="Tác vụ">
-            {contextHolder}
             <Button htmlType="submit">
               <VerticalAlignTopOutlined />{" "}
             </Button>

@@ -26,6 +26,8 @@ type FieldType = {
   discount?: string | number;
   expires_at?: string;
   quantity?: number | string;
+  min_order_value:number|string;
+
 };
 
 const EditCoupon = () => {
@@ -45,6 +47,7 @@ const EditCoupon = () => {
       type: coupon?.data?.type,
       discount: coupon?.data?.discount,
       quantity: coupon?.data.quantity,
+      min_order_value:coupon?.data?.min_order_value,
       expires_at: dayjs(coupon?.data.expires_at, "YYYY/MM/DD"),
     });
   };
@@ -67,7 +70,7 @@ const EditCoupon = () => {
   };
   return (
     <div>
-      <h1 className="text-xl uppercase font-bold mb-4">Thêm mã giảm giá</h1>
+      <h1 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">Cập nhật mã giảm giá</h1>
       <Form
         form={form}
         name="basic"
@@ -75,7 +78,8 @@ const EditCoupon = () => {
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        autoComplete="off"
+        autoComplete="off" 
+        className="bg-white p-4 rounded-md shadow-md"
       >
         <Form.Item<FieldType>
           label="Tên mã giảm"
@@ -133,7 +137,13 @@ const EditCoupon = () => {
         >
           <InputNumber style={{ width: "100%" }} placeholder="0" min={0} />
         </Form.Item>
-
+        <Form.Item<FieldType>
+          label="Giá trị đơn hàng tối thiểu"
+          name="min_order_value"
+          rules={[{ required: true, message: 'Please input your discount_amount!' }]}
+        >
+          <InputNumber style={{ width: "100%" }} placeholder='0' min={0} />
+        </Form.Item>
         <Form.Item label="Tác vụ">
           <Button htmlType="submit">
             {isUpdateLoading ? (

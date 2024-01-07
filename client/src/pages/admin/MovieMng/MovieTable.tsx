@@ -140,10 +140,10 @@ const MovieTable = () => {
       ) : (
         <div>
           <Button className="m-2">
-            <Link to={"/admin/movies/create"}>Thêm Phim</Link>
+            <Link to={"/admin/movies/create"}>Thêm Phim Mới</Link>
           </Button>
-          <h1 className="text-xl uppercase font-bold mb-4">Danh sách phim </h1>
-          <Table dataSource={dataSource} columns={columns} />;
+          <h1 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">Danh sách phim </h1>
+          <Table dataSource={dataSource} columns={columns} className="bg-white p-4 rounded-md shadow-md"/>;
         </div>
       )}
     </>

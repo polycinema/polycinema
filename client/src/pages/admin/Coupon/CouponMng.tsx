@@ -49,6 +49,14 @@ const CouponMng = (props: Props) => {
       title: "Giá trị mã giảm",
       dataIndex: "discount",
       key: "discount",
+      
+    },
+    {
+      title: "Giá trị đơn hàng tối thiếu",
+      dataIndex: "min_order_value",
+      key: "min_order_value",
+      render: (min_order_value: any) => formatCurrency(min_order_value),
+
     },
     {
       title: "Số lượng mã giảm",
@@ -96,6 +104,7 @@ const CouponMng = (props: Props) => {
       description: item.description,
       type: item.type,
       discount: item.discount,
+      min_order_value: item.min_order_value,
       expires_at: item.expires_at,
       quantity: item.quantity,
     };
@@ -110,10 +119,10 @@ const CouponMng = (props: Props) => {
           <Button className="m-2">
             <Link to={"/admin/coupon/add"}>Thêm mã giảm</Link>
           </Button>
-          <h1 className="text-xl uppercase font-bold mb-4">
-            Danh sách mã giảm{" "}
+          <h1 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">
+            Danh sách mã giảm
           </h1>
-          <Table dataSource={dataSource} columns={columns} />;
+          <Table dataSource={dataSource} columns={columns} className="bg-white p-4 rounded-md shadow-md" />
         </div>
       )}
     </>

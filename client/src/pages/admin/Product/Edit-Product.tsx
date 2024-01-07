@@ -104,8 +104,8 @@ const EditProduct = () => {
   return (
     <>
       <div>
-        <h2 className="text-xl uppercase font-bold mb-4">Sửa Sản Phẩm </h2>
-        <div className="grid grid-cols-2 gap-40">
+        <h2 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">Cập nhật Sản Phẩm </h2>
+        <div className="grid grid-cols-2 gap-10">
           <Form
             form={form}
             name="basic"
@@ -114,7 +114,8 @@ const EditProduct = () => {
             initialValues={{ remember: true }}
             onFinish={onFinish}
             autoComplete="off"
-            className="mx-5"
+            className="bg-white p-4 rounded-md shadow-md"
+
           >
             <Form.Item label="Tên sản phẩm" name="name">
               <Input />
@@ -150,7 +151,7 @@ const EditProduct = () => {
               </>
             </Form.Item>
           </Form>
-          <div className="w-full">
+          <div className="w-full bg-white p-4 rounded-md shadow-md">
             <h4 className="mb-2 text-xl">Ảnh sản phẩm</h4>
             <img className="full rounded-sm" src={product?.image} alt="anh" />
           </div>

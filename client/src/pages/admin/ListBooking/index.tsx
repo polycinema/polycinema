@@ -24,7 +24,10 @@ import IsLoading from "../../../utils/IsLoading";
 import { formatCurrency } from "../../../utils/formatVND";
 import dayjs from "dayjs";
 import { dowloadExcel } from "../../../utils/exportXLSX";
-
+import { FcOk } from "react-icons/fc";
+import { FcHighPriority } from "react-icons/fc";
+import { FcFilm } from "react-icons/fc";
+import { FcInfo } from "react-icons/fc";
 const ListsBooking = () => {
   const { data: bookings, isLoading } = useGetAllBookingsQuery();
   const [
@@ -77,16 +80,16 @@ const ListsBooking = () => {
   }
   const inforBooking = listBooking?.map((items: RootBooking) => {
     return {
-      booking_id: items.booking_id,
-      total_price: items.total_price,
-      status: items.status,
-      user: items.user.name,
-      email: items.user.email,
-      phone: items.user.phone,
-      movieName: items.showtime?.movie.name,
-      showtime: items.showtime?.show_date,
-      showDate: items.showtime?.show_date,
-      startTime: items.showtime?.start_time,
+      booking_id: items?.booking_id,
+      total_price: items?.total_price,
+      status: items?.status,
+      user: items?.user?.name,
+      email: items?.user?.email,
+      phone: items?.user?.phone,
+      movieName: items?.showtime?.movie.name,
+      showtime: items?.showtime?.show_date,
+      showDate: items?.showtime?.show_date,
+      startTime: items?.showtime?.start_time,
     };
   });
   console.log("inforBooking: ", inforBooking);
@@ -218,6 +221,36 @@ const ListsBooking = () => {
   };
   return (
     <>
+      <div className=" grid grid-cols-4 gap-4">
+        <div className="bg-white shadow-md rounded-md p-4 ">
+        <p className="text-2xl p-4 flex items-center gap-2">
+            <span>Tổng vé đã đặt</span>
+            <span><FcFilm /></span>
+            </p>
+          <p className="text-4xl font-bold text-center">40</p>
+        </div>
+        <div className="bg-white shadow-md rounded-md p-4 ">
+          <p className="text-2xl p-4 flex items-center gap-2">
+            <span>Đơn đã lấy vé</span>
+            <span><FcOk /></span>
+            </p>
+          <p className="text-4xl font-bold text-center">40</p>
+        </div>
+        <div className="bg-white shadow-md rounded-md p-4 ">
+        <p className="text-2xl p-4 flex items-center gap-2">
+            <span>Đơn chưa lấy vé</span>
+            <span><FcInfo /></span>
+            </p>
+          <p className="text-4xl font-bold text-center">40</p>
+        </div>
+        <div className="bg-white shadow-md rounded-md p-4 ">
+        <p className="text-2xl p-4 flex items-center gap-2">
+            <span>Đơn hủy vé</span>
+            <span><FcHighPriority /></span>
+            </p>
+          <p className="text-4xl font-bold text-center">40</p>
+        </div>
+      </div>
       <div className="mb-2">
         <h1 className="text-center text-xl py-4 ">Danh sách vé đặt</h1>
         <Popconfirm
@@ -236,7 +269,7 @@ const ListsBooking = () => {
           </button>
         </Popconfirm>
       </div>
-      <Table columns={columns} dataSource={dataTable} pagination={false} />
+      <Table className="shadow-md rounded-md" columns={columns} dataSource={dataTable} pagination={false} />
       <Pagination
         style={{ marginTop: "16px", textAlign: "center" }}
         defaultCurrent={1}

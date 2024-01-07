@@ -58,7 +58,7 @@ const AddNews = () => {
   return (
     <>
       <div>
-        <h1 className="text-4xl m-6">Thêm Tin Tức</h1>
+        <h1 className="text-4xl mb-6 bg-white p-4 rounded-md shadow-md">Thêm Tin Tức</h1>
         <Form
           name="basic"
           labelCol={{ span: 5 }}
@@ -66,6 +66,7 @@ const AddNews = () => {
           initialValues={{ remember: true }}
           onFinish={onFinish}
           autoComplete="off"
+          className="bg-white p-4 rounded-md shadow-md"
         >
           <Form.Item<FieldType>
             label="Tiêu đề"

@@ -72,13 +72,14 @@ const CreateShowTime = () => {
 
   return (
     <div>
-      <h3 className="my-3 text-4xl p-4">Thêm Lịch Chiếu</h3>
+      <h3 className="my-3 text-4xl bg-white p-4 rounded-md shadow-md ">Thêm Lịch Chiếu</h3>
       <Form
         name="basic"
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
+        className="bg-white p-4 rounded-md shadow-md"
       >
         <Form.Item
           name={"room_id"}

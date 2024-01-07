@@ -113,8 +113,8 @@ const ShowTimeMng = () => {
       <Button>
         <Link to={"/admin/showtime/add"}>Thêm Lịch Chiếu</Link>
       </Button>
-      <h1 className="text-2xl m-6 ">Danh sách lịch chiếu</h1>
-      <Table dataSource={dataSource} columns={columns} />;
+      <h1 className="text-2xl my-6 bg-white p-4 rounded-md shadow-md ">Danh sách lịch chiếu</h1>
+      <Table dataSource={dataSource} columns={columns} className="bg-white p-4 rounded-md shadow-md" />;
     </div>
   );
 };
