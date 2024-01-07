@@ -99,5 +99,6 @@ Route::prefix('v1')->group(function () {
     Route::get('change-level-booking/{booking_id}', [BookingController::class, 'changeLevelBooking']);
     // tìm booking theo booking_id (không phải là id của bảng bookings)
     Route::post('find-booking', [BookingController::class, 'findBookingByBookingID']);
-    
+
+    Route::get('top1-movie', [StatisticController::class, 'getTopMovieHaveHighestRevenue']);
 });

@@ -316,7 +316,7 @@ class StatisticController extends Controller
     {
         try {
             $movie = Movie::find($movie_id);
-            if(!$movie){
+            if (!$movie) {
                 return response()->json([
                     'message' => 'Phim không tồn tại'
                 ], Response::HTTP_OK);
@@ -330,9 +330,9 @@ class StatisticController extends Controller
             $count = $bookings->count();
             // Tổng doanh thu
             $total_price = collect($bookings)->sum('total_price');
-            // Tổng đơn hàng đã lấy vé 
+            // Tổng đơn hàng đã lấy vé
             $satisfied = collect($bookings)->where('status', 'satisfied')->count();
-            // Tổng đơn hàng không lấy vé 
+            // Tổng đơn hàng không lấy vé
             $not_yet = collect($bookings)->where('status', 'not_yet')->count();
             // Phần trăm đơn hàng đã lấy vé
             $satisfied_percentage = ($satisfied / $count) * 100;
@@ -347,6 +347,29 @@ class StatisticController extends Controller
                 'status_satisfied' => $satisfied,
                 'satisfied_percentage' => $satisfied_percentage,
                 'notyet_percentage' => $notyet_percentage,
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('StatisticController@getStatisticByMovie: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getTopMovieHaveHighestRevenue()
+    {
+        try {
+            $topMovie = DB::table('bookings')
+                ->select('movies.id', 'movies.title', 'movies.name', DB::raw('SUM(bookings.total_price) as total_revenue'))
+                ->join('show_times', 'bookings.showtime_id', '=', 'show_times.id')
+                ->join('movies', 'show_times.movie_id', '=', 'movies.id')
+                ->groupBy('movies.id', 'movies.title', 'movies.name') // Thêm 'movies.name' vào mệnh đề GROUP BY
+                ->orderByDesc('total_revenue')
+                ->first();
+
+            return response()->json([
+                'data' => $topMovie,
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('StatisticController@getStatisticByMovie: ', [$exception->getMessage()]);
