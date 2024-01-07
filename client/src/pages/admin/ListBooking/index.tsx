@@ -45,13 +45,9 @@ const ListsBooking = () => {
   const [listBooking, setListBooking] = useState();
   const [BookingById, setBookingById] = useState<RootBooking>();
   const [isModalOpenModal, setIsModalOpenModal] = useState(false);
-
-  console.log("BookingById: ", BookingById);
-  // console.log("isloading: ",isLoading);
-  // console.log("error: ",error);
   useEffect(() => {
     if (bookings) {
-      setListBooking(bookings.data);
+      setListBooking(bookings?.data?.bookings);
     }
     if (bookingById) {
       setBookingById(bookingById.data);
@@ -158,21 +154,16 @@ const ListsBooking = () => {
             <span>Chưa lấy vé</span>
             <button
               onClick={() => updateSatisfied(booking)}
-              className="bg-red-500 px-3 py-1 rounded-md text-white"
+              className="bg-green-500 px-3 py-1 rounded-md text-white"
             >
-              {loadingSatisfied ? <LoadingOutlined /> : "satisfied"}
+              {loadingSatisfied ? <LoadingOutlined /> : "Xuất vé"}
             </button>
           </div>
         ) : (
           <div className="flex items-center content-center gap-x-3 justify-center">
             <FaDotCircle className="text-green-500" />
             <span>Đã lấy vé</span>
-            <button
-              onClick={() => updateNotYet(booking)}
-              className="bg-green-500 px-3 py-1 rounded-md text-white"
-            >
-              {loadingNotYet ? <LoadingOutlined /> : "not yet"}
-            </button>
+          
           </div>
         ),
     },
@@ -229,28 +220,28 @@ const ListsBooking = () => {
             <span>Tổng vé đã đặt</span>
             <span><FcFilm /></span>
             </p>
-          <p className="text-4xl font-bold text-center">40</p>
+          <p className="text-4xl font-bold text-center">{bookings?.data?.total_bookings}</p>
         </div>
         <div className="bg-white shadow-md rounded-md p-4 ">
           <p className="text-2xl p-4 flex items-center gap-2">
             <span>Đơn đã lấy vé</span>
             <span><FcOk /></span>
             </p>
-          <p className="text-4xl font-bold text-center">40</p>
+          <p className="text-4xl font-bold text-center">{bookings?.data?.satisfieds}</p>
         </div>
         <div className="bg-white shadow-md rounded-md p-4 ">
         <p className="text-2xl p-4 flex items-center gap-2">
             <span>Đơn chưa lấy vé</span>
             <span><FcInfo /></span>
             </p>
-          <p className="text-4xl font-bold text-center">40</p>
+          <p className="text-4xl font-bold text-center">{bookings?.data?.not_yet}</p>
         </div>
         <div className="bg-white shadow-md rounded-md p-4 ">
         <p className="text-2xl p-4 flex items-center gap-2">
             <span>Đơn hủy vé</span>
             <span><FcHighPriority /></span>
             </p>
-          <p className="text-4xl font-bold text-center">40</p>
+          <p className="text-4xl font-bold text-center">{bookings?.data?.hide}</p>
         </div>
       </div>
       <div className="mb-2">

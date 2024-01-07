@@ -128,7 +128,6 @@ const LayoutAdmin: React.FC = () => {
             style={{
               padding: 24,
               minHeight: "100%",
-              
             }}
           >
             <Outlet />
