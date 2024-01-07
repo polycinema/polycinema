@@ -258,7 +258,7 @@ class BookingController extends Controller
         }
     }
 
-    // Ẩn hiện booking 
+    // Ẩn hiện booking theo id index bẳng bookings
     public function changeLevelBooking(Request $request)
     {
         try {
