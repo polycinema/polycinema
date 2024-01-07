@@ -38,8 +38,21 @@ class BookingController extends Controller
                 ->with(['seats.showtime.room'])
                 ->get();
 
+            $total_bookings = $bookings->count();
+            $not_yets = $bookings->where('level', 'show')->where('status', Booking::NOT_YET)->count();
+            $satisfieds = $bookings->where('level', 'show')->where('status', Booking::SATISFIED)->count();
+            $bookings_hide = Booking::query()->where('level', 'hide')->count();
+
+            $data = [
+                'bookings' => $bookings,
+                'total_bookings' => $total_bookings,
+                'not_yet' => $not_yets,
+                'satisfieds' => $satisfieds,
+                'hide' => $bookings_hide,
+            ];
+
             return response()->json([
-                'data' => $bookings
+                'data' => $data
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('BookingController: ', [$exception->getMessage()]);
@@ -78,7 +91,7 @@ class BookingController extends Controller
                 'total_price' => $request->total_price,
                 'coupon_code' => $request->coupon_code
             ]);
-            
+
             if ($request->coupon_id) {
                 $coupon_user = CouponBooking::create([
                     'coupon_id' => $request->coupon_id,
@@ -267,7 +280,7 @@ class BookingController extends Controller
             $booking->save();
 
             return response()->json([
-                'message' => $message   
+                'message' => $message
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('BookingController@changeLevelBooking: ', [$exception->getMessage()]);
@@ -285,11 +298,11 @@ class BookingController extends Controller
             $booking_id = $request->booking_id;
 
             $booking = Booking::query()->where('booking_id', $booking_id)
-            ->with('seats','products','showtime','user')
-            ->first();
+                ->with('seats', 'products', 'showtime', 'user')
+                ->first();
 
             return response()->json([
-                'data' => $booking   
+                'data' => $booking
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('BookingController@findBookingByBookingID: ', [$exception->getMessage()]);
