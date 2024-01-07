@@ -41,7 +41,7 @@ class BookingController extends Controller
             $total_bookings = $bookings->count();
             $not_yets = $bookings->where('level', 'show')->where('status', Booking::NOT_YET)->count();
             $satisfieds = $bookings->where('level', 'show')->where('status', Booking::SATISFIED)->count();
-            $bookings_hide = Booking::query()->where('level', 'hide')->count();
+            $bookings_hide = Booking::query()->where('level', Booking::LEVEL_HIDE)->count();
 
             $data = [
                 'bookings' => $bookings,
@@ -269,11 +269,11 @@ class BookingController extends Controller
             switch ($level_booking) {
                 case Booking::LEVEL_HIDE:
                     $booking->level = Booking::LEVEL_SHOW;
-                    $message = "Đã thêm đơn $booking->booking_id vào thùng rác";
+                    $message = "Đã khôi phục đơn $booking->booking_id";
                     break;
                 case Booking::LEVEL_SHOW:
                     $booking->level = Booking::LEVEL_HIDE;
-                    $message = "Đã khôi phục đơn $booking->booking_id";
+                    $message = "Đã thêm đơn $booking->booking_id vào thùng rác";
                     break;
             }
 
