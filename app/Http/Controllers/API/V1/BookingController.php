@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Events\SeatReservation;
 use App\Http\Controllers\Controller;
+use App\Mail\BookingInformationMail;
 use App\Models\Booking;
 use App\Models\Coupon;
 use App\Models\CouponBooking;
@@ -15,6 +16,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -72,17 +74,8 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
+        // POST : booking_id, user_id, showtime_id, total_price, coupon_code, seats, products
         try {
-            // foreach($request->seats as $seat) {
-            //     $seatModel = Seat::query()->find($seat['id']);
-
-            //     if($seatModel->status == Seat::BOOKED) {
-            //         return response()->json([
-            //             'message' => 'Ghế đã được đặt'
-            //         ], Response::HTTP_BAD_REQUEST);
-            //     }
-            // }
-
             // Tạo Booking
             $booking = Booking::create([
                 'user_id' => $request->user_id,
@@ -92,11 +85,17 @@ class BookingController extends Controller
                 'coupon_code' => $request->coupon_code
             ]);
 
-            if ($request->coupon_id) {
+            if ($request->coupon_code) {
+
+                $coupon = Coupon::query()->where('coupon_code', $request->coupon_code)->first();
+
                 $coupon_user = CouponBooking::create([
-                    'coupon_id' => $request->coupon_id,
+                    'coupon_id' => $coupon->id,
                     'user_id' => $request->user_id,
                 ]);
+                // Trừ 1 số lượng mã giảm giá
+                $coupon->quantity = $coupon->quantity - 1;
+                $coupon->save();
             }
 
 
@@ -115,6 +114,9 @@ class BookingController extends Controller
 
                 event(new SeatReservation($seatModel));
             }
+
+            Mail::to($booking->user->email)->send(new BookingInformationMail($booking));
+
             return response()->json([
                 'data' => $booking,
                 'message' => 'Đặt vé thành công'
@@ -257,6 +259,7 @@ class BookingController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     // Ẩn hiện booking theo id index bẳng bookings
     public function changeLevelBooking(Request $request)
