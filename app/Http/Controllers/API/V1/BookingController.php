@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Events\SeatReservation;
 use App\Http\Controllers\Controller;
+use App\Mail\BookingInformationMail;
 use App\Models\Booking;
 use App\Models\Coupon;
 use App\Models\CouponBooking;
@@ -15,6 +16,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -112,6 +114,9 @@ class BookingController extends Controller
 
                 event(new SeatReservation($seatModel));
             }
+
+            Mail::to($booking->user->email)->send(new BookingInformationMail($booking));
+
             return response()->json([
                 'data' => $booking,
                 'message' => 'Đặt vé thành công'
@@ -254,6 +259,7 @@ class BookingController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
 
     // Ẩn hiện booking theo id index bẳng bookings
     public function changeLevelBooking(Request $request)
