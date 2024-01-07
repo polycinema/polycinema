@@ -61,7 +61,7 @@ const AddBanner = () => {
   return (
     <>
       <div>
-        <h1 className="text-4xl m-6">Thêm banner</h1>
+        <h1 className="text-4xl mb-6 bg-white p-4 rounded-md shadow-md">Thêm banner</h1>
         <div className="grid grid-cols-2 gap-10">
           <Form
             name="basic"
@@ -72,6 +72,7 @@ const AddBanner = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
+            className="bg-white p-4 rounded-md shadow-md"
           >
             <Form.Item<FieldType>
               label="Ảnh banner"
@@ -88,7 +89,7 @@ const AddBanner = () => {
               </Button>
             </Form.Item>
           </Form>
-          <div className="w-full">
+          <div className="w-full bg-white p-4 rounded-md shadow-md">
             <h4 className="mb-2 text-xl">Ảnh banner</h4>
             <img className="w-full rounded-sm" src={urlImage} alt="anh" />
           </div>

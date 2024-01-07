@@ -74,8 +74,8 @@ const ListBanner = (props: Props) => {
         <Button>
           <Link to={"/admin/banner/add"}>Thêm banner</Link>
         </Button>
-        <h1 className="text-2xl m-6 ">Danh sách ảnh banner</h1>
-        <Table columns={columns} dataSource={data} />;
+        <h1 className="text-2xl mb-6 mt-2 bg-white p-4 rounded-md shadow-md ">Danh sách ảnh banner</h1>
+        <Table columns={columns} dataSource={data} className="bg-white p-4 rounded-md shadow-md" />
       </div>
     </>
   );

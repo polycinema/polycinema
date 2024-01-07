@@ -1,9 +1,8 @@
 // import { UploadOutlined } from "@ant-design/icons";
 import { Form, Input, InputNumber } from "antd";
-import { Button, message } from "antd";
+import { Button } from "antd";
 import { addRoom } from "../../../api/room";
 import { useNavigate } from "react-router";
-import { pause } from "../../../utils/pause";
 import { VerticalAlignTopOutlined } from "@ant-design/icons";
 import swal from "sweetalert";
 type FieldType = {
@@ -28,12 +27,13 @@ const AddRoom = () => {
   };
   return (
     <div className="addFilmAdmin">
-      <h2 className="text-xl uppercase font-bold mb-4">Thêm Phòng mới </h2>
+      <h2 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">Thêm Phòng mới </h2>
       <Form
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
+        className="bg-white p-4 rounded-md shadow-md"
       >
         <Form.Item<FieldType>
           label="Tên phòng"
@@ -81,7 +81,6 @@ const AddRoom = () => {
         </Form.Item>
         <Form.Item label="Tác vụ">
           <>
-            {contextHolder}
             <Button htmlType="submit">
               <VerticalAlignTopOutlined />{" "}
             </Button>

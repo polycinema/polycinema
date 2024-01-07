@@ -59,7 +59,7 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
           <p className="flex items-center text-[14px]">
             <FaHistory /> <span>Thời lượng</span>
           </p>
-          <p className="font-bold text-[14px]">{showtime?.data?.movie?.duration}</p>
+          <p className="font-bold text-[14px]">{showtime?.data?.movie?.duration} phút</p>
         </div>
       </div>
       <div>

@@ -13,7 +13,8 @@ type FieldType = {
   type?: string;
   discount?: string | number;
   expires_at?: string;
-  quantity?: number | string
+  quantity?: number | string;
+  min_order_value:number|string
 };
 
 const AddCoupon = () => {
@@ -21,6 +22,8 @@ const AddCoupon = () => {
   const [addCoupon, { isLoading }] = useAddCouponMutation()
   const navigate = useNavigate();
   const onFinish = (values: any) => {
+    console.log(values);
+    
     addCoupon({ ...values, expires_at: dayjs(values.expires_at).format('YYYY/MM/DD') }).unwrap()
     .then(async() => {
       form.resetFields()
@@ -35,7 +38,7 @@ const AddCoupon = () => {
 
   return (
     <div>
-      <h1 className="text-xl uppercase font-bold mb-4">Thêm mã giảm giá</h1>
+      <h1 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">Thêm mã giảm giá</h1>
       <Form
         name="basic"
         labelCol={{ span: 5 }}
@@ -43,6 +46,7 @@ const AddCoupon = () => {
         initialValues={{ remember: true }}
         onFinish={onFinish}
         autoComplete="off"
+        className='bg-white p-4 rounded-md shadow-md'
       >
         <Form.Item<FieldType>
           label="Tên mã giảm"
@@ -80,7 +84,13 @@ const AddCoupon = () => {
           name="discount"
           rules={[{ required: true, message: 'Please input your discount_amount!' }]}
         >
-
+          <InputNumber style={{ width: "100%" }} placeholder='0' min={0} />
+        </Form.Item>
+        <Form.Item<FieldType>
+          label="Giá trị đơn hàng tối thiểu"
+          name="min_order_value"
+          rules={[{ required: true, message: 'Please input your discount_amount!' }]}
+        >
           <InputNumber style={{ width: "100%" }} placeholder='0' min={0} />
         </Form.Item>
         <Form.Item<FieldType>

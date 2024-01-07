@@ -9,6 +9,7 @@ import {
   decreaseProduct,
   increaseProduct,
 } from "../../redux/slices/valueCheckoutSlice";
+import Countdown from 'react-countdown';
 import IsLoading from "../../utils/IsLoading";
 import { Button } from "antd";
 import imgNormalActive from "../../../public/img/seat-select-normal.png";
@@ -139,7 +140,23 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
         return imgNormal;
     }
   };
-
+  const handleCountdownComplete = () => {
+    console.log('Đếm ngược đã kết thúc!');
+    // Thực hiện các hành động sau khi đếm ngược kết thúc
+  };
+  const renderer = ({ minutes, seconds, completed }) => {
+    if (completed) {
+      // Đã kết thúc đếm ngược
+      return <span>Đếm ngược đã kết thúc!</span>;
+    } else {
+      // Đang trong quá trình đếm ngược
+      return (
+        <span>
+          {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
+        </span>
+      );
+    }
+  };
   return (
     <div className="w-full">
       <div className="m-4">
@@ -160,7 +177,13 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       </div>
       <div className="flex items-center justify-center gap-5">
         <p className="text-xl mt-2">Thời gian còn lại để chọn ghế:</p>
-        <p className="text-2xl mt-2 ">8:00</p>
+        <p className="text-2xl mt-2 "> 
+        <Countdown
+        date={Date.now() + 60000} // Thời gian kết thúc đếm ngược, ở đây là 1 phút
+        onComplete={handleCountdownComplete}
+        renderer={renderer}
+      />
+  </p>
       </div>
       <div className="flex justify-center items-center space-x-9 p-4   ">
         <div className="flex items-center gap-2">

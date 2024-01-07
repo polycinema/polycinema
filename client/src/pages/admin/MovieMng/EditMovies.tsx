@@ -132,7 +132,7 @@ const UpdateMovie = () => {
     <>
       {contextHolder}
       <div className="addFilmAdmin">
-        <h2 className="text-xl uppercase font-bold mb-4">Cập nhật phim</h2>
+        <h2 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">Cập nhật phim</h2>
         <Form
           form={form}
           name="basic"
@@ -141,6 +141,7 @@ const UpdateMovie = () => {
           initialValues={{ remember: true }}
           onFinish={onFinish}
           autoComplete="off"
+          className="bg-white p-4 rounded-md shadow-md"
         >
           <Form.Item
             label="Tên phim"

@@ -87,8 +87,8 @@ const EditDirector = () => {
   return (
     <>
       <div>
-        <h1 className="text-4xl m-6">Câp nhật Đạo Diễn</h1>
-        <div className="grid grid-cols-2 gap-40">
+        <h1 className="text-4xl mb-6 bg-white p-4 rounded-md shadow-md">Câp nhật Đạo Diễn</h1>
+        <div className="grid grid-cols-2 gap-10">
           <Form
             form={form}
             name="basic"
@@ -97,7 +97,7 @@ const EditDirector = () => {
             initialValues={{ remember: true }}
             onFinish={onFinish}
             autoComplete="off"
-            className="mx-5"
+            className="bg-white p-4 rounded-md shadow-md"
           >
             <Form.Item<FieldType>
               label="Tên đạo diễn"
@@ -122,7 +122,7 @@ const EditDirector = () => {
               </Button>
             </Form.Item>
           </Form>
-          <div>
+          <div className="bg-white p-4 rounded-md shadow-md">
             <h4 className="mb-2 text-xl">Ảnh đạo diễn</h4>
             <img
               className="w-full rounded-sm"

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, Upload, UploadProps, message } from "antd";
 import { UploadOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router";
-import { pause } from "../../../utils/pause";
 import { IBanner, getBannerById, updateBanner } from "../../../api/Banner";
 import swal from "sweetalert";
 
@@ -91,8 +90,8 @@ const EditBanner = () => {
   return (
     <>
       <div>
-        <h2 className="text-xl uppercase font-bold mb-4">Sửa Sản Phẩm </h2>
-        <div className="grid grid-cols-2 gap-40">
+        <h2 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">Cập nhật Banner </h2>
+        <div className="grid grid-cols-2 gap-10">
           <Form
             form={form}
             name="basic"
@@ -102,7 +101,8 @@ const EditBanner = () => {
             initialValues={{ remember: true }}
             onFinish={onFinish}
             autoComplete="off"
-            className="mx-5"
+            className=" bg-white p-4 rounded-md shadow-md"
+            
           >
             <Form.Item<FieldType>
               label="Ảnh Banner"
@@ -121,7 +121,7 @@ const EditBanner = () => {
               </>
             </Form.Item>
           </Form>
-          <div className="w-full">
+          <div className="w-full bg-white p-4 rounded-md shadow-md">
             <h4 className="mb-2 text-xl">Ảnh banner</h4>
             <img className="w-full rounded-sm" src={banner?.name} alt="anh" />
           </div>

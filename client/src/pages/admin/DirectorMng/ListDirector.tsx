@@ -89,8 +89,8 @@ const ListDirector = () => {
         <Button>
           <Link to={"/admin/director/add"}>Thêm đạo diễn</Link>
         </Button>
-        <h1 className="text-2xl m-6 ">Danh sách đạo diễn</h1>
-        <Table columns={columns} dataSource={data} />
+        <h1 className="text-2xl mb-6 mt-2 bg-white p-4 rounded-md shadow-md ">Danh sách đạo diễn</h1>
+        <Table columns={columns} dataSource={data} className="bg-white p-4 rounded-md shadow-md" />
       </div>
     </>
   );

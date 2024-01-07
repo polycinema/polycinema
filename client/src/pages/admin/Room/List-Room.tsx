@@ -102,7 +102,7 @@ const ListRooms = () => {
     <>
       {contextHolder}
       <div>
-        <div className="md:flex justify-between items-center">
+         <div className="md:flex justify-between items-center">
           <Button>
             <Link to={"/admin/rooms/add"}>Thêm phòng</Link>
           </Button>
@@ -110,8 +110,9 @@ const ListRooms = () => {
             <GarbageComponent />
           </div>
         </div>
-        <h1 className="text-2xl m-6 ">Danh sách phòng </h1>
-        <Table columns={columns} dataSource={dataConfig} />
+        <h1 className="text-2xl my-6  bg-white p-4 rounded-md shadow-md">Danh sách phòng </h1>
+        <Table columns={columns} dataSource={dataConfig} className="bg-white p-4 rounded-md shadow-md" />
+
       </div>
     </>
   );

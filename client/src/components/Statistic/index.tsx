@@ -111,6 +111,7 @@ const Statistic = () => {
 
   return (
     <>
+    <div >
       <div className='space-x-3 flex'>
         <Button onClick={onClick7Day}>7 ngày gần nhất</Button>
         <Button onClick={onClick8Day}>28 ngày gần nhất</Button>
@@ -153,7 +154,8 @@ const Statistic = () => {
                     0)}</span>
         </div>
       </div>
-      <Bar data={data} options={options} className='max-w-xl'/>;
+      <Bar data={data} options={options} />
+      </div>
     </>
   );
 }
