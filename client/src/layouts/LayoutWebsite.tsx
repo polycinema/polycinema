@@ -39,7 +39,7 @@ const LayoutWebsite = () => {
     {
       label: (
         <div>
-          <Link to={"inforAcount"}>
+          <Link to={"poly-member"}>
             <UserOutlined /> Thông tin tài khoản
           </Link>
         </div>
@@ -48,30 +48,13 @@ const LayoutWebsite = () => {
     },
     {
       label: (
-        <div>
-          <SketchOutlined /> Thẻ thành viên
+        <div className={`${user?.role !== "admin"? "hidden" : "block"}`}>
+          <Link to={"admin"}>
+            <UserOutlined /> Quản trị website
+          </Link>
         </div>
       ),
-      key: "1",
-    },
-
-    {
-      label: (
-        <div>
-        <Link to={"pointUser"}>
-         <AimOutlined /> Điểm beta
-        </Link>
-        </div>
-      ),
-      key: "3",
-    },
-    {
-      label: (
-        <div>
-          <ShoppingOutlined /> Voucher của tôi
-        </div>
-      ),
-      key: "4",
+      key: "0",
     },
     {
       label: (
@@ -80,12 +63,13 @@ const LayoutWebsite = () => {
           description="Bạn có muốn đăng xuất?"
           okText="Yes"
           cancelText="No"
+          okType="default"
           onConfirm={() => dispatch(setLogout())}
         >
           <LogoutOutlined /> Đăng xuất
         </Popconfirm>
       ),
-      key: "5",
+      key: "2",
     },
   ];
   return (

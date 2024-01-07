@@ -15,11 +15,24 @@ class RoomSeader extends Seeder
     {
         DB::table('rooms')->insert([
             'room_name' => 'A - 1',
-            'capacity' => 50
+            'single_seat' => 30,
+            'double_seat' => 20,
+            'special_seat' => 10,
+            'capacity' => 60
         ]);
         DB::table('rooms')->insert([
             'room_name' => 'A - 2',
-            'capacity' => 50
+            'single_seat' => 30,
+            'double_seat' => 20,
+            'special_seat' => 10,
+            'capacity' => 60
+        ]);
+        DB::table('rooms')->insert([
+            'room_name' => 'A - 3',
+            'single_seat' => 30,
+            'double_seat' => 20,
+            'special_seat' => 10,
+            'capacity' => 60
         ]);
     }
 

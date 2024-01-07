@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -55,7 +57,15 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function coupons(){
+    public function coupons()
+    {
         return $this->belongsToMany(Coupon::class, 'users');
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $url = 'http://localhost:3000/reset-password?token=' . $token;
+
+        $this->notify(new ResetPasswordNotification($url));
     }
 }

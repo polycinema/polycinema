@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\Movie;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -201,6 +202,154 @@ class StatisticController extends Controller
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('StatisticController@getStatisticInMonth: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // get Statistic trong khoảng ngày $request->from đến $request->to
+    public function getStatisticInRange(Request $request)
+    {
+        try {
+            // $fromDay = $request->from;
+            // $toDay = $request->to;
+
+            // // Lấy dữ liệu số lượng booking và doanh thu từ $fromDay đến $toDay
+            // $bookings = Booking::select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date'), DB::raw('COUNT(*) as booking_count'), DB::raw('SUM(total_price) as revenue'))
+            //     ->whereBetween('created_at', [$fromDay, $toDay])
+            //     ->groupBy('date')
+            //     ->orderBy('date')
+            //     ->get();
+
+            // $dailyBookings = [];
+
+            // $currentDate = $fromDay;
+            // while ($currentDate <= $toDay) {
+            //     $booking = $bookings->firstWhere('date', $currentDate);
+
+            //     $dailyBookings[] = [
+            //         'date' => $currentDate,
+            //         'booking_count' => $booking ? $booking->booking_count : 0,
+            //         'revenue' => $booking ? $booking->revenue : "0",
+            //     ];
+
+            //     $currentDate = date('Y-m-d', strtotime($currentDate . ' + 1 day'));
+            // }
+
+            // // Tính tổng doanh thu
+            // $totalRevenue = $bookings->sum('revenue');
+
+            // return response()->json([
+            //     'data' => [
+            //         'daily_bookings' => $dailyBookings,
+            //         'total_revenue' => $totalRevenue,
+            //     ],
+            // ], Response::HTTP_OK);
+
+            $fromDay = $request->from;
+            $toDay = $request->to;
+
+            // Lấy dữ liệu số lượng booking và doanh thu từ $from đến $to
+            $bookingData = DB::table('bookings')
+                ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date'), DB::raw('COUNT(*) as booking_count'), DB::raw('CAST(SUM(total_price) AS CHAR) as revenue'))
+                ->whereBetween('created_at', [$fromDay, $toDay])
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get();
+
+            // Tạo mảng dữ liệu hàng ngày
+            $dailyBookings = [];
+            $currentDate = $fromDay;
+            while ($currentDate <= $toDay) {
+                $booking = $bookingData->firstWhere('date', $currentDate);
+
+                $dailyBookings[] = [
+                    'date' => $currentDate,
+                    'booking_count' => $booking ? $booking->booking_count : 0,
+                    'revenue' => $booking ? $booking->revenue : "0",
+                ];
+
+                $currentDate = date('Y-m-d', strtotime($currentDate . ' + 1 day'));
+            }
+
+            // Tính tổng doanh thu
+            $totalRevenue = $bookingData->sum('revenue');
+
+            return response()->json([
+                'data' => [
+                    'daily_bookings' => $dailyBookings,
+                    'total_revenue' => $totalRevenue,
+                ],
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('StatisticController@getStatisticInRange: ', [$exception->getMessage()]);
+        }
+    }
+
+    public function getTopMoviesByRevenue()
+    {
+        try {
+            $topMovies = DB::table('bookings')
+                ->select('movies.id', 'movies.title', 'movies.name', 'movies.image', 'movies.trailer', 'movies.description', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status', DB::raw('SUM(bookings.total_price) as total_revenue'))
+                ->join('show_times', 'bookings.showtime_id', '=', 'show_times.id')
+                ->join('movies', 'show_times.movie_id', '=', 'movies.id')
+                ->groupBy('movies.id', 'movies.title', 'movies.name', 'movies.image', 'movies.trailer', 'movies.description', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status') // Liệt kê tất cả các trường từ bảng movies ở đây
+                ->orderByDesc('total_revenue')
+                ->limit(10)
+                ->get();
+
+            return response()->json([
+                'data' => $topMovies,
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('StatisticController@getTopMoviesByRevenue: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getStatisticByMovie(string $movie_id)
+    {
+        try {
+            $movie = Movie::find($movie_id);
+            if(!$movie){
+                return response()->json([
+                    'message' => 'Phim không tồn tại'
+                ], Response::HTTP_OK);
+            }
+
+            $bookings = Booking::whereHas('showtime', function ($query) use ($movie_id) {
+                $query->where('movie_id', $movie_id);
+            })->with('showtime')->with('user')->get();
+
+            // đếm số lượng booking
+            $count = $bookings->count();
+            // Tổng doanh thu
+            $total_price = collect($bookings)->sum('total_price');
+            // Tổng đơn hàng đã lấy vé 
+            $satisfied = collect($bookings)->where('status', 'satisfied')->count();
+            // Tổng đơn hàng không lấy vé 
+            $not_yet = collect($bookings)->where('status', 'not_yet')->count();
+            // Phần trăm đơn hàng đã lấy vé
+            $satisfied_percentage = ($satisfied / $count) * 100;
+            // Phần trăm đơn hàng chưa lấy vé
+            $notyet_percentage = ($not_yet / $count) * 100;
+
+            return response()->json([
+                'data' => $bookings,
+                'total_booking' => $count,
+                'total_price' => $total_price,
+                'status_not_yet' => $not_yet,
+                'status_satisfied' => $satisfied,
+                'satisfied_percentage' => $satisfied_percentage,
+                'notyet_percentage' => $notyet_percentage,
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('StatisticController@getStatisticByMovie: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'

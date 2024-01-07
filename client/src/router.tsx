@@ -34,7 +34,6 @@ import EditNews from "./pages/admin/News/Update-News";
 import AddProduct from "./pages/admin/Product/Add-Product";
 import ListProduct from "./pages/admin/Product/List-Product";
 import EditProduct from "./pages/admin/Product/Edit-Product";
-import PrivateRouter from "./components/privateRouter/PrivateRouter";
 import AddSeat from "./pages/admin/Seat/AddSeat";
 import EditSeat from "./pages/admin/Seat/EditSeat";
 import ListSeat from "./pages/admin/Seat/ListSeat";
@@ -48,8 +47,14 @@ import AddBanner from "./pages/admin/Banner/Add";
 import EditBanner from "./pages/admin/Banner/Edit";
 import PayementReturnPage from "./pages/PaymentReturnPage";
 import MemberPage from "./pages/MemberPage";
-
 import PointUser from "./components/PointUser/PointUser";
+import ListsBooking from "./pages/admin/ListBooking";
+import PrivateRouterAdmin from "./components/privateRouter/PrivateRouterAdmin";
+import PrivateRouterCheckout from "./components/privateRouter/PrivateRouterCheckout";
+import ResetPassword from "./auth/ResetPassword";
+import CouponMng from "./pages/admin/Coupon/CouponMng";
+import AddCoupon from "./pages/admin/Coupon/AddCoupon";
+import EditCoupon from "./pages/admin/Coupon/EditCoupon";
 
 
 export const router = createBrowserRouter([
@@ -61,29 +66,37 @@ export const router = createBrowserRouter([
       { path: "", element: <HomePage /> },
       { path: "poly-movies", element: <MoviePage /> },
       { path: "poly-acount", element: <Account /> },
+      { path: "reset-password", element: <ResetPassword /> },
       { path: "poly-news", element: <NewsPage /> },
       { path: "poly-news/:id", element: <NewDetailPage /> },
       { path: "movies/:slug/detail", element: <MovieDetail /> },
-      {path:"poly-checkout/:id", element:<CheckoutPage/>},
-      {path:"poly-payment", element:<PaymentPage/>},
-      {path:"payment-return", element:<PayementReturnPage/>},
-      {path:"inforAcount",element:<InfoAccount/>},
       { path: "poly-moviesDetail/:id", element: <MovieDetail /> },
-      {path:"poly-checkout", element:<CheckoutPage/>},
-      {path:"inforAcount",element:<InfoAccount/>},
-      {path:"pointUser",element:<PointUser/>},
-      {path:"poly-member", element:<MemberPage/>}
+      {
+        path: "",
+        element: <PrivateRouterCheckout />,
+        children: [
+          { path: "poly-checkout/:id", element: <CheckoutPage /> },
+          { path: "poly-payment", element: <PaymentPage /> },
+          { path: "payment-return", element: <PayementReturnPage /> },
+          { path: "inforAcount", element: <InfoAccount /> },
+          // { path: "poly-checkout", element: <CheckoutPage /> },
+          { path: "pointUser", element: <PointUser /> },
+          { path: "poly-member", element: <MemberPage /> }
+        ]
+      },
+
     ],
   },
   {
     path: "/admin",
-    element: <PrivateRouter />,
+    element: <PrivateRouterAdmin />,
     children: [
       {
         element: <LayoutAdmin />,
         children: [
           { index: true, element: <Dashboard /> },
           { path: "dashboard", element: <Dashboard /> },
+          { path: "booking", element: <ListsBooking /> },
           { path: "rooms", element: <ListRooms /> },
           { path: "rooms/add", element: <AddRoom /> },
           { path: "rooms/:id/edit", element: <EditRoom /> },
@@ -117,13 +130,12 @@ export const router = createBrowserRouter([
           { path: 'banner', element: <ListBanner /> },
           { path: 'banner/add', element: <AddBanner /> },
           { path: 'banner/:id/edit', element: <EditBanner /> },
+          { path: 'coupon', element: <CouponMng /> },
+          { path: 'coupon/add', element: <AddCoupon /> },
+          { path: 'coupon/:id/edit', element: <EditCoupon /> },
         ],
       },
     ],
   },
-
-
-
-
 ])
 

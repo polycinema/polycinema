@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Popconfirm, Space, Table, message } from "antd";
 import { Link } from "react-router-dom";
-import { CiPickerEmpty, CiTrash } from "react-icons/ci";
 import { IActor, getAllActor, removeActor } from "../../../api/actor";
 import { ColumnsType } from "antd/es/table";
 interface DataType {
@@ -26,23 +25,23 @@ const ListActor = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "Name",
+      title: "Tên diễn viên",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Image",
+      title: "Ảnh diễn viên",
       dataIndex: "image",
       key: "image",
       render: (img) => <img className="w-40" src={img} alt="anh" />,
     },
     {
-      title: "Date",
+      title: "Ngày sinh",
       dataIndex: "date_of_birth",
       key: "date_of_birth",
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
@@ -55,10 +54,7 @@ const ListActor = () => {
               description="Bạn có chắc chắn muốn xóa sản phẩm"
               onConfirm={() => {
                 removeActor(id).then(() => {
-
-                  setActors(
-                    actors?.filter((item: IActor) => item?.id !== id)
-                  );
+                  setActors(actors?.filter((item: IActor) => item?.id !== id));
                   messageApi.open({
                     type: "success",
                     content: "Xóa sản phẩm thành công",
@@ -89,11 +85,11 @@ const ListActor = () => {
     <>
       {contextHolder}
       <div>
-        <Button>
+        <Button className="m-4">
           <Link to={"/admin/actors/add"}>Thêm diễn viên</Link>
         </Button>
-        <h1 className="text-2xl m-6 ">Danh sách diễn viên</h1>
-        <Table columns={columns} dataSource={data} />;
+        <h1 className="text-2xl mb-6 bg-white p-4 rounded-md shadow-md ">Danh sách diễn viên</h1>
+        <Table columns={columns} dataSource={data} className="bg-white p-4 rounded-md shadow-md" />
       </div>
     </>
   );

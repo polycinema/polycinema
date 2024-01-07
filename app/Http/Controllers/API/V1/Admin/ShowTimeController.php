@@ -20,7 +20,7 @@ class ShowTimeController extends Controller
     public function index()
     {
         try {
-            $showtimes = ShowTime::query()->get();
+            $showtimes = ShowTime::query()->with('room')->with('movie')->get();
 
             return response()->json([
                 'data' => $showtimes
@@ -44,8 +44,21 @@ class ShowTimeController extends Controller
                 'movie_id' => 'required',
                 'room_id' => 'required',
                 'show_date' => 'required|date_format:Y/m/d|after_or_equal:today',
-                'start_time' => 'required|date_format:H:i:s',
-                'end_time' => 'required|date_format:H:i:s|different:start_time|after:start_time',
+                'start_time' => [
+                    'required',
+                    'date_format:H:i:s',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $hour = date('H', strtotime($value));
+                        $existingShowtime = Showtime::where('show_date', $request->show_date)
+                            ->where('room_id', $request->room_id)
+                            ->whereRaw("HOUR(start_time) = $hour")
+                            ->first();
+                        
+                        if ($existingShowtime) {
+                            $fail("Đã có 1 xuất chiếu khác vào" . " " . explode(':', $request->start_time)[0] . "h " . "hoặc phòng $request->room_id");
+                        }
+                    },
+                ],
             ], [
                 'movie_id.required' => 'Vui Lòng Chọn Phim',
                 'room_id.required' => 'Vui Lòng Chọn Phòng Chiếu',
@@ -54,10 +67,6 @@ class ShowTimeController extends Controller
                 'show_date.after_or_equal' => 'Ngày Chiếu Phải Là Ngày Hôm Nay Hoặc Ngày Trong Tương Lai',
                 'start_time.required' => 'Vui Lòng Chọn Giờ Chiếu Phim',
                 'start_time.date_format' => 'Định Dạng Giờ Chiếu Yêu Cầu Giờ/Phút/Giây',
-                'end_time.required' => 'Vui Lòng Chọn Giờ Kết Thúc Chiếu Phim',
-                'end_time.date_format' => 'Định Dạng Giờ Kết Thúc Chiếu Phim Yêu Cầu Giờ/Phút/Giây',
-                'end_time.different' => 'Giờ Kết Thúc Chiếu Phim Không Được Trùng Giờ Chiếu Phim',
-                'end_time.after' => 'Giờ Kết Thúc Chiếu Phim Phải Sau Giờ Chiếu Phim',
             ]);
 
             if ($validator->fails()) {
@@ -67,31 +76,48 @@ class ShowTimeController extends Controller
             }
 
             $showtime = ShowTime::create($request->all());
-            
             $showtime = ShowTime::query()->with('room')->find($showtime->id);
-            $capacity = $showtime->room->capacity;
+
+            $single_seat = $showtime->room->single_seat;
+            $double_seat = $showtime->room->double_seat;
+            $special_seat = $showtime->room->special_seat;
 
             if ($showtime) {
-                $type = 'single';
-                $price = Seat::TYPE['single'];
+                $single_price = Seat::TYPE['single'];
+                $double_price = Seat::TYPE['double'];
+                $special_price = Seat::TYPE['special'];
 
-                for ($i = 1; $i <= $capacity; $i++) {
-                    if ($i > 45) {
-                        $type = 'special';
-                        $price = Seat::TYPE['special'];
-                    } elseif ($i > 35 && $i <= 45) {
-                        $type = 'double';
-                        $price = Seat::TYPE['double'];
-                    } else {
-                        $type = 'single';
-                        $price = Seat::TYPE['single'];
-                    }
+                for ($i = 1; $i <= $single_seat; $i++) {
                     Seat::create([
                         'seat_name' => 'A' . $i,
-                        'type' => $type,
+                        'type' => 'single',
                         'showtime_id' => $showtime->id,
                         'status' => 'unbook',
-                        'price' => $price,
+                        'price' => $single_price,
+                        'user_id' => NULL,
+                        'booking_id' => NULL,
+                    ]);
+                }
+
+                for ($i = 1; $i <= $double_seat; $i++) {
+                    Seat::create([
+                        'seat_name' => 'D' . $i,
+                        'type' => 'double',
+                        'showtime_id' => $showtime->id,
+                        'status' => 'unbook',
+                        'price' => $double_price,
+                        'user_id' => NULL,
+                        'booking_id' => NULL,
+                    ]);
+                }
+
+                for ($i = 1; $i <= $special_seat; $i++) {
+                    Seat::create([
+                        'seat_name' => 'S' . $i,
+                        'type' => 'special',
+                        'showtime_id' => $showtime->id,
+                        'status' => 'unbook',
+                        'price' => $special_price,
                         'user_id' => NULL,
                         'booking_id' => NULL,
                     ]);
@@ -119,7 +145,7 @@ class ShowTimeController extends Controller
     public function show(string $id)
     {
         try {
-            $showtime = ShowTime::find($id);
+            $showtime = ShowTime::with('seats')->find($id);
 
             if (!$showtime) {
                 return response()->json([
@@ -150,7 +176,7 @@ class ShowTimeController extends Controller
                 'room_id' => 'required',
                 'show_date' => 'required|date_format:Y/m/d|after_or_equal:today',
                 'start_time' => 'required|date_format:H:i:s',
-                'end_time' => 'required|date_format:H:i:s|different:start_time|after:start_time'
+                // 'end_time' => 'required|date_format:H:i:s|different:start_time|after:start_time'
             ], [
                 'movie_id.required' => 'Vui Lòng Chọn Phim',
                 'room_id.required' => 'Vui Lòng Chọn Phòng Chiếu',
@@ -159,10 +185,10 @@ class ShowTimeController extends Controller
                 'show_date.after_or_equal' => 'Ngày Chiếu Phải Là Ngày Hôm Nay Hoặc Ngày Trong Tương Lai',
                 'start_time.required' => 'Vui Lòng Chọn Giờ Chiếu Phim',
                 'start_time.date_format' => 'Định Dạng Giờ Chiếu Yêu Cầu Giờ/Phút/Giây',
-                'end_time.required' => 'Vui Lòng Chọn Giờ Kết Thúc Chiếu Phim',
-                'end_time.date_format' => 'Định Dạng Giờ Kết Thúc Chiếu Phim Yêu Cầu Giờ/Phút/Giây',
-                'end_time.different' => 'Giờ Kết Thúc Chiếu Phim Không Được Trùng Giờ Chiếu Phim',
-                'end_time.after' => 'Giờ Kết Thúc Chiếu Phim Phải Sau Giờ Chiếu Phim',
+                // 'end_time.required' => 'Vui Lòng Chọn Giờ Kết Thúc Chiếu Phim',
+                // 'end_time.date_format' => 'Định Dạng Giờ Kết Thúc Chiếu Phim Yêu Cầu Giờ/Phút/Giây',
+                // 'end_time.different' => 'Giờ Kết Thúc Chiếu Phim Không Được Trùng Giờ Chiếu Phim',
+                // 'end_time.after' => 'Giờ Kết Thúc Chiếu Phim Phải Sau Giờ Chiếu Phim',
             ]);
 
             if ($validator->fails()) {

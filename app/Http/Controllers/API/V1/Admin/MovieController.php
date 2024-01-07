@@ -207,7 +207,7 @@ class MovieController extends Controller
 
             return response()->json([
                 'message' => 'Xoá phim thành công'
-            ], Response::HTTP_NO_CONTENT);
+            ], Response::HTTP_OK);
         } catch (\Exception $exception) {
             Log::error('API/V1/Admin/MovieController@destroy: ', [$exception->getMessage()]);
 

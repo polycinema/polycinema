@@ -1,42 +1,36 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Popconfirm, Space, Table, message } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import { Link } from 'react-router-dom';
-import { IBanner, getAllBanner, removeBanner } from '../../../api/Banner';
+import React, { useEffect, useState } from "react";
+import { Button, Popconfirm, Space, Table, message } from "antd";
+import type { ColumnsType } from "antd/es/table";
+import { Link } from "react-router-dom";
+import { IBanner, getAllBanner, removeBanner } from "../../../api/Banner";
 
 interface DataType {
   key: string;
   name: string;
 }
 
-
 const ListBanner = (props: Props) => {
-  const [banner, setBanner] = useState<IBanner[]>()
-  const [messageApi, contextHolder] = message.useMessage()
+  const [banner, setBanner] = useState<IBanner[]>();
+  const [messageApi, contextHolder] = message.useMessage();
   useEffect(() => {
-    (
-      async () => {
-        try {
-          const { data } = await getAllBanner()
-          setBanner(data.data);
-
-        } catch (error) {
-          console.log(error);
-
-        }
+    (async () => {
+      try {
+        const { data } = await getAllBanner();
+        setBanner(data.data);
+      } catch (error) {
+        console.log(error);
       }
-    )()
-
-  }, [])
+    })();
+  }, []);
   const columns: ColumnsType<DataType> = [
     {
-      title: "Image",
+      title: "Ảnh banner",
       dataIndex: "image",
       key: "image",
       render: (img) => <img className="w-40" src={img} alt="anh" />,
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
@@ -49,21 +43,17 @@ const ListBanner = (props: Props) => {
               description="Bạn có chắc chắn muốn xóa banner"
               onConfirm={() => {
                 removeBanner(id).then(() => {
-                  setBanner(banner?.filter((item: IBanner) => item.id !== id))
+                  setBanner(banner?.filter((item: IBanner) => item.id !== id));
                   messageApi.open({
                     type: "success",
-                    content: "Xóa banner thành công"
-                  })
-                })
-
+                    content: "Xóa banner thành công",
+                  });
+                });
               }}
               okText="Có"
               cancelText="Không"
             >
-              <Button danger >
-                Delete
-              </Button>
-
+              <Button danger>Delete</Button>
             </Popconfirm>
           </div>
         </Space>
@@ -71,13 +61,12 @@ const ListBanner = (props: Props) => {
     },
   ];
 
-
   const data: DataType[] = banner?.map((item: IBanner) => {
     return {
       key: item?.id,
       image: item?.name,
-    }
-  })
+    };
+  });
   return (
     <>
       {contextHolder}
@@ -85,12 +74,11 @@ const ListBanner = (props: Props) => {
         <Button>
           <Link to={"/admin/banner/add"}>Thêm banner</Link>
         </Button>
-        <h1 className="text-2xl m-6 ">Danh sách ảnh banner</h1>
-        <Table columns={columns}  dataSource={data}/>;
+        <h1 className="text-2xl mb-6 mt-2 bg-white p-4 rounded-md shadow-md ">Danh sách ảnh banner</h1>
+        <Table columns={columns} dataSource={data} className="bg-white p-4 rounded-md shadow-md" />
       </div>
     </>
+  );
+};
 
-  )
-}
-
-export default ListBanner
+export default ListBanner;

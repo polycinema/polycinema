@@ -1,13 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IShowTime } from "../../interfaces/showtime";
-import { pause } from "../../utils/pause";
 const showtimeApi = createApi({
     reducerPath: "showtime",
     tagTypes: ['showtime'],
     baseQuery: fetchBaseQuery({
-        baseUrl:  `http://localhost:8000/api/v1`,
+        baseUrl:  import.meta.env.VITE_API_URL,
         fetchFn: async (...arg) => {
-            await pause(1500);
             return await fetch(...arg);
         },
     }),
@@ -27,6 +25,12 @@ const showtimeApi = createApi({
         getByIdShowTime: build.query({
             query: (id) => ({
                 url: `/admin/showtime/${id}`,
+            }),
+            providesTags:['showtime']
+        }),
+        getShowtimeByIDMovie: build.query({
+            query: (mvId) => ({
+                url: `/showtimes/${mvId}`,
             }),
             providesTags:['showtime']
         }),
@@ -61,7 +65,8 @@ export const {
     useCreateShowTimeMutation,
     useRemoveShowTimeMutation,
     useUpdateShowTimeMutation,
-    useGetShowTimesMovieQuery
+    useGetShowTimesMovieQuery,
+    useGetShowtimeByIDMovieQuery
 } = showtimeApi;
 export const showtimeReducer = showtimeApi.reducer;
 export default showtimeApi

@@ -71,7 +71,7 @@ const MoviePage = () => {
   const handleCancelModalStartTime = () => {
     setIsModalOpenStartTime(false);
   };
-  const showModalStartTime = (movies) => {
+  const showModalStartTime = (movies: any) => {
     setSelectedMovieModalTime(movies);
     setIsModalOpenStartTime(true);
   };
@@ -107,19 +107,10 @@ const MoviePage = () => {
           })}
         </ul>
       </div>
-      <div className=""></div>
       {/* <ListMovie /> */}
       {showtime?.map((movie: Showtime, index: number) => {
         return (
           <div className="md:max-w-[1150px] max-w-xs mx-auto my-10" key={index}>
-            <Modal
-              title={`Trailer: ${selectedMovie?.name}`}
-              open={isModalOpenTrailer}
-              width={700}
-              onCancel={handleCancel}
-            >
-              <YouTube videoId={selectedMovie?.trailer} />
-            </Modal>
             <div className="grid grid-cols-2 md:grid-cols-3">
               <div
                 className="relative md:w-[310px] w-[130px] group"
@@ -159,49 +150,12 @@ const MoviePage = () => {
                 <div className="space-y-2 mt-3">
                   <p>2D PHỤ ĐỀ</p>
                   <button
-                      className="bg-gray-300 px-2 py-1 "
-                      onClick={() => showModalStartTime(movie)}
-                    >
-                      {movie.start_time}
-                    </button>
-                    <p className="text-xs">{movie.available_seat} ghế trống</p>
-                  <Modal
-                    title={`Bạn đang đặt vé xem phim`}
-                    open={isModalOpenStartTime}
-                    width={700}
-                    onCancel={handleCancelModalStartTime}
+                    className="bg-gray-300 px-2 py-1 "
+                    onClick={() => showModalStartTime(movie)}
                   >
-                    <>
-                      <h4 className="text-center text-3xl text-[#03599d] pt-4">
-                        {selectedMovieModalTime?.movie.name}
-                      </h4>
-                      <table className="w-full my-8 ">
-                        <tr className="text-center border-b  ">
-                          <td className="text-xl p-4">Ngày chiếu</td>
-                          <td className="text-xl p-4">Giờ Chiếu</td>
-                        </tr>
-                        <tr className="text-center">
-                          <td className="p-4 text-xl">
-                            {dayjs(showtimesByChange[0]?.show_date).format(
-                              "DD/MM"
-                            )}
-                          </td>
-                          <td className="p-4 text-xl">
-                            {selectedMovieModalTime?.start_time}
-                          </td>
-                        </tr>
-                      </table>
-                      <div className="text-center">
-                        <ButtonCustom width="20%">
-                          <Link
-                            to={`/poly-checkout/${selectedMovieModalTime?.showtime_id}`}
-                          >
-                            Đồng Ý
-                          </Link>
-                        </ButtonCustom>
-                      </div>
-                    </>
-                  </Modal>
+                    {movie.start_time}
+                  </button>
+                  <p className="text-xs">{movie.available_seat} ghế trống</p>
                 </div>
               </div>
             </div>
@@ -266,6 +220,49 @@ const MoviePage = () => {
           </div>
         </div>
       </div>
+      <Modal
+        title={`Bạn đang đặt vé xem phim`}
+        open={isModalOpenStartTime}
+        width={700}
+        onCancel={handleCancelModalStartTime}
+      >
+        <>
+          <h4 className="text-center text-3xl text-[#03599d] pt-4">
+            {selectedMovieModalTime?.movie.name}
+          </h4>
+          <table className="w-full my-8 ">
+            <tr className="text-center border-b  ">
+              <td className="text-xl p-4">Ngày chiếu</td>
+              <td className="text-xl p-4">Giờ Chiếu</td>
+            </tr>
+            <tr className="text-center">
+              <td className="p-4 text-xl">
+                {dayjs(showtimesByChange[0]?.show_date).format("DD/MM")}
+              </td>
+              <td className="p-4 text-xl">
+                {selectedMovieModalTime?.start_time}
+              </td>
+            </tr>
+          </table>
+          <div className="text-center">
+            <ButtonCustom width="20%">
+              <Link
+                to={`/poly-checkout/${selectedMovieModalTime?.showtime_id}`}
+              >
+                Đồng Ý
+              </Link>
+            </ButtonCustom>
+          </div>
+        </>
+      </Modal>
+      <Modal
+        title={`Trailer: ${selectedMovie?.name}`}
+        open={isModalOpenTrailer}
+        width={700}
+        onCancel={handleCancel}
+      >
+        <YouTube videoId={selectedMovie?.trailer} />
+      </Modal>
     </div>
   );
 };

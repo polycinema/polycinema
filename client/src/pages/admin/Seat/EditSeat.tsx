@@ -4,14 +4,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { ISeat, getSeatById, updateSeat } from "../../../api/Seat";
 import { pause } from "../../../utils/pause";
-import { IRoom, getAllRoom } from '../../../api/room';
 type FieldType = {
         seat_name: string;
         type: string;
         room_id: number;
            
 };
-const EditSeat = (props: Props) => {
+const EditSeat = () => {
         
 const { Option } = Select;
   const { id } = useParams();
@@ -96,7 +95,7 @@ const { Option } = Select;
                                         autoComplete="off"
                                 >
                                         <Form.Item<FieldType>
-                                                label="Seat Name"
+                                                label="Tên ghế"
                                                 name="seat_name"
                                                 rules={[{ required: true, message: 'Please input your name!' }]}
                                         >
@@ -105,7 +104,7 @@ const { Option } = Select;
 
                                         <Form.Item
                                          name="type"
-                                         label="Type"
+                                         label="Dạng ghế"
                                         rules={[{ required: true, message: 'Please select the type!' }]}
                                         >
                                         <Select placeholder="Select type">
@@ -116,7 +115,7 @@ const { Option } = Select;
                                         
                                         </Form.Item>
                                         <Form.Item<FieldType>
-                                                label="price"
+                                                label="Giá ghế"
                                                 name="price"
                                                 rules={[{ required: true, message: 'Please input your name!' }]}
                                         >
@@ -131,7 +130,7 @@ const { Option } = Select;
                                         </Form.Item>
                                         <Form.Item
                                          name="status"
-                                         label="status"
+                                         label="Trạng thái"
                                         rules={[{ required: true, message: 'Please select the type!' }]}
                                         >
                                         <Select placeholder="Select type">

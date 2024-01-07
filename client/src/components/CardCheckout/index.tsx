@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { Link } from "react-router-dom";
 import { setBooking } from "../../redux/slices/valueCheckoutSlice";
+import { message } from "antd";
 type Props = {
   showtime: any,
   isLoading: boolean,
@@ -58,7 +59,7 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
           <p className="flex items-center text-[14px]">
             <FaHistory /> <span>Thời lượng</span>
           </p>
-          <p className="font-bold text-[14px]">{showtime?.data?.movie?.duration}</p>
+          <p className="font-bold text-[14px]">{showtime?.data?.movie?.duration} phút</p>
         </div>
       </div>
       <div>
@@ -86,29 +87,31 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
           </p>
         </div>
         <div
-          className="grid grid-cols-2 items-center ml-12  gap-14 mt-8 
-                                "
+          className="grid grid-cols-2 items-center ml-12  gap-14 mt-8 "
         >
           <p className="flex items-center text-[14px] ">
             <FaDesktop /> <span>Ghế ngồi</span>
           </p>
           <p className="flex flex-wrap font-bold text-[14px]">
-            {showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id).map((item: any) => <span>
+            {showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id).map((item: any) => <span key={item?.id}>
               {item?.seat_name},
             </span>)}
           </p>
         </div>
       </div>
       <div className="flex justify-center space-x-2">
-        <Link to={"/poly-payment"}>
+      {showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id).length === 0 
+        ? null 
+        :<Link to={"/poly-payment"}>
           <Button
             width="100px"
             onClick={() => {
               booking({
                 products: product,
                 movie_id: showtime?.data?.movie.id,
+                showtime:showtime?.data,
                 user_id: user.id,
-                showtime_id: showtime.data.id,
+                showtime_id: showtime?.data?.id,
                 seats: showtime?.data?.seats?.filter((item: any) => item?.status == 'booking' && item?.user_id == user?.id),
                 total_price: stateProducts.reduce((sum: any, item: any) => {
                   return sum + item?.price * item?.quantity;
@@ -123,6 +126,8 @@ const CardCheckout = ({ showtime, isLoading, user }: Props) => {
             Tiếp tục
           </Button>
         </Link>
+        }
+        
       </div>
     </div>
   );

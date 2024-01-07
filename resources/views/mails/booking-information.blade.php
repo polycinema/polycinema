@@ -8,5 +8,14 @@
 </head>
 <body>
     <h2>BOOKING INFORMATION MAIL</h2>
+    
+    {{ SimpleSoftwareIO\QrCode\Facades\QrCode::generate(utf8_decode("
+        
+        Tên khác hàng:Nguyen Nho Giang,
+        Email:nhogiang03tg@gmail.com,
+        Phòng:A-1,
+        Ghế:A1,
+        
+        ")) }}
 </body>
 </html>

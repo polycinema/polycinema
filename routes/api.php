@@ -4,6 +4,7 @@ use App\Http\Controllers\API\Auth\AuthenController;
 use App\Http\Controllers\API\V1\BookingController;
 use App\Http\Controllers\API\V1\CouponController;
 use App\Http\Controllers\API\V1\MovieController;
+use App\Http\Controllers\API\V1\NewpasswordController;
 use App\Http\Controllers\API\V1\SeatController;
 use App\Http\Controllers\API\V1\ProfileController;
 use App\Http\Controllers\API\V1\StatisticController;
@@ -79,4 +80,24 @@ Route::prefix('v1')->group(function () {
 
     Route::post('not-yet-booking/{booking_id}', [BookingController::class, 'setStatusBookingToNotYet']);
 
+    Route::get('bookings/{id}', [BookingController::class, 'show']);
+
+    Route::get('bookings/user/{userId}', [BookingController::class, 'bookingsByUser']);
+
+    Route::get('get-movie-have-showtime', [MovieController::class, 'getMovieHaveShowTime']);
+
+    Route::post('statistc-in-range', [StatisticController::class, 'getStatisticInRange']);
+
+    Route::get('top-movies', [StatisticController::class, 'getTopMoviesByRevenue']);
+
+    Route::post('forgot-password', [NewpasswordController::class, 'forgotPassword']);
+
+    Route::post('reset-password', [NewpasswordController::class, 'reset']);
+
+    Route::post('statistc-by-movie/{movie_id}', [StatisticController::class, 'getStatisticByMovie']);
+
+    Route::get('change-level-booking/{booking_id}', [BookingController::class, 'changeLevelBooking']);
+    // tìm booking theo booking_id (không phải là id của bảng bookings)
+    Route::post('find-booking', [BookingController::class, 'findBookingByBookingID']);
+    
 });

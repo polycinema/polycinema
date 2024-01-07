@@ -1,12 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IShowTime } from "../../interfaces/showtime";
-import { pause } from "../../utils/pause";
 const showtimeMovieApi = createApi({
     reducerPath: "Movie",
     baseQuery: fetchBaseQuery({
-        baseUrl:  "http://localhost:8000/api/v1",
+        baseUrl:  import.meta.env.VITE_API_URL,
         fetchFn: async (...arg) => {
-            await pause(1500);
             return await fetch(...arg);
           },
     }),

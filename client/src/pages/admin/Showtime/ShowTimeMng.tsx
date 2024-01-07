@@ -3,29 +3,23 @@ import {
   useGetShowTimesQuery,
   useRemoveShowTimeMutation,
 } from "../../../redux/api/showTimeApi";
-import { IShowTime } from "../../../interfaces/showtime";
+import { IShowtime } from "../../../interfaces/showtime";
 import { Link } from "react-router-dom";
 import { DeleteOutlined, EditFilled } from "@ant-design/icons";
 import IsLoading from "../../../utils/IsLoading";
 import { useEffect, useState } from "react";
+import GarbageComponent from "../../../components/Garbage";
 
 const ShowTimeMng = () => {
   const { data, isLoading, error }: any = useGetShowTimesQuery();
   const [removeShowtime, { error: ErrorRemove }] = useRemoveShowTimeMutation();
-  const [rooms, setRooms] = useState();
-  const [movies, setMovies] = useState();
-
-  // console.log("id room: ", rooms);
-  // console.log("id movies: ", movies);
-
+  const [showtime, setShowtime] = useState([]);
   useEffect(() => {
     if (data) {
-      const roomIds = data.data.map(({ room_id }: any) => room_id);
-      const movieIds = data.data.map(({ movie_id }: any) => movie_id);
-      setRooms(roomIds); // Cập nhật giá trị của rooms
-      setMovies(movieIds); // Cập nhật giá trị của movies
+      setShowtime(data.data);
     }
   }, [data]);
+  console.log("showtime: ", showtime);
   if (ErrorRemove) {
     notification.error({ message: "Removie showtime error!" });
     console.error("error remove: ", ErrorRemove);
@@ -42,51 +36,41 @@ const ShowTimeMng = () => {
     );
   }
 
-  const dataSource: IShowTime[] = data?.data?.map(
-    ({ room_id, movie_id, start_time, end_time, id, show_date }: IShowTime) => {
-      return {
-        key: id,
-        room_id,
-        movie_id,
-        start_time,
-        end_time,
-        show_date,
-      };
-    }
-  );
-  // console.log("dataSource: ", dataSource);
+  const dataSource: IShowtime[] = showtime?.map((items: IShowtime) => {
+    return {
+      key: items.id,
+      room_id: items?.room?.room_name,
+      movie_id: items?.movie.name,
+      start_time: items?.start_time,
+      show_date: items?.show_date,
+    };
+  });
   const columns: any[] = [
     {
-      title: "Room",
+      title: "Phòng chiếu",
       dataIndex: "room_id",
       key: "1",
     },
     {
-      title: "Movie",
+      title: "Phim",
       dataIndex: "movie_id",
       key: "2",
     },
     {
-      title: "Start Time",
+      title: "Thời gian bắt đầu",
       dataIndex: "start_time",
       key: "3",
     },
     {
-      title: "End Time",
-      dataIndex: "end_time",
-      key: "4",
-    },
-    {
-      title: "Show date",
+      title: "Ngày chiếu",
       dataIndex: "show_date",
       key: "5",
     },
     {
-      title: "Actions",
+      title: "Hành động",
       dataIndex: "actions",
       key: "6",
       render: (_: any, { key: id }: any) => {
-        // console.log(id);
         return (
           <div className="space-x-3">
             <Link to={`/admin/showtime/${id}/edit`}>
@@ -98,13 +82,16 @@ const ShowTimeMng = () => {
               title="Xóa lịch chiếu"
               description="Bạn có chắc muốn xóa?"
               onConfirm={() =>
-                removeShowtime(id).unwrap().then(()=>{
-                  notification.success({
-                    message: "Delete showtime sucessfuly!",
-                  });
-                })
+                removeShowtime(id)
+                  .unwrap()
+                  .then(() => {
+                    notification.success({
+                      message: "Delete showtime sucessfuly!",
+                    });
+                  })
               }
               okText="Yes"
+              okType="default"
               cancelText="No"
             >
               <Button type="text" danger>
@@ -118,11 +105,16 @@ const ShowTimeMng = () => {
   ];
   return (
     <div>
-      <Button>
-        <Link to={"/admin/showtime/add"}>Thêm Lịch Chiếu</Link>
-      </Button>
-      <h1 className="text-2xl m-6 ">ShowTime</h1>
-      <Table dataSource={dataSource} columns={columns} />;
+      <div className="md:flex justify-between items-center">
+        <Button>
+          <Link to={"/admin/showtime/add"}>Thêm Lịch Chiếu</Link>
+        </Button>
+        <div className="">
+          <GarbageComponent />
+        </div>
+      </div>
+      <h1 className="text-2xl my-6 bg-white p-4 rounded-md shadow-md ">Danh sách lịch chiếu</h1>
+      <Table dataSource={dataSource} columns={columns} className="bg-white p-4 rounded-md shadow-md" />;
     </div>
   );
 };

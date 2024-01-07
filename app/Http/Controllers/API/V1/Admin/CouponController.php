@@ -58,7 +58,8 @@ class CouponController extends Controller
                     },
                 ],
                 'expires_at' => 'required|date',
-                'quantity' => 'required|numeric|min:0'
+                'quantity' => 'required|numeric|min:0',
+                'min_order_value' => 'nullable|numeric|min:0'
             ], [
                 'coupon_code.required' => 'Trường Mã Giảm Giá Không Được Trống',
                 'coupon_code.string' => 'Trường Mã Giảm Giá Phải Là Một Chuỗi',
@@ -67,10 +68,12 @@ class CouponController extends Controller
                 'description.string' => 'Trường Mô Tả Mã Giảm Giá Phải Là Một Chuỗi',
                 'type.required' => 'Trường Loại Mã Giảm Giá Không Được Để Trống',
                 'expires_at.required' => 'Trường Thời Hạn Mã Giảm Giá Không Được Để Trống',
-                'expires_at.date' => 'Trường Thời Hạn Mã Giảm Giá Phải Theo Dạng YYYY/MM/DD hh:mm:ss',
+                'expires_at.date' => 'Trường Thời Hạn Mã Giảm Giá Phải Theo Dạng YYYY/MM/DD',
                 'quantity.required' => 'Trường Số Lượng Không Được Để Trống',
                 'quantity.numeric' => 'Số Lượng Mã Giảm Giá Không Hợp Lệ',
                 'quantity.min' => 'Số Lượng Mã Giảm Giá Phải Lớn Hơn 0',
+                'min_order_value.numeric' => 'Giá Trị Mã Giảm Giá Phải Là Số Nguyên',
+                'min_order_value.min' => 'Giá Trị Mã Giảm Giá Phải Phải Lớn Hơn 0',
             ]);
 
             if ($validator->fails()) {
@@ -139,7 +142,8 @@ class CouponController extends Controller
                     },
                 ],
                 'expires_at' => 'required|date',
-                'quantity' => 'required|numeric|min:0'
+                'quantity' => 'required|numeric|min:0',
+                'min_order_value' => 'nullable|numeric|min:0'
             ], [
                 'coupon_code.required' => 'Trường Mã Giảm Giá Không Được Trống',
                 'coupon_code.string' => 'Trường Mã Giảm Giá Phải Là Một Chuỗi',
@@ -152,6 +156,8 @@ class CouponController extends Controller
                 'quantity.required' => 'Trường Số Lượng Không Được Để Trống',
                 'quantity.numeric' => 'Số Lượng Mã Giảm Giá Không Hợp Lệ',
                 'quantity.min' => 'Số Lượng Mã Giảm Giá Phải Lớn Hơn 0',
+                'min_order_value.numeric' => 'Giá Trị Mã Giảm Giá Phải Là Số Nguyên',
+                'min_order_value.min' => 'Giá Trị Mã Giảm Giá Phải Phải Lớn Hơn 0',
             ]);
 
             if ($validator->fails()) {

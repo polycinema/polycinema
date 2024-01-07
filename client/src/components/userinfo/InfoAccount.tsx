@@ -4,27 +4,102 @@ import {
   Col,
   DatePicker,
   Form,
+  Image,
   Input,
   Row,
   Select,
   Upload,
+  UploadProps,
+  message,
+  notification,
 } from "antd";
 import { Option } from "antd/es/mentions";
-import React from "react";
+import { useAppSelector } from "../../store/hook";
+import { useEffect, useState } from "react";
+import {
+  useGetUserByIdQuery,
+  useUpdateProfileMutation,
+} from "../../redux/api/authApi";
+import dayjs from "dayjs";
 
 const InfoAccount = () => {
+  const { user }: any = useAppSelector((state) => state.Authorization);
+  const [form] = Form.useForm();
+  const [updateProfile, { isLoading, error }] = useUpdateProfileMutation();
+  const [urlImage, setUrlImage] = useState<string>();
+  const { data: UserById } = useGetUserByIdQuery(user.id);
+
+  useEffect(() => {
+    (async () => {
+      await form.setFieldsValue({
+        name: UserById?.data.name,
+        phone: UserById?.data.phone,
+        email: UserById?.data.email,
+        date_of_birth: dayjs(UserById?.data.date_of_birth),
+        gender: UserById?.data.gender,
+        // image: UserById?.data.image,
+        // UserById_id: user?.id
+      });
+    })();
+  }, [UserById]);
+  const onFinish = (value: User) => {
+    console.log("value: ", value);
+
+    updateProfile({
+      name: value.name,
+      phone: value.phone,
+      email: value.email,
+      date_of_birth: dayjs(value.date_of_birth).format("YYYY/MM/DD"),
+      image: urlImage,
+      gender: value.gender,
+      user_id: user.id,
+    })
+      .unwrap()
+      .then((user) => {
+        try {
+          console.log("user update: ", user);
+          notification.success({ message: "update profile successfully" });
+          // navigate("/admin/showtime");
+        } catch (error) {
+          console.error("error update profile: ", error);
+        }
+      });
+  };
+  const props: UploadProps = {
+    name: "file",
+    action: "https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload",
+    data: { upload_preset: "upload" },
+    onChange(info) {
+      if (info.file.status !== "uploading") {
+        // console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        setUrlImage(info.file.response.url);
+        message.open({
+          type: "success",
+          content: "Upload ảnh thành công",
+        });
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
   return (
     <div className="max-w-4xl mx-auto">
-      <Form layout="vertical">
+      <Form layout="vertical" form={form} onFinish={onFinish}>
         <Form.Item>
-          <Upload>
+          <Upload {...props}>
             <Button icon={<UploadOutlined />}>Click to Upload</Button>
           </Upload>
+          <Image
+            width={200}
+            src={UserById?.data.image}
+          />
         </Form.Item>
         <Row gutter={32}>
           <Col span={12}>
             <Form.Item
-              name={"username"}
+              name={"name"}
               label="Họ Tên"
               rules={[{ required: true, message: "Vui lòng nhập họ tên" }]}
             >
@@ -40,28 +115,6 @@ const InfoAccount = () => {
               <Input prefix={<PhoneOutlined />} placeholder="SĐT" />
             </Form.Item>
             <Form.Item
-              name={"birth"}
-              label="Ngày Sinh"
-              rules={[{ required: true, message: "Vui lòng nhập ngày sinh" }]}
-            >
-              <DatePicker />
-            </Form.Item>
-            <Form.Item
-              name={"city"}
-              label="Tỉnh/Thành phố"
-              rules={[
-                { required: true, message: "Vui lòng nhập tỉnh, thành phố" },
-              ]}
-            >
-              <Select placeholder="Tỉnh/Thành Phố" allowClear>
-                <Option value="male">Hà Nội</Option>
-                <Option value="female">Vĩnh Phúc</Option>
-                <Option value="other">Hải Dương</Option>
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
               name="email"
               label="Email"
               rules={[
@@ -74,18 +127,14 @@ const InfoAccount = () => {
             >
               <Input placeholder="Email" />
             </Form.Item>
+          </Col>
+          <Col span={12}>
             <Form.Item
-              name="idcart"
-              label="CCCD/Hộ Chiếu"
-              rules={[
-                {
-                  required: true,
-                  type: "email",
-                  message: "Vui lòng nhập ID Cart",
-                },
-              ]}
+              name={"date_of_birth"}
+              label="Ngày Sinh"
+              rules={[{ required: true, message: "Vui lòng nhập ngày sinh" }]}
             >
-              <Input placeholder="CCCD/Hộ Chiếu" />
+              <DatePicker />
             </Form.Item>
             <Form.Item
               name={"gender"}
@@ -98,26 +147,9 @@ const InfoAccount = () => {
                 <Option value="other">Khác</Option>
               </Select>
             </Form.Item>
-            <Form.Item
-              name={"district"}
-              label="Quận/Huyện"
-              rules={[{ required: true, message: "Vui lòng nhập quận/huyện" }]}
-            >
-              <Select placeholder="Quận/Huyện" allowClear>
-                <Option value="male">Mê Linh</Option>
-                <Option value="female">Nam Từ Liêm</Option>
-                <Option value="other">Cầu Giấy</Option>
-              </Select>
-            </Form.Item>
           </Col>
         </Row>
-        <Form.Item
-          name={"address"}
-          label="Địa Chỉ"
-          rules={[{ required: true, message: "Vui lòng nhập địa chỉ" }]}
-        >
-          <Input.TextArea placeholder="Địa chỉ" />
-        </Form.Item>
+
         <Form.Item>
           <Button type="link">Đổi mật khẩu</Button>
         </Form.Item>
@@ -130,3 +162,18 @@ const InfoAccount = () => {
 };
 
 export default InfoAccount;
+interface User {
+  id: number;
+  name: string;
+  full_name?: any;
+  image?: any;
+  email: string;
+  email_verified_at?: any;
+  role: string;
+  phone?: any;
+  date_of_birth?: any;
+  gender?: any;
+  deleted_at?: any;
+  created_at: string;
+  updated_at: string;
+}

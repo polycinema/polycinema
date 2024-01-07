@@ -5,7 +5,6 @@ import {
   Form,
   Select,
   TimePicker,
-  notification,
 } from "antd";
 import { useEffect, useState } from "react";
 import {
@@ -17,11 +16,12 @@ import dayjs from "dayjs";
 import IsLoading from "../../../utils/IsLoading";
 import { useGetAllMoviesQuery } from "../../../redux/api/movieApi";
 import { getAllRoom } from "../../../api/room";
+import swal from "sweetalert";
 
 const UpdateShowTime = () => {
   const { id } = useParams();
   const [form] = Form.useForm();
-  const [updateShowTime, { isLoading, error }] = useUpdateShowTimeMutation();
+  const [updateShowTime, { isLoading }] = useUpdateShowTimeMutation();
   const { data }: any = useGetByIdShowTimeQuery(id);
   const { data: MovieData, error: errorMovie }: any = useGetAllMoviesQuery();
   const [roomData, setRoomData] = useState();
@@ -47,7 +47,6 @@ const UpdateShowTime = () => {
         room_id: data?.data.room_id,
         show_date: dayjs(data?.data?.show_date, "YYYY/MM/DD"),
         start_time: dayjs(data?.data?.start_time, "HH:mm:ss"),
-        end_time: dayjs(data?.data?.end_time, "HH:mm:ss"),
       });
     })();
   }, [data?.data, form]);
@@ -59,54 +58,46 @@ const UpdateShowTime = () => {
       </>
     );
   }
-  if (errorMovie) {
-    notification.error({ message: "Get list movie error!" });
-    console.error("error get list movie: ", error);
-  }
-  if (error) {
-    notification.error({ message: "Update showtime error!" });
-    console.error("error update showtime: ", error);
-  }
-  const onFinish = ({
-    start_time,
-    end_time,
-    movie_id,
-    room_id,
-    show_date,
-  }: any) => {
-    // console.log('room_id: ',room_id)
-    // console.log('movie_id: ',movie_id)
+  
+  const onFinish = ({ start_time, movie_id, room_id, show_date }: any) => {
     updateShowTime({
       start_time: dayjs(start_time).format("HH:mm:ss"),
-      end_time: dayjs(end_time).format("HH:mm:ss"),
       movie_id,
       room_id,
       show_date: dayjs(show_date).format("YYYY/MM/DD"),
       id,
     })
       .unwrap()
-      .then(() => {
-        try {
-          notification.success({ message: "update showtime successfully" });
-          navigate("/admin/showtime");
-        } catch (error) {
-          console.error("error update showtime: ", error);
-        }
-      });
+      .then(async () => {
+        form.resetFields()
+        await swal("Thành công!", "Cập nhật lịch chiếu thành công!", "success");
+        navigate("/admin/showtime");
+      })
+      .catch((err) => {
+        swal("Thất bại!",`${err.message}`, "error");
+      })
   };
   return (
     <div>
-      <Form onFinish={onFinish} form={form}>
+      <h1 className="bg-white p-4 rounded-md shadow-md my-4 text-4xl">Cập nhật lịch chiếu</h1>
+      <Form
+        name="basic"
+        labelCol={{ span: 5 }}
+        wrapperCol={{ span: 16 }}
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        form={form}
+        className="bg-white p-4 rounded-md shadow-md"
+      >
         <Form.Item
           name={"movie_id"}
           label={"Movie"}
           rules={[
             { message: "Trường movie không được để trống! ", required: true },
           ]}
-          style={{ width: 200 }}
         >
           <Select
-            style={{ width: 120 }}
+            style={{ width: "100%" }}
             placeholder="Select to movie"
             options={movieData?.map((items: any) => {
               return {
@@ -122,10 +113,9 @@ const UpdateShowTime = () => {
           rules={[
             { message: "Trường room không được để trống! ", required: true },
           ]}
-          style={{ width: 200 }}
         >
           <Select
-            style={{ width: 120 }}
+            style={{ width: "100%" }}
             placeholder="Select to room"
             options={roomData?.map((items: any) => {
               return {
@@ -145,30 +135,7 @@ const UpdateShowTime = () => {
             },
           ]}
         >
-          <TimePicker format="HH:mm:ss" />
-        </Form.Item>
-        <Form.Item
-          name={"end_time"}
-          label={"End time"}
-          rules={[
-            {
-              message: "Trường end time không được để trống! ",
-              required: true,
-            },
-            ({ getFieldValue }) => ({
-              validator(_, values) {
-                const startTime = getFieldValue('start_time');
-          
-                if (!values || (startTime && startTime.isBefore(values))) {
-                  return Promise.resolve();
-                } else {
-                  return Promise.reject(new Error('Giờ kết thúc phải sau giờ chiếu'));
-                }
-              },
-            })
-          ]}
-        >
-          <TimePicker format="HH:mm:ss" />
+          <TimePicker style={{ width: "100%" }} format="HH:mm:ss" />
         </Form.Item>
         <Form.Item
           name={"show_date"}
@@ -180,9 +147,9 @@ const UpdateShowTime = () => {
             },
           ]}
         >
-          <DatePicker />
+          <DatePicker style={{ width: "100%" }} />
         </Form.Item>
-        <Form.Item>
+        <Form.Item label="Tác vụ">
           <Button icon={<VerticalAlignTopOutlined />} htmlType="submit" />
         </Form.Item>
       </Form>

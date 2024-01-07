@@ -1,18 +1,20 @@
 // import { UploadOutlined } from "@ant-design/icons";
-import { Form, Input } from "antd";
-import { Button, message } from "antd";
+import { Form, Input, InputNumber } from "antd";
+import { Button } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { IRoom, getRoomById, updateRoom } from "../../../api/room";
-import { pause } from "../../../utils/pause";
+import { VerticalAlignTopOutlined } from "@ant-design/icons";
+import swal from "sweetalert";
 type FieldType = {
   room_name?: string;
-  capacity?: number;
+  single_seat?: number;
+  double_seat?: number;
+  special_seat?: number;
 };
-const EditRoom = (props: Props) => {
+const EditRoom = () => {
   const { id } = useParams();
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
   const [room, setRoom] = useState<IRoom>();
   console.log(room);
@@ -30,45 +32,37 @@ const EditRoom = (props: Props) => {
     form.setFieldsValue({
       id: room?.id,
       room_name: room?.room_name,
-      capacity: room?.capacity,
+      single_seat: room?.single_seat,
+      double_seat: room?.double_seat,
+      special_seat: room?.special_seat,
     });
   }, [room]);
 
   const onFinish = (values) => {
-
     updateRoom({ id: id, ...values })
-      .then(async () => {
-        form.resetFields();
-        messageApi.open({
-          type: "success",
-          content: "Cập nhập phòng thành công, Chuyển trang sau 3s",
-        });
-        await pause(3000);
-        navigate("/admin/rooms");
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed", errorInfo);
+    .then(async () => {
+      form.resetFields();
+      await swal("Thành công!", "Cập nhật phòng thành công!", "success");
+      navigate("/admin/rooms");
+    })
+    .catch(() => {
+      swal("Thất bại!", "Cập nhật phòng thất bại, Vui lòng thử lại !", "error");
+    });
   };
 
   return (
     <>
-      {contextHolder}
       <div className="addFilmAdmin">
-        <h2 className="text-xl uppercase font-bold mb-4">Cập nhật Phòng </h2>
+        <h2 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">Cập nhật Phòng </h2>
         <Form
           form={form}
           name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 10 }}
-          style={{ maxWidth: 600 }}
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 16 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
+          className="bg-white p-4 rounded-md shadow-md"
         >
           <Form.Item<FieldType>
             label="Tên phòng"
@@ -79,16 +73,46 @@ const EditRoom = (props: Props) => {
           </Form.Item>
 
           <Form.Item<FieldType>
-            label="Số Phòng"
-            name="capacity"
+            label="Ghế thường"
+            name="single_seat"
             rules={[{ required: true, message: "Please input your room!" }]}
           >
-            <Input />
+            <InputNumber
+              style={{ width: "100%" }}
+              min={0}
+              max={60}
+              defaultValue={0}
+            />
+          </Form.Item>
+          <Form.Item<FieldType>
+            label="Ghế đôi"
+            name="double_seat"
+            rules={[{ required: true, message: "Please input your room!" }]}
+          >
+            <InputNumber
+              style={{ width: "100%" }}
+              min={0}
+              max={30}
+              defaultValue={0}
+            />
+          </Form.Item>
+          <Form.Item<FieldType>
+            label="Ghế VIP"
+            name="special_seat"
+            rules={[{ required: true, message: "Please input your room!" }]}
+          >
+            <InputNumber
+              style={{ width: "100%" }}
+              min={0}
+              max={20}
+              defaultValue={0}
+            />
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }} label="Tác vụ">
-            {contextHolder}
-            <Button htmlType="submit">Cập nhật phòng </Button>
+          <Form.Item label="Tác vụ">
+            <Button htmlType="submit">
+              <VerticalAlignTopOutlined />{" "}
+            </Button>
           </Form.Item>
         </Form>
       </div>

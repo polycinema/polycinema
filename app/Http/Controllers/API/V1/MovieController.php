@@ -76,15 +76,18 @@ class MovieController extends Controller
             $movie_name = Movie::find($movieId)->name;
 
             $currentDate = Carbon::now()->toDateString();
+            // $currentTime = Carbon::now()->toTimeString();
 
             $showTimes = DB::table('show_times as t1')
                 ->join('show_times as t2', function ($join) use ($movieId) {
                     $join->on('t1.movie_id', '=', 't2.movie_id')
                         ->on('t1.show_date', '=', 't2.show_date')
+                        // ->on('t1.start_time', '=', 't2.start_time')
                         ->where('t1.id', '<>', 't2.id')
                         ->where('t2.movie_id', '=', $movieId);
                 })
                 ->whereDate('t1.show_date', '>=', $currentDate)
+                // ->whereTime('t1.start_time', '>=', $currentTime)
                 ->select('t1.*')
                 ->distinct()
                 ->get();
@@ -110,12 +113,27 @@ class MovieController extends Controller
                         'available_seats' => $availableSeats
                     ];
                 }
-
+                
                 $responseData[] = [
                     'date' => $date,
                     'showtimes' => $showtimes
                 ];
             }
+            // ngày hiện tại
+            $currentDate = date('Y-m-d');
+
+            // sắp xếp lại sao cho đối tượng có 'date' gần với ngày hôm nay nhất
+            usort($responseData, function ($a, $b) use ($currentDate) {
+                $dateA = strtotime($a['date']);
+                $dateB = strtotime($b['date']);
+            
+                if ($dateA == $dateB) {
+                    return 0;
+                }
+            
+                return abs(strtotime($currentDate) - $dateA) < abs(strtotime($currentDate) - $dateB) ? -1 : 1;
+            });
+
             return response()->json([
                 'data' => $responseData,
                 'message' => "Danh Sách Lịch Chiếu Phim $movie_name"
@@ -132,11 +150,15 @@ class MovieController extends Controller
     public function getShowtimes()
     {
         try {
+            $currentDate = Carbon::now()->toDateString();
 
             $showtimes = ShowTime::query()
+                ->has('movie')
+                ->has('room')
                 ->with(['movie', 'room'])
                 ->select('show_times.*')
                 ->selectRaw('(SELECT COUNT(*) FROM seats WHERE seats.showtime_id = show_times.id AND seats.status = "unbook") AS available_seat')
+                ->whereDate('show_date', '>=', $currentDate)
                 ->get();
 
             $result = [];
@@ -168,11 +190,66 @@ class MovieController extends Controller
                 ];
             }
 
+            // ngày hiện tại
+            $yearMonthDay = date('Y-m-d');
+
+            // sắp xếp lại sao cho đối tượng có 'show_date' gần với ngày hôm nay nhất
+            usort($response, function ($a, $b) use ($yearMonthDay) {
+                $dateA = strtotime($a['show_date']);
+                $dateB = strtotime($b['show_date']);
+            
+                if ($dateA == $dateB) {
+                    return 0;
+                }
+            
+                return abs(strtotime($yearMonthDay) - $dateA) < abs(strtotime($yearMonthDay) - $dateB) ? -1 : 1;
+            });
+
             return response()->json([
                 'data' => $response
             ], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::error("MovieController@getShowtimes: ", [$e->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Lấy những Movie có ShowTime để list lên trang chủ
+    public function getMovieHaveShowTime()
+    {
+        try {
+            $currentDate = Carbon::now();
+            $yesterday = Carbon::now()->yesterday();
+
+            $moviesScreening = Movie::query()
+                ->has('showtimes')
+                ->whereHas('showtimes', function ($query) use ($currentDate) {
+                    $query->whereDate('show_date', '>=', $currentDate);
+                })
+                // ->with(['showtimes' => function ($query) use ($currentDate) {
+                //     $query->whereDate('show_date', '>=', $currentDate);
+                // }])
+                ->get();
+
+            $yesterdayMovies = Movie::query()
+                ->has('showtimes')
+                ->whereHas('showtimes', function ($query) use ($yesterday) {
+                    $query->whereDate('show_date', '=', $yesterday);
+                })
+                // ->with(['showtimes' => function ($query) use ($yesterday) {
+                //     $query->whereDate('show_date', '=', $yesterday);
+                // }])
+                ->get();
+
+            return response()->json([
+                'screening' => $moviesScreening, // phim đang chiếu 
+                'yesterday_movie' => $yesterdayMovies // phim đã chiếu ngày hôm qua
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/MovieController@getMovieHaveShowTime: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
