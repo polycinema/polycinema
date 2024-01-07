@@ -96,7 +96,7 @@ Route::prefix('v1')->group(function () {
 
     Route::post('statistc-by-movie/{movie_id}', [StatisticController::class, 'getStatisticByMovie']);
 
-    Route::get('change-level-booking/{booking_id}', [BookingController::class, 'changeLevelBooking']);
+    Route::post('change-level-booking', [BookingController::class, 'changeLevelBooking']);
     // tìm booking theo booking_id (không phải là id của bảng bookings)
     Route::post('find-booking', [BookingController::class, 'findBookingByBookingID']);
     

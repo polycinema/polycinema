@@ -259,10 +259,10 @@ class BookingController extends Controller
     }
 
     // Ẩn hiện booking 
-    public function changeLevelBooking(string $booking_id)
+    public function changeLevelBooking(Request $request)
     {
         try {
-            $booking = Booking::find($booking_id);
+            $booking = Booking::find($request->booking_id);
 
             $level_booking = $booking->level;
 
