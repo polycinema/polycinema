@@ -312,4 +312,28 @@ class BookingController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getBookingInTrash()
+    {
+        try {
+            $bookings = Booking::query()->where('level', 'hide')
+                ->with('user')
+                ->with('showtime.movie')
+                ->with(['products' => function ($query) {
+                    $query->withPivot('quantity');
+                }])
+                ->with(['seats.showtime.room'])
+                ->get();
+
+            return response()->json([
+                'data' => $bookings
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('BookingController: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

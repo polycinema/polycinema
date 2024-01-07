@@ -99,5 +99,7 @@ Route::prefix('v1')->group(function () {
     Route::post('change-level-booking', [BookingController::class, 'changeLevelBooking']);
     // tìm booking theo booking_id (không phải là id của bảng bookings)
     Route::post('find-booking', [BookingController::class, 'findBookingByBookingID']);
-    
+    // Lấy tất cả booking level = hide ( Trong thùng rác )
+    Route::get('booking-in-trash', [BookingController::class, 'getBookingInTrash']);
+
 });
