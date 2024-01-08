@@ -27,8 +27,12 @@ const statisticApi = createApi({
             query: () => `/top-movies`,
             providesTags: ["Statistic"],
         }),
-        getTop1Movie : build.query<ITop10Movie[],void>({
+        getTop1Movie : build.query<[],void>({
             query: () => `/top1-movie`,
+            providesTags: ["Statistic"],
+        }),
+        getTopView:build.query<[],void>({
+            query: () => `/top10-movies-by-view`,
             providesTags: ["Statistic"],
         }),
         StatisticCustom : build.mutation({
@@ -48,7 +52,8 @@ export const {
     useGetStatisticyearQuery,
     useGetTop10MovieQuery,
     useStatisticCustomMutation,
-    useGetTop1MovieQuery
+    useGetTop1MovieQuery,
+    useGetTopViewQuery
 } = statisticApi;
 export const statisticReducer = statisticApi.reducer;
 export default statisticApi;

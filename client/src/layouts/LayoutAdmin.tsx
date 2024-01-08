@@ -26,14 +26,9 @@ const LayoutAdmin: React.FC = () => {
         }}
       >
         <Link to={"/"}>
-          <img src={logo1} alt="" className="w-40 mx-auto my-12" />
+          <img src={logo1} alt="" className="w-28   " />
         </Link>
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={['2']}
-          style={{ flex: 1, minWidth: 0 }}
-        />
+        
       </Header>
       
       <Layout>
