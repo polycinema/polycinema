@@ -41,7 +41,7 @@ return [
             'port' => env('MAIL_PORT', 2525),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
-            'password' => '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',
+            'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
