@@ -7,6 +7,8 @@ import { convertSlug } from "../../utils/convertSlug";
 import IsLoading from "../../utils/IsLoading";
 import ButtonCustom from "../../components/Button";
 import dayjs from "dayjs";
+import { deleteCoupon, deleteValueBooking, deleteValueProduct } from "../../redux/slices/valueCheckoutSlice";
+import { useAppDispatch } from "../../store/hook";
 
 const MoviePage = () => {
   const [isModalOpenTrailer, setIsModalOpenTrailer] = useState(false);
@@ -20,10 +22,12 @@ const MoviePage = () => {
   const [selectedMovieModalTime, setSelectedMovieModalTime] =
     useState<Showtime>();
   const navigate = useNavigate();
-  // console.log("showtime by change: ", showtimesByChange[0]);
-  // console.log("selectedMovieModalTime: ", selectedMovieModalTime);
-  console.log("showtime: ", showtime);
-  // console.log("index date: ", indexDate);
+  const dispatch = useAppDispatch()
+  useEffect(()=>{
+      dispatch(deleteValueProduct())
+      dispatch(deleteValueBooking())
+      dispatch(deleteCoupon())
+  },[])
 
   useEffect(() => {
     if (data) {

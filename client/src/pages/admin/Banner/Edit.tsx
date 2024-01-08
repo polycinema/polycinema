@@ -12,7 +12,6 @@ type FieldType = {
 const EditBanner = () => {
     const { id } = useParams()
     const [form] = Form.useForm()
-    const [messageApi, contextHolder] = message.useMessage()
     const navigate = useNavigate();
     const [banner, setBanner] = useState<IBanner>()
     const [urlImage, setUrlImage] = useState<string>()
@@ -46,37 +45,26 @@ const EditBanner = () => {
             updateBanner({  id: id, name:banner?.name })
                 .then(async () => {
                     form.resetFields()
-                    messageApi.open({
-                        type: "success",
-                        content: "Sửa banner thành công , Chuyển trang sau 1s"
-                    })
-                    await pause(1000)
+                    await swal("Thành công!", "Thêm banner thành công!", "success");
                     navigate("/admin/banner")
                 })
-                .catch((err) => {
-                    console.log(err.message);
+                .catch(() => {
+                  swal("Thất bại!", "Thêm banner thất bại , Vui lòng thử lại !", "error");
 
                 }) : updateBanner({ id: id, name: urlImage })
                     .then(async () => {
                         form.resetFields()
-                        messageApi.open({
-                            type: "success",
-                            content: "Sửa banner thành công  , Chuyển trang sau 1s"
-                        })
-                        await pause(1000)
+                        await swal("Thành công!", "Thêm banner thành công!", "success");
                         navigate("/admin/banner")
                     })
-                    .catch((err) => {
-                        console.log(err.message);
+                    .catch(() => {
+                      swal("Thất bại!", "Thêm banner thất bại , Vui lòng thử lại !", "error");
 
                     })
     };
 
     
 
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    };
 
     const props: UploadProps = {
         name: 'file',
