@@ -101,8 +101,9 @@ Route::prefix('v1')->group(function () {
     Route::post('find-booking', [BookingController::class, 'findBookingByBookingID']);
 
     Route::get('top1-movie', [StatisticController::class, 'getTopMovieHaveHighestRevenue']);
-  
+
     // Lấy tất cả booking level = hide ( Trong thùng rác )
     Route::get('booking-in-trash', [BookingController::class, 'getBookingInTrash']);
 
+    Route::get('top10-movies-by-view', [StatisticController::class, 'getTop10MoviesHaveHighestView']);
 });

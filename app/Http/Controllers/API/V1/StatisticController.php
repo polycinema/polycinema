@@ -379,4 +379,29 @@ class StatisticController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getTop10MoviesHaveHighestView()
+    {
+        try {
+            $topMovies = Movie::with(['director', 'actors', 'genres'])
+                ->select('movies.id', 'movies.name', 'movies.title', 'movies.image', 'movies.trailer', 'movies.description', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status', DB::raw('COUNT(bookings.id) as views'))
+                ->join('show_times', 'show_times.movie_id', '=', 'movies.id')
+                ->join('bookings', 'show_times.id', '=', 'bookings.showtime_id')
+                ->where('bookings.status', 'satisfied')
+                ->groupBy('movies.id', 'movies.name', 'movies.title', 'movies.image', 'movies.trailer', 'movies.description', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status')
+                ->orderByDesc('views')
+                ->limit(10)
+                ->get();
+
+            return response()->json([
+                'data' => $topMovies
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('StatisticController@getTop10MoviesHaveHighestView: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
