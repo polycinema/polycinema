@@ -8,7 +8,8 @@ import IsLoading from "../../../utils/IsLoading";
 import { formatCurrency } from "../../../utils/formatVND";
 import { FaEye } from "react-icons/fa";
 import YouTube from "react-youtube";
-import StatisticTopMovie from "../../../components/Statistic/StatisticTopMovie";
+import StatisticTopView from "../../../components/Statistic/StatisticTopView";
+import StatisticTop1Movie from "../../../components/Statistic/StatisticTop1Movie";
 
 
 const Dashboard = () => {
@@ -16,9 +17,6 @@ const Dashboard = () => {
   const [top10movie,setTop10Movie] = useState([]);
   const [isModalOpenTrailer,setIsModalOpenTrailer] = useState(false);
   const [movie,setMovie] = useState<ITop10Movie>()
-  // console.log("isloading: ",isloading);
-  // console.log("error: ",error);
-  console.log('data: ',data)
   useEffect(()=>{
     if(data){
       setTop10Movie(data.data)
@@ -110,18 +108,26 @@ const Dashboard = () => {
   return (
     <>
       <h1 className="text-4xl mb-2 bg-white p-2 rounded-md shadow-md">Dashboard</h1>
-      <div className="grid grid-cols-2 gap-6">
-        <div className="bg-white p-2 rounded-md shadow-md">
+      <div className="grid grid-cols-3 gap-6">
+        <div className="bg-white p-2 rounded-md shadow-md col-span-2">
           <Statistic />
         </div>
-        <div className="bg-white p-2 rounded-md shadow-md">
-          <StatisticTopMovie/>
+        <div className="bg-white p-2 rounded-md shadow-md col-span-1 w-fit">
+          <StatisticTop1Movie/>
         </div>
+        
       </div>
-      <div className="space-y-6 mt-4 bg-white p-2 rounded-md shadow-md">
+      <div className="grid grid-cols-3 gap-6 mt-4">
+      <div className="space-y-6 mt-4 bg-white p-2 rounded-md shadow-md col-span-1">
+        <StatisticTopView/>
+      </div>
+        <div className="space-y-6 mt-4 bg-white p-2 rounded-md shadow-md col-span-2">
           <span className="text-2xl">Top 10 phim có doanh thu cao nhất</span>
           <Table dataSource={dataSource} columns={columns} />
-        </div>
+      </div>
+      
+      </div>
+      
       <Modal
         title={`Trailer: ${movie?.name}`}
         open={isModalOpenTrailer}

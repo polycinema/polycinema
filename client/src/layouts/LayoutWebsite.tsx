@@ -3,10 +3,7 @@ import logo from "../../public/img/logo.png";
 import { useAppDispatch, useAppSelector } from "../store/hook";
 import { Dropdown, MenuProps, Popconfirm } from "antd";
 import {
-  AimOutlined,
   LogoutOutlined,
-  ShoppingOutlined,
-  SketchOutlined,
   UserOutlined,
   FacebookOutlined,
   InstagramOutlined,
@@ -132,7 +129,7 @@ const LayoutWebsite = () => {
         </header>
       </div>
 
-      <main className="bg-[#F8F8F8]">
+      <main style={{ minHeight: "60vh" }} className="bg-[#F8F8F8]">
         <Outlet />
       </main>
       <div>

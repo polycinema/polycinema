@@ -1,23 +1,44 @@
-import React from "react";
-import logo1 from "../../public/img/logo.png";
+import React, { useState } from "react";
+import logo1 from "../../public/img/logo-white.png";
 import { Link, Outlet } from "react-router-dom";
 import { AppstoreOutlined, GroupOutlined, LogoutOutlined, TeamOutlined, UserOutlined, UserSwitchOutlined, VideoCameraOutlined, SolutionOutlined, ShopOutlined, FieldTimeOutlined, CalendarOutlined } from "@ant-design/icons";
 import { Layout, Menu, Popconfirm, theme } from "antd";
 import { useAppDispatch } from "../store/hook";
 import { setLogout } from "../redux/slices/authorizationSlice";
-
-import { CiBoxes } from "react-icons/ci";
-
-const { Header, Content, Footer, Sider } = Layout;
+const {  Header,Content, Footer, Sider } = Layout;
 
 const LayoutAdmin: React.FC = () => {
+  const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const dispatch = useAppDispatch();
   return (
     <Layout style={{ minHeight: "100vh" }}>
+      <Header
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 10,
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <Link to={"/"}>
+          <img src={logo1} alt="" className="w-40 mx-auto my-12" />
+        </Link>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={['2']}
+          style={{ flex: 1, minWidth: 0 }}
+        />
+      </Header>
+      
+      <Layout>
       <Sider
+      collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}
         breakpoint="lg"
         collapsedWidth="0"
         onBreakpoint={(broken) => {
@@ -26,13 +47,11 @@ const LayoutAdmin: React.FC = () => {
        
       >
         <div className="demo-logo-vertical" />
-        <Link to={"/"}>
-          <img src={logo1} alt="" className="w-32 mx-auto my-12" />
-        </Link>
+        
         <Menu
           theme="dark"
           mode="inline"
-          // defaultSelectedKeys={["4"]}
+          defaultSelectedKeys={["1"]}
           items={[
             {
               key: 1,
@@ -46,13 +65,15 @@ const LayoutAdmin: React.FC = () => {
             },
             {
               key: 3,
-              icon: <TeamOutlined />,
-              label: <Link to={"actors"}>Quản lý diễn viên</Link>,
+              icon: <FieldTimeOutlined />,
+              label: <Link to={"showtime"}>Quản lý lịch chiếu</Link>,
+              
             },
             {
               key: 4,
-              icon: <GroupOutlined />,
-              label: <Link to={"genres"}>Quản lý thể loại</Link>,
+              icon: <SolutionOutlined />,
+              label: <Link to={"coupon"}>Quản lý mã giảm</Link>,
+              
             },
             {
               key: 5,
@@ -61,13 +82,14 @@ const LayoutAdmin: React.FC = () => {
             },
             {
               key: 6,
-              icon: <UserSwitchOutlined />,
-              label: <Link to={"director"}>Quản lý đạo diễn</Link>,
+              icon: <UserOutlined />,
+              label: <Link to={"acount"}>Quản lý tài khoản</Link>,
+              
             },
             {
               key: 7,
-              icon: <UserOutlined />,
-              label: <Link to={"acount"}>Quản lý tài khoản</Link>,
+              icon: <UserSwitchOutlined />,
+              label: <Link to={"director"}>Quản lý đạo diễn</Link>,
             },
             {
               key: 8,
@@ -86,26 +108,21 @@ const LayoutAdmin: React.FC = () => {
             },
             {
               key: 11,
-              icon: <FieldTimeOutlined />,
-              label: <Link to={"showtime"}>Quản lý lịch chiếu</Link>,
+              icon: <TeamOutlined />,
+              label: <Link to={"actors"}>Quản lý diễn viên</Link>,
             },
             {
               key: 12,
-              icon: <CiBoxes />,
-              label: <Link to={"seat"}>Quản lý ghế ngồi</Link>,
-            },
-            {
-              key: 13,
               icon: <SolutionOutlined />,
               label: <Link to={"banner"}>Quản lý banner</Link>,
             },
             {
-              key: 14,
-              icon: <SolutionOutlined />,
-              label: <Link to={"coupon"}>Quản lý mã giảm</Link>,
+              key: 13,
+              icon: <GroupOutlined />,
+              label: <Link to={"genres"}>Quản lý thể loại</Link>,
             },
             {
-              key: 15,
+              key: 14,
               icon: <LogoutOutlined />,
               label: (
                 <Popconfirm
@@ -122,7 +139,6 @@ const LayoutAdmin: React.FC = () => {
           ]}
         />
       </Sider>
-      <Layout>
         <Content style={{ margin: "24px 16px 0" }}>
           <div
             style={{
@@ -131,12 +147,15 @@ const LayoutAdmin: React.FC = () => {
             }}
           >
             <Outlet />
+            
           </div>
+          
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          PolyCinema ©2023 
-        </Footer>
+        
       </Layout>
+      <Footer className="text-center  ">
+          Website Đặt vé xem phim Polycinema@
+      </Footer>
     </Layout>
   );
 };

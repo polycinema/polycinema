@@ -35,6 +35,12 @@ const PaymentPage = () => {
   const totalAmount =
     booking?.payload?.total_price -
     (selectedCoupon ? calculateDiscount(selectedCoupon) : 0);
+  console.log(
+    "total_booking:",
+    booking?.payload?.total_price,
+    "Coupon:",
+    coupons
+  );
 
   const onClickPaymentBooking = () => {
     paymentBooking({
@@ -54,7 +60,7 @@ const PaymentPage = () => {
   const onClickCoupon = (coupon) => {
     selectedCoupon?.coupon_code === coupon?.coupon_code
       ? dispatch(setCoupon(null))
-      : dispatch(setCoupon(coupon))
+      : dispatch(setCoupon(coupon));
   };
 
   return (
@@ -91,27 +97,45 @@ const PaymentPage = () => {
             </div>
             <div className="flex items-center text-xl">
               <span className="font-semibold mr-2">Phim:</span>
-              <span className="text-gray-600">{booking?.payload?.showtime?.movie?.name}</span>
+              <span className="text-gray-600">
+                {booking?.payload?.showtime?.movie?.name}
+              </span>
             </div>
             <div className="flex items-center text-xl">
               <span className="font-semibold mr-2">Ghế ngồi:</span>
-              <span className="text-gray-600">{booking?.payload?.seats?.map((seat) => (<span key={seat?.id}>{seat?.seat_name}</span>))}</span>
+              <span className="text-gray-600">
+                {booking?.payload?.seats?.map((seat) => (
+                  <span key={seat?.id}>{seat?.seat_name}</span>
+                ))}
+              </span>
             </div>
             <div className="flex items-center text-xl">
               <span className="font-semibold mr-2">Phòng:</span>
-              <span className="text-gray-600">{booking?.payload?.showtime?.room?.room_name}</span>
+              <span className="text-gray-600">
+                {booking?.payload?.showtime?.room?.room_name}
+              </span>
             </div>
             <div className="flex items-center text-xl">
               <span className="font-semibold mr-2">Giờ chiếu:</span>
-              <span className="text-gray-600">{booking?.payload?.showtime?.start_time} </span>
+              <span className="text-gray-600">
+                {booking?.payload?.showtime?.start_time}{" "}
+              </span>
             </div>
             <div className="flex items-center text-xl">
               <span className="font-semibold mr-2">Combo kèm theo:</span>
-              <span className="text-gray-600">{booking?.payload?.products?.map((product) => (<span key={product?.id}>{product?.name}</span>))} </span>
+              <span className="text-gray-600">
+                {booking?.payload?.products?.map((product) => (
+                  <span key={product?.id}>{product?.name}</span>
+                ))}{" "}
+              </span>
             </div>
             <div className="flex items-center text-xl">
               <span className="font-semibold mr-2">Ngày chiếu:</span>
-              <span className="text-gray-600">{dayjs(booking?.payload?.showtime?.show_date).format("DD/MM/YYYY")}</span>
+              <span className="text-gray-600">
+                {dayjs(booking?.payload?.showtime?.show_date).format(
+                  "DD/MM/YYYY"
+                )}
+              </span>
             </div>
             <div className=" text-xl space-y-2">
               <div>
@@ -137,17 +161,6 @@ const PaymentPage = () => {
         </div>
         <div className="voucher-list p-6 bg-white border rounded-md shadow-md mt-4">
           <h3 className="text-lg font-semibold mb-4">Chọn Voucher</h3>
-          <div className="flex  bg-gray-100 p-2 space-x-2 items-center my-2">
-            <p className="text-xl">Mã Voucher:</p>
-            <form action="">
-              <input
-                type="text"
-                placeholder="Nhập mã voucher..."
-                className="border border-gray-300 p-2 w-[500px]"
-              />
-              <Button className=" m-2 border border-[#0D5D9F] ">Áp dụng</Button>
-            </form>
-          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
             {isLoadingCoupon ? (
@@ -178,6 +191,9 @@ const PaymentPage = () => {
                         )}
                       </p>
                       <p>{coupon?.description}</p>
+                      <p>{`Vocher sử dụng cho đơn hàng giá trị trên ${formatCurrency(
+                        coupon?.min_order_value
+                      )}`}</p>
                       <p className="flex items-center text-[#0D5D9F]">
                         <span>
                           <BiAlarm />
@@ -188,15 +204,22 @@ const PaymentPage = () => {
                         </span>
                       </p>
                     </div>
-                    <div style={{ display: coupon?.min_order_value <= booking?.payload?.total_price ? 'none' : 'block' }}>
+                    <div
+                      className={`${
+                        booking?.payload?.total_price <= coupon?.min_order_value
+                          ? "pointer-events-none opacity-60"
+                          : ""
+                      }`}
+                    >
                       <Button
                         className={`border border-[#0D5D9F]`}
                         onClick={() => onClickCoupon(coupon)}
                       >
-                        {selectedCoupon?.coupon_code === coupon.coupon_code ? 'Hủy' : 'Áp dụng'}
+                        {selectedCoupon?.coupon_code === coupon.coupon_code
+                          ? "Hủy"
+                          : "Áp dụng"}
                       </Button>
                     </div>
-
                   </div>
                 </div>
               ))
