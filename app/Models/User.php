@@ -17,6 +17,9 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
     use HasRoles, SoftDeletes;
 
+    const CUSTOMER = 'user';
+    const ADMIN = 'admin';
+
     /**
      * The attributes that are mass assignable.
      *

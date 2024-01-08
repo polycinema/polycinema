@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthenController;
+use App\Http\Controllers\API\V1\Admin\UserController;
 use App\Http\Controllers\API\V1\BookingController;
 use App\Http\Controllers\API\V1\CouponController;
 use App\Http\Controllers\API\V1\MovieController;
@@ -106,4 +107,8 @@ Route::prefix('v1')->group(function () {
     Route::get('booking-in-trash', [BookingController::class, 'getBookingInTrash']);
 
     Route::get('top10-movies-by-view', [StatisticController::class, 'getTop10MoviesHaveHighestView']);
+
+    Route::get('users-admin', [UserController::class, 'getAdminUser']);
+
+    Route::get('customers', [UserController::class, 'getCustomers']);
 });

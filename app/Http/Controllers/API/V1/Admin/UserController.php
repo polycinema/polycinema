@@ -184,4 +184,40 @@ class UserController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getAdminUser()
+    {
+        try {
+            $users = User::query()
+                ->where('role', User::ADMIN)->get();
+
+            return response()->json([
+                'data' => $users
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/Admin/UserConctroller@getAdminUser:', [$exception->getMessage()]);
+
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getCustomers()
+    {
+        try {
+            $users = User::query()
+                ->where('role', User::CUSTOMER)->get();
+
+            return response()->json([
+                'data' => $users
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/Admin/UserConctroller@getCustomers:', [$exception->getMessage()]);
+
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
