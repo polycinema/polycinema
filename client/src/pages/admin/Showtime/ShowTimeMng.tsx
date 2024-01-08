@@ -114,7 +114,7 @@ const ShowTimeMng = () => {
         </div>
       </div>
       <h1 className="text-2xl my-6 bg-white p-4 rounded-md shadow-md ">Danh sách lịch chiếu</h1>
-      <Table dataSource={dataSource} columns={columns} className="bg-white p-4 rounded-md shadow-md" />;
+      <Table dataSource={dataSource} columns={columns} className="bg-white p-4 rounded-md shadow-md" />
     </div>
   );
 };

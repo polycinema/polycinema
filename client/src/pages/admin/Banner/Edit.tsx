@@ -10,82 +10,85 @@ type FieldType = {
 };
 
 const EditBanner = () => {
-  const { id } = useParams();
-  const [form] = Form.useForm();
-  const navigate = useNavigate();
-  const [banner, setBanner] = useState<IBanner>();
-  const [urlImage, setUrlImage] = useState<string>();
+    const { id } = useParams()
+    const [form] = Form.useForm()
+    const navigate = useNavigate();
+    const [banner, setBanner] = useState<IBanner>()
+    const [urlImage, setUrlImage] = useState<string>()
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getBannerById(id);
-        setBanner(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
-  useEffect(() => {
-    setFields();
-  }, [banner]);
-  const setFields = () => {
-    form.setFieldsValue({
-      id: banner?.id,
-      image: banner?.name,
-    });
-  };
+    useEffect(() => {
+        (
+            async () => {
+                try {
+                    const { data } = await getBannerById(id)
+                    setBanner(data.data);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        )()
+    }, [])
+    useEffect(() => {
+        setFields();
+    }, [banner]);
+    const setFields = () => {
+        form.setFieldsValue({
+            id: banner?.id,
+            name: banner?.name,
 
-  const onFinish = async (value: IBanner) => {
-    
-    urlImage === undefined
-      ? updateBanner({ id: id,  })
-      .then(async () => {
-        form.resetFields();
-        await swal("Thành công!", "Cập nhật banner thành công!", "success");
-        navigate("/admin/banner");
-      })
-      .catch(() => {
-        swal("Thất bại!", "Cập nhật banner thất bại , Vui lòng thử lại !", "error");
-      })
-      : updateBanner({ id: id, ...value, name: urlImage })
-      .then(async () => {
-        form.resetFields();
-        await swal("Thành công!", "Cập nhật banner thành công!", "success");
-        navigate("/admin/banner");
-      })
-      .catch(() => {
-        swal("Thất bại!", "Cập nhật banner thất bại , Vui lòng thử lại !", "error");
-      })
-  };
-
-
-  const props: UploadProps = {
-    name: "file",
-    action: "https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload",
-    // Thay đổi thành URL API của Cloudinary
-    headers: {
-      // Authorization: 'Bearer 773215578244178',
-      // "Access-Control-Allow-Origin":"*"
-      // Thay đổi thành API key của bạn
-    },
-    data: {
-      // Thêm các dữ liệu cần thiết như upload preset
-      upload_preset: "upload",
-      // Thay đổi thành upload preset của bạn
-    },
-    onChange(info) {
-      if (info.file.status === "done") {
-        setUrlImage(info.file.response.url);
-        message.open({
-          type: "success",
-          content: "Upload ảnh thành công",
         });
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
+    };
+
+
+    const onFinish = async (value: IBanner) => {
+        urlImage === undefined ?
+            updateBanner({  id: id, name:banner?.name })
+                .then(async () => {
+                    form.resetFields()
+                    await swal("Thành công!", "Thêm banner thành công!", "success");
+                    navigate("/admin/banner")
+                })
+                .catch(() => {
+                  swal("Thất bại!", "Thêm banner thất bại , Vui lòng thử lại !", "error");
+
+                }) : updateBanner({ id: id, name: urlImage })
+                    .then(async () => {
+                        form.resetFields()
+                        await swal("Thành công!", "Thêm banner thành công!", "success");
+                        navigate("/admin/banner")
+                    })
+                    .catch(() => {
+                      swal("Thất bại!", "Thêm banner thất bại , Vui lòng thử lại !", "error");
+
+                    })
+    };
+
+    
+
+
+    const props: UploadProps = {
+        name: 'file',
+        action: 'https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload',
+        data: {upload_preset: 'upload'},
+        onChange(info) {
+            if (info.file.status !== 'uploading') {
+                console.log(info.file, info.fileList);
+            }
+            if (info.file.status === 'done') {
+                setUrlImage(info.file.response.url)
+                message.open({
+                    type: 'success',
+                    content: "Upload ảnh thành công"
+                })
+            } else if (info.file.status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+    };
+
+
+
+ 
 
   return (
     <>
@@ -130,5 +133,6 @@ const EditBanner = () => {
     </>
   );
 };
+
 
 export default EditBanner;

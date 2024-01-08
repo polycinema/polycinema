@@ -39,6 +39,8 @@ const EditRoom = () => {
   }, [room]);
 
   const onFinish = (values) => {
+    console.log(values);
+    
     updateRoom({ id: id, ...values })
     .then(async () => {
       form.resetFields();
@@ -80,7 +82,7 @@ const EditRoom = () => {
             <InputNumber
               style={{ width: "100%" }}
               min={0}
-              max={60}
+              max={70}
               defaultValue={0}
             />
           </Form.Item>
@@ -92,7 +94,7 @@ const EditRoom = () => {
             <InputNumber
               style={{ width: "100%" }}
               min={0}
-              max={30}
+              max={50}
               defaultValue={0}
             />
           </Form.Item>
@@ -104,7 +106,7 @@ const EditRoom = () => {
             <InputNumber
               style={{ width: "100%" }}
               min={0}
-              max={20}
+              max={50}
               defaultValue={0}
             />
           </Form.Item>

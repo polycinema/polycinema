@@ -286,7 +286,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
           </div>
         </div>
       </div>
-      <div className="md:grid grid-cols-5 gap-4 mt-20 mb-10 p-4 bg-white">
+      <div className="md:grid grid-cols-4 gap-2 mt-20 mb-10 p-4 bg-white">
         <div className="flex gap-2 items-center p-2">
           <img className="w-14" src={imgNormal} alt="" />
           <p>Ghế thường</p>
@@ -300,7 +300,24 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
           <img className="w-14 h-10 object-center" src={imgDouble} alt="" />
           <p>Ghế đôi</p>
         </div>
+        <div className="flex justify-end gap-1 mt-2 text-xl">
+            <p className="text-2xl font-bold mt-2">Tổng tiền:</p>
+            <p className="text-2xl font-bold mt-2">
+              {formatCurrency(
+                stateProducts.reduce((sum: any, item: any) => {
+                  return sum + item.price * item.quantity;
+                }, 0) +
+                  showtime?.data?.seats
+                    ?.filter(
+                      (item: any) =>
+                        item?.status == "booking" && item?.user_id == user.id
+                    )
+                    .reduce((sum: any, seat: any) => sum + seat.price, 0)
+              )}
+            </p>
+          </div>
       </div>
+      
       <div>
         <div className="table-product mt-20">
           <div className="flex items-center gap-4">
@@ -314,7 +331,6 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
               <td className="text-center">Giá</td>
               <td className="text-center">Mô Tả</td>
               <td className="text-center">Số Lượng</td>
-              <td>Action</td>
             </tr>
             {isLoading ? (
               <IsLoading />
@@ -334,43 +350,29 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
                     <td className="text-center p-2">{item?.name}</td>
                     <td className="text-center p-2">{formatCurrency(item?.price)}</td>
                     <td className="text-center p-2">{item?.description}</td>
-                    <td className="text-center p-2 ">
-                      {stateProducts.find(
-                        (product: any) => product.id === item.id
-                      )?.quantity || 0}
-                    </td>
-                    <td>
-                      <Button
+                    <td className="text-center p-2 flex justify-center items-center gap-2 ">
+                    <Button
                         onClick={() => dispacth(decreaseProduct(item.id))}
                       >
                         -
                       </Button>
+                      <p>{stateProducts.find(
+                        (product: any) => product.id === item.id
+                      )?.quantity || 0}</p>
                       <Button onClick={() => dispacth(increaseProduct(item))}>
                         +
                       </Button>
+                      
                     </td>
+                    
+                    
                   </tr>
                 )
               )
             )}
           </table>
 
-          <div className="flex justify-end gap-1 mt-2 text-xl">
-            <p className="text-2xl font-bold mt-2">Tổng tiền:</p>
-            <p className="text-2xl font-bold mt-2">
-              {formatCurrency(
-                stateProducts.reduce((sum: any, item: any) => {
-                  return sum + item.price * item.quantity;
-                }, 0) +
-                  showtime?.data?.seats
-                    ?.filter(
-                      (item: any) =>
-                        item?.status == "booking" && item?.user_id == user.id
-                    )
-                    .reduce((sum: any, seat: any) => sum + seat.price, 0)
-              )}
-            </p>
-          </div>
+          
         </div>
       </div>
     </div>

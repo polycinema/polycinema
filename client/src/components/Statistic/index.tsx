@@ -26,11 +26,10 @@ ChartJS.register(
 const Statistic = () => {
   const [dateRange, setDateRange] = useState(1);
   const { data: statistic, isLoading: isMonthLoading, refetch: refetchMonth } = useGetStatisticMonthQuery();
-  const { data: weekStatistic, isLoading: isWeekLoading, refetch: refetchWeek } = useGetStatisticWeekQuery();
-  const { data: yearStatistic, isLoading: isYearLoading, refetch: refetchYear } = useGetStatisticyearQuery();
+  const { data: weekStatistic, refetch: refetchWeek } = useGetStatisticWeekQuery();
+  const { data: yearStatistic, refetch: refetchYear } = useGetStatisticyearQuery();
   const [customStatistic] = useStatisticCustomMutation()
   const [dataCustom, setDataCustom] = useState()
-
 
 
   const onClick7Day = async () => {
@@ -127,7 +126,6 @@ const Statistic = () => {
         >
           <Form.Item
             name="date"
-            rules={[{ required: true, message: 'Please input your date!' }]}
           >
             <DatePicker.RangePicker />
           </Form.Item>
@@ -139,13 +137,13 @@ const Statistic = () => {
         </Form>
       </div>
       <div className='m-2'>
-        <div className='m-2 text-2xl'>
+        <div className='m-2 text-xl'>
           {dateRange === 1 ? "Thống kê 7 ngày gần nhất" :
             dateRange === 2 ? "Thống kê 28 ngày gần nhất" :
               dateRange === 3 ? "Thống kê 1 năm" :
                 "Thống kê"}
         </div>
-        <div className='m-2 text-sm'>
+        <div className='m-2 text-2xl '>
           Tổng doanh thu : <span>{formatCurrency(
             dateRange === 1 ? weekStatistic?.data?.total_revenue :
               dateRange === 2 ? statistic?.data?.total_revenue :

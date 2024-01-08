@@ -74,17 +74,8 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
+        // POST : booking_id, user_id, showtime_id, total_price, coupon_code, seats, products
         try {
-            // foreach($request->seats as $seat) {
-            //     $seatModel = Seat::query()->find($seat['id']);
-
-            //     if($seatModel->status == Seat::BOOKED) {
-            //         return response()->json([
-            //             'message' => 'Ghế đã được đặt'
-            //         ], Response::HTTP_BAD_REQUEST);
-            //     }
-            // }
-
             // Tạo Booking
             $booking = Booking::create([
                 'user_id' => $request->user_id,
@@ -94,11 +85,17 @@ class BookingController extends Controller
                 'coupon_code' => $request->coupon_code
             ]);
 
-            if ($request->coupon_id) {
+            if ($request->coupon_code) {
+
+                $coupon = Coupon::query()->where('coupon_code', $request->coupon_code)->first();
+
                 $coupon_user = CouponBooking::create([
-                    'coupon_id' => $request->coupon_id,
+                    'coupon_id' => $coupon->id,
                     'user_id' => $request->user_id,
                 ]);
+                // Trừ 1 số lượng mã giảm giá
+                $coupon->quantity = $coupon->quantity - 1;
+                $coupon->save();
             }
 
 
@@ -263,11 +260,12 @@ class BookingController extends Controller
         }
     }
 
-    // Ẩn hiện booking
-    public function changeLevelBooking(string $booking_id)
+
+    // Ẩn hiện booking theo id index bẳng bookings
+    public function changeLevelBooking(Request $request)
     {
         try {
-            $booking = Booking::find($booking_id);
+            $booking = Booking::find($request->booking_id);
 
             $level_booking = $booking->level;
 
@@ -311,6 +309,30 @@ class BookingController extends Controller
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('BookingController@findBookingByBookingID: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getBookingInTrash()
+    {
+        try {
+            $bookings = Booking::query()->where('level', 'hide')
+                ->with('user')
+                ->with('showtime.movie')
+                ->with(['products' => function ($query) {
+                    $query->withPivot('quantity');
+                }])
+                ->with(['seats.showtime.room'])
+                ->get();
+
+            return response()->json([
+                'data' => $bookings
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('BookingController: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
