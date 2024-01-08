@@ -360,11 +360,11 @@ class StatisticController extends Controller
     public function getTopMovieHaveHighestRevenue()
     {
         try {
-            $topMovie = DB::table('bookings')
-                ->select('movies.id', 'movies.title', 'movies.name', DB::raw('SUM(bookings.total_price) as total_revenue'))
-                ->join('show_times', 'bookings.showtime_id', '=', 'show_times.id')
-                ->join('movies', 'show_times.movie_id', '=', 'movies.id')
-                ->groupBy('movies.id', 'movies.title', 'movies.name') // Thêm 'movies.name' vào mệnh đề GROUP BY
+            $topMovie = Movie::with(['director', 'actors', 'genres'])
+                ->select('movies.id', 'movies.name', 'movies.title', 'movies.image', 'movies.trailer', 'movies.description', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status', DB::raw('SUM(bookings.total_price) as total_revenue'))
+                ->join('show_times', 'show_times.movie_id', '=', 'movies.id')
+                ->join('bookings', 'show_times.id', '=', 'bookings.showtime_id')
+                ->groupBy('movies.id', 'movies.name', 'movies.title', 'movies.image', 'movies.trailer', 'movies.description', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status')
                 ->orderByDesc('total_revenue')
                 ->first();
 

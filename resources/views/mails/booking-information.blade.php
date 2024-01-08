@@ -35,8 +35,8 @@ text-align: center">
         <div class="details" style="font-size: 0.9em;
         color: #555;
         margin-bottom: 15px;">
-            <div class="info">Ngày chiếu: {{ $booking->showtime->show_date }}</div>
-            <div class="info">Giờ chiếu: {{ $booking->showtime->start_time }}</div>
+            <div class="info">Ngày chiếu: {{ \Carbon\Carbon::parse($booking->showtime->show_date)->format('d/m/Y') }}</div>
+            <div class="info">Giờ chiếu: {{ \Carbon\Carbon::parse($booking->showtime->start_time)->format('H:i') }}</div>
             <div class="info">Rạp chiếu: PolyCinema</div>
         </div>
         <div class="barcode" style="border: 1px solid #ccc;
