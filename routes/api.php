@@ -111,4 +111,7 @@ Route::prefix('v1')->group(function () {
     Route::get('users-admin', [UserController::class, 'getAdminUser']);
 
     Route::get('customers', [UserController::class, 'getCustomers']);
+    
+    Route::get('get-booking-by-bookingid/{booking_id}', [BookingController::class, 'getBookingByBookingID']);
+
 });
