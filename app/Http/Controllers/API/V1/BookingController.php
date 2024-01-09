@@ -339,4 +339,25 @@ class BookingController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+        public function getBookingByBookingID(string $booking_id)
+        {
+            try {
+                $booking = Booking::query()->where('booking_id', $booking_id)
+                ->with('showtime')
+                ->with('products')
+                ->with('seats')
+                ->first();
+                
+                return response()->json([
+                    'data' => $booking
+                ], Response::HTTP_OK);
+            } catch (Exception $exception) {
+                Log::error('BookingController@getBookingByBookingID: ', [$exception->getMessage()]);
+
+                return response()->json([
+                    'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        }
 }
