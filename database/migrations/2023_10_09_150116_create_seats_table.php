@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
             $table->string('seat_name')->nullable();
-            $table->enum('type', ['single', 'double', 'special'])->nullable();
+            $table->foreignId('seat_type_id');
             // $table->foreignId('room_id')->nullable();
             $table->foreignId('showtime_id');
             $table->enum('status', ['unbook', 'booked', 'booking'])->default('unbook')->nullable();
