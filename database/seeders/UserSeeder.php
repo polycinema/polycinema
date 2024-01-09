@@ -20,7 +20,18 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($users as $user) {
-            User::updateOrCreate($user);
+            User::updateOrCreate(
+                [
+                    'name' => $user['name'],
+                    'email' => $user['email'],
+                    'password' => $user['password']
+                ],
+                [
+                    'name' => $user['name'],
+                    'email' => $user['email'],
+                    'password' => $user['password']
+                ]
+            );
         }
     }
 }
