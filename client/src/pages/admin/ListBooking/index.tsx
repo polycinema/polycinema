@@ -204,14 +204,14 @@ const ListsBooking = () => {
       render: (_: any, { key: id }: any) => (
         // console.log('booking ---: ',id)
         <Popconfirm
-          title="Xóa xóa vé đặt"
+          title="Xóa vé đặt"
           description="Bạn có chắc muốn xóa?"
           onConfirm={() =>
             softDeleteBooking({booking_id: id})
               .unwrap()
               .then(() => {
                 notification.success({
-                  message: "Delete showtime sucessfuly!",
+                  message: "Delete booking sucessfuly!",
                 });
               })
           }

@@ -72,7 +72,7 @@ const GarbageComponent = () => {
                 .unwrap()
                 .then(() => {
                   notification.success({
-                    message: "Restore showtime sucessfuly!",
+                    message: "Restore booking sucessfuly!",
                   });
                 })
             }
@@ -91,7 +91,7 @@ const GarbageComponent = () => {
             //     .unwrap()
             //     .then(() => {
             //       notification.success({
-            //         message: "Delete showtime sucessfuly!",
+            //         message: "Delete booking sucessfuly!",
             //       });
             //       dispatch(setBookingSoftDelete(_))
             //     })
