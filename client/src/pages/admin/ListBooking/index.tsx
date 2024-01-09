@@ -4,20 +4,25 @@ import {
   Modal,
   Pagination,
   Popconfirm,
-  Space,
   Table,
   message,
+  notification,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import {
   useGetAllBookingsQuery,
   useGetBookingByIdQuery,
+  useSoftDeleteBookingMutation,
   useUpdateNotYetMutation,
   useUpdateSatisfiedMutation,
 } from "../../../redux/api/checkoutApi";
 import { FaDotCircle } from "react-icons/fa";
 import { RootBooking } from "../../../interfaces/booking";
-import { LoadingOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  LoadingOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 import { FaEye } from "react-icons/fa";
 import { FaFileExport } from "react-icons/fa";
 import IsLoading from "../../../utils/IsLoading";
@@ -41,10 +46,15 @@ const ListsBooking = () => {
   const [idBooking, setIdBooking] = useState<number | string>();
   const { data: bookingById, error: errBookingById } =
     useGetBookingByIdQuery(idBooking);
-
+  const [
+    softDeleteBooking,
+    { isLoading: loadingSoftDeleteBooking, error: errSoftDeleteBooking },
+  ] = useSoftDeleteBookingMutation();
+  
   const [listBooking, setListBooking] = useState();
   const [BookingById, setBookingById] = useState<RootBooking>();
   const [isModalOpenModal, setIsModalOpenModal] = useState(false);
+  // console.log("bookingsSoft: ", bookingsSoft);
   useEffect(() => {
     if (bookings) {
       setListBooking(bookings?.data?.bookings);
@@ -60,10 +70,13 @@ const ListsBooking = () => {
     setIsModalOpenModal(true);
   };
   if (errNotYet) {
-    console.error(errNotYet);
+    console.error('errNotYet: ',errNotYet);
   }
   if (errSatisfied) {
-    console.error(errSatisfied);
+    console.error("errSatisfied: ",errSatisfied);
+  }
+  if (errSoftDeleteBooking) {
+    console.error("errSoftDeleteBooking: ",errSoftDeleteBooking);
   }
   if (isLoading) {
     return (
@@ -90,7 +103,7 @@ const ListsBooking = () => {
       startTime: items?.showtime?.start_time,
     };
   });
-  console.log("inforBooking: ", inforBooking);
+  // console.log("inforBooking: ", inforBooking);
   const titleVN_XLSX = {
     booking_id: "Mã vé đặt",
     total_price: "Tổng tiền",
@@ -163,7 +176,6 @@ const ListsBooking = () => {
           <div className="flex items-center content-center gap-x-3 justify-center">
             <FaDotCircle className="text-green-500" />
             <span>Đã lấy vé</span>
-          
           </div>
         ),
     },
@@ -189,12 +201,26 @@ const ListsBooking = () => {
       title: "Hành động",
       key: "action",
       align: "center",
-      render: () => (
-        <Space size="middle">
-          <a>
-            <Button danger>Delete</Button>
-          </a>
-        </Space>
+      render: (_: any, { key: id }: any) => (
+        // console.log('booking ---: ',id)
+        <Popconfirm
+          title="Xóa xóa vé đặt"
+          description="Bạn có chắc muốn xóa?"
+          onConfirm={() =>
+            softDeleteBooking({booking_id: id})
+              .unwrap()
+              .then(() => {
+                notification.success({
+                  message: "Delete showtime sucessfuly!",
+                });
+              })
+          }
+          okText="Yes"
+          okType="default"
+          cancelText="No"
+        >
+          <Button danger icon={<DeleteOutlined />} />
+        </Popconfirm>
       ),
     },
   ];
@@ -206,6 +232,7 @@ const ListsBooking = () => {
       email: item?.user?.email,
       total: item?.total_price,
       status: item?.status,
+      nameMovie: item?.showtime.movie.name
     };
   });
   const cancel = (e) => {
@@ -216,32 +243,48 @@ const ListsBooking = () => {
     <>
       <div className=" grid grid-cols-4 gap-4">
         <div className="bg-white shadow-md rounded-md p-4 ">
-        <p className="text-2xl p-4 flex items-center gap-2">
+          <p className="text-2xl p-4 flex items-center gap-2">
             <span>Tổng vé đã đặt</span>
-            <span><FcFilm /></span>
-            </p>
-          <p className="text-4xl font-bold text-center">{bookings?.data?.total_bookings}</p>
+            <span>
+              <FcFilm />
+            </span>
+          </p>
+          <p className="text-4xl font-bold text-center">
+            {bookings?.data?.total_bookings}
+          </p>
         </div>
         <div className="bg-white shadow-md rounded-md p-4 ">
           <p className="text-2xl p-4 flex items-center gap-2">
             <span>Đơn đã lấy vé</span>
-            <span><FcOk /></span>
-            </p>
-          <p className="text-4xl font-bold text-center">{bookings?.data?.satisfieds}</p>
+            <span>
+              <FcOk />
+            </span>
+          </p>
+          <p className="text-4xl font-bold text-center">
+            {bookings?.data?.satisfieds}
+          </p>
         </div>
         <div className="bg-white shadow-md rounded-md p-4 ">
-        <p className="text-2xl p-4 flex items-center gap-2">
+          <p className="text-2xl p-4 flex items-center gap-2">
             <span>Đơn chưa lấy vé</span>
-            <span><FcInfo /></span>
-            </p>
-          <p className="text-4xl font-bold text-center">{bookings?.data?.not_yet}</p>
+            <span>
+              <FcInfo />
+            </span>
+          </p>
+          <p className="text-4xl font-bold text-center">
+            {bookings?.data?.not_yet}
+          </p>
         </div>
         <div className="bg-white shadow-md rounded-md p-4 ">
-        <p className="text-2xl p-4 flex items-center gap-2">
+          <p className="text-2xl p-4 flex items-center gap-2">
             <span>Đơn hủy vé</span>
-            <span><FcHighPriority /></span>
-            </p>
-          <p className="text-4xl font-bold text-center">{bookings?.data?.hide}</p>
+            <span>
+              <FcHighPriority />
+            </span>
+          </p>
+          <p className="text-4xl font-bold text-center">
+            {bookings?.data?.hide}
+          </p>
         </div>
       </div>
       <div className="mb-2">
@@ -263,11 +306,16 @@ const ListsBooking = () => {
             </button>
           </Popconfirm>
           <div className="">
-            <GarbageComponent />
+            <GarbageComponent/>
           </div>
         </div>
       </div>
-      <Table className="shadow-md rounded-md" columns={columns} dataSource={dataTable} pagination={false} />
+      <Table
+        className="shadow-md rounded-md"
+        columns={columns}
+        dataSource={dataTable}
+        pagination={false}
+      />
       <Pagination
         style={{ marginTop: "16px", textAlign: "center" }}
         defaultCurrent={1}
@@ -324,9 +372,7 @@ const ListsBooking = () => {
                   <span className="block  font-semibold">Chỗ ngồi:</span>
                   <span className="text-gray-600">
                     {BookingById?.seats?.map((seat) => (
-                      <span key={seat?.id}>
-                        {seat?.seat_name}
-                      </span>
+                      <span key={seat?.id}>{seat?.seat_name}</span>
                     )) ?? "Không có"}
                   </span>
                 </div>
@@ -339,14 +385,16 @@ const ListsBooking = () => {
                 <div className=" border-b pb-4 p-2 text-base">
                   <span className="block font-semibold">Ngày đặt:</span>
                   <span className="text-gray-600">
-                    {dayjs(BookingById?.created_at).format("DD/MM.YYYY") ?? "Không có"}
+                    {dayjs(BookingById?.created_at).format("DD/MM.YYYY") ??
+                      "Không có"}
                   </span>
                 </div>
 
                 <div className="border-b pb-4 p-2 text-base">
                   <span className="block mb-2 font-semibold">Giờ đặt:</span>
                   <span className="text-gray-600">
-                    {dayjs(BookingById?.created_at).format("HH:mm:ss") ?? "Không có"}
+                    {dayjs(BookingById?.created_at).format("HH:mm:ss") ??
+                      "Không có"}
                   </span>
                 </div>
                 <div className="border-b pb-4 p-2 text-base">

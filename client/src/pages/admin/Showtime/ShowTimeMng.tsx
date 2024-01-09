@@ -110,7 +110,7 @@ const ShowTimeMng = () => {
           <Link to={"/admin/showtime/add"}>Thêm Lịch Chiếu</Link>
         </Button>
         <div className="">
-          <GarbageComponent />
+          {/* <GarbageComponent /> */}
         </div>
       </div>
       <h1 className="text-2xl my-6 bg-white p-4 rounded-md shadow-md ">Danh sách lịch chiếu</h1>

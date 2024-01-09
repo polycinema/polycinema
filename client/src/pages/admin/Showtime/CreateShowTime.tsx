@@ -9,7 +9,7 @@ import {
   notification,
 } from "antd";
 import { useCreateShowTimeMutation } from "../../../redux/api/showTimeApi";
-import { IShowTime } from "../../../interfaces/showtime";
+import { IShowtime } from "../../../interfaces/showtime";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useGetAllMoviesQuery } from "../../../redux/api/movieApi";
@@ -44,7 +44,7 @@ const CreateShowTime = () => {
     start_time,
     end_time,
     show_date,
-  }: IShowTime) => {
+  }: IShowtime) => {
     // console.log('start time: ',moment(start_time);
     createShowTime({
       movie_id,

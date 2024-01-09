@@ -107,7 +107,7 @@ const ListRooms = () => {
             <Link to={"/admin/rooms/add"}>Thêm phòng</Link>
           </Button>
           <div className="">
-            <GarbageComponent />
+            {/* <GarbageComponent /> */}
           </div>
         </div>
         <h1 className="text-2xl my-6  bg-white p-4 rounded-md shadow-md">Danh sách phòng </h1>

@@ -32,11 +32,12 @@ const InfoAccount = () => {
   useEffect(() => {
     (async () => {
       await form.setFieldsValue({
-        name: UserById?.data.name,
-        phone: UserById?.data.phone,
-        email: UserById?.data.email,
-        date_of_birth: dayjs(UserById?.data.date_of_birth),
-        gender: UserById?.data.gender,
+        name: UserById?.data.name ?? "Chưa có thông tin",
+        phone: UserById?.data.phone ?? "Chưa có thông tin",
+        email: UserById?.data.email ?? "Chưa có thông tin",
+        date_of_birth:
+          dayjs(UserById?.data.date_of_birth) ?? "Chưa có thông tin",
+        gender: UserById?.data.gender ?? "Chưa có thông tin",
         // image: UserById?.data.image,
         // UserById_id: user?.id
       });
@@ -91,10 +92,11 @@ const InfoAccount = () => {
           <Upload {...props}>
             <Button icon={<UploadOutlined />}>Click to Upload</Button>
           </Upload>
-          <Image
-            width={200}
-            src={UserById?.data.image}
-          />
+          {UserById?.data.image ? (
+            <Image width={200} src={UserById?.data.image} />
+          ) : (
+            "Chưa cập nhật avatar"
+          )}
         </Form.Item>
         <Row gutter={32}>
           <Col span={12}>

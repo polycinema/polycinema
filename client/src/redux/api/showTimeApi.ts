@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IShowTime } from "../../interfaces/showtime";
+import { IShowtime } from "../../interfaces/showtime";
 const showtimeApi = createApi({
     reducerPath: "showtime",
     tagTypes: ['showtime'],
@@ -10,7 +10,7 @@ const showtimeApi = createApi({
         },
     }),
     endpoints: (build) => ({
-        getShowTimes: build.query<IShowTime[], void>({
+        getShowTimes: build.query<IShowtime[], void>({
             query: () => ({
                 url: "/admin/showtime",
             }),

@@ -63,6 +63,18 @@ const checkoutApi = createApi({
             }),
             invalidatesTags: ["Checkout"],
         }),
+        softDeleteBooking: build.mutation({
+            query: (booking_id) => ({
+                url: `/change-level-booking`,
+                method: "POST",
+                body: booking_id,
+            }),
+            invalidatesTags: ["Checkout"],
+        }),
+        getBookingsSoft: build.query<any[],any>({
+            query: () => `/booking-in-trash`,
+            providesTags: ["Checkout"],
+        }),
     }),
 });
 
@@ -76,6 +88,8 @@ export const {
     useUpdateNotYetMutation,
     useUpdateSatisfiedMutation,
     useGetBookingByIdQuery,
+    useSoftDeleteBookingMutation,
+    useGetBookingsSoftQuery
 } = checkoutApi;
 export const checkoutReducer = checkoutApi.reducer;
 export default checkoutApi;
