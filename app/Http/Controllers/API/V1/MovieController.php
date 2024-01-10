@@ -256,4 +256,37 @@ class MovieController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    // Ẩn hiện Movie 
+    public function changeLevelMovie(Request $request)
+    {
+        try {
+            $movie = Movie::find($request->movie_id);
+
+            $level_movie = $movie->level;
+
+            switch ($level_movie) {
+                case Movie::LEVEL_HIDE:
+                    $movie->level = Movie::LEVEL_SHOW;
+                    $message = "Đã khôi phục phim $movie->name";
+                    break;
+                case Movie::LEVEL_SHOW:
+                    $movie->level = Movie::LEVEL_HIDE;
+                    $message = "Đã ẩn phim $movie->name";
+                    break;
+            }
+
+            $movie->save();
+
+            return response()->json([
+                'message' => $message   
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('BookingController@changeLevelShowTime: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

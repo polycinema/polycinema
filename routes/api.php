@@ -96,7 +96,7 @@ Route::prefix('v1')->group(function () {
 
     Route::post('reset-password', [NewpasswordController::class, 'reset']);
 
-    Route::post('statistc-by-movie/{movie_id}', [StatisticController::class, 'getStatisticByMovie']);
+    Route::get('statistc-by-movie/{movie_id}', [StatisticController::class, 'getStatisticByMovie']);
     // hide và show booking
     Route::post('change-level-booking', [BookingController::class, 'changeLevelBooking']);
     // tìm booking theo booking_id (không phải là id của bảng bookings)
@@ -116,4 +116,6 @@ Route::prefix('v1')->group(function () {
     Route::get('get-booking-by-bookingid/{booking_id}', [BookingController::class, 'getBookingByBookingID']);
     // hide và show showtime
     Route::post('change-level-showtime', [ShowTimeController::class, 'changeLevelShowTime']);
+    // hide và show movie
+    Route::post('change-level-movie', [MovieController::class, 'changeLevelMovie']);
 });
