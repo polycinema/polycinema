@@ -17,6 +17,9 @@ class Room extends Model
         'single_seat',
         'double_seat',
         'special_seat',
+        'single_seat_price',
+        'double_seat_price',
+        'special_seat_price',
         'capacity',
     ];
 
