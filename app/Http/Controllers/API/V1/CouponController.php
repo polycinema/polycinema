@@ -107,7 +107,7 @@ class CouponController extends Controller
                 'data' => $myAvailableCoupons,
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
-            Log::error('API/V1/CounponController@getAvailableCouponsByUser:, '[$exception->getMessage()]);
+            Log::error('API/V1/CouponController@getAvailableCouponsByUser:, '[$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
@@ -140,7 +140,7 @@ class CouponController extends Controller
                 'message' => $message   
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
-            Log::error('BookingController@changeLevelCoupon: ', [$exception->getMessage()]);
+            Log::error('CouponController@changeLevelCoupon: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'

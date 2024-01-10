@@ -16,6 +16,9 @@ class Product extends Model
         'description'
     ];
 
+    CONST LEVEL_HIDE = 'hide';
+    CONST LEVEL_SHOW = 'show';
+
     public function bookings() {
         return $this->belongsToMany(Booking::class, 'product_bookings');
     }

@@ -38,7 +38,7 @@ class ActorController extends Controller
                 'message' => $message
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
-            Log::error('BookingController@changeLevelActor: ', [$exception->getMessage()]);
+            Log::error('ActorController@changeLevelActor: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
@@ -63,7 +63,7 @@ class ActorController extends Controller
                 'data' => $actors
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
-            Log::error('BookingController@searchActorByName: ', [$exception->getMessage()]);
+            Log::error('ActorController@searchActorByName: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
