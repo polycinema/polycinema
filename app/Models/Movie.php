@@ -21,6 +21,9 @@ class Movie extends Model
         'status'
     ];
 
+    CONST LEVEL_HIDE = 'hide';
+    CONST LEVEL_SHOW = 'show';
+
     public function director() {
         return $this->belongsTo(Director::class);
     }
