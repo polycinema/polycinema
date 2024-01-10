@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('expires_at'); // ngày hết hạn
             $table->bigInteger('quantity')->nullable(); // số lượng
             $table->bigInteger('min_order_value')->nullable();
+            $table->enum('level', ['show','hide'])->default('show');
             $table->timestamps();
         });
     }

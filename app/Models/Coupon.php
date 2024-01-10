@@ -31,6 +31,9 @@ class Coupon extends Model
     const ONE = 1 ;
     const EMPTY = "" ;
 
+    CONST LEVEL_HIDE = 'hide';
+    CONST LEVEL_SHOW = 'show';
+    
     public function users(){
          return $this->belongsToMany(User::class , 'coupon_bookings' );
     }
