@@ -16,18 +16,18 @@ class SeatSeeder extends Seeder
     {
         for ($i = 1; $i <= 50; $i++) {
             if ($i > 45) {
-                $type = 1;
+                $type = 'special';
                 $price = Seat::TYPE['special'];
             } elseif ($i > 35 && $i <= 45) {
-                $type = 2;
+                $type = 'double';
                 $price = Seat::TYPE['double'];
             } else {
-                $type = 3;
+                $type = 'single';
                 $price = Seat::TYPE['single'];
             }
             Seat::create([
                 'seat_name' => 'A'.$i,
-                'seat_type_id' => $type,
+                'type' => $type,
                 'showtime_id' => 1,
                 'status' => 'unbook',
                 'price' => $price,

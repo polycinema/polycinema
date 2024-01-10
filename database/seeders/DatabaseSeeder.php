@@ -35,7 +35,6 @@ class DatabaseSeeder extends Seeder
             BannerSeeder::class,
             MovieActorSeeder::class,
             MovieGenreSeeder::class,
-            SeatTypeSeeder::class
         ]);
     }
 }

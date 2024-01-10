@@ -32,25 +32,21 @@ class RoomController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @var $request: [
-     *     room_name: 'B - 20'
-     *     seat_types: [
-     *  {id: 1, quantity: 30}
-     * ]
-     * ]
-     */
+
     public function store(Request $request)
     {
         try {
             $validator = Validator::make($request->all(), [
                 'room_name' => 'required|unique:rooms,room_name',
-                'seat_types' => 'required'
+                'single_seat' => 'numeric',
+                'double_seat' => 'numeric',
+                'special_seat' => 'numeric'
             ], [
                 'room_name.required' => 'Trường tên phòng không được trống',
-                'room_name.unique' => "Phòng $request->room_name đã tồn tại",
-                'seat_types.required' => 'Vui lòng chọn loại ghế'
+                'room_name.unique' => "Phòng $request->room_name đã tồn tại ",
+                'single_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
+                'double_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
+                'special_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
             ]);
 
             if ($validator->fails()) {
@@ -61,21 +57,14 @@ class RoomController extends Controller
 
             $room = Room::create([
                 'room_name' => $request->room_name,
-                // 'single_seat' => $request->single_seat,
-                // 'double_seat' => $request->double_seat,
-                // 'special_seat' => $request->special_seat,
-                // 'capacity' => $request->single_seat + $request->double_seat + $request->special_seat,
-                'capacity' => 0
+                'single_seat' => $request->single_seat,
+                'double_seat' => $request->double_seat,
+                'special_seat' => $request->special_seat,
+                'capacity' => $request->single_seat + $request->double_seat + $request->special_seat,
             ]);
 
-            foreach ($request->seat_types as $seatType) {
-                $room->seatTypes()->attach($seatType['id'], ['quantity' => $seatType['quantity']]);
-            }
-
-            $room->update(['capacity' => $room->seatTypes()->sum('quantity')]);
-
             return response()->json([
-                'message' => 'Tạo mới thành công phòng chiếu'
+                'message' => "Thêm phòng $room->room_name thành công"
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('API/V1/Admin/RoomController@store:', [$exception->getMessage()]);
@@ -128,7 +117,7 @@ class RoomController extends Controller
 
             $room->update([
                 'room_name' => $request->room_name,
-                // 'capacity' => 
+                // 'capacity' =>
             ]);
 
             return response()->json([
