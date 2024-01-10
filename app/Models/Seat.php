@@ -24,7 +24,7 @@ class Seat extends Model
     protected $fillable = [
         'seat_name',
         'showtime_id',
-        'seat_type_id',
+        'type',
         'status',
         'price',
         'user_id',

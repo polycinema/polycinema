@@ -83,9 +83,9 @@ class ShowTimeController extends Controller
             $special_seat = $showtime->room->special_seat;
 
             if ($showtime) {
-                $single_price = Seat::TYPE['single'];
-                $double_price = Seat::TYPE['double'];
-                $special_price = Seat::TYPE['special'];
+                $single_price = $showtime->room->single_seat_price;
+                $double_price = $showtime->room->double_seat_price;
+                $special_price = $showtime->room->special_seat_price;
 
                 for ($i = 1; $i <= $single_seat; $i++) {
                     Seat::create([
