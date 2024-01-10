@@ -38,7 +38,7 @@ class DirectorController extends Controller
                 'message' => $message
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
-            Log::error('BookingController@changeLevelDirector: ', [$exception->getMessage()]);
+            Log::error('DirectorController@changeLevelDirector: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
@@ -64,7 +64,7 @@ class DirectorController extends Controller
                 'data' => $director
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
-            Log::error('BookingController@searchDirectorByName: ', [$exception->getMessage()]);
+            Log::error('DirectorController@searchDirectorByName: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'

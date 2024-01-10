@@ -14,6 +14,9 @@ class Genre extends Model
     protected $fillable = [
         'name'
     ];
+    
+    CONST LEVEL_HIDE = 'hide';
+    CONST LEVEL_SHOW = 'show';
 
     public function movies() {
         return $this->belongsToMany(Movie::class, 'movie_genres');

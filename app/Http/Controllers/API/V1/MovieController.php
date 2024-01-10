@@ -282,7 +282,7 @@ class MovieController extends Controller
                 'message' => $message   
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
-            Log::error('BookingController@changeLevelMovie: ', [$exception->getMessage()]);
+            Log::error('MovieController@changeLevelMovie: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'

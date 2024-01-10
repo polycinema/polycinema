@@ -6,8 +6,10 @@ use App\Http\Controllers\API\V1\Admin\UserController;
 use App\Http\Controllers\API\V1\BookingController;
 use App\Http\Controllers\API\V1\CouponController;
 use App\Http\Controllers\API\V1\DirectorController;
+use App\Http\Controllers\API\V1\GenreController;
 use App\Http\Controllers\API\V1\MovieController;
 use App\Http\Controllers\API\V1\NewpasswordController;
+use App\Http\Controllers\API\V1\ProductController;
 use App\Http\Controllers\API\V1\SeatController;
 use App\Http\Controllers\API\V1\ProfileController;
 use App\Http\Controllers\API\V1\ShowTimeController;
@@ -130,4 +132,8 @@ Route::prefix('v1')->group(function () {
     Route::post('change-level-director', [DirectorController::class, 'changeLevelDirector']);
     // Tìm Actor theo tên
     Route::post('search-director', [DirectorController::class, 'searchDirectorByName']);
+    // hide và show Genre
+    Route::post('change-level-genre', [GenreController::class, 'changeLevelGenre']);
+    // hide và show Product
+    Route::post('change-level-product', [ProductController::class, 'changeLevelProduct']);
 });

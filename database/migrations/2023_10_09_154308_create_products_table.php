@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->bigInteger('price')->nullable();
             $table->text('description')->nullable();
+            $table->enum('level', ['show','hide'])->default('show');
             $table->timestamps();
         });
     }
