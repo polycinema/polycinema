@@ -14,6 +14,9 @@ class Director extends Model
         'image',
     ];
 
+    CONST LEVEL_HIDE = 'hide';
+    CONST LEVEL_SHOW = 'show';
+
     public function movies() {
         return $this->belongsToMany(Movie::class);
     }
