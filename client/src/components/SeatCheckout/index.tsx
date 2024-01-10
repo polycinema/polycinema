@@ -8,8 +8,8 @@ import { useAppDispatch, useAppSelector } from "../../store/hook";
 import {
   decreaseProduct,
   increaseProduct,
+  setSeatsToggle,
 } from "../../redux/slices/valueCheckoutSlice";
-import Countdown from 'react-countdown';
 import IsLoading from "../../utils/IsLoading";
 import { Button } from "antd";
 import imgNormalActive from "../../../public/img/seat-select-normal.png";
@@ -40,8 +40,36 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
     (state) => state.ValueCheckout
   );
   const dispacth = useAppDispatch();
+  const navigate = useNavigate()
   const [seatDatas, setSeatDatas] = useState(showtime?.data?.seats || []);
+  const storedCountdown = parseInt(localStorage.getItem('countdown')) || 480;
+  const storedCounting = localStorage.getItem('counting') === 'true' || false;
 
+  const [countdown, setCountdown] = useState(storedCountdown);
+  const [counting, setCounting] = useState(storedCounting);
+
+  useEffect(() => {
+    localStorage.setItem('countdown', countdown.toString());
+    localStorage.setItem('counting', counting.toString());
+  }, [countdown, counting]);
+
+  useEffect(() => {
+    let interval;
+
+    if (counting && countdown > 0) {
+      interval = setInterval(() => {
+        setCountdown(prevCountdown => prevCountdown - 1);
+      }, 1000);
+    }
+
+    if (countdown === 0) {
+      navigate("/poly-movies")
+    }
+
+    return () => clearInterval(interval);
+  }, [counting, countdown]);
+
+  
   useEffect(() => {
     const channel = window.Echo.channel("seat-reservation");
     const handleReservedEvent = (e) => {
@@ -57,14 +85,13 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       setSeatDatas(showtime.data.seats);
     }
   });
-
+  
   const handleClick = (seat: any) => {
-    const currentTime = new Date().toISOString();
-    localStorage.setItem("seatSelectionTime", currentTime);
-
+    if(!counting){ setCounting(true)}
     const selectedSeats = seatDatas.filter(
       (item) => item.status === "booking" && item.user_id === user.id
     );
+    
     if (selectedSeats.length >= 9) {
       alert(
         "Bạn chỉ được chọn tối đa 8 ghế, vui lòng hủy một ghế để chọn ghế khác"
@@ -102,8 +129,10 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
 
     if (seat.status === "unbook") {
       updateSeatStatus({ id: seat.id, status: "booking", user_id: user?.id });
+      dispacth(setSeatsToggle(seat))
     } else if (seat.status === "booking") {
       updateSeatStatus({ id: seat.id, status: "unbook", user_id: null });
+      dispacth(setSeatsToggle(seat))
     }
   };
 
@@ -140,24 +169,11 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
         return imgNormal;
     }
   };
-  const handleCountdownComplete = () => {
-    console.log('Đếm ngược đã kết thúc!');
-    // Thực hiện các hành động sau khi đếm ngược kết thúc
-  };
-  const renderer = ({ minutes, seconds, completed }) => {
-    if (completed) {
-      // Đã kết thúc đếm ngược
-      return <span>Đếm ngược đã kết thúc!</span>;
-    } else {
-      // Đang trong quá trình đếm ngược
-      return (
-        <span>
-          {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
-        </span>
-      );
-    }
-  };
-  return (
+  
+
+  
+
+return(
     <div className="w-full">
       <div className="m-4">
         <div className="flex items-center justify-center gap-4 p-2">
@@ -178,11 +194,9 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       <div className="flex items-center justify-center gap-5">
         <p className="text-xl mt-2">Thời gian còn lại để chọn ghế:</p>
         <p className="text-2xl mt-2 "> 
-        <Countdown
-        date={Date.now() + 60000} // Thời gian kết thúc đếm ngược, ở đây là 1 phút
-        onComplete={handleCountdownComplete}
-        renderer={renderer}
-      />
+        {counting ? (
+        <> {Math.floor(countdown / 60).toString().padStart(2, '0')}:{(countdown % 60).toString().padStart(2, '0')}</>
+      ):"8:00"}
   </p>
       </div>
       <div className="flex justify-center items-center space-x-9 p-4   ">

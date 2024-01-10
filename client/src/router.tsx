@@ -18,7 +18,6 @@ import AddActor from "./pages/admin/Actor/Add-Actor";
 import EditActor from "./pages/admin/Actor/Edit-Actor";
 import MovieDetail from "./pages/MovieDetail/MovieDetail";
 import EditAcount from "./pages/admin/Acount/EditAcount";
-import ListAcount from "./pages/admin/Acount/ListAcount";
 import NotFoundPage from "./pages/NotFound/NotFoundPage";
 import ListRooms from "./pages/admin/Room/List-Room";
 import AddRoom from "./pages/admin/Room/Add-Room";
@@ -36,7 +35,6 @@ import ListProduct from "./pages/admin/Product/List-Product";
 import EditProduct from "./pages/admin/Product/Edit-Product";
 import Dashboard from "./pages/admin/Dashboard/Dashboard";
 import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
-import InfoAccount from "./components/userinfo/InfoAccount";
 import NewDetailPage from "./pages/NewsPage/NewDetailPage";
 import PaymentPage from "./pages/PaymentPage";
 import ListBanner from "./pages/admin/Banner/List";
@@ -44,7 +42,6 @@ import AddBanner from "./pages/admin/Banner/Add";
 import EditBanner from "./pages/admin/Banner/Edit";
 import PayementReturnPage from "./pages/PaymentReturnPage";
 import MemberPage from "./pages/MemberPage";
-import PointUser from "./components/PointUser/PointUser";
 import ListsBooking from "./pages/admin/ListBooking";
 import PrivateRouterAdmin from "./components/privateRouter/PrivateRouterAdmin";
 import PrivateRouterCheckout from "./components/privateRouter/PrivateRouterCheckout";
@@ -52,7 +49,9 @@ import ResetPassword from "./auth/ResetPassword";
 import CouponMng from "./pages/admin/Coupon/CouponMng";
 import AddCoupon from "./pages/admin/Coupon/AddCoupon";
 import EditCoupon from "./pages/admin/Coupon/EditCoupon";
-
+import ListAcountUser from "./pages/admin/Acount/ListAcountUser";
+import ListAcountAdmin from "./pages/admin/Acount/ListAcoutAdmin";
+import PrivateRouterSeat from "./components/privateRouter/PrivateRouterSeat";
 
 export const router = createBrowserRouter([
   { path: "*", element: <NotFoundPage /> },
@@ -60,14 +59,20 @@ export const router = createBrowserRouter([
     path: "",
     element: <LayoutWebsite />,
     children: [
-      { path: "", element: <HomePage /> },
-      { path: "poly-movies", element: <MoviePage /> },
-      { path: "poly-acount", element: <Account /> },
-      { path: "reset-password", element: <ResetPassword /> },
-      { path: "poly-news", element: <NewsPage /> },
-      { path: "poly-news/:id", element: <NewDetailPage /> },
-      { path: "movies/:slug/detail", element: <MovieDetail /> },
-      { path: "poly-moviesDetail/:id", element: <MovieDetail /> },
+      {
+        path: "",
+        element: <PrivateRouterSeat />,
+        children: [
+          { path: "", element: <HomePage /> },
+          { path: "poly-movies", element: <MoviePage /> },
+          { path: "poly-acount", element: <Account /> },
+          { path: "reset-password", element: <ResetPassword /> },
+          { path: "poly-news", element: <NewsPage /> },
+          { path: "poly-news/:id", element: <NewDetailPage /> },
+          { path: "movies/:slug/detail", element: <MovieDetail /> },
+          { path: "poly-moviesDetail/:id", element: <MovieDetail /> },
+        ],
+      },
       {
         path: "",
         element: <PrivateRouterCheckout />,
@@ -75,61 +80,67 @@ export const router = createBrowserRouter([
           { path: "poly-checkout/:id", element: <CheckoutPage /> },
           { path: "poly-payment", element: <PaymentPage /> },
           { path: "payment-return", element: <PayementReturnPage /> },
-          { path: "inforAcount", element: <InfoAccount /> },
-          // { path: "poly-checkout", element: <CheckoutPage /> },
-          { path: "pointUser", element: <PointUser /> },
-          { path: "poly-member", element: <MemberPage /> }
-        ]
-      },
-
-    ],
-  },
-  {
-    path: "/admin",
-    element: <PrivateRouterAdmin />,
-    children: [
-      {
-        element: <LayoutAdmin />,
-        children: [
-          { index: true, element: <Dashboard /> },
-          { path: "dashboard", element: <Dashboard /> },
-          { path: "booking", element: <ListsBooking /> },
-          { path: "rooms", element: <ListRooms /> },
-          { path: "rooms/add", element: <AddRoom /> },
-          { path: "rooms/:id/edit", element: <EditRoom /> },
-          { path: "actors", element: <ListActor /> },
-          { path: "actors/add", element: <AddActor /> },
-          { path: "actors/:id/edit", element: <EditActor /> },
-          { path: "genres", element: <ListGenre /> },
-          { path: "genres/add", element: <AddGenre /> },
-          { path: "genres/:id/edit", element: <EditGenre /> },
-          { path: "movies/create", element: <AddMovies /> },
-          { path: "movies", element: <MovieTable /> },
-          { path: "movies/:id/edit", element: <EditMovies /> },
-          { path: "director", element: <ListDirector /> },
-          { path: "director/add", element: <AddDirector /> },
-          { path: "director/:id/edit", element: <EditDirector /> },
-          { path: "acount/:id/edit", element: <EditAcount /> },
-          { path: "acount", element: <ListAcount /> },
-          { path: "showtime", element: <ShowTimeMng /> },
-          { path: "showtime/add", element: <CreateShowTime /> },
-          { path: "showtime/:id/edit", element: <UpdateShowTime /> },
-          { path: "addAcount", element: <AddAcount /> },
-          { path: "news/add", element: <AddNews /> },
-          { path: "news", element: <ListPost /> },
-          { path: "news/:id/edit", element: <EditNews /> },
-          { path: "products/add", element: <AddProduct /> },
-          { path: "products", element: <ListProduct /> },
-          { path: "products/:id/edit", element: <EditProduct /> },
-          { path: 'banner', element: <ListBanner /> },
-          { path: 'banner/add', element: <AddBanner /> },
-          { path: 'banner/:id/edit', element: <EditBanner /> },
-          { path: 'coupon', element: <CouponMng /> },
-          { path: 'coupon/add', element: <AddCoupon /> },
-          { path: 'coupon/:id/edit', element: <EditCoupon /> },
+          {
+            path: "",
+            element: <PrivateRouterSeat />,
+            children: [{ path: "poly-member", element: <MemberPage /> }],
+          },
         ],
       },
     ],
   },
-])
-
+  {
+    path: "",
+    element: <PrivateRouterSeat />,
+    children: [
+      {
+        path: "/admin",
+        element: <PrivateRouterAdmin />,
+        children: [
+          {
+            element: <LayoutAdmin />,
+            children: [
+              { index: true, element: <Dashboard /> },
+              { path: "dashboard", element: <Dashboard /> },
+              { path: "booking", element: <ListsBooking /> },
+              { path: "rooms", element: <ListRooms /> },
+              { path: "rooms/add", element: <AddRoom /> },
+              { path: "rooms/:id/edit", element: <EditRoom /> },
+              { path: "actors", element: <ListActor /> },
+              { path: "actors/add", element: <AddActor /> },
+              { path: "actors/:id/edit", element: <EditActor /> },
+              { path: "genres", element: <ListGenre /> },
+              { path: "genres/add", element: <AddGenre /> },
+              { path: "genres/:id/edit", element: <EditGenre /> },
+              { path: "movies/create", element: <AddMovies /> },
+              { path: "movies", element: <MovieTable /> },
+              { path: "movies/:id/edit", element: <EditMovies /> },
+              { path: "director", element: <ListDirector /> },
+              { path: "director/add", element: <AddDirector /> },
+              { path: "director/:id/edit", element: <EditDirector /> },
+              { path: "acount/:id/edit", element: <EditAcount /> },
+              { path: "acountUser", element: <ListAcountUser /> },
+              { path: "acountAdmin", element: <ListAcountAdmin /> },
+              { path: "showtime", element: <ShowTimeMng /> },
+              { path: "showtime/add", element: <CreateShowTime /> },
+              { path: "showtime/:id/edit", element: <UpdateShowTime /> },
+              { path: "addAcount", element: <AddAcount /> },
+              { path: "news/add", element: <AddNews /> },
+              { path: "news", element: <ListPost /> },
+              { path: "news/:id/edit", element: <EditNews /> },
+              { path: "products/add", element: <AddProduct /> },
+              { path: "products", element: <ListProduct /> },
+              { path: "products/:id/edit", element: <EditProduct /> },
+              { path: "banner", element: <ListBanner /> },
+              { path: "banner/add", element: <AddBanner /> },
+              { path: "banner/:id/edit", element: <EditBanner /> },
+              { path: "coupon", element: <CouponMng /> },
+              { path: "coupon/add", element: <AddCoupon /> },
+              { path: "coupon/:id/edit", element: <EditCoupon /> },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+]);

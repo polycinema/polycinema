@@ -71,10 +71,14 @@ const checkoutApi = createApi({
             }),
             invalidatesTags: ["Checkout"],
         }),
-        getBookingsSoft: build.query<any[],any>({
+        getBookingsSoft: build.query({
             query: () => `/booking-in-trash`,
             providesTags: ["Checkout"],
         }),
+        getBookingByBooking_Id:build.query({
+            query:(booking_id)=>`get-booking-by-bookingid/${booking_id}`,
+            providesTags:["Checkout"]
+        })
     }),
 });
 
@@ -89,7 +93,8 @@ export const {
     useUpdateSatisfiedMutation,
     useGetBookingByIdQuery,
     useSoftDeleteBookingMutation,
-    useGetBookingsSoftQuery
+    useGetBookingsSoftQuery,
+    useGetBookingByBooking_IdQuery
 } = checkoutApi;
 export const checkoutReducer = checkoutApi.reducer;
 export default checkoutApi;

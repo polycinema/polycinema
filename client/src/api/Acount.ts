@@ -1,3 +1,4 @@
+import axios from "axios";
 import instance from "./instance";
 export interface ICount {
         id:number
@@ -33,6 +34,12 @@ export const removeAcount =async (id:number|string)=>{
 export const getAllAcount = ()=>{
         return instance.get(`/users`)
 
+}
+export const getAllAcountUsers = ()=>{
+        return axios.get('http://localhost:8000/api/v1/customers')
+}
+export const getAllAcountAdmin = ()=>{
+        return axios.get('http://localhost:8000/api/v1/users-admin')
 }
 
 export const getAcounteById = (id:number|string)=>{

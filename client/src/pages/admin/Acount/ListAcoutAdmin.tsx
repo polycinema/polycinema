@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Popconfirm, Space, Table, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
-import { ICount, getAllAcount, removeAcount } from "../../../api/Acount";
+import { ICount, getAllAcountAdmin, removeAcount } from "../../../api/Acount";
 
 interface DataType {
   key: string;
@@ -11,16 +11,17 @@ interface DataType {
   email: string;
   role: string;
 }
-const ListAcount = () => {
+const ListAcountAdmin = () => {
   const [acounts, setAcounts] = useState<ICount[]>();
   const [messageApi, contextHolder] = message.useMessage();
-  console.log(acounts);
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await getAllAcount();
+        const { data } = await getAllAcountAdmin();
         setAcounts(data.data);
+        console.log(data.data);
+        
       } catch (error) {
         console.log(error);
       }
@@ -51,9 +52,6 @@ const ListAcount = () => {
       key: "action",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
-          <Button>
-            <Link to={`/admin/acount/${id}/edit`}>Edit</Link>
-          </Button>
           <div>
             <Popconfirm
               title="Xóa sản phẩm"
@@ -90,7 +88,7 @@ const ListAcount = () => {
     <>
       {contextHolder}
       <div>
-        <h1 className="text-2xl mb-6 bg-white p-2 rounded-md shadow-md">Danh sách tài khoản</h1>
+        <h1 className="text-2xl mb-6 bg-white p-2 rounded-md shadow-md">Danh sách tài khoản quản trị</h1>
         <div className="p-4">
           <Button type="default">
             <Link to={`/admin/addAcount`}>Thêm tài khoản</Link>
@@ -103,4 +101,4 @@ const ListAcount = () => {
   );
 };
 
-export default ListAcount;
+export default ListAcountAdmin;

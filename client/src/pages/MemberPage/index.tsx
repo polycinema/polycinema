@@ -17,8 +17,6 @@ const MemberPage = (props: Props) => {
   const [activeTab, setActiveTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [detailBooking, setDetailBooking] = useState()
-  console.log(booking?.data);
-  
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
   };
