@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthenController;
+use App\Http\Controllers\API\V1\ActorController;
 use App\Http\Controllers\API\V1\Admin\UserController;
 use App\Http\Controllers\API\V1\BookingController;
 use App\Http\Controllers\API\V1\CouponController;
@@ -118,7 +119,10 @@ Route::prefix('v1')->group(function () {
     Route::post('change-level-showtime', [ShowTimeController::class, 'changeLevelShowTime']);
     // hide và show movie
     Route::post('change-level-movie', [MovieController::class, 'changeLevelMovie']);
-    // hide và show movie
+    // hide và show coupon
     Route::post('change-level-coupon', [CouponController::class, 'changeLevelCoupon']);
-
+    // hide và show actor
+    Route::post('change-level-actor', [ActorController::class, 'changeLevelActor']);
+    // Tìm Actor theo tên
+    Route::post('search-actor', [ActorController::class, 'searchActorByName']);
 });

@@ -85,6 +85,7 @@ class CouponController extends Controller
         try {
             $coupons = Coupon::query()->where('expires_at', '>=', now())
                 ->where('quantity', '>', 0)
+                ->where('level', 'show')
                 ->get();
 
             $used_coupons = CouponBooking::query()->where('user_id', $id)->with('coupon')->get();
