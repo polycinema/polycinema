@@ -5,6 +5,7 @@ use App\Http\Controllers\API\V1\ActorController;
 use App\Http\Controllers\API\V1\Admin\UserController;
 use App\Http\Controllers\API\V1\BookingController;
 use App\Http\Controllers\API\V1\CouponController;
+use App\Http\Controllers\API\V1\DirectorController;
 use App\Http\Controllers\API\V1\MovieController;
 use App\Http\Controllers\API\V1\NewpasswordController;
 use App\Http\Controllers\API\V1\SeatController;
@@ -36,7 +37,7 @@ Route::post('login', [AuthenController::class, 'login'])->name('login');
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthenController::class, 'logout']);
 
-    Route::get('user', function(Request $request) {
+    Route::get('user', function (Request $request) {
         return $request->user();
     });
 });
@@ -113,7 +114,7 @@ Route::prefix('v1')->group(function () {
     Route::get('users-admin', [UserController::class, 'getAdminUser']);
 
     Route::get('customers', [UserController::class, 'getCustomers']);
-    
+
     Route::get('get-booking-by-bookingid/{booking_id}', [BookingController::class, 'getBookingByBookingID']);
     // hide và show showtime
     Route::post('change-level-showtime', [ShowTimeController::class, 'changeLevelShowTime']);
@@ -125,4 +126,8 @@ Route::prefix('v1')->group(function () {
     Route::post('change-level-actor', [ActorController::class, 'changeLevelActor']);
     // Tìm Actor theo tên
     Route::post('search-actor', [ActorController::class, 'searchActorByName']);
+    // hide và show Director
+    Route::post('change-level-director', [DirectorController::class, 'changeLevelDirector']);
+    // Tìm Actor theo tên
+    Route::post('search-director', [DirectorController::class, 'searchDirectorByName']);
 });
