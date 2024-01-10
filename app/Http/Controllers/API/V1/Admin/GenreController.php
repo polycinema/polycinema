@@ -18,7 +18,7 @@ class GenreController extends Controller
     public function index()
     {
         try {
-            $genres = Genre::query()->get();
+            $genres = Genre::query()->where('level','show')->get();
 
             return response()->json([
                 'data' => $genres

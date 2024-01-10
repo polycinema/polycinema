@@ -19,7 +19,7 @@ class CouponController extends Controller
     public function index()
     {
         try {
-            $coupons = Coupon::query()->get();
+            $coupons = Coupon::query()->where('level','show')->get();
 
             return response()->json([
                 'data' => $coupons

@@ -19,7 +19,7 @@ class DirectorController extends Controller
      */
     public function index()
     {
-        $directors = Director::all();
+        $directors = Director::query()->where('level','show')->get();
 
         if ($directors) {
             return response()->json([

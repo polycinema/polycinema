@@ -18,7 +18,11 @@ class MovieController extends Controller
     public function index()
     {
         try {
-            $movies = Movie::query()->with('director')->with('genres')->with('actors')->get();
+            $movies = Movie::query()->with('director')
+                ->with('genres')
+                ->with('actors')
+                ->where('level', 'show')
+                ->get();
 
             return response()->json([
                 'data' => $movies
@@ -216,6 +220,4 @@ class MovieController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
-    
 }

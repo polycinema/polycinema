@@ -19,7 +19,7 @@ class RoomController extends Controller
      */
     public function index()
     {
-        $rooms = Room::all();
+        $rooms = Room::query()->where('level','show')->get();
         if ($rooms) {
             return response()->json([
                 'data' => $rooms,
