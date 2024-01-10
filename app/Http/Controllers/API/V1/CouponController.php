@@ -113,4 +113,37 @@ class CouponController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    // Ẩn hiện Coupon 
+    public function changeLevelCoupon(Request $request)
+    {
+        try {
+            $coupon = Coupon::find($request->coupon_id);
+
+            $level_coupon = $coupon->level;
+
+            switch ($level_coupon) {
+                case Coupon::LEVEL_HIDE:
+                    $coupon->level = Coupon::LEVEL_SHOW;
+                    $message = "Đã khôi phục mã $coupon->coupon_code";
+                    break;
+                case Coupon::LEVEL_SHOW:
+                    $coupon->level = Coupon::LEVEL_HIDE;
+                    $message = "Đã ẩn mã $coupon->coupon_code";
+                    break;
+            }
+
+            $coupon->save();
+
+            return response()->json([
+                'message' => $message   
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('BookingController@changeLevelCoupon: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

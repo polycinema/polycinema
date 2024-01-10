@@ -118,4 +118,7 @@ Route::prefix('v1')->group(function () {
     Route::post('change-level-showtime', [ShowTimeController::class, 'changeLevelShowTime']);
     // hide và show movie
     Route::post('change-level-movie', [MovieController::class, 'changeLevelMovie']);
+    // hide và show movie
+    Route::post('change-level-coupon', [CouponController::class, 'changeLevelCoupon']);
+
 });
