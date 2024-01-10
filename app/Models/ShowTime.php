@@ -19,6 +19,9 @@ class   ShowTime extends Model
         'end_time',
     ];
 
+    CONST LEVEL_HIDE = 'hide';
+    CONST LEVEL_SHOW = 'show';
+
     public function room(){
         return $this->belongsTo(Room::class);
     }
