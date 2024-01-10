@@ -104,13 +104,14 @@
         
 }
 .movie-des{
-        display: grid;
-        grid-template-columns: repeat(2,1fr);
+        display: flex;
         font-size: 15px;
+        height: 50px;
 
 }
 .movie-des .movie-des-1{
         font-weight: 700;
+        width: 40%;
 }
 .movie-des .movie-des-1{
         display: flex;

@@ -4,11 +4,11 @@ const valueCheckout = createSlice({
     initialState: {
         products: [],
         booking: {},
-        coupon:{}
+        coupon: {},
+        toggleSeat: [],
     },
     reducers: {
         increaseProduct: (state, actions) => {
-
             const newProduct = actions.payload;
             const exitProductIndex = state.products.findIndex(
                 (item) => item.id == newProduct.id
@@ -30,10 +30,28 @@ const valueCheckout = createSlice({
                 );
                 confirm
                     ? (state.products = state.products.filter(
-                        (item: any) => item.id != action.payload
-                    ))
+                          (item: any) => item.id != action.payload
+                      ))
                     : (currentProduct.quantity = 1);
             }
+        },
+        setSeatsToggle: (state, action) => {
+            const isExist = state.toggleSeat.some(
+                (item) => item.id === action.payload.id
+            );
+
+            // Nếu tồn tại, xóa phần tử đó ra khỏi mảng
+            if (isExist) {
+                state.toggleSeat = state.toggleSeat.filter(
+                    (item) => item.id !== action.payload.id
+                );
+            } else {
+                // Nếu không tồn tại, thêm vào mảng
+                state.toggleSeat.push(action.payload);
+            }
+        },
+        deleteSeatsToggle: (state) => {
+            state.toggleSeat = [];
         },
         setBooking: (state, action) => {
             state.booking = action;
@@ -42,13 +60,13 @@ const valueCheckout = createSlice({
             state.products = [];
         },
         deleteValueBooking: (state) => {
-            state.booking = {}
+            state.booking = {};
         },
-        setCoupon:(state,action)=>{
-            state.coupon = action.payload
+        setCoupon: (state, action) => {
+            state.coupon = action.payload;
         },
-        deleteCoupon:(state)=>{
-            state.coupon = {}
+        deleteCoupon: (state) => {
+            state.coupon = {};
         },
     },
 });
@@ -59,6 +77,8 @@ export const {
     setBooking,
     deleteValueBooking,
     setCoupon,
-    deleteCoupon
+    deleteCoupon,
+    setSeatsToggle,
+    deleteSeatsToggle,
 } = valueCheckout.actions;
 export const valueCheckoutReducer = valueCheckout.reducer;

@@ -58,11 +58,10 @@ const ItemMovie = ({ movie }: Props) => {
             <AiFillPlayCircle />
           </Button>
         </div>
-        <div className="movie-icon-tag">
-          <img
-            src="https://www.betacinemas.vn/Assets/Common/icons/films/c-18.png"
-            alt=""
-          />
+        <div className="movie-icon-tag bg-[#03599D] rounded-sm p-[2px]">
+          <div className="text-center text-[10px] font-bold text-white rounded-sm border border-white">
+            P{movie?.id}
+          </div>
         </div>
         {movie?.status === "upcoming" ? (
           <div
@@ -88,9 +87,10 @@ const ItemMovie = ({ movie }: Props) => {
         <div className="movie-des">
           <p className="movie-des-1">Thể loại:</p>
           <p className="movie-des-2">
-            {movie?.genres?.map((itemGenres: any) => {
+            {movie?.genres?.slice(0, 4)?.map((itemGenres: any) => {
               return <span key={itemGenres?.id}>{itemGenres?.name},</span>;
             })}
+            ...
           </p>
         </div>
         <div className="movie-des">

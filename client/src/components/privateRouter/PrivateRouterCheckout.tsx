@@ -3,8 +3,6 @@ import { useAppSelector } from "../../store/hook";
 import { useEffect } from "react";
 const PrivateRouterCheckout = () => {
   const { isAuth } = useAppSelector((state) => state.Authorization);
-  
-  
   const navigate = useNavigate();
   useEffect(() => {
     if (!isAuth) {
