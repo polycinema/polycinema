@@ -8,6 +8,7 @@ use App\Http\Controllers\API\V1\MovieController;
 use App\Http\Controllers\API\V1\NewpasswordController;
 use App\Http\Controllers\API\V1\SeatController;
 use App\Http\Controllers\API\V1\ProfileController;
+use App\Http\Controllers\API\V1\ShowTimeController;
 use App\Http\Controllers\API\V1\StatisticController;
 use App\Models\Booking;
 use Illuminate\Http\Request;
@@ -96,7 +97,7 @@ Route::prefix('v1')->group(function () {
     Route::post('reset-password', [NewpasswordController::class, 'reset']);
 
     Route::post('statistc-by-movie/{movie_id}', [StatisticController::class, 'getStatisticByMovie']);
-
+    // hide và show booking
     Route::post('change-level-booking', [BookingController::class, 'changeLevelBooking']);
     // tìm booking theo booking_id (không phải là id của bảng bookings)
     Route::post('find-booking', [BookingController::class, 'findBookingByBookingID']);
@@ -113,5 +114,6 @@ Route::prefix('v1')->group(function () {
     Route::get('customers', [UserController::class, 'getCustomers']);
     
     Route::get('get-booking-by-bookingid/{booking_id}', [BookingController::class, 'getBookingByBookingID']);
-
+    // hide và show showtime
+    Route::post('change-level-showtime', [ShowTimeController::class, 'changeLevelShowTime']);
 });
