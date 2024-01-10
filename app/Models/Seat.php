@@ -39,8 +39,4 @@ class Seat extends Model
     public function booking(): BelongsTo {
         return $this->belongsTo(Booking::class);
     }
-
-    public function type() {
-        return $this->belongsTo(SeatType::class);
-    }
 }
