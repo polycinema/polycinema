@@ -18,9 +18,9 @@ class RoomSeader extends Seeder
             'single_seat' => 30,
             'double_seat' => 20,
             'special_seat' => 10,
-            'single_seat_price' => 60000,
-            'double_seat_price' => 110000,
-            'special_seat_price' => 135000,
+            // 'single_seat_price' => 60000,
+            // 'double_seat_price' => 110000,
+            // 'special_seat_price' => 135000,
             'capacity' => 60
         ]);
         DB::table('rooms')->insert([
@@ -28,9 +28,9 @@ class RoomSeader extends Seeder
             'single_seat' => 30,
             'double_seat' => 20,
             'special_seat' => 10,
-            'single_seat_price' => 60000,
-            'double_seat_price' => 110000,
-            'special_seat_price' => 135000,
+            // 'single_seat_price' => 60000,
+            // 'double_seat_price' => 110000,
+            // 'special_seat_price' => 135000,
             'capacity' => 60
         ]);
         DB::table('rooms')->insert([
@@ -38,9 +38,9 @@ class RoomSeader extends Seeder
             'single_seat' => 30,
             'double_seat' => 20,
             'special_seat' => 10,
-            'single_seat_price' => 60000,
-            'double_seat_price' => 110000,
-            'special_seat_price' => 135000,
+            // 'single_seat_price' => 60000,
+            // 'double_seat_price' => 110000,
+            // 'special_seat_price' => 135000,
             'capacity' => 60
         ]);
     }

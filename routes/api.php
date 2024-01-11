@@ -12,6 +12,7 @@ use App\Http\Controllers\API\V1\NewpasswordController;
 use App\Http\Controllers\API\V1\ProductController;
 use App\Http\Controllers\API\V1\SeatController;
 use App\Http\Controllers\API\V1\ProfileController;
+use App\Http\Controllers\API\V1\RoomController;
 use App\Http\Controllers\API\V1\ShowTimeController;
 use App\Http\Controllers\API\V1\StatisticController;
 use App\Models\Booking;
@@ -150,5 +151,9 @@ Route::prefix('v1')->group(function () {
     Route::get('product-in-trash', [ProductController::class, 'listProductInTrash']);
 
     Route::get('showtime-in-trash', [ShowTimeController::class, 'listShowTimeInTrash']);
+
+    Route::get('room-in-trash', [RoomController::class, 'listRoomInTrash']);
+
+    Route::post('change-level-room', [RoomController::class, 'changeLevelRoom']);
 
 });

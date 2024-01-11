@@ -17,11 +17,14 @@ class Room extends Model
         'single_seat',
         'double_seat',
         'special_seat',
-        'single_seat_price',
-        'double_seat_price',
-        'special_seat_price',
+        // 'single_seat_price',
+        // 'double_seat_price',
+        // 'special_seat_price',
         'capacity',
     ];
+
+    CONST LEVEL_HIDE = 'hide';
+    CONST LEVEL_SHOW = 'show';
 
     public function showtimes(): HasMany
     {
