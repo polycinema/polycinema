@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import InfoAccount from "../../components/userinfo/InfoAccount";
 import "./index.css";
 import PointUser from "../../components/PointUser/PointUser";
-import { useGetAllBookingsQuery } from "../../redux/api/checkoutApi";
+import { useGetAllBookingsQuery, useGetBookingsByUserQuery } from "../../redux/api/checkoutApi";
 import { useAppSelector } from "../../store/hook";
 import dayjs from "dayjs";
 import { BiSolidShow } from "react-icons/bi";
@@ -13,7 +13,7 @@ type Props = {};
 
 const MemberPage = (props: Props) => {
   const { user } = useAppSelector((state) => state.Authorization);
-  const { data: booking } = useGetAllBookingsQuery(user?.id);
+  const { data: booking } = useGetBookingsByUserQuery(user?.id);
   const [activeTab, setActiveTab] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [detailBooking, setDetailBooking] = useState()
@@ -77,7 +77,7 @@ const MemberPage = (props: Props) => {
                 </tr>
               </thead>
               <tbody>
-                {booking?.data?.bookings?.map((item: any) => {
+                {booking?.data?.map((item: any) => {
                     return (
                       <tr key={item?.id}>
                         <td className="border border-gray-400 p-2 text-center">

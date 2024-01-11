@@ -140,7 +140,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
     const seatType = seatDatas?.find((item) => item?.id == id)?.type;
     const seatStatus = seatDatas?.find((item) => item?.id == id)?.status;
     const user_id = seatDatas?.find((item) => item?.id == id)?.user_id;
-    switch (seatType) {
+    switch (seatType){
       case "single":
         return seatStatus === "booking" && user_id != user.id
           ? imgNormalGiu
@@ -169,7 +169,6 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
         return imgNormal;
     }
   };
-  
 
   
 

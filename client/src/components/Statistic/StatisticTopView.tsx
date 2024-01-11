@@ -44,7 +44,7 @@ const StatisticTopView = () => {
               };
   return (
         <div className=''>
-        <h1 className='text-2xl'>Top 10 Phim có lượt xem nhiều nhất</h1>
+        <h1 className='text-2xl'>Top phim có lượt xem cao</h1>
         <Pie data={data1} />
       </div>
   )

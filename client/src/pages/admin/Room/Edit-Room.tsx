@@ -11,6 +11,10 @@ type FieldType = {
   single_seat?: number;
   double_seat?: number;
   special_seat?: number;
+  single_seat_price?:number;
+  double_seat_price?:number;
+  special_seat_price?:number;
+
 };
 const EditRoom = () => {
   const { id } = useParams();
@@ -33,8 +37,11 @@ const EditRoom = () => {
       id: room?.id,
       room_name: room?.room_name,
       single_seat: room?.single_seat,
+      single_seat_price: room?.single_seat_price,
       double_seat: room?.double_seat,
+      double_seat_price: room?.double_seat_price,
       special_seat: room?.special_seat,
+      special_seat_price: room?.special_seat_price,
     });
   }, [room]);
 
@@ -67,49 +74,82 @@ const EditRoom = () => {
           className="bg-white p-4 rounded-md shadow-md"
         >
           <Form.Item<FieldType>
-            label="Tên phòng"
-            name="room_name"
-            rules={[{ required: true, message: "Please input your room!" }]}
-          >
-            <Input />
-          </Form.Item>
+          label="Tên phòng"
+          name="room_name"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <Input />
+        </Form.Item>
 
-          <Form.Item<FieldType>
-            label="Ghế thường"
-            name="single_seat"
-            rules={[{ required: true, message: "Please input your room!" }]}
-          >
-            <InputNumber
-              style={{ width: "100%" }}
-              min={0}
-              max={70}
-              defaultValue={0}
-            />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Ghế đôi"
-            name="double_seat"
-            rules={[{ required: true, message: "Please input your room!" }]}
-          >
-            <InputNumber
-              style={{ width: "100%" }}
-              min={0}
-              max={50}
-              defaultValue={0}
-            />
-          </Form.Item>
-          <Form.Item<FieldType>
-            label="Ghế VIP"
-            name="special_seat"
-            rules={[{ required: true, message: "Please input your room!" }]}
-          >
-            <InputNumber
-              style={{ width: "100%" }}
-              min={0}
-              max={50}
-              defaultValue={0}
-            />
-          </Form.Item>
+        <Form.Item<FieldType>
+          label="Ghế thường"
+          name="single_seat"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            min={0}
+            max={60}
+            defaultValue={0}
+          />
+        </Form.Item>
+        <Form.Item<FieldType>
+          label="Giá ghế thường"
+          name="single_seat_price"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            min={0}
+            defaultValue={0}
+          />
+        </Form.Item>
+        <Form.Item<FieldType>
+          label="Ghế đôi"
+          name="double_seat"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            min={0}
+            max={30}
+            defaultValue={0}
+          />
+        </Form.Item>
+        <Form.Item<FieldType>
+          label="Giá ghế đôi"
+          name="double_seat_price"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            min={0}
+            defaultValue={0}
+          />
+        </Form.Item>
+        <Form.Item<FieldType>
+          label="Ghế VIP"
+          name="special_seat"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            min={0}
+            max={20}
+            defaultValue={0}
+          />
+        </Form.Item>
+        <Form.Item<FieldType>
+          label="Giá ghế VIP"
+          name="special_seat_price"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            min={0}
+            defaultValue={0}
+          />
+        </Form.Item>
 
           <Form.Item label="Tác vụ">
             <Button htmlType="submit">

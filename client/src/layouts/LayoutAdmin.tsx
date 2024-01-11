@@ -51,7 +51,7 @@ const LayoutAdmin: React.FC = () => {
             {
               key: 1,
               icon: <AppstoreOutlined />,
-              label: <Link to={"dashboard"}>Dashboard</Link>,
+              label: <Link to={"statistic"}>Thống kê</Link>,
             },
             {
               key: 2,
