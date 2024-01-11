@@ -360,4 +360,26 @@ class BookingController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+    
+    public function doCancelBooking(Request $request)
+    {
+        // POST : booking_id
+        try {
+            $booking = Booking::find($request->booking_id);
+
+            $booking->status = Booking::CANCEL;
+
+            $booking->save();
+
+            return response()->json([
+                'message' => $booking
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('BookingController@changeLevelBooking: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -155,5 +155,7 @@ Route::prefix('v1')->group(function () {
     Route::get('room-in-trash', [RoomController::class, 'listRoomInTrash']);
 
     Route::post('change-level-room', [RoomController::class, 'changeLevelRoom']);
+    // Update status booking = cancel ( Hủy đơn hoàn tiền )
+    Route::post('cancel-booking', [BookingController::class, 'doCancelBooking']);
 
 });

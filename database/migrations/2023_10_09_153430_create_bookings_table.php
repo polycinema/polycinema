@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('showtime_id');
             $table->integer('total_price');
             $table->string('coupon_code')->nullable();
-            $table->enum('status', ['not_yet','satisfied'])->default('not_yet'); // Chưa lấy vé, đã lấy vé
+            $table->enum('status', ['not_yet','satisfied','cancel'])->default('not_yet'); // Chưa lấy vé, đã lấy vé
             $table->enum('level', ['show','hide'])->default('show'); // cho vào thùng rác
             $table->softDeletes();
             $table->timestamps();
