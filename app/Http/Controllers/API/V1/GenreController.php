@@ -45,4 +45,21 @@ class GenreController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function listGenreInTrash()
+    {
+        try {
+            $genres = Genre::query()->where('level','hide')->get();
+
+            return response()->json([
+                'data' => $genres
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/GenreController@listGenreInTrash: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

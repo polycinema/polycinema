@@ -70,4 +70,22 @@ class ActorController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function listActorInTrash()
+    {
+        try {
+            $actors = Actor::query()->where('level','hide')->get();
+
+            return response()->json([
+                'data' => $actors
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/ActorController@listActorInTrash: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

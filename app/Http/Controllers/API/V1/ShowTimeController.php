@@ -43,4 +43,25 @@ class ShowTimeController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function listShowTimeInTrash()
+    {
+        try {
+            $products = ShowTime::query()
+                ->where('level', 'hide')
+                ->with('room')
+                ->with('movie')
+                ->get();
+
+            return response()->json([
+                'data' => $products
+            ], Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            Log::error('API/V1/ShowTimeController@listShowTimeInTrash: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -136,4 +136,19 @@ Route::prefix('v1')->group(function () {
     Route::post('change-level-genre', [GenreController::class, 'changeLevelGenre']);
     // hide và show Product
     Route::post('change-level-product', [ProductController::class, 'changeLevelProduct']);
+    // List Data in trash ( level = hide )
+    Route::get('actor-in-trash', [ActorController::class, 'listActorInTrash']);
+    
+    Route::get('coupon-in-trash', [CouponController::class, 'ListCouponInTrash']);
+
+    Route::get('director-in-trash', [DirectorController::class, 'listDirectorInTrash']);
+    
+    Route::get('genre-in-trash', [GenreController::class, 'listGenreInTrash']);
+    
+    Route::get('movie-in-trash', [MovieController::class, 'listMovieInTrash']);
+    
+    Route::get('product-in-trash', [ProductController::class, 'listProductInTrash']);
+
+    Route::get('showtime-in-trash', [ShowTimeController::class, 'listShowTimeInTrash']);
+
 });

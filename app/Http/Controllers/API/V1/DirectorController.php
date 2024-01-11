@@ -19,7 +19,7 @@ class DirectorController extends Controller
         try {
             $director = Director::find($request->director_id);
 
-            $level_director= $director->level;
+            $level_director = $director->level;
 
             switch ($level_director) {
                 case Director::LEVEL_HIDE:
@@ -65,6 +65,23 @@ class DirectorController extends Controller
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('DirectorController@searchDirectorByName: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function listDirectorInTrash()
+    {
+        try {
+            $directors = Director::query()->where('level', 'hide')->get();
+
+            return response()->json([
+                'data' => $directors
+            ], Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            Log::error('API/V1/DirectorController@listDirectorInTrash: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
