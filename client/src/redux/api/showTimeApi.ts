@@ -57,6 +57,20 @@ const showtimeApi = createApi({
             }),
             invalidatesTags:['showtime']
         }),
+        SoftDeleteShowtime: build.mutation({
+            query: (showtime_id) => ({
+                url: `/change-level-showtime`,
+                method: "POST",
+                body: showtime_id,
+            }),
+            invalidatesTags:['showtime']
+        }),
+        getShowTimeSoft: build.query<void, void>({
+            query: () => ({
+                url: "/showtime-in-trash",
+            }),
+            providesTags:['showtime']
+        }),
     }),
 });
 export const {
@@ -66,7 +80,9 @@ export const {
     useRemoveShowTimeMutation,
     useUpdateShowTimeMutation,
     useGetShowTimesMovieQuery,
-    useGetShowtimeByIDMovieQuery
+    useGetShowtimeByIDMovieQuery,
+    useSoftDeleteShowtimeMutation,
+    useGetShowTimeSoftQuery
 } = showtimeApi;
 export const showtimeReducer = showtimeApi.reducer;
 export default showtimeApi
