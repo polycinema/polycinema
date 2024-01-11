@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 import { IRoom, getAllRoom, removeRoom } from "../../../api/room";
 import GarbageComponent from "../../../components/Garbage";
+import { formatCurrency } from "../../../utils/formatVND";
 
 interface DataType {
   key: string;
@@ -44,16 +45,34 @@ const ListRooms = () => {
       render: (text) => <a>{text}</a>,
     },
     {
+      title: "Giá ghế thường",
+      dataIndex: "single_seat_price",
+      key: "single_seat_price",
+      render: (text) => <a>{formatCurrency(text)}</a>,
+    },
+    {
       title: "Ghế đôi",
       dataIndex: "double_seat",
       key: "double_seat",
       render: (text) => <a>{text}</a>,
     },
     {
+      title: "Giá ghế đôi",
+      dataIndex: "double_seat_price",
+      key: "double_seat_price",
+      render: (text) => <a>{formatCurrency(text)}</a>,
+    },
+    {
       title: "Ghế VIP",
       dataIndex: "special_seat",
       key: "special_seat",
       render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Giá ghế VIP",
+      dataIndex: "special_seat_price",
+      key: "special_seat_price",
+      render: (text) => <a>{formatCurrency(text)}</a>,
     },
     {
       title: "Hành động",
@@ -94,8 +113,11 @@ const ListRooms = () => {
       key: item?.id,
       room_name: item?.room_name,
       single_seat: item?.single_seat,
+      single_seat_price: item?.single_seat_price,
       double_seat: item?.double_seat,
+      double_seat_price: item?.double_seat_price,
       special_seat: item?.special_seat,
+      special_seat_price: item?.special_seat_price,
     };
   });
   return (

@@ -10,9 +10,10 @@ import { FaEye } from "react-icons/fa";
 import YouTube from "react-youtube";
 import StatisticTopView from "../../../components/Statistic/StatisticTopView";
 import StatisticTop1Movie from "../../../components/Statistic/StatisticTop1Movie";
+import StatisticSearchMovie from "../../../components/Statistic/StatisticSearchMovie";
 
 
-const Dashboard = () => {
+const StatisticPage = () => {
   const {data,isLoading,error}:any = useGetTop10MovieQuery();
   const [top10movie,setTop10Movie] = useState([]);
   const [isModalOpenTrailer,setIsModalOpenTrailer] = useState(false);
@@ -107,7 +108,7 @@ const Dashboard = () => {
   ];
   return (
     <>
-      <h1 className="text-4xl mb-2 bg-white p-2 rounded-md shadow-md">Dashboard</h1>
+      <h1 className="text-4xl mb-2 bg-white p-2 rounded-md shadow-md">Thống kê</h1>
       <div className="grid grid-cols-3 gap-6">
         <div className="bg-white p-2 rounded-md shadow-md col-span-2">
           <Statistic />
@@ -117,6 +118,7 @@ const Dashboard = () => {
         </div>
         
       </div>
+      <div><StatisticSearchMovie/></div>
       <div className="grid grid-cols-3 gap-6 mt-4">
       <div className="space-y-6 mt-4 bg-white p-2 rounded-md shadow-md col-span-1">
         <StatisticTopView/>
@@ -140,7 +142,7 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default StatisticPage;
 interface ColumnTypeTopMovie {
   title: string,
   dataIndex: string,

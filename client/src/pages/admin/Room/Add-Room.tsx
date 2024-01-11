@@ -10,6 +10,10 @@ type FieldType = {
   single_seat?: number;
   double_seat?: number;
   special_seat?: number;
+  single_seat_price?:number;
+  double_seat_price?:number;
+  special_seat_price?:number;
+
 };
 const AddRoom = () => {
   const [form] = Form.useForm();
@@ -56,6 +60,17 @@ const AddRoom = () => {
           />
         </Form.Item>
         <Form.Item<FieldType>
+          label="Giá ghế thường"
+          name="single_seat_price"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            min={0}
+            defaultValue={0}
+          />
+        </Form.Item>
+        <Form.Item<FieldType>
           label="Ghế đôi"
           name="double_seat"
           rules={[{ required: true, message: "Please input your room!" }]}
@@ -68,6 +83,17 @@ const AddRoom = () => {
           />
         </Form.Item>
         <Form.Item<FieldType>
+          label="Giá ghế đôi"
+          name="double_seat_price"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            min={0}
+            defaultValue={0}
+          />
+        </Form.Item>
+        <Form.Item<FieldType>
           label="Ghế VIP"
           name="special_seat"
           rules={[{ required: true, message: "Please input your room!" }]}
@@ -75,7 +101,17 @@ const AddRoom = () => {
           <InputNumber
             style={{ width: "100%" }}
             min={0}
-            max={20}
+            defaultValue={0}
+          />
+        </Form.Item>
+        <Form.Item<FieldType>
+          label="Giá ghế VIP"
+          name="special_seat_price"
+          rules={[{ required: true, message: "Please input your room!" }]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            min={0}
             defaultValue={0}
           />
         </Form.Item>

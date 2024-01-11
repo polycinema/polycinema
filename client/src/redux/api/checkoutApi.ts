@@ -94,7 +94,8 @@ export const {
     useGetBookingByIdQuery,
     useSoftDeleteBookingMutation,
     useGetBookingsSoftQuery,
-    useGetBookingByBooking_IdQuery
+    useGetBookingByBooking_IdQuery,
+    useGetBookingsByUserQuery
 } = checkoutApi;
 export const checkoutReducer = checkoutApi.reducer;
 export default checkoutApi;
