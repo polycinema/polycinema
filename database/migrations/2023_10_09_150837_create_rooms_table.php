@@ -17,10 +17,11 @@ return new class extends Migration
             $table->integer('single_seat');
             $table->integer('double_seat');
             $table->integer('special_seat');
-            $table->bigInteger('single_seat_price');
-            $table->bigInteger('double_seat_price');
-            $table->bigInteger('special_seat_price');
+            // $table->bigInteger('single_seat_price');
+            // $table->bigInteger('double_seat_price');
+            // $table->bigInteger('special_seat_price');
             $table->integer('capacity');
+            $table->enum('level', ['show','hide'])->default('show'); // cho vào thùng rác
             $table->softDeletes();
             $table->timestamps();
         });
