@@ -18,7 +18,7 @@ class ActorController extends Controller
     public function index()
     {
         try {
-            $actors = Actor::query()->get();
+            $actors = Actor::query()->where('level','show')->get();
 
             return response()->json([
                 'data' => $actors

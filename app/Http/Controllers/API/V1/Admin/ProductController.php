@@ -19,7 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::query()->where('level','show')->get();
 
         if ($products) {
             return response()->json([

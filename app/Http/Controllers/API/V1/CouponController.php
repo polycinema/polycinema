@@ -57,7 +57,7 @@ class CouponController extends Controller
     }
 
     public function userUsingCoupon(Request $request)
-    {   
+    {
         // POST Request user_id, coupon_id
         try {
             $coupon_booking = new CouponBooking();
@@ -137,13 +137,30 @@ class CouponController extends Controller
             $coupon->save();
 
             return response()->json([
-                'message' => $message   
+                'message' => $message
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('CouponController@changeLevelCoupon: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function ListCouponInTrash()
+    {
+        try {
+            $coupons = Coupon::query()->where('level', 'hide')->get();
+
+            return response()->json([
+                'data' => $coupons
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/CouponController@ListCouponInTrash: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi xảy ra'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

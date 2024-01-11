@@ -113,7 +113,7 @@ class MovieController extends Controller
                         'available_seats' => $availableSeats
                     ];
                 }
-                
+
                 $responseData[] = [
                     'date' => $date,
                     'showtimes' => $showtimes
@@ -126,11 +126,11 @@ class MovieController extends Controller
             usort($responseData, function ($a, $b) use ($currentDate) {
                 $dateA = strtotime($a['date']);
                 $dateB = strtotime($b['date']);
-            
+
                 if ($dateA == $dateB) {
                     return 0;
                 }
-            
+
                 return abs(strtotime($currentDate) - $dateA) < abs(strtotime($currentDate) - $dateB) ? -1 : 1;
             });
 
@@ -197,11 +197,11 @@ class MovieController extends Controller
             usort($response, function ($a, $b) use ($yearMonthDay) {
                 $dateA = strtotime($a['show_date']);
                 $dateB = strtotime($b['show_date']);
-            
+
                 if ($dateA == $dateB) {
                     return 0;
                 }
-            
+
                 return abs(strtotime($yearMonthDay) - $dateA) < abs(strtotime($yearMonthDay) - $dateB) ? -1 : 1;
             });
 
@@ -279,10 +279,32 @@ class MovieController extends Controller
             $movie->save();
 
             return response()->json([
-                'message' => $message   
+                'message' => $message
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('MovieController@changeLevelMovie: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function listMovieInTrash()
+    {
+        try {
+            $movies = Movie::query()
+                ->with('director')
+                ->with('genres')
+                ->with('actors')
+                ->where('level', 'hide')
+                ->get();
+
+            return response()->json([
+                'data' => $movies
+            ], Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            Log::error('API/V1/MovieController@listMovieInTrash: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'

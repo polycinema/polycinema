@@ -44,4 +44,21 @@ class ProductController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function listProductInTrash()
+    {
+        try {
+            $products = Product::query()->where('level','hide')->get();
+
+            return response()->json([
+                'data' => $products
+            ], Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            Log::error('API/V1/ProductController@listProductInTrash: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
