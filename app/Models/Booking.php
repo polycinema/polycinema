@@ -25,6 +25,7 @@ class Booking extends Model
 
     CONST SATISFIED = 'satisfied';
     CONST NOT_YET = 'not_yet';
+    CONST CANCEL = 'cancel';
     CONST LEVEL_HIDE = 'hide';
     CONST LEVEL_SHOW = 'show';
 
