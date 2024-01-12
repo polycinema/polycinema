@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rules\Password as RulesPassword;
 use Illuminate\Validation\ValidationException;
@@ -66,4 +68,36 @@ class NewpasswordController extends Controller
             'message' => __($status)
         ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+    // Chức năng BAN người dùng
+    public function changeStatusUser(Request $request){
+        try {
+            $user = User::find($request->user_id);
+
+            $status_user = $user->status;
+
+            switch ($status_user) {
+                case User::BANNED:
+                    $user->status = User::NORMAL;
+                    $message = "Đã mở BAN người dùng $user->name";
+                    break;
+                case User::NORMAL:
+                    $user->status = User::BANNED;
+                    $message = "Đã BAN người dùng $user->name";
+                    break;
+            }
+
+            $user->save();
+
+            return response()->json([
+                'message' => $message
+            ], Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            Log::error('API/V1/NewpasswordController@changeStatusUser: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
