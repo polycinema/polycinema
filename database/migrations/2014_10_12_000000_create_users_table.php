@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->enum('gender', ['male','female','unknow'])->nullable();
+            $table->enum('status', ['normal','banned'])->default('normal');
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

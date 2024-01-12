@@ -42,6 +42,12 @@ class AuthenController extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             }
 
+            if ($user->status == User::BANNED) {
+                return response()->json([
+                    'error' => 'Tài khoản của bạn đã bị khóa vì vi phạm chính sách cộng động'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+
             $token = $user->createToken(__CLASS__);
 
             return response()->json([
