@@ -157,5 +157,6 @@ Route::prefix('v1')->group(function () {
     Route::post('change-level-room', [RoomController::class, 'changeLevelRoom']);
     // Update status booking = cancel ( Hủy đơn hoàn tiền )
     Route::post('cancel-booking', [BookingController::class, 'doCancelBooking']);
-
+    
+    Route::post('change-status-user', [NewpasswordController::class, 'changeStatusUser']);
 });
