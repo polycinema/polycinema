@@ -38,6 +38,7 @@ class BookingController extends Controller
                     $query->withPivot('quantity');
                 }])
                 ->with(['seats.showtime.room'])
+                ->orderBy('created_at', 'desc')
                 ->get();
 
             $total_bookings = $bookings->count();
