@@ -232,7 +232,7 @@ const ListsBooking = () => {
       email: item?.user?.email,
       total: item?.total_price,
       status: item?.status,
-      nameMovie: item?.showtime.movie.name
+      nameMovie: item?.showtime?.movie.name
     };
   });
   const cancel = (e) => {
