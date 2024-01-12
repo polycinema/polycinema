@@ -20,6 +20,7 @@ class User extends Authenticatable
     const CUSTOMER = 'user';
     const ADMIN = 'admin';
 
+    const BANNED = 'banned';
     /**
      * The attributes that are mass assignable.
      *
