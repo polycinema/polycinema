@@ -279,7 +279,7 @@ return(
                   key={seat.id}
                   className={`w-[40px] relative ${
                     seat.status == "booking"  && seat.user_id != user.id
-                      ? " pointer-events-none opacity-60 "
+                      ? "pointer-events-none opacity-60 "
                       : ""
                   }`}
                   onClick={() => {

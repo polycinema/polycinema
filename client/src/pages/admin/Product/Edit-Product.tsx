@@ -10,8 +10,9 @@ import {
 } from "antd";
 import { UploadOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router";
-import { IProduct, getProductById, updateProduct } from "../../../api/Product";
 import swal from "sweetalert";
+import { useGetProductByIdQuery, useUpdateProductMutation } from "../../../redux/api/productApi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 const { TextArea } = Input;
 
 type FieldType = {
@@ -23,31 +24,22 @@ type FieldType = {
 
 const EditProduct = () => {
   const { id } = useParams();
+  const {data:product} = useGetProductByIdQuery(id||"")
+  const [updateProduct,{isLoading}] = useUpdateProductMutation()
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [product, setProduct] = useState<IProduct>();
   const [urlImage, setUrlImage] = useState<string>();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getProductById(id);
-        setProduct(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
   useEffect(() => {
     setFields();
   }, [product]);
   const setFields = () => {
     form.setFieldsValue({
-      id: product?.id,
-      name: product?.name,
-      image: product?.image,
-      price: product?.price,
-      description: product?.description,
+      id: product?.data?.id,
+      name: product?.data?.name,
+      image: product?.data?.image,
+      price: product?.data?.price,
+      description: product?.data?.description,
     });
   };
 
@@ -77,16 +69,8 @@ const EditProduct = () => {
   const props: UploadProps = {
     name: "file",
     action: "https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload",
-    // Thay đổi thành URL API của Cloudinary
-    headers: {
-      // Authorization: 'Bearer 773215578244178',
-      // "Access-Control-Allow-Origin":"*"
-      // Thay đổi thành API key của bạn
-    },
     data: {
-      // Thêm các dữ liệu cần thiết như upload preset
       upload_preset: "upload",
-      // Thay đổi thành upload preset của bạn
     },
     onChange(info) {
       if (info.file.status === "done") {
@@ -146,14 +130,18 @@ const EditProduct = () => {
             <Form.Item label="Tác vụ">
               <>
                 <Button htmlType="submit">
-                  <VerticalAlignTopOutlined />
+                {isLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                <VerticalAlignTopOutlined />
+              )}{" "}
                 </Button>
               </>
             </Form.Item>
           </Form>
           <div className="w-full bg-white p-4 rounded-md shadow-md">
             <h4 className="mb-2 text-xl">Ảnh sản phẩm</h4>
-            <img className="full rounded-sm" src={product?.image} alt="anh" />
+            <img className="full rounded-sm" src={product?.data?.image} alt="anh" />
           </div>
         </div>
       </div>
