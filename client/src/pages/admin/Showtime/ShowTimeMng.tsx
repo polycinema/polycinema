@@ -6,11 +6,11 @@ import {
 } from "../../../redux/api/showTimeApi";
 import { IShowtime } from "../../../interfaces/showtime";
 import { Link } from "react-router-dom";
-import { DeleteOutlined, EditFilled, QuestionCircleOutlined } from "@ant-design/icons";
+import {  EditFilled, QuestionCircleOutlined } from "@ant-design/icons";
 import IsLoading from "../../../utils/IsLoading";
 import { useEffect, useState } from "react";
 import { MdAutoDelete } from "react-icons/md";
-import { FaTrashRestore } from "react-icons/fa";
+import { FaEyeSlash, FaTrashRestore } from "react-icons/fa";
 import { FcDeleteDatabase } from "react-icons/fc";
 import swal from "sweetalert";
 
@@ -19,11 +19,11 @@ const ShowTimeMng = () => {
   const [showtime, setShowtime] = useState([]);
   const { data:dataShowtimeSoft, error:errShowtimeSoft }: any = useGetShowTimeSoftQuery();
   const [softDeleteShowtime, {error: ErrorSoftDeleteShowtime}] = useSoftDeleteShowtimeMutation();
-  const [restoreShowtime, {error: RestoreSoftDeleteShowtime}] = useSoftDeleteShowtimeMutation();
+  const [restoreShowtime, {error: ErrRestoreSoftDeleteShowtime}] = useSoftDeleteShowtimeMutation();
   const [showtimeSoftDelete, setShowtimeSoftDelete] = useState([]);
   const [countShowtimeSoft, setCountShowtimeSoft] = useState(0);
   const [isModalOpenGarbage, SetIsModalOpenGarbage] = useState(false);
-  console.log('showtimeSoftDelete: ',showtimeSoftDelete)
+  // console.log('showtimeSoftDelete: ',showtimeSoftDelete)
   useEffect(() => {
     if (showtimeSoftDelete) {
       setCountShowtimeSoft(showtimeSoftDelete.length);
@@ -46,6 +46,10 @@ const ShowTimeMng = () => {
   if (errShowtimeSoft) {
     notification.error({ message: "Get showtime soft error!" });
     console.error("error Get showtime soft: ", errShowtimeSoft);
+  }
+  if (ErrRestoreSoftDeleteShowtime) {
+    notification.error({ message: "Err Restore SoftDeleteShowtime!" });
+    console.error("Err Restore SoftDeleteShowtime: ", ErrRestoreSoftDeleteShowtime);
   }
   if (error) {
     notification.error({ message: "Get showtime error!" });
@@ -183,9 +187,7 @@ const ShowTimeMng = () => {
         return (
           <div className="space-x-3">
             <Link to={`/admin/showtime/${id}/edit`}>
-              <Button type="text" className="text-blue-500">
-                <EditFilled />
-              </Button>
+              <Button icon={<EditFilled />}/>
             </Link>
             <Popconfirm
               title="Xóa lịch chiếu"
@@ -203,9 +205,7 @@ const ShowTimeMng = () => {
               okType="default"
               cancelText="No"
             >
-              <Button type="text" danger>
-                <DeleteOutlined />
-              </Button>
+              <Button className="text-blue-500" icon={<FaEyeSlash />} />
             </Popconfirm>
           </div>
         );

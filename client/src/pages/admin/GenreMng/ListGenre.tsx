@@ -14,9 +14,8 @@ import swal from "sweetalert";
 import { MdAutoDelete } from "react-icons/md";
 import { FcDeleteDatabase } from "react-icons/fc";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import { FaTrashRestore } from "react-icons/fa";
+import { FaEyeSlash, FaTrashRestore } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
 
 interface DataType {
   key: string;
@@ -101,7 +100,7 @@ const ListGenre = () => {
               cancelText="Không"
               okType="default"
             >
-              <Button danger icon={<MdDelete />} />
+              <Button className="text-blue-500" icon={<FaEyeSlash />} />
             </Popconfirm>
           </div>
         </Space>

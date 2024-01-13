@@ -18,14 +18,13 @@ import {
 } from "../../../api/director";
 import { MdAutoDelete } from "react-icons/md";
 import { AiFillEdit } from "react-icons/ai";
-import { MdDelete } from "react-icons/md";
 import {
   useGetAllDirectorsQuery,
   useGetDirectorSoftQuery,
   useSoftDeleteDirectorMutation,
 } from "../../../redux/api/directorApi";
 import IsLoading from "../../../utils/IsLoading";
-import { FaTrashRestore } from "react-icons/fa";
+import { FaEyeSlash, FaTrashRestore } from "react-icons/fa";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { FcDeleteDatabase } from "react-icons/fc";
 import swal from "sweetalert";
@@ -114,7 +113,7 @@ const ListDirector = () => {
               cancelText="Không"
               okType="default"
             >
-              <Button danger icon={<MdDelete />} />
+              <Button className="text-blue-500" icon={<FaEyeSlash />} />
             </Popconfirm>
           </div>
         </Space>

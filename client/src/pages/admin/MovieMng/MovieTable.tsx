@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Table,
-  Button,
-  Space,
-  Popconfirm,
-  message,
-  Badge,
-  Modal,
-} from "antd";
+import { Table, Button, Space, Popconfirm, Badge, Modal } from "antd";
 import { Link } from "react-router-dom";
 import {
   useGetAllMoviesQuery,
@@ -17,15 +9,15 @@ import {
 import IsLoading from "../../../utils/IsLoading";
 import { MdAutoDelete } from "react-icons/md";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import { FaTrashRestore } from "react-icons/fa";
+import { FaEyeSlash, FaTrashRestore } from "react-icons/fa";
 import { FcDeleteDatabase } from "react-icons/fc";
 import swal from "sweetalert";
+import { MdEdit } from "react-icons/md";
 
 const MovieTable = () => {
   const { data: movies, isLoading: isLoadingMovies } = useGetAllMoviesQuery();
-  const [messageApi, contextHolder] = message.useMessage();
   const { data: dataMovieSoft, error: errMovieSoft }: any =
-  useGetMovieSoftQuery();
+    useGetMovieSoftQuery();
   const [softDeleteMovie, { error: ErrorSoftDeleteMovie }] =
     useSoftDeleteMovieMutation();
   const [restoreMovie, { error: RestoreSoftDeleteMovie }] =
@@ -34,7 +26,7 @@ const MovieTable = () => {
   const [countMovieSoft, setCountMovieSoft] = useState(0);
   const [isModalOpenGarbage, SetIsModalOpenGarbage] = useState(false);
   const [listMovie, SetListMovie] = useState([]);
-  console.log('listMovie: ',listMovie)
+  console.log("listMovie: ", listMovie);
   useEffect(() => {
     if (MovieSoftDelete) {
       setCountMovieSoft(MovieSoftDelete.length);
@@ -70,7 +62,7 @@ const MovieTable = () => {
       title: "Tên phim",
       dataIndex: "name",
       key: "name",
-      render: (name:string) => <span className="line-clamp-1">{name}</span>
+      render: (name: string) => <span className="line-clamp-1">{name}</span>,
     },
 
     {
@@ -78,7 +70,12 @@ const MovieTable = () => {
       dataIndex: "genres",
       key: "genres",
       render: (genres: Genre[]) =>
-        genres.map((item: Genre,index:number) => <span className="" key={item.id}>{item.name}{index === genres.length - 1 ? '' : ', '}</span>)
+        genres.map((item: Genre, index: number) => (
+          <span className="" key={item.id}>
+            {item.name}
+            {index === genres.length - 1 ? "" : ", "}
+          </span>
+        )),
     },
     {
       title: "Ngày khởi chiếu",
@@ -102,9 +99,14 @@ const MovieTable = () => {
               restoreMovie({ movie_id: id })
                 .unwrap()
                 .then(() => {
-                  swal("Thành công!", "Khôi phục phim thành công!", "success")
-                }).catch(()=>{
-                  swal("Thất bại!", "Khôi phục phim thất bại , Vui lòng thử lại !", "error");
+                  swal("Thành công!", "Khôi phục phim thành công!", "success");
+                })
+                .catch(() => {
+                  swal(
+                    "Thất bại!",
+                    "Khôi phục phim thất bại , Vui lòng thử lại !",
+                    "error"
+                  );
                 })
             }
             okText="Yes"
@@ -138,7 +140,7 @@ const MovieTable = () => {
       ),
     },
   ];
-  const dataSourceMovieSoft = MovieSoftDelete?.map((item:RootMovie) => {
+  const dataSourceMovieSoft = MovieSoftDelete?.map((item: RootMovie) => {
     return {
       key: item.id,
       name: item.name,
@@ -148,7 +150,6 @@ const MovieTable = () => {
     };
   });
   const columns = [
-    
     {
       title: "Tên phim",
       dataIndex: "name",
@@ -163,8 +164,13 @@ const MovieTable = () => {
       title: "Thể loại",
       dataIndex: "genres",
       key: "genres",
-      render: (genres:Genre[]) =>
-        genres.map((item:Genre,index:number) => <span className="" key={item.id}>{item.name}{index === genres.length - 1 ? '' : ', '}</span>),
+      render: (genres: Genre[]) =>
+        genres.map((item: Genre, index: number) => (
+          <span className="" key={item.id}>
+            {item.name}
+            {index === genres.length - 1 ? "" : ", "}
+          </span>
+        )),
     },
     {
       title: "Ảnh phim",
@@ -211,17 +217,22 @@ const MovieTable = () => {
       title: "Diễn viên",
       dataIndex: "actors",
       key: "actors",
-      render: (actors:Actor[]) =>
-        actors.map((item:Actor,index:number) => <span className="" key={item.id}>{item.name}{index === actors.length - 1 ? '' : ', '}</span>)
+      render: (actors: Actor[]) =>
+        actors.map((item: Actor, index: number) => (
+          <span className="" key={item.id}>
+            {item.name}
+            {index === actors.length - 1 ? "" : ", "}
+          </span>
+        )),
     },
     {
       title: "Hành động",
       key: "action",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
-          <Button>
-            <Link to={`/admin/movies/${id}/edit`}>Edit</Link>
-          </Button>
+          <Link to={`/admin/movies/${id}/edit`}>
+            <Button icon={<MdEdit />} />
+          </Link>
           <div>
             <Popconfirm
               title="Xóa phim"
@@ -230,16 +241,21 @@ const MovieTable = () => {
                 softDeleteMovie({ movie_id: id })
                   .unwrap()
                   .then(() => {
-                    swal("Thành công!", "Xóa phim thành công!", "success")
-                  }).catch(()=>{
-                    swal("Thất bại!", "Xóa phim phim thất bại , Vui lòng thử lại !", "error");
+                    swal("Thành công!", "Xóa phim thành công!", "success");
                   })
+                  .catch(() => {
+                    swal(
+                      "Thất bại!",
+                      "Xóa phim phim thất bại , Vui lòng thử lại !",
+                      "error"
+                    );
+                  });
               }}
               okText="Có"
               cancelText="Không"
               okType="default"
             >
-              <Button danger>Delete</Button>
+              <Button className="text-blue-500" icon={<FaEyeSlash />} />
             </Popconfirm>
           </div>
         </Space>
@@ -247,7 +263,7 @@ const MovieTable = () => {
     },
   ];
 
-  const dataSource = listMovie?.map((item:RootMovie) => {
+  const dataSource = listMovie?.map((item: RootMovie) => {
     return {
       key: item.id,
       name: item.name,
@@ -266,7 +282,6 @@ const MovieTable = () => {
 
   return (
     <>
-      {contextHolder}
       {isLoadingMovies ? (
         <IsLoading />
       ) : (
@@ -312,61 +327,61 @@ const MovieTable = () => {
 
 export default MovieTable;
 export interface RootMovie {
-  id: number
-  name: string
-  title: string
-  image: string
-  trailer: string
-  description: string
-  release_date: string
-  duration: number
-  director_id: number
-  status: string
-  level: string
-  deleted_at: any
-  created_at: any
-  updated_at: string
-  director: Director
-  genres: Genre[]
-  actors: Actor[]
+  id: number;
+  name: string;
+  title: string;
+  image: string;
+  trailer: string;
+  description: string;
+  release_date: string;
+  duration: number;
+  director_id: number;
+  status: string;
+  level: string;
+  deleted_at: any;
+  created_at: any;
+  updated_at: string;
+  director: Director;
+  genres: Genre[];
+  actors: Actor[];
 }
 
 export interface Director {
-  id: number
-  name: string
-  image: string
-  level: string
-  created_at: any
-  updated_at: any
+  id: number;
+  name: string;
+  image: string;
+  level: string;
+  created_at: any;
+  updated_at: any;
 }
 
 export interface Genre {
-  id: number
-  name: string
-  level: string
-  deleted_at: any
-  created_at: any
-  updated_at: any
-  pivot: Pivot
+  id: number;
+  name: string;
+  level: string;
+  deleted_at: any;
+  created_at: any;
+  updated_at: any;
+  pivot: Pivot;
 }
 
 export interface Pivot {
-  movie_id: number
-  genre_id: number
+  movie_id: number;
+  genre_id: number;
 }
 
 export interface Actor {
-  id: number
-  name: string
-  date_of_birth: string
-  image: string
-  level: string
-  created_at: any
-  updated_at: any
-  pivot: Pivot2
+  id: number;
+  name: string;
+  date_of_birth: string;
+  image: string;
+  level: string;
+  created_at: any;
+  updated_at: any;
+  pivot: Pivot2;
 }
 
 export interface Pivot2 {
-  movie_id: number
-  actor_id: number
+  movie_id: number;
+  actor_id: number;
 }

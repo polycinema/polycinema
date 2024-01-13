@@ -15,10 +15,9 @@ import {
   useUpdateNotYetMutation,
   useUpdateSatisfiedMutation,
 } from "../../../redux/api/checkoutApi";
-import { FaDotCircle } from "react-icons/fa";
+import { FaDotCircle, FaEyeSlash } from "react-icons/fa";
 import { RootBooking } from "../../../interfaces/booking";
 import {
-  DeleteOutlined,
   LoadingOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
@@ -220,7 +219,7 @@ const ListsBooking = () => {
           okType="default"
           cancelText="No"
         >
-          <Button danger icon={<DeleteOutlined />} />
+         <Button className="text-blue-500" icon={<FaEyeSlash />} />
         </Popconfirm>
       ),
     },
