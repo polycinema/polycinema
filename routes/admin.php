@@ -13,7 +13,6 @@ use App\Http\Controllers\API\V1\Admin\SeatController;
 use App\Http\Controllers\API\V1\Admin\ShowTimeController;
 use App\Http\Controllers\API\V1\Admin\UserController;
 use App\Http\Controllers\API\V1\BannerController;
-use App\Http\Controllers\API\V1\SeatTypeController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function () {
@@ -43,5 +42,5 @@ Route::prefix('admin')->group(function () {
 
     Route::resource('bookings', BookingController::class)->except(['edit', 'create']);
 
-    Route::resource('seat-types', SeatTypeController::class)->except(['edit', 'create']);
 });
+

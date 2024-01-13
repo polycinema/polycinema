@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             GenreSeeder::class,
-            // SeatSeeder::class,
+            SeatSeeder::class,
             RoomSeader::class,
             ProductSeeder::class,
             DirectorSeeder::class,
@@ -35,7 +35,6 @@ class DatabaseSeeder extends Seeder
             BannerSeeder::class,
             MovieActorSeeder::class,
             MovieGenreSeeder::class,
-            SeatTypeSeeder::class
         ]);
     }
 }

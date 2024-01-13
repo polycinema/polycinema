@@ -14,11 +14,9 @@ class Room extends Model
 
     protected $fillable = [
         'room_name',
-        'row',
-        'column',
-        // 'single_seat',
-        // 'double_seat',
-        // 'special_seat',
+        'single_seat',
+        'double_seat',
+        'special_seat',
         // 'single_seat_price',
         // 'double_seat_price',
         // 'special_seat_price',
@@ -26,17 +24,11 @@ class Room extends Model
         'level'
     ];
 
-    const LEVEL_HIDE = 'hide';
-    const LEVEL_SHOW = 'show';
+    CONST LEVEL_HIDE = 'hide';
+    CONST LEVEL_SHOW = 'show';
 
     public function showtimes(): HasMany
     {
         return $this->hasMany(ShowTime::class);
-    }
-
-    public function seatTypes()
-    {
-        return $this->belongsToMany(SeatType::class, 'room_seat_types', 'room_id', 'seat_type_id')
-            ->withPivot('quantity');
     }
 }
