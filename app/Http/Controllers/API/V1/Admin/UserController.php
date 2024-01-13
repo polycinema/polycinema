@@ -19,7 +19,7 @@ class UserController extends Controller
     public function index()
     {
         try {
-            $users = User::query()->where('status', User::NORMAL)->get();
+            $users = User::query()->get();
 
             return response()->json([
                 'data' => $users,
@@ -219,6 +219,24 @@ class UserController extends Controller
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('API/V1/Admin/UserConctroller@getCustomers:', [$exception->getMessage()]);
+
+            return response()->json([
+                'error' => 'Đã có lỗi xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getBannedUsers()
+    {
+        try {
+            $users = User::query()->where('status', User::BANNED)->get();
+
+            return response()->json([
+                'data' => $users,
+                'message' => 'Danh sách người dùng bị BAN'
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/Admin/UserConctroller@getBannedUsers:', [$exception->getMessage()]);
 
             return response()->json([
                 'error' => 'Đã có lỗi xảy ra'

@@ -159,4 +159,7 @@ Route::prefix('v1')->group(function () {
     Route::post('cancel-booking', [BookingController::class, 'doCancelBooking']);
     
     Route::post('change-status-user', [NewpasswordController::class, 'changeStatusUser']);
+
+    Route::get('get-banned-user', [UserController::class, 'getBannedUsers']);
+
 });
