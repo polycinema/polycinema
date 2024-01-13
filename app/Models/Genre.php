@@ -12,7 +12,8 @@ class Genre extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name'
+        'name',
+        'level'
     ];
     
     CONST LEVEL_HIDE = 'hide';

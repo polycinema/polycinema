@@ -18,7 +18,8 @@ class Movie extends Model
         'release_date',
         'duration',
         'director_id',
-        'status'
+        'status',
+        'level'
     ];
 
     CONST LEVEL_HIDE = 'hide';

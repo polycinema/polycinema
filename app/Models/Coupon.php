@@ -17,7 +17,8 @@ class Coupon extends Model
         'discount',
         'expires_at',
         'quantity',
-        'min_order_value' 
+        'min_order_value' ,
+        'level'
     ];
 
     // fields const

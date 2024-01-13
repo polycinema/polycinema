@@ -21,6 +21,7 @@ class Room extends Model
         // 'double_seat_price',
         // 'special_seat_price',
         'capacity',
+        'level'
     ];
 
     CONST LEVEL_HIDE = 'hide';

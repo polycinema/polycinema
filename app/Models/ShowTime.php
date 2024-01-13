@@ -17,6 +17,7 @@ class   ShowTime extends Model
         'show_date',
         'start_time',
         'end_time',
+        'level'
     ];
 
     CONST LEVEL_HIDE = 'hide';
