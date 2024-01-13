@@ -19,7 +19,7 @@ class RoomController extends Controller
      */
     public function index()
     {
-        $rooms = Room::query()->where('level','show')->get();
+        $rooms = Room::query()->where('level', 'show')->get();
         if ($rooms) {
             return response()->json([
                 'data' => $rooms,
@@ -37,23 +37,46 @@ class RoomController extends Controller
     public function store(Request $request)
     {
         try {
+            // $validator = Validator::make($request->all(), [
+            //     'room_name' => 'required|unique:rooms,room_name',
+            //     'single_seat' => 'numeric',
+            //     'double_seat' => 'numeric',
+            //     'special_seat' => 'numeric'
+            // ], [
+            //     'room_name.required' => 'Trường tên phòng không được trống',
+            //     'room_name.unique' => "Phòng $request->room_name đã tồn tại ",
+            //     'single_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
+            //     'double_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
+            //     'special_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên'
+            // ]);
+
+            // if ($validator->fails()) {
+            //     return response()->json([
+            //         'errors' => $validator->errors(),
+            //     ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            // }
+
+            // $room = Room::create([
+            //     'room_name' => $request->room_name,
+            //     'single_seat' => $request->single_seat,
+            //     'double_seat' => $request->double_seat,
+            //     'special_seat' => $request->special_seat,
+            //     'capacity' => $request->single_seat + $request->double_seat + $request->special_seat,
+            // ]);
+
             $validator = Validator::make($request->all(), [
                 'room_name' => 'required|unique:rooms,room_name',
-                'single_seat' => 'numeric',
-                'double_seat' => 'numeric',
-                'special_seat' => 'numeric',
-                // 'single_seat_price' => 'required',
-                // 'double_seat_price' => 'required',
-                // 'special_seat_price' => 'required'
+                'row' => 'required|numeric',
+                'column' => 'required|numeric',
+                'seat_types' => 'required|array'
             ], [
                 'room_name.required' => 'Trường tên phòng không được trống',
-                'room_name.unique' => "Phòng $request->room_name đã tồn tại ",
-                'single_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
-                'double_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
-                'special_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
-                // 'single_seat_price.required' => 'Vui lòng chọn giá cho loại ghế đơn',
-                // 'double_seat_price.required' => 'Vui lòng chọn giá cho loại ghế đôi',
-                // 'special_seat_price.required' => 'Vui lòng chọn giá cho loại ghế VIP'
+                'room_name.unique' => "Phòng $request->room_name đã tồn tại",
+                'row.required' => 'Vui lòng nhập số lượng hàng',
+                'row.numeric' => 'Số lượng hàng phải là số nguyên',
+                'column.required' => 'Vui lòng nhập số lượng cột',
+                'column.numeric' => 'Số lượng cột phải là số nguyên',
+                'seat_types.required' => 'Vui lòng chọn ít nhất một loại ghế'
             ]);
 
             if ($validator->fails()) {
@@ -64,14 +87,14 @@ class RoomController extends Controller
 
             $room = Room::create([
                 'room_name' => $request->room_name,
-                'single_seat' => $request->single_seat,
-                'double_seat' => $request->double_seat,
-                'special_seat' => $request->special_seat,
-                // 'single_seat_price' => $request->single_seat_price,
-                // 'double_seat_price' => $request->double_seat_price,
-                // 'special_seat_price' => $request->special_seat_price,
-                'capacity' => $request->single_seat + $request->double_seat + $request->special_seat,
+                'row' => $request->row,
+                'column' => $request->column,
+                'capacity' => $request->row * $request->column,
             ]);
+
+            foreach ($request->seat_types as $seatType) {
+                $room->seatTypes()->attach($seatType['id'], ['quantity' => $seatType['quantity']]);
+            }
 
             return response()->json([
                 'message' => "Thêm phòng $room->room_name thành công"
@@ -88,9 +111,13 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Room $room)
+    public function show(string $id)
     {
         try {
+            $room = Room::query()->with(['seatTypes' => function($query) {
+                $query->withPivot('quantity');
+            }])->find($id);
+
             return response()->json([
                 'data' => $room,
                 'message' => "Thông tin sản phẩm $room->room_name"
@@ -112,21 +139,17 @@ class RoomController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'room_name' => 'required|unique:rooms,room_name,' . $room->id,
-                'single_seat' => 'numeric',
-                'double_seat' => 'numeric',
-                'special_seat' => 'numeric',
-                'single_seat_price' => 'required',
-                'double_seat_price' => 'required',
-                'special_seat_price' => 'required'
+                'row' => 'required|numeric',
+                'column' => 'required|numeric',
+                'seat_types' => 'required|array'
             ], [
                 'room_name.required' => 'Trường tên phòng không được trống',
-                'room_name.unique' => "Phòng $request->room_name đã tồn tại ",
-                'single_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
-                'double_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
-                'special_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
-                'single_seat_price.required' => 'Vui lòng chọn giá cho loại ghế đơn',
-                'double_seat_price.required' => 'Vui lòng chọn giá cho loại ghế đôi',
-                'special_seat_price.required' => 'Vui lòng chọn giá cho loại ghế VIP'
+                'room_name.unique' => "Phòng $request->room_name đã tồn tại",
+                'row.required' => 'Vui lòng nhập số lượng hàng',
+                'row.numeric' => 'Số lượng hàng phải là số nguyên',
+                'column.required' => 'Vui lòng nhập số lượng cột',
+                'column.numeric' => 'Số lượng cột phải là số nguyên',
+                'seat_types.required' => 'Vui lòng chọn ít nhất một loại ghế'
             ]);
 
             if ($validator->fails()) {
@@ -137,32 +160,17 @@ class RoomController extends Controller
 
             $room->update([
                 'room_name' => $request->room_name,
-                'single_seat' => $request->single_seat,
-                'double_seat' => $request->double_seat,
-                'special_seat' => $request->special_seat,
-                'single_seat_price' => $request->single_seat_price,
-                'double_seat_price' => $request->double_seat_price,
-                'special_seat_price' => $request->special_seat_price,
-                'capacity' => $request->single_seat + $request->double_seat + $request->special_seat,
+                'row' => $request->row,
+                'column' => $request->column,
+                'capacity' => $request->row * $request->column,
             ]);
 
-            $room = Room::query()->find($room->id);
-
-            foreach ($room->showtimes as $showtime) {
-                foreach ($showtime->seats as $seat) {
-                    switch ($seat->type) {
-                        case 'single':
-                            $seat->update(['price' => $room->single_seat_price]);
-                            break;
-                        case 'double':
-                            $seat->update(['price' => $room->double_seat_price]);
-                            break;
-                        case 'special':
-                            $seat->update(['price' => $room->special_seat_price]);
-                            break;
-                    }
-                }
+            $syncData = [];
+            foreach ($request->seat_types as $seatType) {
+                $syncData[$seatType['id']] = ['quantity' => $seatType['quantity']];
             }
+
+            $room->seatTypes()->sync($syncData);
 
             return response()->json([
                 'data' => $room,

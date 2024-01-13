@@ -24,7 +24,8 @@ class Seat extends Model
     protected $fillable = [
         'seat_name',
         'showtime_id',
-        'type',
+        // 'type',
+        'seat_type_id',
         'status',
         'price',
         'user_id',
@@ -38,5 +39,9 @@ class Seat extends Model
 
     public function booking(): BelongsTo {
         return $this->belongsTo(Booking::class);
+    }
+
+    public function seatType(): BelongsTo{
+        return $this->belongsTo(SeatType::class);
     }
 }
