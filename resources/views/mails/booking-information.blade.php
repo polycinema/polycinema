@@ -53,7 +53,7 @@ text-align: center">
             {{ $booking->showtime->room->room_name }}</div>
         <div class="seat-info" style="font-size: 0.8em;
         color: #777;">Ghế: @foreach ($booking->seats as $seat)
-                {{ $seat->seat_name . ', ' }}
+                {{ $seat->seatType->name . ', ' }}
             @endforeach
         </div>
         <div class="footer" style="margin-top: 15px;

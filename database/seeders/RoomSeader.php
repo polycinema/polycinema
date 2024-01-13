@@ -15,9 +15,11 @@ class RoomSeader extends Seeder
     {
         DB::table('rooms')->insert([
             'room_name' => 'A - 1',
-            'single_seat' => 30,
-            'double_seat' => 20,
-            'special_seat' => 10,
+            'row' => 20,
+            'column' => 10,
+            // 'single_seat' => 30,
+            // 'double_seat' => 20,
+            // 'special_seat' => 10,
             // 'single_seat_price' => 60000,
             // 'double_seat_price' => 110000,
             // 'special_seat_price' => 135000,
@@ -25,9 +27,11 @@ class RoomSeader extends Seeder
         ]);
         DB::table('rooms')->insert([
             'room_name' => 'A - 2',
-            'single_seat' => 30,
-            'double_seat' => 20,
-            'special_seat' => 10,
+            'row' => 20,
+            'column' => 10,
+            // 'single_seat' => 30,
+            // 'double_seat' => 20,
+            // 'special_seat' => 10,
             // 'single_seat_price' => 60000,
             // 'double_seat_price' => 110000,
             // 'special_seat_price' => 135000,
@@ -35,9 +39,11 @@ class RoomSeader extends Seeder
         ]);
         DB::table('rooms')->insert([
             'room_name' => 'A - 3',
-            'single_seat' => 30,
-            'double_seat' => 20,
-            'special_seat' => 10,
+            'row' => 20,
+            'column' => 10,
+            // 'single_seat' => 30,
+            // 'double_seat' => 20,
+            // 'special_seat' => 10,
             // 'single_seat_price' => 60000,
             // 'double_seat_price' => 110000,
             // 'special_seat_price' => 135000,
