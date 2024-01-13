@@ -4,7 +4,7 @@ export interface IBanner {
         name: string
 }
 export const addBanner =async (name:IBanner)=>{
-        return instance.post(`/banners`, name,{
+        return instance.post(`/admin/banners`, name,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -13,7 +13,7 @@ export const addBanner =async (name:IBanner)=>{
 }
 export const updateBanner =async (name:IBanner)=>{
         
-        return instance.patch(`/banners/${name.id}`, name,{
+        return instance.patch(`/admin/banners/${name.id}`, name,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -22,14 +22,14 @@ export const updateBanner =async (name:IBanner)=>{
 }
 export const removeBanner=async (id:number|string)=>{
         
-        return instance.delete(`/banners/${id}`)
+        return instance.delete(`/admin/banners/${id}`)
         
 
 }
 export const getAllBanner = ()=>{
-        return instance.get(`/banners`)
+        return instance.get(`/admin/banners`)
 }
 export const getBannerById = (id:number|string)=>{
-        return instance.get(`/banners/${id}`)
+        return instance.get(`/admin/banners/${id}`)
 
 }

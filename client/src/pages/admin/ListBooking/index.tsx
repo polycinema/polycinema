@@ -6,7 +6,6 @@ import {
   Popconfirm,
   Table,
   message,
-  notification,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import {
@@ -34,6 +33,8 @@ import { FcHighPriority } from "react-icons/fc";
 import { FcFilm } from "react-icons/fc";
 import { FcInfo } from "react-icons/fc";
 import GarbageComponent from "../../../components/Garbage";
+import swal from "sweetalert";
+
 const ListsBooking = () => {
   const { data: bookings, isLoading } = useGetAllBookingsQuery();
   const [
@@ -210,9 +211,9 @@ const ListsBooking = () => {
             softDeleteBooking({booking_id: id})
               .unwrap()
               .then(() => {
-                notification.success({
-                  message: "Delete booking sucessfuly!",
-                });
+                swal("Thành công!", "Hủy vé thành công!", "success")
+              }).catch(()=>{
+                swal("Thất bại!", "Hủy vé thất bại , Vui lòng thử lại !", "error");
               })
           }
           okText="Yes"

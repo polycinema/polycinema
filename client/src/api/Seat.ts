@@ -7,7 +7,7 @@ export interface ISeat {
         showtime_id:number,
 }
 export const addSeat =async (Seat:ISeat)=>{
-        return instance.post(`/seats`, Seat,{
+        return instance.post(`/admin/seats`, Seat,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -16,7 +16,7 @@ export const addSeat =async (Seat:ISeat)=>{
 }
 export const updateSeat =async (Seat:ISeat)=>{
         
-        return instance.patch(`/seats/${Seat.id}`, Seat,{
+        return instance.patch(`/admin/seats/${Seat.id}`, Seat,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -25,15 +25,15 @@ export const updateSeat =async (Seat:ISeat)=>{
 }
 export const removeSeat=async (id:number|string)=>{
         
-        return instance.delete(`/seats/${id}`)
+        return instance.delete(`/admin/seats/${id}`)
         
 
 }
 export const getAllSeat = ()=>{
-        return instance.get(`/seats`)
+        return instance.get(`/admin/seats`)
 
 }
 export const getSeatById = (id:number|string)=>{
-        return instance.get(`/seats/${id}`)
+        return instance.get(`/admin/seats/${id}`)
 
 }

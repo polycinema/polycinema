@@ -6,7 +6,7 @@ export interface IRoom {
 }
 export const addRoom =async (room:IRoom)=>{
 
-        return instance.post(`/rooms`, room,{
+        return instance.post(`/admin/rooms`, room,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -15,7 +15,7 @@ export const addRoom =async (room:IRoom)=>{
 }
 export const updateRoom =async (room:IRoom)=>{
 
-        return instance.patch(`/rooms/${room.id}`, room,{
+        return instance.patch(`/admin/rooms/${room.id}`, room,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -24,7 +24,7 @@ export const updateRoom =async (room:IRoom)=>{
 }
 export const removeRoom =async (id:number|string)=>{
 
-        return instance.delete(`/rooms/${id}`)
+        return instance.delete(`/admin/rooms/${id}`)
 
 
 }

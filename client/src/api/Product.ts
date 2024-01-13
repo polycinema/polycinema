@@ -7,7 +7,7 @@ export interface IProduct {
         description: string;
 }
 export const addProduct =async (product:IProduct)=>{
-        return instance.post(`/products`, product,{
+        return instance.post(`/admin/products`, product,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -16,7 +16,7 @@ export const addProduct =async (product:IProduct)=>{
 }
 export const updateProduct  =async (product:IProduct)=>{
         
-        return instance.patch(`/products/${product.id}`, product,{
+        return instance.patch(`/admin/products/${product.id}`, product,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -25,15 +25,15 @@ export const updateProduct  =async (product:IProduct)=>{
 }
 export const removeProduct=async (id:number|string)=>{
         
-        return instance.delete(`/products/${id}`)
+        return instance.delete(`/admin/products/${id}`)
         
 
 }
 export const getAllProduct = ()=>{
-        return instance.get(`/products`)
+        return instance.get(`/admin/products`)
 
 }
 export const getProductById = (id:number|string)=>{
-        return instance.get(`/products/${id}`)
+        return instance.get(`/admin/products/${id}`)
 
 }

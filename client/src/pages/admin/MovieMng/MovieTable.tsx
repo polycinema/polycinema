@@ -7,7 +7,6 @@ import {
   message,
   Badge,
   Modal,
-  notification,
 } from "antd";
 import { Link } from "react-router-dom";
 import {
@@ -20,6 +19,7 @@ import { MdAutoDelete } from "react-icons/md";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { FaTrashRestore } from "react-icons/fa";
 import { FcDeleteDatabase } from "react-icons/fc";
+import swal from "sweetalert";
 
 const MovieTable = () => {
   const { data: movies, isLoading: isLoadingMovies } = useGetAllMoviesQuery();
@@ -102,9 +102,9 @@ const MovieTable = () => {
               restoreMovie({ movie_id: id })
                 .unwrap()
                 .then(() => {
-                  notification.success({
-                    message: "Restore movie sucessfuly!",
-                  });
+                  swal("Thành công!", "Khôi phục phim thành công!", "success")
+                }).catch(()=>{
+                  swal("Thất bại!", "Khôi phục phim thất bại , Vui lòng thử lại !", "error");
                 })
             }
             okText="Yes"
@@ -224,17 +224,16 @@ const MovieTable = () => {
           </Button>
           <div>
             <Popconfirm
-              title="Xóa sản phẩm"
-              description="Bạn có chắc chắn muốn xóa sản phẩm"
+              title="Xóa phim"
+              description="Bạn có chắc chắn muốn xóa phim"
               onConfirm={() => {
                 softDeleteMovie({ movie_id: id })
                   .unwrap()
                   .then(() => {
-                    messageApi.open({
-                      type: "success",
-                      content: "Xóa phim thành công",
-                    });
-                  });
+                    swal("Thành công!", "Xóa phim thành công!", "success")
+                  }).catch(()=>{
+                    swal("Thất bại!", "Xóa phim phim thất bại , Vui lòng thử lại !", "error");
+                  })
               }}
               okText="Có"
               cancelText="Không"

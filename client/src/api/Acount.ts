@@ -9,7 +9,7 @@ export interface ICount {
 }
 export const addAcount =async (acount:ICount)=>{
         
-        return instance.post(`/users`, acount,{
+        return instance.post(`/admin/users`, acount,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -18,7 +18,7 @@ export const addAcount =async (acount:ICount)=>{
 }
 export const updateAcount =async (acount:ICount)=>{
         
-        return instance.patch(`/users/${acount.id}`, acount,{
+        return instance.patch(`/admin/users/${acount.id}`, acount,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -27,12 +27,12 @@ export const updateAcount =async (acount:ICount)=>{
 }
 export const removeAcount =async (id:number|string)=>{
         
-        return instance.delete(`/users/${id}`)
+        return instance.delete(`/admin/users/${id}`)
         
 
 }
 export const getAllAcount = ()=>{
-        return instance.get(`/users`)
+        return instance.get(`/admin/users`)
 
 }
 export const getAllAcountUsers = ()=>{
@@ -43,6 +43,6 @@ export const getAllAcountAdmin = ()=>{
 }
 
 export const getAcounteById = (id:number|string)=>{
-        return instance.get(`/users/${id}`)
+        return instance.get(`/admin/users/${id}`)
 
 }

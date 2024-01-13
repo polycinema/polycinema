@@ -7,7 +7,7 @@ export interface IActor {
 }
 export const addActor =async (actor:IActor)=>{
 
-        return instance.post(`/actors`, actor,{
+        return instance.post(`/admin/actors`, actor,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -16,7 +16,7 @@ export const addActor =async (actor:IActor)=>{
 }
 export const updateActor =async (actor:IActor)=>{
 
-        return instance.patch(`/actors/${actor.id}`, actor,{
+        return instance.patch(`/admin/actors/${actor.id}`, actor,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -25,15 +25,15 @@ export const updateActor =async (actor:IActor)=>{
 }
 export const removeActor =async (id:number|string)=>{
 
-        return instance.delete(`/actors/${id}`)
+        return instance.delete(`/admin/actors/${id}`)
 
 
 }
 export const getAllActor = ()=>{
-        return instance.get(`/actors`)
+        return instance.get(`/admin/actors`)
 
 }
 export const getActorById = (id:number|string)=>{
-        return instance.get(`/actors/${id}`)
+        return instance.get(`/admin/actors/${id}`)
 
 }

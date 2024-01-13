@@ -7,7 +7,7 @@ export interface INews {
         image: string
 }
 export const addNews =async (news:INews)=>{
-        return instance.post(`/posts`, news,{
+        return instance.post(`/admin/posts`, news,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -16,7 +16,7 @@ export const addNews =async (news:INews)=>{
 }
 export const updateNews =async (news:INews)=>{
         
-        return instance.patch(`/posts/${news.id}`, news,{
+        return instance.patch(`/admin/posts/${news.id}`, news,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -25,14 +25,14 @@ export const updateNews =async (news:INews)=>{
 }
 export const removeNews=async (id:number|string)=>{
         
-        return instance.delete(`/posts/${id}`)
+        return instance.delete(`/admin/posts/${id}`)
         
 
 }
 export const getAllNews = ()=>{
-        return instance.get(`/posts`)
+        return instance.get(`/admin/posts`)
 }
 export const getNewsById = (id:number|string)=>{
-        return instance.get(`/posts/${id}`)
+        return instance.get(`/admin/posts/${id}`)
 
 }

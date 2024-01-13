@@ -5,7 +5,7 @@ export interface IGenre {
 }
 export const addGenre =async (genre:IGenre)=>{
         
-        return instance.post(`/genres`, genre,{
+        return instance.post(`/admin/genres`, genre,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -14,7 +14,7 @@ export const addGenre =async (genre:IGenre)=>{
 }
 export const updateGenre =async (genre:IGenre)=>{
         
-        return instance.patch(`/genres/${genre.id}`, genre,{
+        return instance.patch(`/admin/genres/${genre.id}`, genre,{
                 headers:{
                         "Accept":"application/json"
                 }
@@ -23,15 +23,15 @@ export const updateGenre =async (genre:IGenre)=>{
 }
 export const removeGenre =async (id:number|string)=>{
         
-        return instance.delete(`/genres/${id}`)
+        return instance.delete(`/admin/genres/${id}`)
         
 
 }
 export const getAllGenre = ()=>{
-        return instance.get(`/genres`)
+        return instance.get(`/admin/genres`)
 
 }
 export const getGenreById = (id:number|string)=>{
-        return instance.get(`/genres/${id}`)
+        return instance.get(`/admin/genres/${id}`)
 
 }

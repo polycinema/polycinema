@@ -7,6 +7,8 @@ import { MdAutoDelete } from "react-icons/md";
 import { useGetBookingsSoftQuery, useSoftDeleteBookingMutation } from "../../redux/api/checkoutApi";
 import { RootBooking } from "../../interfaces/booking";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+import swal from "sweetalert";
+
 const GarbageComponent = () => {
   const [
     restoreBooking,
@@ -71,9 +73,9 @@ const GarbageComponent = () => {
               restoreBooking({booking_id: id})
                 .unwrap()
                 .then(() => {
-                  notification.success({
-                    message: "Restore booking sucessfuly!",
-                  });
+                  swal("Thành công!", "Khôi phục vé thành công!", "success")
+                }).catch(()=>{
+                  swal("Thất bại!", "Khôi phục vé thất bại , Vui lòng thử lại !", "error")
                 })
             }
             okText="Yes"

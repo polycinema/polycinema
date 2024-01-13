@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { MdAutoDelete } from "react-icons/md";
 import { FaTrashRestore } from "react-icons/fa";
 import { FcDeleteDatabase } from "react-icons/fc";
+import swal from "sweetalert";
 
 const ShowTimeMng = () => {
   const { data, isLoading, error }: any = useGetShowTimesQuery();
@@ -116,9 +117,9 @@ const ShowTimeMng = () => {
               restoreShowtime({showtime_id: id})
                 .unwrap()
                 .then(() => {
-                  notification.success({
-                    message: "Restore showtime sucessfuly!",
-                  });
+                  swal("Thành công!", "Khôi phục lịch chiếu thành công!", "success")
+                }).catch(()=>{
+                  swal("Thất bại!", "Khôi phục lịch chiếu thất bại , Vui lòng thử lại !", "error");
                 })
             }
             okText="Yes"
@@ -193,9 +194,9 @@ const ShowTimeMng = () => {
                 softDeleteShowtime({showtime_id: id})
                   .unwrap()
                   .then(() => {
-                    notification.success({
-                      message: "Delete showtime sucessfuly!",
-                    });
+                    swal("Thành công!", "Xóa lịch chiếu thành công!", "success")
+                  }).catch(()=>{
+                    swal("Thất bại!", "Xóa lịch chiếu thất bại , Vui lòng thử lại !", "error");
                   })
               }
               okText="Yes"
