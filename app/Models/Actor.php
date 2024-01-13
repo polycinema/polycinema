@@ -12,7 +12,8 @@ class Actor extends Model
     protected $fillable = [
         'name',
         'date_of_birth',
-        'image'
+        'image',
+        'level'
     ];
 
     CONST LEVEL_HIDE = 'hide';

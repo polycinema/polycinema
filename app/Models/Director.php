@@ -12,6 +12,7 @@ class Director extends Model
     protected $fillable = [
         'name',
         'image',
+        'level'
     ];
 
     CONST LEVEL_HIDE = 'hide';
