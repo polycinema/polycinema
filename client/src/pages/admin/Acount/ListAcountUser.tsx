@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import {
+  Badge,
   Button,
   Input,
   InputRef,
+  Modal,
   Popconfirm,
   Space,
   Table,
@@ -11,34 +13,36 @@ import {
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
-import { ICount, getAllAcountUsers, removeAcount } from "../../../api/Acount";
-import { SearchOutlined } from "@ant-design/icons";
+import { QuestionCircleOutlined, SearchOutlined } from "@ant-design/icons";
 import { FilterConfirmProps } from "antd/es/table/interface";
 import type { ColumnType } from 'antd/es/table';
+import GarbageComponent from "../../../components/Garbage";
+import { useBlockAcountByIdMutation, useDeleteAcountMutation, useGetAcountBannedQuery, useGetAllAcountUsersQuery } from "../../../redux/api/acountApi";
+import { MdAutoDelete } from "react-icons/md";
+import { FcDeleteDatabase } from "react-icons/fc";
+import { FaTrashRestore } from "react-icons/fa";
+import swal from "sweetalert";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface DataType {
   key: string;
   name: string;
   email: string;
+  phone:string;
+  image:string;
+  date_of_birth:string;
   role: string;
 }
 type DataIndex = keyof DataType;
 const ListAcountUser = () => {
-  const [acounts, setAcounts] = useState<ICount[]>();
+  const {data:acounts} = useGetAllAcountUsersQuery()
+  const {data:acountBanned} = useGetAcountBannedQuery()
+  const [blockAcount,{isLoading}] = useBlockAcountByIdMutation()
   const [messageApi, contextHolder] = message.useMessage();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [isModalOpenGarbage, SetIsModalOpenGarbage] = useState(false);
   const searchInput = useRef<InputRef>(null);
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getAllAcountUsers();
-        setAcounts(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
 
   const handleSearch = (
     selectedKeys: string[],
@@ -51,8 +55,6 @@ const ListAcountUser = () => {
   };
 
   const handleReset = (clearFilters: () => void) => {
-    console.log(1);
-    
     clearFilters();
     setSearchText("");
   };
@@ -147,9 +149,27 @@ const ListAcountUser = () => {
       ...getColumnSearchProps("name"),
     },
     {
+      title: "Ảnh ",
+      dataIndex: "image",
+      key: "image",
+      render: (image) => <img className="w-28 rounded-full" src={image} alt="" />,
+    },
+    {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      key: "phone",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Ngày sinh",
+      dataIndex: "date_of_birth",
+      key: "date_of_birth",
       render: (text) => <a>{text}</a>,
     },
     {
@@ -168,21 +188,24 @@ const ListAcountUser = () => {
           </Button>
           <div>
             <Popconfirm
-              title="Xóa sản phẩm"
-              description="Bạn có chắc chắn muốn xóa sản phẩm"
+              title="Blcok tài khoản"
+              description="Bạn có chắc chắn muốn block tài khoản?"
               onConfirm={() => {
-                removeAcount(id).then(() => {
-                  setAcounts(acounts?.filter((item: ICount) => item.id !== id));
+                blockAcount({user_id:id}).then(() => {
                   messageApi.open({
                     type: "success",
-                    content: "Xóa tài khoản thành công",
+                    content: "Block khoản thành công",
                   });
                 });
               }}
               okText="Có"
               cancelText="Không"
             >
-              <Button danger>Delete</Button>
+              <Button danger>{isLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                "Block"
+              )}{" "}</Button>
             </Popconfirm>
           </div>
         </Space>
@@ -190,22 +213,99 @@ const ListAcountUser = () => {
     },
   ];
 
-  const dataConfig: DataType[] = acounts?.map((item) => {
+  const dataConfig: DataType[] = acounts?.data?.map((item) => {
     return {
       key: item?.id,
       name: item?.name,
       email: item?.email,
+      phone: item?.phone,
+      image: item?.image,
+      date_of_birth: item?.date_of_birth,
       role: item?.role,
     };
   });
-
+  const handleCancelGarbage = () => {
+    SetIsModalOpenGarbage(false);
+  };
+  const OpentModalGarbage = () => {
+    SetIsModalOpenGarbage(true);
+  };
+  const dataSource = acountBanned?.data?.map((items)=> {
+    return {
+      key: items.id,
+      name: items?.name,
+      email: items?.email,
+    }
+  })
+  const columnBanned = [
+    {
+      title: "Tên tài khoản",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Hành Động",
+      dataIndex: "action",
+      key: "action",
+      render: (_: any, { key: id }: any) => (
+        <div className="space-x-3">
+          <Popconfirm
+            title="Bỏ chặn tài khoản"
+            description="Bạn có chắc muốn khôi phục?"
+            onConfirm={() =>
+              blockAcount({user_id: id})
+                .unwrap()
+                .then(() => {
+                  swal("Thành công!", "Bỏ chặn tài khoản thành công!", "success")
+                }).catch(()=>{
+                  swal("Thất bại!", "Bỏ chặn tài khoản thất bại , Vui lòng thử lại !", "error")
+                })
+            }
+            okText="Yes"
+            okType="default"
+            cancelText="No"
+            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+          >
+            <Button icon={<FaTrashRestore />} />
+          </Popconfirm>
+          
+        </div>
+      ),
+    },
+  ];
   return (
     <>
       {contextHolder}
       <div>
+      <Button className="m-2">
+              <Link to={"/admin/addAcount"}>Thêm Tài Khoản Mới</Link>
+            </Button>
+        <div className="flex justify-between">
         <h1 className="text-2xl mb-6 bg-white p-2 rounded-md shadow-md">
           Danh sách tài khoản khách hàng
         </h1>
+        <div>
+        <Badge count={acountBanned?.data?.length} size="small">
+        <Button icon={<MdAutoDelete />} onClick={OpentModalGarbage}>
+          Tài khoản bị chặn
+        </Button>
+      </Badge>
+      <Modal
+        title="Danh sách tài khoản đã chặn"
+        open={isModalOpenGarbage}
+        onCancel={handleCancelGarbage}
+        footer={null}
+      >
+        <Table dataSource={dataSource} columns={columnBanned} />;
+      </Modal>
+        </div>
+        </div>
+        
         <Table
           columns={columns}
           dataSource={dataConfig}
