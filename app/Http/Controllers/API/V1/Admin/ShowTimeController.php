@@ -20,7 +20,7 @@ class ShowTimeController extends Controller
     public function index()
     {
         try {
-            $showtimes = ShowTime::query()->with('room')->with('movie')->where('level', 'show')->get();
+            $showtimes = ShowTime::query()->with('room')->with('movie')->where('level','show')->get();
 
             return response()->json([
                 'data' => $showtimes
@@ -40,94 +40,6 @@ class ShowTimeController extends Controller
     public function store(Request $request)
     {
         try {
-            // $validator = Validator::make($request->all(), [
-            //     'movie_id' => 'required',
-            //     'room_id' => 'required',
-            //     'show_date' => 'required|date_format:Y/m/d|after_or_equal:today',
-            //     'start_time' => [
-            //         'required',
-            //         'date_format:H:i:s',
-            //         function ($attribute, $value, $fail) use ($request) {
-            //             $hour = date('H', strtotime($value));
-            //             $existingShowtime = Showtime::where('show_date', $request->show_date)
-            //                 ->where('room_id', $request->room_id)
-            //                 ->whereRaw("HOUR(start_time) = $hour")
-            //                 ->first();
-
-            //             if ($existingShowtime) {
-            //                 $fail("Đã có 1 xuất chiếu khác vào" . " " . explode(':', $request->start_time)[0] . "h " . "hoặc phòng $request->room_id");
-            //             }
-            //         },
-            //     ],
-            // ], [
-            //     'movie_id.required' => 'Vui Lòng Chọn Phim',
-            //     'room_id.required' => 'Vui Lòng Chọn Phòng Chiếu',
-            //     'show_date.required' => 'Vui Lòng Chọn Ngày Chiếu',
-            //     'show_date.date_format' => 'Định Dạng Ngày Chiếu Yêu Cầu Năm/Tháng/Ngày',
-            //     'show_date.after_or_equal' => 'Ngày Chiếu Phải Là Ngày Hôm Nay Hoặc Ngày Trong Tương Lai',
-            //     'start_time.required' => 'Vui Lòng Chọn Giờ Chiếu Phim',
-            //     'start_time.date_format' => 'Định Dạng Giờ Chiếu Yêu Cầu Giờ/Phút/Giây',
-            // ]);
-
-            // if ($validator->fails()) {
-            //     return response()->json([
-            //         'errors' => $validator->errors()
-            //     ], Response::HTTP_UNPROCESSABLE_ENTITY);
-            // }
-
-            // $showtime = ShowTime::create($request->all());
-            // $showtime = ShowTime::query()->with('room')->find($showtime->id);
-
-            // $single_seat = $showtime->room->single_seat;
-            // $double_seat = $showtime->room->double_seat;
-            // $special_seat = $showtime->room->special_seat;
-
-            // if ($showtime) {
-            //     // $single_price = $showtime->room->single_seat_price;
-            //     // $double_price = $showtime->room->double_seat_price;
-            //     // $special_price = $showtime->room->special_seat_price;
-
-            //     $single_price = Seat::TYPE['single'];
-            //     $double_price = Seat::TYPE['double'];
-            //     $special_price = Seat::TYPE['special'];
-
-            //     for ($i = 1; $i <= $single_seat; $i++) {
-            //         Seat::create([
-            //             'seat_name' => 'A' . $i,
-            //             'type' => 'single',
-            //             'showtime_id' => $showtime->id,
-            //             'status' => 'unbook',
-            //             'price' => $single_price,
-            //             'user_id' => NULL,
-            //             'booking_id' => NULL,
-            //         ]);
-            //     }
-
-            //     for ($i = 1; $i <= $double_seat; $i++) {
-            //         Seat::create([
-            //             'seat_name' => 'D' . $i,
-            //             'type' => 'double',
-            //             'showtime_id' => $showtime->id,
-            //             'status' => 'unbook',
-            //             'price' => $double_price,
-            //             'user_id' => NULL,
-            //             'booking_id' => NULL,
-            //         ]);
-            //     }
-
-            //     for ($i = 1; $i <= $special_seat; $i++) {
-            //         Seat::create([
-            //             'seat_name' => 'S' . $i,
-            //             'type' => 'special',
-            //             'showtime_id' => $showtime->id,
-            //             'status' => 'unbook',
-            //             'price' => $special_price,
-            //             'user_id' => NULL,
-            //             'booking_id' => NULL,
-            //         ]);
-            //     }
-            // }
-
             $validator = Validator::make($request->all(), [
                 'movie_id' => 'required',
                 'room_id' => 'required',
@@ -163,22 +75,61 @@ class ShowTimeController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-            $showtime = ShowTime::create([
-                'movie_id' => $request->movie_id,
-                'room_id' => $request->room_id,
-                'show_date' => $request->show_date,
-                'start_time' => $request->start_time,
-            ]);
-
+            $showtime = ShowTime::create($request->all());
             $showtime = ShowTime::query()->with('room')->find($showtime->id);
 
-            $seats = $this->createSeats($showtime, $showtime->room->seatTypes);
+            $single_seat = $showtime->room->single_seat;
+            $double_seat = $showtime->room->double_seat;
+            $special_seat = $showtime->room->special_seat;
+
+            if ($showtime) {
+                // $single_price = $showtime->room->single_seat_price;
+                // $double_price = $showtime->room->double_seat_price;
+                // $special_price = $showtime->room->special_seat_price;
+
+                $single_price = Seat::TYPE['single'];
+                $double_price = Seat::TYPE['double'];
+                $special_price = Seat::TYPE['special'];
+
+                for ($i = 1; $i <= $single_seat; $i++) {
+                    Seat::create([
+                        'seat_name' => 'A' . $i,
+                        'type' => 'single',
+                        'showtime_id' => $showtime->id,
+                        'status' => 'unbook',
+                        'price' => $single_price,
+                        'user_id' => NULL,
+                        'booking_id' => NULL,
+                    ]);
+                }
+
+                for ($i = 1; $i <= $double_seat; $i++) {
+                    Seat::create([
+                        'seat_name' => 'D' . $i,
+                        'type' => 'double',
+                        'showtime_id' => $showtime->id,
+                        'status' => 'unbook',
+                        'price' => $double_price,
+                        'user_id' => NULL,
+                        'booking_id' => NULL,
+                    ]);
+                }
+
+                for ($i = 1; $i <= $special_seat; $i++) {
+                    Seat::create([
+                        'seat_name' => 'S' . $i,
+                        'type' => 'special',
+                        'showtime_id' => $showtime->id,
+                        'status' => 'unbook',
+                        'price' => $special_price,
+                        'user_id' => NULL,
+                        'booking_id' => NULL,
+                    ]);
+                }
+            }
 
             return response()->json([
-                'data' => [
-                    'showtime' => $showtime,
-                    'seats' => $seats
-                ],
+                'data' => $showtime,
                 'message' => 'Tạo Thành Công Lịch Chiếu Phim'
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
@@ -189,38 +140,6 @@ class ShowTimeController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
-
-    private function createSeats($showtime, $seatTypes)
-    {
-        $seats = [];
-        $rows = range('A', 'Z');
-
-        foreach ($seatTypes as $seatType) {
-            // $price = Seat::where('name', $seatType['name'])->value('price');
-            $quantity = $seatType->pivot->quantity;
-            $price = $seatType->price;
-
-            for ($rowIndex = 0; $rowIndex < $quantity; $rowIndex++) {
-                for ($colIndex = 1; $colIndex <= $showtime->room->column; $colIndex++) {
-                    $seat = Seat::create([
-                        'seat_name' => $rows[$rowIndex] . ' - ' . $colIndex,
-                        'seat_type_id' => $seatType->id,
-                        'showtime_id' => $showtime->id,
-                        'status' => 'unbook',
-                        'price' => $price,
-                        'user_id' => NULL,
-                        'booking_id' => NULL,
-                    ]);
-
-                    $seats[] = $seat;
-                }
-            }
-        }
-
-        return $seats;
-    }
-
 
     /**
      * Display the specified resource.

@@ -361,7 +361,7 @@ class BookingController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
+    
     public function doCancelBooking(Request $request)
     {
         // POST : booking_id
