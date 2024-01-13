@@ -19,7 +19,7 @@ class UserController extends Controller
     public function index()
     {
         try {
-            $users = User::all();
+            $users = User::query()->where('status', User::NORMAL)->get();
 
             return response()->json([
                 'data' => $users,
@@ -115,45 +115,50 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         try {
+            $info_data = $request->all();
+
+            $oldData = $user;
+
             $validator = Validator::make($request->all(), [
-                'name' => 'required|min:2|max:25',
-                'email' => 'required|email|min:12|max:50',
-                'password' => 'required|min:6|max:100|nullable',
-                // 're_password' => 'required|same:password|nullable',
-                // 'role' => 'nullable',
+                'image' => 'nullable|string',
+                'full_name' => 'nullable|string|max:255',
+                'phone' => 'nullable|string|numeric|regex:/^0\d{9}$/|unique:users,phone,' . $user->id,
+                'email' => 'nullable|string|email|unique:users,email,' . $user->id,
+                'date_of_birth' => 'nullable|date_format:Y/m/d',
+                'gender' => 'nullable|string',
+                'role' => 'nullable|string',
+                'password' => 'nullable|string'
             ], [
-                'name.required' => 'Trường tên người dùng không được trống',
-                'name.min' => 'Trường tên người dùng lớn hơn 2 ký tự',
-                'name.max' => 'Trường tên người dùng nhỏ hơn 25 ký tự',
-                'email.required' => 'Trường email không được trống',
-                'email.email' => 'Trường email không hợp lệ',
-                'email.min' => 'Trường email lớn hơn 12 ký tự',
-                'email.max' => 'Trường email nhỏ hơn 50 ký tự',
-                // 'email.unique' => 'Email đã được đăng ký',
-                'password.required' => 'Mật khẩu không được trống',
-                'password.min' => 'Mật khẩu phải lớn hơn 6 ký tự',
-                'password.max' => 'Mật khẩu phải nhỏ hơn 100 ký tự',
-                // 're_password.required' => 'Yêu cầu xác nhận mật khẩu',
-                // 're_password.same' => 'Xác nhận mật khẩu không trùng nhau',
+                'image.string' => 'Ảnh Không Hợp Lệ',
+                'full_name.string' => 'Họ Tên Không Hợp Lệ',
+                'full_name.max' => 'Họ Tên Quá Dài',
+                'phone.numeric' => 'Số Điện Thoại Không Hợp Lệ',
+                'phone.regex' => 'Số Điện Thoại Không Hợp Lệ',
+                'phone.unique' => 'Số Điện Thoại Đã Được Đăng Ký',
+                'email.string' => 'Email Không Hợp Lệ',
+                'email.email' => 'Địa chỉ Email không đúng định dạng',
+                'email.unique' => 'Email Đã Được Đăng Ký',
+                'date_of_birth.date_format' => 'Định Dạng Sinh Nhật Yêu Cầu Năm/Tháng/Ngày',
+                'gender.string' => 'Giới Tính Không Hợp Lệ',
             ]);
 
             if ($validator->fails()) {
                 return response()->json([
-                    'errors' => $validator->errors(),
+                    'errors' => $validator->errors()
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->password = Hash::make($request->password);
-            $user->role = $request->role;
+            foreach ($info_data as $key => $value) {
+                if ($value === $oldData[$key] || $value == "") {
+                    unset($info_data[$key]);
+                }
+            }
 
-            $result = $user->save();
+            $updated = $user->update($info_data);
 
-            if ($result) {
+            if ($updated) {
                 return response()->json([
-                    'data' => $user,
-                    'message' => "Cập nhật thông tin người dùng $user->name thành công",
+                    'message' => "Cập Nhật Thông Tin Người Dùng $user->name Thành Công",
                 ], Response::HTTP_OK);
             }
         } catch (Exception $exception) {
