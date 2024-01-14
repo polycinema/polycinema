@@ -209,6 +209,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
                   <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center z-20">
                     {seat?.status}
                   </p>
+      
                   <img
                     className={`w-full`}
                     src={seat?.seat_type?.image}

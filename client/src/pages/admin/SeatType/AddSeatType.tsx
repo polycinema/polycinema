@@ -19,6 +19,7 @@ const AddSeatType = () => {
   const [urlImage, setUrlImage] = useState("");
   const onFinish = async (value) => {
     addSeatType({ ...value, image: urlImage })
+      .unwrap()
       .then(async () => {
         form.resetFields();
         await swal("Thành công!", "Thêm thể loại ghế thành công!", "success");

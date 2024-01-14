@@ -35,18 +35,18 @@ const roomApi = createApi({
             invalidatesTags: ["Room"],
         }),
         
-        // SoftDeleteSeatType: build.mutation({
-        //     query: (seat_id) => ({
-        //         url: `/change-level-movie`,
-        //         method: "POST",
-        //         body: seat_id,
-        //     }),
-        //     invalidatesTags: ["Seat"],
-        // }),
-        // getSeatTypeSoft: build.query({
-        //     query: () => `/movie-in-trash`,
-        //     providesTags: ["Seat"],
-        // }),
+        SoftDeleteRoom: build.mutation({
+            query: (room_id) => ({
+                url: `/change-level-room`,
+                method: "POST",
+                body: room_id,
+            }),
+            invalidatesTags: ["Room"],
+        }),
+        getRoomSoft: build.query({
+            query: () => `/room-in-trash`,
+            providesTags: ["Room"],
+        }),
     }),
 });
 
@@ -54,7 +54,9 @@ export const {
     useAddRoomMutation,
     useGetAllRoomsQuery,
     useGetRoomByIdQuery,
-    useUpdateRoomMutation
+    useUpdateRoomMutation,
+    useSoftDeleteRoomMutation,
+    useGetRoomSoftQuery
 } = roomApi;
 export const roomReducer = roomApi.reducer;
 export default roomApi;
