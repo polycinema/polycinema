@@ -27,6 +27,8 @@ import statisticApi, { statisticReducer } from "../redux/api/statisticApi";
 import couponApi, { couponReducer } from "../redux/api/couponApi";
 import directorApi, { directorReducer } from "../redux/api/directorApi";
 import genresApi, { genresReducer } from "../redux/api/genresApi";
+import seatApi, { seatReducer } from "../redux/api/seatApi";
+import roomApi, { roomReducer } from "../redux/api/roomApi";
 import acountApi, { acountReducer } from "../redux/api/acountApi";
 import productApi, { productReducer } from "../redux/api/productApi";
 
@@ -46,6 +48,8 @@ const rootReducer = combineReducers({
   [couponApi.reducerPath]:couponReducer,
   [directorApi.reducerPath]:directorReducer,
   [genresApi.reducerPath]:genresReducer,
+  [seatApi.reducerPath]:seatReducer,
+  [roomApi.reducerPath]:roomReducer,
   [acountApi.reducerPath]:acountReducer,
   [productApi.reducerPath]:productReducer,
   ValueCheckout: valueCheckoutReducer,
@@ -62,6 +66,8 @@ const middleware = [
   couponApi.middleware,
   directorApi.middleware,
   genresApi.middleware,
+  seatApi.middleware,
+  roomApi.middleware,
   acountApi.middleware,
   productApi.middleware
 ]

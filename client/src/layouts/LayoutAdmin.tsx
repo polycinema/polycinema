@@ -5,6 +5,7 @@ import { AppstoreOutlined, GroupOutlined, LogoutOutlined, TeamOutlined, UserOutl
 import { Layout, Menu, Popconfirm, theme } from "antd";
 import { useAppDispatch } from "../store/hook";
 import { setLogout } from "../redux/slices/authorizationSlice";
+import { AiFillGold } from "react-icons/ai";
 const {  Header,Content, Footer, Sider } = Layout;
 
 const LayoutAdmin: React.FC = () => {
@@ -84,6 +85,11 @@ const LayoutAdmin: React.FC = () => {
                 {key:51,icon: <UserOutlined />, label:<Link to={"acountAdmin"}>Quản trị</Link>}
               ]
               
+            },
+            {
+              key: 15,
+              icon: <AiFillGold /> ,
+              label: <Link to={"seats"}>Quản lý thể loại ghế</Link>,
             },
             {
               key: 7,

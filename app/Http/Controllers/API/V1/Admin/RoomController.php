@@ -39,21 +39,11 @@ class RoomController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'room_name' => 'required|unique:rooms,room_name',
-                'single_seat' => 'numeric',
-                'double_seat' => 'numeric',
-                'special_seat' => 'numeric',
-                // 'single_seat_price' => 'required',
-                // 'double_seat_price' => 'required',
-                // 'special_seat_price' => 'required'
+                'seat_types' => 'required|array'
             ], [
                 'room_name.required' => 'Trường tên phòng không được trống',
-                'room_name.unique' => "Phòng $request->room_name đã tồn tại ",
-                'single_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
-                'double_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
-                'special_seat.numeric' => 'Trường ghế đơn của phòng phải là số nguyên',
-                // 'single_seat_price.required' => 'Vui lòng chọn giá cho loại ghế đơn',
-                // 'double_seat_price.required' => 'Vui lòng chọn giá cho loại ghế đôi',
-                // 'special_seat_price.required' => 'Vui lòng chọn giá cho loại ghế VIP'
+                'room_name.unique' => "Phòng $request->room_name đã tồn tại",
+                'seat_types.required' => 'Vui lòng chọn ít nhất một loại ghế'
             ]);
 
             if ($validator->fails()) {
@@ -62,15 +52,15 @@ class RoomController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
+            $capacity = 0;
+
+            foreach ($request->seat_types as $seatType) {
+                $capacity += $seatType['quantity'];
+            }
+
             $room = Room::create([
                 'room_name' => $request->room_name,
-                'single_seat' => $request->single_seat,
-                'double_seat' => $request->double_seat,
-                'special_seat' => $request->special_seat,
-                // 'single_seat_price' => $request->single_seat_price,
-                // 'double_seat_price' => $request->double_seat_price,
-                // 'special_seat_price' => $request->special_seat_price,
-                'capacity' => $request->single_seat + $request->double_seat + $request->special_seat,
+                'capacity' => $capacity,
             ]);
 
             return response()->json([

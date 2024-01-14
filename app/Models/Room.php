@@ -14,12 +14,8 @@ class Room extends Model
 
     protected $fillable = [
         'room_name',
-        'single_seat',
-        'double_seat',
-        'special_seat',
-        // 'single_seat_price',
-        // 'double_seat_price',
-        // 'special_seat_price',
+        // 'row',
+        // 'column',
         'capacity',
         'level'
     ];

@@ -7,6 +7,8 @@ import { useGetSeatsByShowTimeQuery } from "../../redux/api/checkoutApi";
 const CheckoutPage = () => {
   const { id } = useParams();
   const { data: showtime, isLoading } = useGetSeatsByShowTimeQuery(id || "");
+  console.log(showtime);
+  
   const { user } = useAppSelector(
     (state) => state.Authorization
   );
