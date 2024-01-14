@@ -212,7 +212,7 @@ class UserController extends Controller
     {
         try {
             $users = User::query()
-                ->where('role', User::CUSTOMER)->get();
+                ->where('role', User::CUSTOMER)->where('status',User::NORMAL)->get();
 
             return response()->json([
                 'data' => $users

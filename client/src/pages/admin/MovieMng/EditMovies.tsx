@@ -23,7 +23,6 @@ import { IGenre, getAllGenre } from "../../../api/genre";
 import { IDirector, getAllDirector } from "../../../api/director";
 import dayjs from "dayjs";
 import { UploadOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
-import { pause } from "../../../utils/pause";
 import swal from "sweetalert";
 
 const UpdateMovie = () => {
@@ -35,7 +34,6 @@ const UpdateMovie = () => {
   const [genres, setGenres] = useState<IGenre[]>();
   const [directors, setDirectors] = useState<IDirector[]>();
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
 
   useEffect(() => {

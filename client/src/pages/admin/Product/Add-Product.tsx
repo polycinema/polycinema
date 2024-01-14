@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Button, Form, Input, Upload, UploadProps, message } from "antd";
 import { UploadOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
-import { IProduct, addProduct } from "../../../api/Product";
 import swal from "sweetalert";
+import { useAddProductMutation } from "../../../redux/api/productApi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 const { TextArea } = Input;
 
 type FieldType = {
@@ -14,6 +15,7 @@ type FieldType = {
 };
 
 const AddProduct = () => {
+  const [addProduct,{isLoading}] = useAddProductMutation()
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [urlImage, setUrlImage] = useState("");
@@ -32,16 +34,8 @@ const AddProduct = () => {
   const props: UploadProps = {
     name: "file",
     action: "https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload",
-    // Thay đổi thành URL API của Cloudinary
-    headers: {
-      // Authorization: 'Bearer 773215578244178',
-      // "Access-Control-Allow-Origin":"*"
-      // Thay đổi thành API key của bạn
-    },
     data: {
-      // Thêm các dữ liệu cần thiết như upload preset
       upload_preset: "upload",
-      // Thay đổi thành upload preset của bạn
     },
     onChange(info) {
       if (info.file.status === "done") {
@@ -106,7 +100,11 @@ const AddProduct = () => {
 
           <Form.Item label="Tác vụ :">
             <Button htmlType="submit">
-              <VerticalAlignTopOutlined />
+            {isLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                <VerticalAlignTopOutlined />
+              )}{" "}
             </Button>
           </Form.Item>
         </Form>

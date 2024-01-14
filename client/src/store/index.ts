@@ -29,6 +29,8 @@ import directorApi, { directorReducer } from "../redux/api/directorApi";
 import genresApi, { genresReducer } from "../redux/api/genresApi";
 import seatApi, { seatReducer } from "../redux/api/seatApi";
 import roomApi, { roomReducer } from "../redux/api/roomApi";
+import acountApi, { acountReducer } from "../redux/api/acountApi";
+import productApi, { productReducer } from "../redux/api/productApi";
 
 const persistConfig = {
   key: "root",
@@ -48,6 +50,8 @@ const rootReducer = combineReducers({
   [genresApi.reducerPath]:genresReducer,
   [seatApi.reducerPath]:seatReducer,
   [roomApi.reducerPath]:roomReducer,
+  [acountApi.reducerPath]:acountReducer,
+  [productApi.reducerPath]:productReducer,
   ValueCheckout: valueCheckoutReducer,
   Authorization: authorizationReducer
 });
@@ -64,6 +68,8 @@ const middleware = [
   genresApi.middleware,
   seatApi.middleware,
   roomApi.middleware,
+  acountApi.middleware,
+  productApi.middleware
 ]
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

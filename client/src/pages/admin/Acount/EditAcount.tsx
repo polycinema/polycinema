@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button, Form, Input,  } from "antd";
 import { useNavigate, useParams } from "react-router";
-import { ICount, getAcounteById, updateAcount } from "../../../api/Acount";
 import { Select } from "antd";
 import { VerticalAlignTopOutlined } from "@ant-design/icons";
 import swal from 'sweetalert';
+import { useGetAcounteByIdQuery, useUpdateAcountMutation } from "../../../redux/api/acountApi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 type FieldType = {
   name: string;
@@ -14,9 +15,10 @@ type FieldType = {
 };
 const EditAcount = () => {
   const { id } = useParams();
+  const {data:acount} = useGetAcounteByIdQuery(id|| "")
+  const [updateAcount , {isLoading}] = useUpdateAcountMutation()
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [acounts, setAcounts] = useState<ICount>();
   const onChange = (value: string) => {
     console.log(`selected ${value}`);
   };
@@ -30,44 +32,34 @@ const EditAcount = () => {
     option?: { label: string; value: string }
   ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getAcounteById(id);
-        setAcounts(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  
   useEffect(() => {
     setFields();
-  }, [acounts]);
+  }, [acount]);
   const setFields = () => {
     form.setFieldsValue({
-      id: acounts?.id,
-      name: acounts?.name,
-      email: acounts?.email,
-      password: acounts?.password,
-      role: acounts?.role,
+      id: acount?.data?.id,
+      name: acount?.data?.name,
+      email: acount?.data?.email,
+      password: acount?.data?.password,
+      role: acount?.data?.role,
     });
   };
-
   const onFinish = (values) => {
+    console.log(values);
+    
     updateAcount({ id: id, ...values })
       .then(async () => {
         form.resetFields();
         await swal("Thành công!", "Cập nhật tài khoản thành công!", "success");
-        navigate("/admin/acount");
+        navigate("/admin/acountUser");
       })
       .catch(() => {
         swal("Thất bại!", "Tài khoản đã tồn tại , Vui lòng thử lại !", "error");
       });
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
+  
   return (
     <>
       <div>
@@ -79,7 +71,6 @@ const EditAcount = () => {
           wrapperCol={{ span: 16 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
           className="bg-white p-2 rounded-md shadow-md"
         >
@@ -104,13 +95,10 @@ const EditAcount = () => {
           <Form.Item<FieldType>
             label="Mật khẩu"
             name="password"
-            rules={[
-              { required: true, message: "Mật khẩu không được để trống" },
-            ]}
+            className="hidden"
           >
-            <Input.Password />
+            <Input />
           </Form.Item>
-
           <Form.Item<FieldType>
             label="Vai trò"
             name="role"
@@ -138,7 +126,11 @@ const EditAcount = () => {
 
           <Form.Item label="Tác vụ :">
             <Button htmlType="submit">
-              <VerticalAlignTopOutlined />
+            {isLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                <VerticalAlignTopOutlined />
+              )}{" "}
             </Button>
           </Form.Item>
         </Form>
