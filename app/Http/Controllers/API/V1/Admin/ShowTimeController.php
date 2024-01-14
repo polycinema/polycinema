@@ -194,12 +194,16 @@ class ShowTimeController extends Controller
     private function createSeats($showtime)
     {
         $seats = [];
-        $rows = range('A', 'Z');
+        // $rows = range('A', 'Z');
+        $index = 1;
 
         foreach ($showtime->room->seatTypes as $seatType) {
+
+            $first_character = strtoupper(substr($seatType->name, 0, 2));
+
             for ($qty = 0; $qty < $seatType->pivot->quantity; $qty++) {
                 $seat = Seat::create([
-                    'seat_name' => $seatType->name,
+                    'seat_name' => $first_character . $index++,
                     'seat_type_id' => $seatType->id,
                     'showtime_id' => $showtime->id,
                     'status' => 'unbook',
