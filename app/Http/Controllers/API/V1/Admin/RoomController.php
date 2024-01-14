@@ -66,16 +66,10 @@ class RoomController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'room_name' => 'required|unique:rooms,room_name',
-                'row' => 'required|numeric',
-                'column' => 'required|numeric',
                 'seat_types' => 'required|array'
             ], [
                 'room_name.required' => 'Trường tên phòng không được trống',
                 'room_name.unique' => "Phòng $request->room_name đã tồn tại",
-                'row.required' => 'Vui lòng nhập số lượng hàng',
-                'row.numeric' => 'Số lượng hàng phải là số nguyên',
-                'column.required' => 'Vui lòng nhập số lượng cột',
-                'column.numeric' => 'Số lượng cột phải là số nguyên',
                 'seat_types.required' => 'Vui lòng chọn ít nhất một loại ghế'
             ]);
 
@@ -85,11 +79,15 @@ class RoomController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
+            $capacity = 0;
+
+            foreach ($request->seat_types as $seatType) {
+                $capacity += $seatType['quantity'];
+            }
+
             $room = Room::create([
                 'room_name' => $request->room_name,
-                'row' => $request->row,
-                'column' => $request->column,
-                'capacity' => $request->row * $request->column,
+                'capacity' => $capacity,
             ]);
 
             foreach ($request->seat_types as $seatType) {
