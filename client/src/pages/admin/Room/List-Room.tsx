@@ -3,10 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Popconfirm, Space, Table, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
-
-import { IRoom, getAllRoom, removeRoom } from "../../../api/room";
-import GarbageComponent from "../../../components/Garbage";
 import { formatCurrency } from "../../../utils/formatVND";
+import { useGetAllRoomsQuery } from "../../../redux/api/roomApi";
 
 interface DataType {
   key: string;
@@ -16,20 +14,10 @@ interface DataType {
   special_seat?: number | string;
 }
 const ListRooms = () => {
-  const [rooms, setRooms] = useState<IRoom[]>();
+  const {data:rooms} = useGetAllRoomsQuery()
   const [messageApi, contextHolder] = message.useMessage();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getAllRoom();
-        setRooms(data.data);
-        console.log(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  
 
   const columns: ColumnsType<DataType> = [
     {
@@ -39,40 +27,9 @@ const ListRooms = () => {
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Ghế thường",
-      dataIndex: "single_seat",
-      key: "single_seat",
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Giá ghế thường",
-      dataIndex: "single_seat_price",
-      key: "single_seat_price",
-      render: (text) => <a>{formatCurrency(text)}</a>,
-    },
-    {
-      title: "Ghế đôi",
-      dataIndex: "double_seat",
-      key: "double_seat",
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Giá ghế đôi",
-      dataIndex: "double_seat_price",
-      key: "double_seat_price",
-      render: (text) => <a>{formatCurrency(text)}</a>,
-    },
-    {
-      title: "Ghế VIP",
-      dataIndex: "special_seat",
-      key: "special_seat",
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: "Giá ghế VIP",
-      dataIndex: "special_seat_price",
-      key: "special_seat_price",
-      render: (text) => <a>{formatCurrency(text)}</a>,
+      title: "Số lượng ghế",
+      dataIndex: "capacity",
+      key: "capacity",
     },
     {
       title: "Hành động",
@@ -84,7 +41,7 @@ const ListRooms = () => {
             <Button> Edit </Button>
           </Link>
 
-          <div>
+          {/* <div>
             <Popconfirm
               title="Xóa sản phẩm"
               description="Bạn có chắc chắn muốn xóa sản phẩm"
@@ -102,22 +59,18 @@ const ListRooms = () => {
             >
               <Button danger>Delete</Button>
             </Popconfirm>
-          </div>
+          </div> */}
         </Space>
       ),
     },
   ];
 
-  const dataConfig: DataType[] = rooms?.map((item) => {
+  const dataConfig: DataType[] = rooms?.data?.map((item) => {
     return {
       key: item?.id,
       room_name: item?.room_name,
-      single_seat: item?.single_seat,
-      single_seat_price: item?.single_seat_price,
-      double_seat: item?.double_seat,
-      double_seat_price: item?.double_seat_price,
-      special_seat: item?.special_seat,
-      special_seat_price: item?.special_seat_price,
+      capacity: item?.capacity,
+
     };
   });
   return (

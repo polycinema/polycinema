@@ -10,7 +10,7 @@ const PrivateRouterSeat = () => {
   localStorage.removeItem('countdown')
   localStorage.removeItem('counting')
   useEffect(() => {
-        if(toggleSeat.length > 0){
+        if(toggleSeat?.length > 0){
         toggleSeat?.map(item=>updateStattusSeat({ id: item.id, status: "unbook", user_id: null })
         .then(()=>{
                 dispatch(deleteSeatsToggle())

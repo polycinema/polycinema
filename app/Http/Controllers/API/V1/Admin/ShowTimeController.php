@@ -20,7 +20,7 @@ class ShowTimeController extends Controller
     public function index()
     {
         try {
-            $showtimes = ShowTime::query()->with('room')->with('movie')->where('level', 'show')->get();
+            $showtimes = ShowTime::query()->with('seats')->with('room')->with('movie')->where('level', 'show')->get();
 
             return response()->json([
                 'data' => $showtimes

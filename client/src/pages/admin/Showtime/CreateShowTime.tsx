@@ -16,28 +16,18 @@ import { useGetAllMoviesQuery } from "../../../redux/api/movieApi";
 import { getAllRoom } from "../../../api/room";
 import { useNavigate } from "react-router";
 import swal from "sweetalert";
+import { useGetAllRoomsQuery } from "../../../redux/api/roomApi";
 
 const CreateShowTime = () => {
+  const {data:rooms} = useGetAllRoomsQuery()
   const [createShowTime, { isLoading, error }] = useCreateShowTimeMutation();
-  const { data, error: errorMovie }: any = useGetAllMoviesQuery();
-  const [roomData, setRoomData] = useState();
-  const [movieData, setMovieData] = useState();
+  const { data:movies, error: errorMovie }: any = useGetAllMoviesQuery();
   const [form] = Form.useForm()
   const navigate = useNavigate();
   const timeFormat = "HH:mm:ss";
   const dateFormat = "YYYY/MM/DD";
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data: ListRoom } = await getAllRoom();
-        setRoomData(ListRoom.data);
-        setMovieData(data?.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [data]);
+  
   const onFinish = ({
     movie_id,
     room_id,
@@ -91,7 +81,7 @@ const CreateShowTime = () => {
           <Select
             style={{ width: "100%" }}
             placeholder="Select to room"
-            options={roomData?.map((items: any) => {
+            options={rooms?.data?.map((items: any) => {
               return {
                 value: items.id,
                 label: items.room_name,
@@ -112,7 +102,7 @@ const CreateShowTime = () => {
           <Select
             style={{ width: "100%" }}
             placeholder="Select to movie"
-            options={movieData?.map((items: any) => {
+            options={movies?.data?.map((items: any) => {
               return {
                 value: items.id,
                 label: items.name,

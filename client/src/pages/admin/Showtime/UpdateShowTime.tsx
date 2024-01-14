@@ -17,6 +17,7 @@ import IsLoading from "../../../utils/IsLoading";
 import { useGetAllMoviesQuery } from "../../../redux/api/movieApi";
 import { getAllRoom } from "../../../api/room";
 import swal from "sweetalert";
+import { useGetAllRoomsQuery } from "../../../redux/api/roomApi";
 
 const UpdateShowTime = () => {
   const { id } = useParams();
@@ -24,22 +25,9 @@ const UpdateShowTime = () => {
   const [updateShowTime, { isLoading }] = useUpdateShowTimeMutation();
   const { data }: any = useGetByIdShowTimeQuery(id);
   const { data: MovieData, error: errorMovie }: any = useGetAllMoviesQuery();
-  const [roomData, setRoomData] = useState();
-  const [movieData, setMovieData] = useState();
+  const {data:rooms} = useGetAllRoomsQuery()
   const navigate = useNavigate();
 
-  console.log("data update ", data);
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data: ListRoom } = await getAllRoom();
-        setRoomData(ListRoom.data);
-        setMovieData(MovieData?.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [MovieData]);
   useEffect(() => {
     (async () => {
       await form.setFieldsValue({
@@ -99,7 +87,7 @@ const UpdateShowTime = () => {
           <Select
             style={{ width: "100%" }}
             placeholder="Select to movie"
-            options={movieData?.map((items: any) => {
+            options={MovieData?.data?.map((items: any) => {
               return {
                 value: items.id,
                 label: items.name,
@@ -117,7 +105,7 @@ const UpdateShowTime = () => {
           <Select
             style={{ width: "100%" }}
             placeholder="Select to room"
-            options={roomData?.map((items: any) => {
+            options={rooms?.data?.map((items: any) => {
               return {
                 value: items.id,
                 label: items.room_name,

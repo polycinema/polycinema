@@ -23,7 +23,7 @@ import imgVipActive from "../../../public/img/seat-select-vip.png";
 import imgVipBuy from "../../../public/img/seat-buy-vip.png";
 import imgNormalGiu from "../../../public/img/img-seat-normal-giu.png";
 import imgDoubleGiu from "../../../public/img/img-seat-double-giu.png";
-import imgVipGiu from "../../../public/img/img-seat-vip-giu.png";
+import svg1 from "../../../public/seat-unselect-normal.svg";
 import manhinh from "../../../public/img/ic-screen.png";
 import imgProduct from "../../../public/img/ic-combo.png";
 import imgUser from "../../../public/img/ic-inforpayment.png";
@@ -40,17 +40,17 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
     (state) => state.ValueCheckout
   );
   const dispacth = useAppDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [seatDatas, setSeatDatas] = useState(showtime?.data?.seats || []);
-  const storedCountdown = parseInt(localStorage.getItem('countdown')) || 480;
-  const storedCounting = localStorage.getItem('counting') === 'true' || false;
+  const storedCountdown = parseInt(localStorage.getItem("countdown")) || 480;
+  const storedCounting = localStorage.getItem("counting") === "true" || false;
 
   const [countdown, setCountdown] = useState(storedCountdown);
   const [counting, setCounting] = useState(storedCounting);
 
   useEffect(() => {
-    localStorage.setItem('countdown', countdown.toString());
-    localStorage.setItem('counting', counting.toString());
+    localStorage.setItem("countdown", countdown.toString());
+    localStorage.setItem("counting", counting.toString());
   }, [countdown, counting]);
 
   useEffect(() => {
@@ -58,18 +58,17 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
 
     if (counting && countdown > 0) {
       interval = setInterval(() => {
-        setCountdown(prevCountdown => prevCountdown - 1);
+        setCountdown((prevCountdown) => prevCountdown - 1);
       }, 1000);
     }
 
     if (countdown === 0) {
-      navigate("/poly-movies")
+      navigate("/poly-movies");
     }
 
     return () => clearInterval(interval);
   }, [counting, countdown]);
 
-  
   useEffect(() => {
     const channel = window.Echo.channel("seat-reservation");
     const handleReservedEvent = (e) => {
@@ -85,13 +84,15 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       setSeatDatas(showtime.data.seats);
     }
   });
-  
+
   const handleClick = (seat: any) => {
-    if(!counting){ setCounting(true)}
+    if (!counting) {
+      setCounting(true);
+    }
     const selectedSeats = seatDatas.filter(
       (item) => item.status === "booking" && item.user_id === user.id
     );
-    
+
     if (selectedSeats.length >= 9) {
       alert(
         "Bạn chỉ được chọn tối đa 8 ghế, vui lòng hủy một ghế để chọn ghế khác"
@@ -129,50 +130,14 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
 
     if (seat.status === "unbook") {
       updateSeatStatus({ id: seat.id, status: "booking", user_id: user?.id });
-      dispacth(setSeatsToggle(seat))
+      dispacth(setSeatsToggle(seat));
     } else if (seat.status === "booking") {
       updateSeatStatus({ id: seat.id, status: "unbook", user_id: null });
-      dispacth(setSeatsToggle(seat))
+      dispacth(setSeatsToggle(seat));
     }
   };
 
-  const getImageSource = (id: number | string) => {
-    const seatType = seatDatas?.find((item) => item?.id == id)?.type;
-    const seatStatus = seatDatas?.find((item) => item?.id == id)?.status;
-    const user_id = seatDatas?.find((item) => item?.id == id)?.user_id;
-    switch (seatType){
-      case "single":
-        return seatStatus === "booking" && user_id != user.id
-          ? imgNormalGiu
-          : seatStatus === "booking"
-          ? imgNormalActive
-          : seatStatus === "booked"
-          ? imgNormalBuy
-          : imgNormal;
-      case "double":
-        return seatStatus === "booking" && user_id != user.id
-          ? imgDoubleGiu
-          : seatStatus === "booking"
-          ? imgDoubleActive
-          : seatStatus === "booked"
-          ? imgDoubleBuy
-          : imgDouble;
-      case "special":
-        return seatStatus === "booking" && user_id != user.id
-          ? imgVipGiu
-          : seatStatus === "booking"
-          ? imgVipActive
-          : seatStatus === "booked"
-          ? imgVipBuy
-          : imgVip;
-      default:
-        return imgNormal;
-    }
-  };
-
-  
-
-return(
+  return (
     <div className="w-full">
       <div className="m-4">
         <div className="flex items-center justify-center gap-4 p-2">
@@ -192,11 +157,19 @@ return(
       </div>
       <div className="flex items-center justify-center gap-5">
         <p className="text-xl mt-2">Thời gian còn lại để chọn ghế:</p>
-        <p className="text-2xl mt-2 "> 
-        {counting ? (
-        <> {Math.floor(countdown / 60).toString().padStart(2, '0')}:{(countdown % 60).toString().padStart(2, '0')}</>
-      ):"8:00"}
-  </p>
+        <p className="text-2xl mt-2 ">
+          {counting ? (
+            <>
+              {" "}
+              {Math.floor(countdown / 60)
+                .toString()
+                .padStart(2, "0")}
+              :{(countdown % 60).toString().padStart(2, "0")}
+            </>
+          ) : (
+            "8:00"
+          )}
+        </p>
       </div>
       <div className="flex justify-center items-center space-x-9 p-4   ">
         <div className="flex items-center gap-2">
@@ -220,9 +193,8 @@ return(
       <div className=" seat-hidden lg:w-full  ">
         <div className="seat_container seat-scroll  mt-4 ">
           <div className="flex flex-wrap gap-3 justify-center">
-            {seatDatas
-              ?.filter((item) => item?.type == "single")
-              ?.map((seat: { id: number; seat_name: string }, i: number) => (
+            {seatDatas?.map(
+              (seat: { id: number; seat_name: string }) => (
                 <button
                   key={seat.id}
                   className={`w-[40px] relative ${
@@ -234,68 +206,17 @@ return(
                     handleClick(seat);
                   }}
                 >
-                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center">
-                    {seat?.seat_name}
+                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center z-20">
+                    {seat?.status}
                   </p>
                   <img
-                    className={`w-full `}
-                    src={getImageSource(seat?.id)}
+                    className={`w-full`}
+                    src={seat?.seat_type?.image}
                     alt=""
                   />
                 </button>
-              ))}
-          </div>
-          <div className="flex flex-wrap gap-3 justify-center mt-2">
-            {seatDatas
-              ?.filter((item) => item?.type == "special")
-              ?.map((seat: { id: number; seat_name: string }, i: number) => (
-                <button
-                  key={seat.id}
-                  className={`w-[40px] relative ${
-                    seat.status == "booking" && seat.user_id != user.id
-                      ? " pointer-events-none opacity-60 "
-                      : ""
-                  }`}
-                  onClick={() => {
-                    handleClick(seat);
-                  }}
-                >
-                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center">
-                    {seat?.seat_name}
-                  </p>
-                  <img
-                    className={`w-full `}
-                    src={getImageSource(seat?.id)}
-                    alt=""
-                  />
-                </button>
-              ))}
-          </div>
-          <div className="flex flex-wrap gap-3 justify-center mt-2">
-            {seatDatas
-              ?.filter((item) => item?.type == "double")
-              ?.map((seat: { id: number; seat_name: string }, i: number) => (
-                <button
-                  key={seat.id}
-                  className={`w-[40px] relative ${
-                    seat.status == "booking"  && seat.user_id != user.id
-                      ? " pointer-events-none opacity-60 "
-                      : ""
-                  }`}
-                  onClick={() => {
-                    handleClick(seat);
-                  }}
-                >
-                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center">
-                    {seat?.seat_name}
-                  </p>
-                  <img
-                    className={`w-full `}
-                    src={getImageSource(seat?.id)}
-                    alt=""
-                  />
-                </button>
-              ))}
+              )
+            )}
           </div>
         </div>
       </div>
@@ -314,23 +235,23 @@ return(
           <p>Ghế đôi</p>
         </div>
         <div className="flex justify-end gap-1 mt-2 text-xl">
-            <p className="text-2xl font-bold mt-2">Tổng tiền:</p>
-            <p className="text-2xl font-bold mt-2">
-              {formatCurrency(
-                stateProducts.reduce((sum: any, item: any) => {
-                  return sum + item.price * item.quantity;
-                }, 0) +
-                  showtime?.data?.seats
-                    ?.filter(
-                      (item: any) =>
-                        item?.status == "booking" && item?.user_id == user.id
-                    )
-                    .reduce((sum: any, seat: any) => sum + seat.price, 0)
-              )}
-            </p>
-          </div>
+          <p className="text-2xl font-bold mt-2">Tổng tiền:</p>
+          <p className="text-2xl font-bold mt-2">
+            {formatCurrency(
+              stateProducts.reduce((sum: any, item: any) => {
+                return sum + item.price * item.quantity;
+              }, 0) +
+                showtime?.data?.seats
+                  ?.filter(
+                    (item: any) =>
+                      item?.status == "booking" && item?.user_id == user.id
+                  )
+                  .reduce((sum: any, seat: any) => sum + seat.price, 0)
+            )}
+          </p>
+        </div>
       </div>
-      
+
       <div>
         <div className="table-product mt-20">
           <div className="flex items-center gap-4">
@@ -361,31 +282,30 @@ return(
                       <img className="w-28" src={item?.image} alt="" />
                     </td>
                     <td className="text-center p-2">{item?.name}</td>
-                    <td className="text-center p-2">{formatCurrency(item?.price)}</td>
+                    <td className="text-center p-2">
+                      {formatCurrency(item?.price)}
+                    </td>
                     <td className="text-center p-2">{item?.description}</td>
                     <td className="text-center p-2 flex justify-center items-center gap-2 ">
-                    <Button
+                      <Button
                         onClick={() => dispacth(decreaseProduct(item.id))}
                       >
                         -
                       </Button>
-                      <p>{stateProducts.find(
-                        (product: any) => product.id === item.id
-                      )?.quantity || 0}</p>
+                      <p>
+                        {stateProducts.find(
+                          (product: any) => product.id === item.id
+                        )?.quantity || 0}
+                      </p>
                       <Button onClick={() => dispacth(increaseProduct(item))}>
                         +
                       </Button>
-                      
                     </td>
-                    
-                    
                   </tr>
                 )
               )
             )}
           </table>
-
-          
         </div>
       </div>
     </div>

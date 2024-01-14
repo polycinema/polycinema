@@ -53,6 +53,9 @@ import ListAcountUser from "./pages/admin/Acount/ListAcountUser";
 import ListAcountAdmin from "./pages/admin/Acount/ListAcoutAdmin";
 import PrivateRouterSeat from "./components/privateRouter/PrivateRouterSeat";
 import StatisticPage from "./pages/admin/StatisticPage/StatisticPage";
+import SeatTypeMng from "./pages/admin/SeatType/SeatTypeMng";
+import AddSeatType from "./pages/admin/SeatType/AddSeatType";
+import EditSeatType from "./pages/admin/SeatType/EditSeatType";
 
 export const router = createBrowserRouter([
   { path: "*", element: <NotFoundPage /> },
@@ -138,6 +141,9 @@ export const router = createBrowserRouter([
               { path: "coupon", element: <CouponMng /> },
               { path: "coupon/add", element: <AddCoupon /> },
               { path: "coupon/:id/edit", element: <EditCoupon /> },
+              { path: "seats", element: <SeatTypeMng /> },
+              { path: "seats/add", element: <AddSeatType /> },
+              { path: "seats/:id/edit", element: <EditSeatType /> },
             ],
           },
         ],
