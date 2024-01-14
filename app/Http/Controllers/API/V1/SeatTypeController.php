@@ -61,13 +61,14 @@ class SeatTypeController extends Controller
 
             $seatType = new SeatType();
 
-            if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                $filename = $request->file('image')->store('seat_type', 'public');
-                $seatType->image = $filename;
-            }
+            // if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            //     $filename = $request->file('image')->store('seat_type', 'public');
+            //     $seatType->image = $filename;
+            // }
 
             $seatType->name = $request->name;
             $seatType->price = $request->price;
+            $seatType->image = $request->image;
             $seatType->save();
 
             return response()->json([
@@ -128,14 +129,15 @@ class SeatTypeController extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-            if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                delete_file($old_data->image);
-                $filename = $request->file('image')->store('seat_type', 'public');
-                $seatType->image = $filename;
-            }
+            // if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            //     delete_file($old_data->image);
+            //     $filename = $request->file('image')->store('seat_type', 'public');
+            //     $seatType->image = $filename;
+            // }
 
             $seatType->name = $request->name;
             $seatType->price = $request->price;
+            $seatType->image = $request->image;
 
             $seatType->save();
 

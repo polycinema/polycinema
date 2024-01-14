@@ -34,8 +34,10 @@ const EditSeatType = () => {
     });
   };
   const onFinish = async (value) => {
-    urlImage === undefined
+    
+    urlImage === ""
       ? updateSeatType({ id: id, ...value, image: seatType?.data?.image })
+          .unwrap()
           .then(async () => {
             form.resetFields();
             await swal(
@@ -53,6 +55,7 @@ const EditSeatType = () => {
             );
           })
       : updateSeatType({ id: id, ...value, image: urlImage })
+          .unwrap()
           .then(async () => {
             form.resetFields();
             await swal(
@@ -93,7 +96,7 @@ const EditSeatType = () => {
     <>
       <div>
         <h1 className="text-4xl mb-6 bg-white p-4 rounded-md shadow-md ">
-          Thêm thể loại ghế
+          Cập nhật thể loại ghế
         </h1>
         <div className="grid grid-cols-2 gap-10">
           <Form
@@ -113,10 +116,7 @@ const EditSeatType = () => {
             >
               <Input />
             </Form.Item>
-            <Form.Item<FieldType>
-              label="Ảnh thể loại ghê"
-              name="image"
-            >
+            <Form.Item<FieldType> label="Ảnh thể loại ghê" name="image">
               <Upload {...props}>
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>

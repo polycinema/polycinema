@@ -24,8 +24,10 @@ type FieldType = {
 const EditRoom = () => {
   const { id } = useParams();
   const { data: room } = useGetRoomByIdQuery(id || "");
+  console.log(room.data);
+  
   const { data: seat_type } = useGetAllSeatTypeQuery();
-  const [updateRoom, isLoading] = useUpdateRoomMutation();
+  const [updateRoom, {isLoading}] = useUpdateRoomMutation();
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [selectValue, setSelectValue] = useState();
@@ -33,7 +35,7 @@ const EditRoom = () => {
     form.setFieldsValue({
       id: room?.id,
       room_name: room?.data?.room_name,
-      seat_type: room?.data?.seat_types?.map((item) => item.id),
+      seat_type: room?.data?.seat_types?.map((item) => item?.id),
     });
   }, [room]);
 
@@ -50,6 +52,7 @@ const EditRoom = () => {
         seat_types: seatType,
         room_name: values.room_name,
       })
+      .unwrap()
         .then(async () => {
           form.resetFields();
           await swal("Thành công!", "Cập nhật phòng thành công!", "success");
@@ -74,6 +77,7 @@ const EditRoom = () => {
         seat_types: seatType,
         room_name: values.room_name,
       })
+      .unwrap()
         .then(async () => {
           form.resetFields();
           await swal("Thành công!", "Cập nhật phòng thành công!", "success");
