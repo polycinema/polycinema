@@ -212,6 +212,8 @@ class ShowTimeController extends Controller
                     'booking_id' => NULL,
                 ]);
 
+                $seat->seatType;
+
                 $seats[] = $seat;
             }
         }
