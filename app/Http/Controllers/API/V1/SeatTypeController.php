@@ -170,4 +170,53 @@ class SeatTypeController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function changeLevelSeatType(Request $request)
+    {
+        try {
+            $seat_type = SeatType::find($request->seattype_id);
+
+            $level_seat_type = $seat_type->level;
+
+            switch ($level_seat_type) {
+                case SeatType::LEVEL_HIDE:
+                    $seat_type->level = SeatType::LEVEL_SHOW;
+                    $message = "Đã khôi phục loại ghế $seat_type->name";
+                    break;
+                case SeatType::LEVEL_SHOW:
+                    $seat_type->level = SeatType::LEVEL_HIDE;
+                    $message = "Đã ẩn loại ghế $seat_type->name";
+                    break;
+            }
+
+            $seat_type->save();
+
+            return response()->json([
+                'message' => $message
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('SeatTypeController@changeLevelSeatType: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function listSeatTypeInTrash()
+    {
+        try {
+            $seat_type = SeatType::query()->where('level','hide')->get();
+
+            return response()->json([
+                'data' => $seat_type
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('API/V1/SeatTypeController@listSeatTypeInTrash: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class SeatType extends Model
 {
@@ -14,8 +15,12 @@ class SeatType extends Model
     protected $fillable = [
         'name',
         'price',
-        'image'
+        'image',
+        'level'
     ];
+
+    CONST LEVEL_HIDE = 'hide';
+    CONST LEVEL_SHOW = 'show';
 
     public function rooms(): BelongsToMany{
         return $this->belongsToMany(Room::class, 'room_seat_types');
