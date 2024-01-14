@@ -172,7 +172,7 @@ class ShowTimeController extends Controller
 
             $showtime = ShowTime::query()->with('room')->find($showtime->id);
 
-            $seats = $this->createSeats($showtime, $showtime->room->seatTypes);
+            $seats = $this->createSeats($showtime);
 
             return response()->json([
                 'data' => [
@@ -191,34 +191,33 @@ class ShowTimeController extends Controller
     }
 
 
-    private function createSeats($showtime, $seatTypes)
+    private function createSeats($showtime)
     {
         $seats = [];
         $rows = range('A', 'Z');
 
-        foreach ($seatTypes as $seatType) {
-            // $price = Seat::where('name', $seatType['name'])->value('price');
-            $quantity = $seatType->pivot->quantity;
-            $price = $seatType->price;
+        foreach ($showtime->room->seatTypes as $seatType) {
+            for ($qty = 0; $qty < $seatType->pivot->quantity; $qty++) {
+                $seat = Seat::create([
+                    'seat_name' => $seatType->name,
+                    'seat_type_id' => $seatType->id,
+                    'showtime_id' => $showtime->id,
+                    'status' => 'unbook',
+                    'price' => $seatType->price,
+                    'user_id' => NULL,
+                    'booking_id' => NULL,
+                ]);
 
-            for ($rowIndex = 0; $rowIndex < $quantity; $rowIndex++) {
-                for ($colIndex = 1; $colIndex <= $showtime->room->column; $colIndex++) {
-                    $seat = Seat::create([
-                        'seat_name' => $rows[$rowIndex] . ' - ' . $colIndex,
-                        'seat_type_id' => $seatType->id,
-                        'showtime_id' => $showtime->id,
-                        'status' => 'unbook',
-                        'price' => $price,
-                        'user_id' => NULL,
-                        'booking_id' => NULL,
-                    ]);
-
-                    $seats[] = $seat;
-                }
+                $seats[] = $seat;
             }
         }
 
         return $seats;
+    }
+
+    private function createSeatName($rowName, $colIndex)
+    {
+        return $rowName . ' - ' . $colIndex;
     }
 
 
