@@ -33,7 +33,7 @@ const EditRoom = () => {
     form.setFieldsValue({
       id: room?.id,
       room_name: room?.data?.room_name,
-      seat_type: room?.data?.seat_types.map((item) => item.id),
+      seat_type: room?.data?.seat_types?.map((item) => item.id),
     });
   }, [room]);
 

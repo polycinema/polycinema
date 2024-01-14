@@ -27,4 +27,10 @@ class Room extends Model
     {
         return $this->hasMany(ShowTime::class);
     }
+
+    public function seatTypes()
+    {
+        return $this->belongsToMany(SeatType::class, 'room_seat_types', 'room_id', 'seat_type_id')
+            ->withPivot('quantity');
+    }
 }
