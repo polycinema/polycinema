@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->bigInteger('price');
             $table->string('image');
+            $table->enum('level', ['show','hide'])->default('show');
             $table->timestamps();
         });
     }

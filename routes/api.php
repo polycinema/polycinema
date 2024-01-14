@@ -13,6 +13,7 @@ use App\Http\Controllers\API\V1\ProductController;
 use App\Http\Controllers\API\V1\SeatController;
 use App\Http\Controllers\API\V1\ProfileController;
 use App\Http\Controllers\API\V1\RoomController;
+use App\Http\Controllers\API\V1\SeatTypeController;
 use App\Http\Controllers\API\V1\ShowTimeController;
 use App\Http\Controllers\API\V1\StatisticController;
 use App\Models\Booking;
@@ -161,5 +162,8 @@ Route::prefix('v1')->group(function () {
     Route::post('change-status-user', [NewpasswordController::class, 'changeStatusUser']);
 
     Route::get('get-banned-user', [UserController::class, 'getBannedUsers']);
+
+    Route::post('change-level-seat-type', [SeatTypeController::class, 'changeLevelSeatType']);
+
 
 });

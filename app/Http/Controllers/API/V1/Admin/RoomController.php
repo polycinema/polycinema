@@ -51,7 +51,6 @@ class RoomController extends Controller
                     'errors' => $validator->errors(),
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
-
             $capacity = 0;
 
             foreach ($request->seat_types as $seatType) {
@@ -62,6 +61,10 @@ class RoomController extends Controller
                 'room_name' => $request->room_name,
                 'capacity' => $capacity,
             ]);
+
+            foreach ($request->seat_types as $seatType) {
+                $room->seatTypes()->attach($seatType['id'], ['quantity' => $seatType['quantity']]);
+            }
 
             return response()->json([
                 'message' => "Thêm phòng $room->room_name thành công"
