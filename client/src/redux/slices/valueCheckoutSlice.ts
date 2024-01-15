@@ -9,8 +9,8 @@ const valueCheckout = createSlice({
     },
     reducers: {
         increaseProduct: (state, actions) => {
-            const newProduct = actions.payload;
-            const exitProductIndex = state.products.findIndex(
+            const newProduct = actions?.payload;
+            const exitProductIndex = state?.products?.findIndex(
                 (item) => item.id == newProduct.id
             );
             if (exitProductIndex == -1) {
