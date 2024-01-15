@@ -165,5 +165,6 @@ Route::prefix('v1')->group(function () {
 
     Route::post('change-level-seat-type', [SeatTypeController::class, 'changeLevelSeatType']);
 
+    Route::get('seat-type-in-trash', [SeatTypeController::class, 'listSeatTypeInTrash']);
 
 });
