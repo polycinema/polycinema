@@ -81,7 +81,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
     };
     channel.listen(".seat.reserved", handleReservedEvent);
     if (showtime?.data?.seats && !seatDatas.length) {
-      setSeatDatas(showtime.data.seats);
+      setSeatDatas(showtime?.data?.seats);
     }
   });
 
@@ -136,7 +136,18 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       dispacth(setSeatsToggle(seat));
     }
   };
+  const groupedSeats = seatDatas.reduce((acc, seatData) => {
+    const seatTypeId = seatData.seat_type_id;
 
+    if (!acc[seatTypeId]) {
+      acc[seatTypeId] = [seatData];
+    } else {
+      acc[seatTypeId].push(seatData);
+    }
+
+    return acc;
+  }, {});
+  const groupedSeatsArray = Object.values(groupedSeats);
   return (
     <div className="w-full">
       <div className="m-4">
@@ -193,7 +204,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       <div className=" seat-hidden lg:w-full  ">
         <div className="seat_container seat-scroll  mt-4 ">
           <div className="flex flex-wrap gap-3 justify-center">
-            {seatDatas?.map(
+            {groupedSeatsArray[0]?.map(
               (seat: { id: number; seat_name: string }) => (
                 <button
                   key={seat.id}
@@ -207,14 +218,100 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
                   }}
                 >
                   <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center z-20">
-                    {seat?.status}
+                    {seat?.seat_name}
                   </p>
-      
                   <img
+                  style={{
+                    filter:
+                      seat?.status == "booking" && user?.id == seat?.user_id
+                        ? "invert(18%) sepia(97%) saturate(2398%) hue-rotate(192deg) brightness(95%) contrast(98%)"
+                        : seat.status == "booking" &&
+                          user.id !== seat?.user_id
+                        ? "invert(67%) sepia(23%) saturate(7265%) hue-rotate(179deg) brightness(108%) contrast(95%)"
+                        : seat.status == "booked"
+                        ? "invert(45%) sepia(100%) saturate(6342%) hue-rotate(359deg) brightness(99%) contrast(110%)"
+                        : "",
+                  }}
                     className={`w-full`}
                     src={seat?.seat_type?.image}
                     alt=""
                   />
+                </button>
+              )
+            )}
+          </div>
+          <div className="flex flex-wrap gap-3 justify-center">
+            {groupedSeatsArray[2]?.map(
+              (seat: { id: number; seat_name: string }) => (
+                <button
+                  key={seat.id}
+                  className={`w-[40px] relative ${
+                    seat.status == "booking" && seat.user_id != user.id
+                      ? " pointer-events-none opacity-60 "
+                      : ""
+                  }`}
+                  onClick={() => {
+                    handleClick(seat);
+                  }}
+                >
+                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center z-20">
+                    {seat?.seat_name}
+                  </p>
+                    <img
+                    style={{
+                      filter:
+                        seat?.status == "booking" && user?.id == seat?.user_id
+                          ? "invert(18%) sepia(97%) saturate(2398%) hue-rotate(192deg) brightness(95%) contrast(98%)"
+                          : seat.status == "booking" &&
+                            user.id !== seat?.user_id
+                          ? "invert(67%) sepia(23%) saturate(7265%) hue-rotate(179deg) brightness(108%) contrast(95%)"
+                          : seat.status == "booked"
+                          ? "invert(45%) sepia(100%) saturate(6342%) hue-rotate(359deg) brightness(99%) contrast(110%)"
+                          : "",
+                    }}
+                      className={`w-full`}
+                      src={seat?.seat_type?.image}
+                      alt=""
+                    />
+                </button>
+              )
+            )}
+          </div>
+          <div className="flex flex-wrap gap-3 justify-center">
+            {groupedSeatsArray[1]?.map(
+              (seat: { id: number; seat_name: string }) => (
+                <button
+                  key={seat.id}
+                  className={`w-[40px] relative ${
+                    seat.status == "booking" && seat.user_id != user.id
+                      ? " pointer-events-none opacity-60 "
+                      : ""
+                  }`}
+                  onClick={() => {
+                    handleClick(seat);
+                  }}
+                >
+                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center z-20">
+                    {seat?.seat_name}
+                  </p>
+                  <div>
+                    <img
+                      style={{
+                        filter:
+                          seat?.status == "booking" && user?.id == seat?.user_id
+                            ? "invert(18%) sepia(97%) saturate(2398%) hue-rotate(192deg) brightness(95%) contrast(98%)"
+                            : seat.status == "booking" &&
+                              user.id !== seat?.user_id
+                            ? "invert(67%) sepia(23%) saturate(7265%) hue-rotate(179deg) brightness(108%) contrast(95%)"
+                            : seat.status == "booked"
+                            ? "invert(45%) sepia(100%) saturate(6342%) hue-rotate(359deg) brightness(99%) contrast(110%)"
+                            : "",
+                      }}
+                      className={`w-full`}
+                      src={seat?.seat_type?.image}
+                      alt=""
+                    />
+                  </div>
                 </button>
               )
             )}

@@ -24,8 +24,6 @@ type FieldType = {
 const EditRoom = () => {
   const { id } = useParams();
   const { data: room } = useGetRoomByIdQuery(id || "");
-  console.log(room.data);
-  
   const { data: seat_type } = useGetAllSeatTypeQuery();
   const [updateRoom, {isLoading}] = useUpdateRoomMutation();
   const [form] = Form.useForm();

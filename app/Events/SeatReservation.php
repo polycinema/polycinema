@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Seat;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -14,14 +15,15 @@ class SeatReservation implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $seat;
+    // public $seat;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($seat)
+    public function __construct(public Seat $seat)
     {
-        $this->seat = $seat;
+        // $this->seat = $seat;
+
     }
 
     /**
@@ -44,7 +46,8 @@ class SeatReservation implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'seat' => $this->seat
+            'seat' => $this->seat,
+            'seat_type' => $this->seat->seatType
         ];
     }
 }
