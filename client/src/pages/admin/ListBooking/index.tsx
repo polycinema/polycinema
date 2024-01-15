@@ -1,26 +1,16 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Modal,
-  Pagination,
-  Popconfirm,
-  Table,
-  message,
-} from "antd";
+import { Button, Modal, Pagination, Popconfirm, Table, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import {
   useGetAllBookingsQuery,
   useGetBookingByIdQuery,
   useSoftDeleteBookingMutation,
-  useUpdateNotYetMutation,
+  useUpdateCancelMutation,
   useUpdateSatisfiedMutation,
 } from "../../../redux/api/checkoutApi";
 import { FaDotCircle, FaEyeSlash } from "react-icons/fa";
 import { RootBooking } from "../../../interfaces/booking";
-import {
-  LoadingOutlined,
-  QuestionCircleOutlined,
-} from "@ant-design/icons";
+import { LoadingOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { FaEye } from "react-icons/fa";
 import { FaFileExport } from "react-icons/fa";
 import IsLoading from "../../../utils/IsLoading";
@@ -40,8 +30,8 @@ const ListsBooking = () => {
     updateSatisfied,
     { isLoading: loadingSatisfied, error: errSatisfied },
   ] = useUpdateSatisfiedMutation();
-  const [updateNotYet, { isLoading: loadingNotYet, error: errNotYet }] =
-    useUpdateNotYetMutation();
+  const [updateCancel, { isLoading: loadingCancel, error: errCancel }] =
+    useUpdateCancelMutation();
 
   const [idBooking, setIdBooking] = useState<number | string>();
   const { data: bookingById, error: errBookingById } =
@@ -50,7 +40,7 @@ const ListsBooking = () => {
     softDeleteBooking,
     { isLoading: loadingSoftDeleteBooking, error: errSoftDeleteBooking },
   ] = useSoftDeleteBookingMutation();
-  
+
   const [listBooking, setListBooking] = useState();
   const [BookingById, setBookingById] = useState<RootBooking>();
   const [isModalOpenModal, setIsModalOpenModal] = useState(false);
@@ -69,14 +59,14 @@ const ListsBooking = () => {
   const handleOpenlModal = () => {
     setIsModalOpenModal(true);
   };
-  if (errNotYet) {
-    console.error('errNotYet: ',errNotYet);
+  if (errCancel) {
+    message.error(errCancel);
   }
   if (errSatisfied) {
-    console.error("errSatisfied: ",errSatisfied);
+    message.error(errSatisfied);
   }
   if (errSoftDeleteBooking) {
-    console.error("errSoftDeleteBooking: ",errSoftDeleteBooking);
+    message.error(errSoftDeleteBooking);
   }
   if (isLoading) {
     return (
@@ -86,7 +76,7 @@ const ListsBooking = () => {
     );
   }
   if (errBookingById) {
-    console.error(errBookingById);
+    message.error(errBookingById);
   }
 
   const inforBooking = listBooking?.map((items: RootBooking) => {
@@ -128,6 +118,7 @@ const ListsBooking = () => {
 
     return translatedData;
   });
+  
   // console.log('dataXLSX: ',dataXLSX)
   const columns: ColumnsType<any> = [
     {
@@ -163,7 +154,7 @@ const ListsBooking = () => {
       render: (status, booking) =>
         status === "not_yet" ? (
           <div className="flex items-center content-center gap-x-3 justify-center">
-            <FaDotCircle className="text-red-500" />
+            <FaDotCircle className="text-blue-500" />
             <span>Chưa lấy vé</span>
             <button
               onClick={() => updateSatisfied(booking)}
@@ -171,11 +162,22 @@ const ListsBooking = () => {
             >
               {loadingSatisfied ? <LoadingOutlined /> : "Xuất vé"}
             </button>
+            <button
+              onClick={() => updateCancel(booking)}
+              className="bg-red-500 px-3 py-1 rounded-md text-white"
+            >
+              {loadingCancel ? <LoadingOutlined /> : "Hủy vé"}
+            </button>
           </div>
-        ) : (
+        ) : status === "satisfied" ? (
           <div className="flex items-center content-center gap-x-3 justify-center">
             <FaDotCircle className="text-green-500" />
             <span>Đã lấy vé</span>
+          </div>
+        ) : (
+          <div className="flex items-center content-center gap-x-3 justify-center">
+            <FaDotCircle className="text-red-500" />
+            <span>Vé đã hủy</span>
           </div>
         ),
     },
@@ -201,25 +203,33 @@ const ListsBooking = () => {
       title: "Hành động",
       key: "action",
       align: "center",
-      render: (_: any, { key: id }: any) => (
-        // console.log('booking ---: ',id)
+      render: ({status}: any, { key: id }: any) => (
         <Popconfirm
-          title="Xóa vé đặt"
-          description="Bạn có chắc muốn xóa?"
+          title="Ẩn vé đặt"
+          description="Bạn có chắc muốn ẩn?"
           onConfirm={() =>
-            softDeleteBooking({booking_id: id})
+            softDeleteBooking({ booking_id: id })
               .unwrap()
               .then(() => {
-                swal("Thành công!", "Hủy vé thành công!", "success")
-              }).catch(()=>{
-                swal("Thất bại!", "Hủy vé thất bại , Vui lòng thử lại !", "error");
+                swal("Thành công!", "Ẩn vé thành công!", "success");
+              })
+              .catch(() => {
+                swal(
+                  "Thất bại!",
+                  "Ẩn vé thất bại , Vui lòng thử lại !",
+                  "error"
+                );
               })
           }
           okText="Yes"
           okType="default"
           cancelText="No"
         >
-         <Button className="text-blue-500" icon={<FaEyeSlash />} />
+          <Button className={`text-blue-500 ${
+                    status == "not_yet"
+                      ? " pointer-events-none opacity-60 "
+                      : ""
+                  }`} icon={<FaEyeSlash />} />
         </Popconfirm>
       ),
     },
@@ -232,11 +242,10 @@ const ListsBooking = () => {
       email: item?.user?.email,
       total: item?.total_price,
       status: item?.status,
-      nameMovie: item?.showtime?.movie.name
+      nameMovie: item?.showtime?.movie.name,
     };
   });
   const cancel = (e) => {
-    console.log(e);
     message.error("Click on No");
   };
   return (
@@ -283,7 +292,7 @@ const ListsBooking = () => {
             </span>
           </p>
           <p className="text-4xl font-bold text-center">
-            {bookings?.data?.hide}
+            {bookings?.data?.cancel}
           </p>
         </div>
       </div>
@@ -306,7 +315,7 @@ const ListsBooking = () => {
             </button>
           </Popconfirm>
           <div className="">
-            <GarbageComponent/>
+            <GarbageComponent />
           </div>
         </div>
       </div>

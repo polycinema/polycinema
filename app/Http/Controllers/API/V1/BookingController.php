@@ -32,7 +32,7 @@ class BookingController extends Controller
     {
         try {
             $bookings = Booking::query()->where('level', 'show')
-                ->where('status', '!=', 'cancel')
+                // ->where('status', '!=', 'cancel')
                 ->with('user')
                 ->with('showtime.movie')
                 ->with(['products' => function ($query) {

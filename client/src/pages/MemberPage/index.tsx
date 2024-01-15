@@ -146,7 +146,7 @@ const MemberPage = (props: Props) => {
             </div>
             <div className=" border-b pb-4 p-2 text-lg flex gap-2">
               <span className="block mb-2 font-semibold">Chỗ ngồi:</span>
-              <span className="text-gray-600">{detailBooking?.seats?.map((seat)=>(
+              <span className="text-gray-600 flex flex-wrap gap-1">{detailBooking?.seats?.map((seat)=>(
                 <span key={seat?.id}>{seat?.seat_name},</span>
               ))}</span>
             </div>
