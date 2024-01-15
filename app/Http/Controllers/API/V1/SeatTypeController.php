@@ -19,7 +19,7 @@ class SeatTypeController extends Controller
     public function index()
     {
         try {
-            $seatTypes = SeatType::query()->where('level', 'hide')->get();
+            $seatTypes = SeatType::query()->where('level', 'show')->get();
 
             return response()->json([
                 'data' => $seatTypes
