@@ -362,11 +362,10 @@ class BookingController extends Controller
         }
     }
     
-    public function doCancelBooking(Request $request)
+    public function doCancelBooking(string $id)
     {
-        // POST : booking_id
         try {
-            $booking = Booking::find($request->booking_id);
+            $booking = Booking::find($id);
 
             $booking->status = Booking::CANCEL;
 
