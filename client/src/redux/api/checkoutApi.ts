@@ -17,9 +17,6 @@ const checkoutApi = createApi({
             query: (showtimeId) => `/seats/${showtimeId}`,
             providesTags: ["Checkout"],
         }),
-        getAllProducts: build.query({
-            query: () => `/admin/products`,
-        }),
         checkoutBooking: build.mutation({
             query: (booking) => ({
                 url: `/bookings`,
@@ -63,6 +60,14 @@ const checkoutApi = createApi({
             }),
             invalidatesTags: ["Checkout"],
         }),
+        updateCancel: build.mutation({
+            query: (booking) => ({
+                url: `/cancel-booking/${booking.key}`,
+                method: "POST",
+                body: booking,
+            }),
+            invalidatesTags: ["Checkout"],
+        }),
         softDeleteBooking: build.mutation({
             query: (booking_id) => ({
                 url: `/change-level-booking`,
@@ -85,7 +90,6 @@ const checkoutApi = createApi({
 export const {
     useGetShowTimeByMovieQuery,
     useGetSeatsByShowTimeQuery,
-    useGetAllProductsQuery,
     useCheckoutBookingMutation,
     useGetAllBookingsQuery,
     useUpdateSeatStatusMutation,
@@ -95,7 +99,8 @@ export const {
     useSoftDeleteBookingMutation,
     useGetBookingsSoftQuery,
     useGetBookingByBooking_IdQuery,
-    useGetBookingsByUserQuery
+    useGetBookingsByUserQuery,
+    useUpdateCancelMutation
 } = checkoutApi;
 export const checkoutReducer = checkoutApi.reducer;
 export default checkoutApi;

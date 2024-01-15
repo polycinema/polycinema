@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
-  useGetAllProductsQuery,
   useUpdateSeatStatusMutation,
 } from "../../redux/api/checkoutApi";
 import { useNavigate } from "react-router";
+import { useGetAllProductsQuery } from "../../redux/api/productApi";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import {
   decreaseProduct,
@@ -16,6 +16,8 @@ import imgNormalActive from "../../../public/img/seat-select-normal.png";
 import imgNormalBuy from "../../../public/img/seat-buy-normal.png";
 import imgNormal from "../../../public/img/seat-unselect-normal.png";
 import imgDouble from "../../../public/img/seat-unselect-double.png";
+import imgVip from "../../../public/img/seat-unselect-vip.png";
+import imgNormalGiu from "../../../public/img/img-seat-normal-giu.png";
 import manhinh from "../../../public/img/ic-screen.png";
 import imgProduct from "../../../public/img/ic-combo.png";
 import imgUser from "../../../public/img/ic-inforpayment.png";
