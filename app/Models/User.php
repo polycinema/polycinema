@@ -64,6 +64,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Coupon::class, 'users');
     }
 
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
     public function sendPasswordResetNotification($token): void
     {
         $url = 'http://localhost:3000/reset-password?token=' . $token;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Movie;
+use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -398,6 +399,28 @@ class StatisticController extends Controller
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('StatisticController@getTop10MoviesHaveHighestView: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getTop5UserHaveHighestBooking()
+    {
+        try {
+            $users = User::withCount('bookings')
+                ->withSum('bookings', 'total_price')
+                ->orderBy('bookings_count', 'desc')
+                ->limit(3)
+                ->get();
+
+            $totalPrice = Booking::sum('total_price');
+            return response()->json([
+                'data' => $users
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('StatisticController@getTop5UserHaveHighestBooking: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'

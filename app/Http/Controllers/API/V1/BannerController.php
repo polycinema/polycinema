@@ -18,7 +18,7 @@ class BannerController extends Controller
     public function index()
     {
         try {
-            $banners = Banner::query()->get();
+            $banners = Banner::query()->where('status', 'active')->get();
 
             return response()->json([
                 'data' => $banners

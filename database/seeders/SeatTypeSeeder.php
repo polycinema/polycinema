@@ -14,9 +14,9 @@ class SeatTypeSeeder extends Seeder
     public function run(): void
     {
         $seatTypes = [
-            ['name' => 'single', 'price' => 60000, 'image' => 'null'],
-            ['name' => 'double', 'price' => 110000, 'image' => 'null'],
-            ['name' => 'special', 'price' => 135000, 'image' => 'null']
+            ['name' => 'single', 'price' => 60000, 'image' => 'https://res.cloudinary.com/dbktpvcfz/image/upload/v1705311712/images/foo7oryphk9xxflcd512.png'],
+            ['name' => 'double', 'price' => 110000, 'image' => 'https://res.cloudinary.com/dbktpvcfz/image/upload/v1705308805/images/ubfalmubxoubdezigcgr.png'],
+            ['name' => 'special', 'price' => 135000, 'image' => 'https://res.cloudinary.com/dbktpvcfz/image/upload/v1705257868/images/iinnxwnpznljycxvjwp1.png']
         ];
 
         foreach ($seatTypes as $seatType) {
