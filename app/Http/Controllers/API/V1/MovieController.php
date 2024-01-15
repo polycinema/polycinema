@@ -50,7 +50,7 @@ class MovieController extends Controller
     public function show(string $id)
     {
         try {
-            $movie = Movie::query()->with('actors')->with('genres')->find($id);
+            $movie = Movie::query()->with('actors')->with('genres')->with('director')->find($id);
 
             if (!$movie) {
                 return response()->json([
