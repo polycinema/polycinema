@@ -171,7 +171,7 @@ class MovieController extends Controller
                 $genres = Genre::whereIn('id', $genre)->select('name')->get();
 
                 $result[$showtime->show_date][] = [
-                    'showtime_id' => $showtime->id,
+                    'showtime_id' => $showtime,
                     'movie' => $showtime->movie,
                     'room' => $showtime->room,
                     'start_time' => $showtime->start_time,
@@ -305,6 +305,72 @@ class MovieController extends Controller
             ], Response::HTTP_OK);
         } catch (\Exception $exception) {
             Log::error('API/V1/MovieController@listMovieInTrash: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getMovieWithShowTimeGroupByDate()
+    {
+        try {
+            $currentDate = Carbon::now()->toDateString();
+
+            $showtimes = ShowTime::query()
+                ->has('movie')
+                ->has('room')
+                // ->with(['movie', 'room'])
+                ->select('show_times.*')
+                ->selectRaw('(SELECT COUNT(*) FROM seats WHERE seats.showtime_id = show_times.id AND seats.status = "unbook") AS available_seat')
+                ->whereDate('show_date', '>=', $currentDate)
+                ->get();
+
+            $result = [];
+
+            foreach ($showtimes as $showtime) {
+                $result[$showtime->show_date][] = [
+                    'showtime_id' => $showtime,
+                ];
+
+                $response = [];
+            }
+
+            foreach ($result as $show_date => $showtimes) {
+
+                $moviesScreening = Movie::query()
+                    ->with(['genres' => function ($query) {
+                        $query->select('name');
+                    }])
+                    ->has('showtimes')
+                    ->whereHas('showtimes', function ($query) use ($show_date) {
+                        $query->whereDate('show_date', '=', $show_date);
+                    })
+                    ->with(['showtimes' => function ($query) use ($show_date) {
+                        $query->whereDate('show_date', '=', $show_date)->with(['seats' => function ($query) {
+                            $query->select('showtime_id')
+                                ->selectRaw('COUNT(*) as available_seat')
+                                ->where('status', 'unbook')
+                                ->groupBy('showtime_id');
+                        }]);
+                    }])
+                    ->get();
+
+                $response[] = [
+                    'show_date' => $show_date,
+                    'movie' => $moviesScreening,
+                ];
+            }
+            // sắp xếp lại từ tương lai gần -> xa
+            usort($response, function ($a, $b) {
+                return strtotime($a['show_date']) - strtotime($b['show_date']);
+            });
+
+            return response()->json([
+                'data' => $response
+            ], Response::HTTP_OK);
+        } catch (Exception $e) {
+            Log::error("MovieController@getMovieWithShowTimeGroupByDate: ", [$e->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
