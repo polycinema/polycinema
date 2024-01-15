@@ -176,7 +176,7 @@ class SeatTypeController extends Controller
     public function changeLevelSeatType(Request $request)
     {
         try {
-            $seat_type = SeatType::find($request->seattype_id);
+            $seat_type = SeatType::find($request->seat_type_id);
 
             $level_seat_type = $seat_type->level;
 
