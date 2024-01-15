@@ -31,6 +31,7 @@ import seatApi, { seatReducer } from "../redux/api/seatApi";
 import roomApi, { roomReducer } from "../redux/api/roomApi";
 import acountApi, { acountReducer } from "../redux/api/acountApi";
 import productApi, { productReducer } from "../redux/api/productApi";
+import actorApi, { actorReducer } from "../redux/api/actorsApi";
 
 const persistConfig = {
   key: "root",
@@ -52,6 +53,7 @@ const rootReducer = combineReducers({
   [roomApi.reducerPath]:roomReducer,
   [acountApi.reducerPath]:acountReducer,
   [productApi.reducerPath]:productReducer,
+  [actorApi.reducerPath]:actorReducer,
   ValueCheckout: valueCheckoutReducer,
   Authorization: authorizationReducer
 });
@@ -69,7 +71,8 @@ const middleware = [
   seatApi.middleware,
   roomApi.middleware,
   acountApi.middleware,
-  productApi.middleware
+  productApi.middleware,
+  actorApi.middleware
 ]
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

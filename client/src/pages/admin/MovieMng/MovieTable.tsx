@@ -13,10 +13,12 @@ import { FaEyeSlash, FaTrashRestore } from "react-icons/fa";
 import { FcDeleteDatabase } from "react-icons/fc";
 import swal from "sweetalert";
 import { MdEdit } from "react-icons/md";
+import { Actor, Genre, IMovie } from "../../../interfaces/movie";
+import { ColumnsType } from "antd/es/table";
 
 const MovieTable = () => {
   const { data: movies, isLoading: isLoadingMovies } = useGetAllMoviesQuery();
-  const { data: dataMovieSoft, error: errMovieSoft }: any =
+  const { data: dataMovieSoft, error: errMovieSoft } =
     useGetMovieSoftQuery();
   const [softDeleteMovie, { error: ErrorSoftDeleteMovie }] =
     useSoftDeleteMovieMutation();
@@ -34,12 +36,12 @@ const MovieTable = () => {
   }, [MovieSoftDelete]);
   useEffect(() => {
     if (dataMovieSoft) {
-      setMovieSoftDelete(dataMovieSoft.data);
+      setMovieSoftDelete(dataMovieSoft?.data);
     }
   }, [dataMovieSoft]);
   useEffect(() => {
     if (movies) {
-      SetListMovie(movies.data);
+      SetListMovie(movies?.data);
     }
   }, [movies]);
   if (RestoreSoftDeleteMovie) {
@@ -140,7 +142,7 @@ const MovieTable = () => {
       ),
     },
   ];
-  const dataSourceMovieSoft = MovieSoftDelete?.map((item: RootMovie) => {
+  const dataSourceMovieSoft = MovieSoftDelete?.map((item: IMovie) => {
     return {
       key: item.id,
       name: item.name,
@@ -149,7 +151,20 @@ const MovieTable = () => {
       status: item.status,
     };
   });
-  const columns = [
+  const columns:ColumnsType<{
+    key: number;
+    name: string;
+    title: string;
+    genres: Genre[];
+    image: string;
+    trailer: string;
+    description: string;
+    release_date: string;
+    duration: number;
+    status: string;
+    actors: Actor[];
+    director_id: string;
+}>  = [
     {
       title: "Tên phim",
       dataIndex: "name",
@@ -189,7 +204,7 @@ const MovieTable = () => {
       title: "Mô tả",
       dataIndex: "description",
       key: "description",
-      with: 200,
+      width: 200,
       fixed: "left",
       render: (desc: string) => <p className="line-clamp-3">{desc}</p>,
     },
@@ -263,7 +278,7 @@ const MovieTable = () => {
     },
   ];
 
-  const dataSource = listMovie?.map((item: RootMovie) => {
+  const dataSource = listMovie?.map((item: IMovie) => {
     return {
       key: item.id,
       name: item.name,
@@ -326,62 +341,6 @@ const MovieTable = () => {
 };
 
 export default MovieTable;
-export interface RootMovie {
-  id: number;
-  name: string;
-  title: string;
-  image: string;
-  trailer: string;
-  description: string;
-  release_date: string;
-  duration: number;
-  director_id: number;
-  status: string;
-  level: string;
-  deleted_at: any;
-  created_at: any;
-  updated_at: string;
-  director: Director;
-  genres: Genre[];
-  actors: Actor[];
-}
 
-export interface Director {
-  id: number;
-  name: string;
-  image: string;
-  level: string;
-  created_at: any;
-  updated_at: any;
-}
 
-export interface Genre {
-  id: number;
-  name: string;
-  level: string;
-  deleted_at: any;
-  created_at: any;
-  updated_at: any;
-  pivot: Pivot;
-}
 
-export interface Pivot {
-  movie_id: number;
-  genre_id: number;
-}
-
-export interface Actor {
-  id: number;
-  name: string;
-  date_of_birth: string;
-  image: string;
-  level: string;
-  created_at: any;
-  updated_at: any;
-  pivot: Pivot2;
-}
-
-export interface Pivot2 {
-  movie_id: number;
-  actor_id: number;
-}

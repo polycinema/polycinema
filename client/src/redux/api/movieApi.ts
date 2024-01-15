@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { RootMovie } from "../../interfaces/movie";
 
 const movieApi = createApi({
     reducerPath: "movie",
@@ -10,7 +11,7 @@ const movieApi = createApi({
         },
     }),
     endpoints: (build) => ({
-        getAllMovies: build.query({
+        getAllMovies: build.query<RootMovie[],void>({
             query: () => `/admin/movies`,
             providesTags: ["Movie"],
         }),
@@ -49,7 +50,7 @@ const movieApi = createApi({
             }),
             invalidatesTags: ["Movie"],
         }),
-        getMovieSoft: build.query({
+        getMovieSoft: build.query<RootMovie[],void>({
             query: () => `/movie-in-trash`,
             providesTags: ["Movie"],
         }),
