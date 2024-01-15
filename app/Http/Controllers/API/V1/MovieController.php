@@ -346,6 +346,7 @@ class MovieController extends Controller
                     ->has('showtimes')
                     ->whereHas('showtimes', function ($query) use ($show_date) {
                         $query->whereDate('show_date', '=', $show_date);
+                        $query->where('level', 'show');
                     })
                     ->with(['showtimes' => function ($query) use ($show_date) {
                         $query->whereDate('show_date', '=', $show_date)->with(['seats' => function ($query) {
@@ -354,6 +355,8 @@ class MovieController extends Controller
                                 ->where('status', 'unbook')
                                 ->groupBy('showtime_id');
                         }]);
+                        $query->where('level', 'show');
+                    
                     }])
                     ->get();
 

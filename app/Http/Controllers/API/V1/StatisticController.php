@@ -366,7 +366,7 @@ class StatisticController extends Controller
     {
         try {
             $topMovie = Movie::with(['director', 'actors', 'genres'])
-                ->select('movies.id', 'movies.name', 'movies.title', 'movies.image', 'movies.trailer', 'movies.description', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status', DB::raw('SUM(bookings.total_price) as total_revenue'))
+                ->select('movies.id', 'movies.name', 'movies.title', 'movies.image', 'movies.trailer', 'movies.description', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status', DB::raw('SUM(CASE WHEN bookings.status != "cancel" THEN bookings.total_price ELSE 0 END) as total_revenue'))
                 ->join('show_times', 'show_times.movie_id', '=', 'movies.id')
                 ->join('bookings', 'show_times.id', '=', 'bookings.showtime_id')
                 ->groupBy('movies.id', 'movies.name', 'movies.title', 'movies.image', 'movies.trailer', 'movies.description', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status')
