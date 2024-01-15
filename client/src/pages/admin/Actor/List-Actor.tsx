@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Badge, Button, Modal, Popconfirm, Space, Table } from "antd";
 import { Link } from "react-router-dom";
-import { IActor, removeActor } from "../../../api/actor";
 import { ColumnsType } from "antd/es/table";
 import {
   useGetAllActorQuery,
@@ -26,8 +25,8 @@ const ListActor = () => {
   const [softDeleteActor] = useSoftDeleteActorMutation();
   const [restoreActor] = useSoftDeleteActorMutation();
   const { data: softActor, error: errSoftActor } = useGetSoftActorQuery();
-  const [softActors, setsoftActors] = useState<IActor[]>();
-  const [actors, setActors] = useState<IActor[]>();
+  const [softActors, setsoftActors] = useState();
+  const [actors, setActors] = useState();
   const [CountActors, setCountActors] = useState(0);
   const [isModalOpenGarbage, SetIsModalOpenGarbage] = useState(false);
 

@@ -37,14 +37,14 @@ const seatApi = createApi({
         
         SoftDeleteSeatType: build.mutation({
             query: (seat_id) => ({
-                url: `/change-level-movie`,
+                url: `/change-level-seat-type`,
                 method: "POST",
                 body: seat_id,
             }),
             invalidatesTags: ["Seat"],
         }),
         getSeatTypeSoft: build.query({
-            query: () => `/movie-in-trash`,
+            query: () => `/seat-type-in-trash`,
             providesTags: ["Seat"],
         }),
     }),
@@ -55,6 +55,8 @@ export const {
     useGetAllSeatTypeQuery,
     useGetSeatTypeByIdQuery,
     useUpdateSeatTypeMutation,
+    useGetSeatTypeSoftQuery,
+    useSoftDeleteSeatTypeMutation
 } = seatApi;
 export const seatReducer = seatApi.reducer;
 export default seatApi;

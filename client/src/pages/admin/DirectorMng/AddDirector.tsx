@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { Button, Form, Input, Upload, UploadProps, message } from "antd";
 import { UploadOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
-import { IDirector, addDirector } from "../../../api/director";
 import { useNavigate } from "react-router";
 import swal from "sweetalert";
+import { useAddDirectorMutation } from "../../../redux/api/directorApi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 type FieldType = {
   name: string;
   image: string;
 };
 const AddDirector = () => {
+  const [addDirector,{isLoading}] = useAddDirectorMutation()
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [urlImage, setUrlImage] = useState("");
-  const onFinish = async (value: IDirector) => {
+  const onFinish = async (value) => {
     addDirector({ ...value, image: urlImage })
       .then(async () => {
         form.resetFields();
@@ -29,12 +31,6 @@ const AddDirector = () => {
   const props: UploadProps = {
     name: "file",
     action: "https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload",
-    // Thay đổi thành URL API của Cloudinary
-    headers: {
-      // Authorization: 'Bearer 773215578244178',
-      // "Access-Control-Allow-Origin":"*"
-      // Thay đổi thành API key của bạn
-    },
     data: {
       // Thêm các dữ liệu cần thiết như upload preset
       upload_preset: "upload",
@@ -85,7 +81,11 @@ const AddDirector = () => {
             </Form.Item>
             <Form.Item label="Tác vụ :">
               <Button htmlType="submit">
+              {isLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
                 <VerticalAlignTopOutlined />
+              )}{" "}
               </Button>
             </Form.Item>
           </Form>

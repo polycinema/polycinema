@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ButtonCustom from "../../components/Button";
 import { Button, Modal } from "antd";
 import { usePaymentBookingMutation } from "../../redux/api/paymentApi";
@@ -62,11 +62,37 @@ const PaymentPage = () => {
       ? dispatch(setCoupon(null))
       : dispatch(setCoupon(coupon));
   };
+  const storedCountdown = parseInt(localStorage.getItem("countdown")) || 480;
+
+  const [countdown, setCountdown] = useState(storedCountdown);
+
+  useEffect(() => {
+    localStorage.setItem("countdown", countdown.toString());
+  }, [countdown]);
+
+  useEffect(() => {
+    let interval;
+
+    if (countdown > 0) {
+      interval = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+    }
+
+    if (countdown === 0) {
+      navigate("/poly-movies");
+    }
+
+    return () => clearInterval(interval);
+  }, [ countdown]);
 
   return (
     <div className="w-[100vh] h-[65vh] PaymentPage_container">
+      
       <Modal
-        title="Xác nhận đặt vé"
+        title={`Xác nhận đặt vé| ${Math.floor(countdown / 60)
+        .toString()
+        .padStart(2, "0")}:${(countdown % 60).toString().padStart(2, "0")}`}
         width={950}
         style={{ height: "700px" }}
         bodyStyle={{ maxHeight: "800px", overflow: "auto" }}

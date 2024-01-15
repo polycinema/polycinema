@@ -2,13 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Upload, UploadProps, message } from "antd";
 import { UploadOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router";
-import {
-  IDirector,
-  getDirectorById,
-  updateDirector,
-} from "../../../api/director";
-import { pause } from "../../../utils/pause";
 import swal from "sweetalert";
+import { useGetDirectorByIdQuery, useUpdateDirectorMutation } from "../../../redux/api/directorApi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 type FieldType = {
   name: string;
@@ -17,34 +13,24 @@ type FieldType = {
 
 const EditDirector = () => {
   const { id } = useParams();
+  const {data:director} = useGetDirectorByIdQuery(id||"")
+  const [updateDirector,{isLoading}] = useUpdateDirectorMutation()
   const [form] = Form.useForm();
-  const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
-  const [director, setDirector] = useState<IDirector>();
   const [urlImage, setUrlImage] = useState<string>();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getDirectorById(id);
-        setDirector(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
   useEffect(() => {
     setFields();
   }, [director]);
   const setFields = () => {
     form.setFieldsValue({
-      id: director?.id,
-      name: director?.name,
-      image: director?.image,
+      id: director?.data?.id,
+      name: director?.data?.name,
+      image: director?.data?.image,
     });
   };
 
-  const onFinish = async (value: IDirector) => {
+  const onFinish = async (value) => {
     urlImage === undefined
       ? updateDirector({ id: id, ...value })
       .then(async () => {
@@ -118,7 +104,11 @@ const EditDirector = () => {
 
             <Form.Item label="Tác vụ :">
               <Button htmlType="submit">
+              {isLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
                 <VerticalAlignTopOutlined />
+              )}{" "}
               </Button>
             </Form.Item>
           </Form>
@@ -126,7 +116,7 @@ const EditDirector = () => {
             <h4 className="mb-2 text-xl">Ảnh đạo diễn</h4>
             <img
               className="w-full rounded-sm"
-              src={director?.image}
+              src={director?.data?.image}
               alt="anh"
             />
           </div>

@@ -69,6 +69,7 @@ const ListProduct = () => {
                   });
                 });
               }}
+              okType="default"
               okText="Có"
               cancelText="Không"
             >
@@ -137,6 +138,9 @@ const ListProduct = () => {
           <Popconfirm
             title="Bỏ ẩn sản phẩm"
             description="Bạn có chắc muốn khôi phục?"
+            okText="Yes"
+            okType="default"
+            cancelText="No"
             onConfirm={() =>
               softDelete({ product_id: id })
                 .unwrap()
@@ -155,9 +159,7 @@ const ListProduct = () => {
                   );
                 })
             }
-            okText="Yes"
-            okType="default"
-            cancelText="No"
+            
             icon={<QuestionCircleOutlined style={{ color: "red" }} />}
           >
             <Button icon={<FaTrashRestore />} />

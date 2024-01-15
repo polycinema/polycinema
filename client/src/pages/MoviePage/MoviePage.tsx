@@ -13,7 +13,7 @@ import { useAppDispatch } from "../../store/hook";
 const MoviePage = () => {
   const [isModalOpenTrailer, setIsModalOpenTrailer] = useState(false);
   const [isModalOpenStartTime, setIsModalOpenStartTime] = useState(false);
-  const { data, isLoading, error }: any = useGetShowTimesMovieQuery();
+  const {data, isLoading, error }: any = useGetShowTimesMovieQuery();
   const [showtimes, setShowtimes] = useState([]);
   const [indexDate, setIndexDate] = useState(0);
   const [showtime, setShowtime] = useState([0]);
@@ -157,9 +157,9 @@ const MoviePage = () => {
                     className="bg-gray-300 px-2 py-1 "
                     onClick={() => showModalStartTime(movie)}
                   >
-                    {movie.start_time}
+                    {movie?.start_time}
                   </button>
-                  <p className="text-xs">{movie.available_seat} ghế trống</p>
+                  <p className="text-xs">{movie?.available_seat} ghế trống</p>
                 </div>
               </div>
             </div>

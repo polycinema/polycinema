@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Badge, Button, Modal, Popconfirm, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
-import { IGenre } from "../../../api/genre";
 import {
   useGetAllGenresQuery,
   useGetGenresSoftQuery,

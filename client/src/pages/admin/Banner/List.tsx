@@ -50,6 +50,7 @@ const ListBanner = (props: Props) => {
                   });
                 });
               }}
+              okType="default"
               okText="Có"
               cancelText="Không"
             >

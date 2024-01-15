@@ -18,38 +18,23 @@ import {
   useUpdateMovieMutation,
 } from "../../../redux/api/movieApi";
 import { useEffect, useState } from "react";
-import { IActor, getAllActor } from "../../../api/actor";
-import { IGenre, getAllGenre } from "../../../api/genre";
-import { IDirector, getAllDirector } from "../../../api/director";
 import dayjs from "dayjs";
 import { UploadOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import swal from "sweetalert";
+import { useGetAllGenresQuery } from "../../../redux/api/genresApi";
 
 const UpdateMovie = () => {
   const { id } = useParams();
   const { data: movie } = useGetMovieByIdQuery(id || "");
+  const {data:genres} = useGetAllGenresQuery()
+  const {data:actors} = useGetAllGenresQuery()
+  const {data:directors} = useGetAllGenresQuery()
   const [update, { isLoading: isUpdateLoading }] = useUpdateMovieMutation();
   const [urlImage, setUrlImage] = useState<string>();
-  const [actors, setActors] = useState<IActor[]>();
-  const [genres, setGenres] = useState<IGenre[]>();
-  const [directors, setDirectors] = useState<IDirector[]>();
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data: dataActors } = await getAllActor();
-        const { data: dataGenres } = await getAllGenre();
-        const { data: dataDirector } = await getAllDirector();
-        setActors(dataActors.data);
-        setGenres(dataGenres.data);
-        setDirectors(dataDirector.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  
   useEffect(() => {
     setFields();
   }, [movie]);
@@ -58,13 +43,13 @@ const UpdateMovie = () => {
       id: movie?.data.id,
       name: movie?.data.name,
       title: movie?.data.title,
-      actors: movie?.data.actors.map((item: IActor) => item.id),
-      genres: movie?.data.genres.map((item: IGenre) => item.id),
-      trailer: movie?.data.trailer,
-      description: movie?.data.description,
-      duration: movie?.data.duration,
-      status: movie?.data.status,
-      director_id: movie?.data.director_id,
+      actors: movie?.data?.actors?.map((item) => item?.id),
+      genres: movie?.data?.genres?.map((item) => item?.id),
+      trailer: movie?.data?.trailer,
+      description: movie?.data?.description,
+      duration: movie?.data?.duration,
+      status: movie?.data?.status,
+      director_id: movie?.data?.director_id,
       release_date: dayjs(movie?.data.release_date, "YYYY/MM/DD HH:mm:ss"),
     });
   };
@@ -128,7 +113,6 @@ const UpdateMovie = () => {
   };
   return (
     <>
-      {contextHolder}
       <div className="addFilmAdmin">
         <h2 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">Cập nhật phim</h2>
         <Form
@@ -166,7 +150,7 @@ const UpdateMovie = () => {
               mode="multiple"
               style={{ width: "100%" }}
               placeholder="Please select"
-              options={genres?.map((item: IGenre) => {
+              options={genres?.data?.map((item: IGenre) => {
                 return {
                   value: item.id,
                   label: item.name,
@@ -225,7 +209,7 @@ const UpdateMovie = () => {
           >
             <Select
               style={{ width: "100%" }}
-              options={directors?.map((item: IDirector) => {
+              options={directors?.data?.map((item: IDirector) => {
                 return {
                   value: item.id,
                   label: item.name,
@@ -258,7 +242,7 @@ const UpdateMovie = () => {
               mode="multiple"
               style={{ width: "100%" }}
               placeholder="Please select"
-              options={actors?.map((item: IActor) => {
+              options={actors?.data?.map((item: IActor) => {
                 return {
                   value: item.id,
                   label: item.name,

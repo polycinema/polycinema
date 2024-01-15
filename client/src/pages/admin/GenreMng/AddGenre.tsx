@@ -1,14 +1,16 @@
 import React from "react";
 import { Button, Form, Input } from "antd";
 import { useNavigate } from "react-router";
-import { addGenre } from "../../../api/genre";
 import { VerticalAlignTopOutlined } from "@ant-design/icons";
 import swal from "sweetalert";
+import { useAddGenresMutation } from "../../../redux/api/genresApi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 type FieldType = {
   name?: string;
 };
 
 const AddGenre = () => {
+  const [addGenre,{isLoading}] = useAddGenresMutation()
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const onFinish = (values) => {
@@ -44,7 +46,11 @@ const AddGenre = () => {
           </Form.Item>
 
           <Form.Item  label="Tác vụ :">
-            <Button htmlType="submit"><VerticalAlignTopOutlined /></Button>
+            <Button htmlType="submit">{isLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                <VerticalAlignTopOutlined />
+              )}{" "}</Button>
           </Form.Item>
         </Form>
       </div>

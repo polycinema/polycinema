@@ -1,35 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button, Form, Input } from "antd";
 import { useNavigate, useParams } from "react-router";
-import { IGenre, getGenreById, updateGenre } from "../../../api/genre";
 import { VerticalAlignTopOutlined } from "@ant-design/icons";
 import swal from "sweetalert";
+import { useGetGenresByIdQuery, useUpdateGenresMutation } from "../../../redux/api/genresApi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 type FieldType = {
   name?: string;
 };
 const EditGenre = () => {
   const { id } = useParams();
+  const {data:genre} = useGetGenresByIdQuery(id||"")
+  const [updateGenre,{isLoading}] = useUpdateGenresMutation()
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [genre, setGenre] = useState<IGenre>();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getGenreById(id);
-        setGenre(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
   useEffect(() => {
     setFields();
   }, [genre]);
   const setFields = () => {
     form.setFieldsValue({
-      id: genre?.id,
-      name: genre?.name,
+      id: genre?.data?.id,
+      name: genre?.data.name,
     });
   };
 
@@ -69,7 +61,11 @@ const EditGenre = () => {
 
           <Form.Item label="Tác vụ :">
             <Button htmlType="submit">
-              <VerticalAlignTopOutlined />
+            {isLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                <VerticalAlignTopOutlined />
+              )}{" "}
             </Button>
           </Form.Item>
         </Form>
