@@ -10,12 +10,6 @@ import {
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
-import {
-  IDirector,
-  // getAllDirector,
-  // getSoftDirector,
-  // softDeleteDirector,
-} from "../../../api/director";
 import { MdAutoDelete } from "react-icons/md";
 import { AiFillEdit } from "react-icons/ai";
 import {

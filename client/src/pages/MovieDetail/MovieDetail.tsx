@@ -24,14 +24,12 @@ const MovieDetail = () => {
     error: errShowtimeBMVID,
   } = useGetShowtimeByIDMovieQuery(id);
   const [movie, setMovie] = useState<any>({});
-  const [nameDuration, setNameDuration] = useState();
   const [shotimeBMVID, setShowtimeBMVID] = useState<Datum[]>();
   const [shotimeChange, setShowtimeChange] = useState<Datum>();
   const [shotimeDate, setShowtimeDate] = useState<string>();
   const [showtimeIdPrimary, SetShowtimeIdPrimary] = useState<Datum>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [dateChange,setDateChange] = useState<Showtime>()
-  console.log("dateChange: ", dateChange);
   useEffect(() => {
     if (showtimeIdPrimary) {
       setShowtimeDate(showtimeIdPrimary.date);
@@ -58,19 +56,6 @@ const MovieDetail = () => {
       setShowtimeChange(showtimeChange[0]);
     }
   }, [shotimeDate, shotimeBMVID]);
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getDirectorById(movieById?.data.director_id);
-        console.log("data director name: ", data?.data.name);
-        if (data) {
-          setNameDuration(data?.data.name);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, [movieById]);
   if (error) {
     console.error("error get by id movies: ", error);
   }
@@ -96,24 +81,24 @@ const MovieDetail = () => {
         </h3>
         <div className="title1">
           <div className="title1-img">
-            <img className="img" src={movie.image} alt="" />
+            <img className="img" src={movie?.image} alt="" />
           </div>
           <div className="title1-text">
-            <h1>{movie.title}</h1>
-            <p>{movie.description}</p>
+            <h1>{movie?.title}</h1>
+            <p>{movie?.description}</p>
 
             <div className="text1">
               <div className="text-director">
                 <span className="director"> ĐẠO DIỄN : </span>
               </div>
-              <div className="text1-1">{nameDuration}</div>
+              <div className="text1-1">{movie?.director?.name}</div>
             </div>
 
             <div className="text1">
               <div className="text-director">
                 <span className="director"> DIỄN VIÊN : </span>
               </div>
-              {movie.actors?.map((itemsActors: any, index: number) => {
+              {movie?.actors?.map((itemsActors: any, index: number) => {
                 return (
                   <div className="text1-1 mr-2" key={itemsActors.id}>
                     {itemsActors.name}

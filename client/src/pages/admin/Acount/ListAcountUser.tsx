@@ -16,10 +16,8 @@ import { Link } from "react-router-dom";
 import { QuestionCircleOutlined, SearchOutlined } from "@ant-design/icons";
 import { FilterConfirmProps } from "antd/es/table/interface";
 import type { ColumnType } from 'antd/es/table';
-import GarbageComponent from "../../../components/Garbage";
-import { useBlockAcountByIdMutation, useDeleteAcountMutation, useGetAcountBannedQuery, useGetAllAcountUsersQuery } from "../../../redux/api/acountApi";
+import { useBlockAcountByIdMutation, useGetAcountBannedQuery, useGetAllAcountUsersQuery } from "../../../redux/api/acountApi";
 import { MdAutoDelete } from "react-icons/md";
-import { FcDeleteDatabase } from "react-icons/fc";
 import { FaTrashRestore } from "react-icons/fa";
 import swal from "sweetalert";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -190,6 +188,9 @@ const ListAcountUser = () => {
             <Popconfirm
               title="Blcok tài khoản"
               description="Bạn có chắc chắn muốn block tài khoản?"
+              okText="Có"
+              okType="default"
+              cancelText="Không"
               onConfirm={() => {
                 blockAcount({user_id:id}).then(() => {
                   messageApi.open({
@@ -198,8 +199,7 @@ const ListAcountUser = () => {
                   });
                 });
               }}
-              okText="Có"
-              cancelText="Không"
+              
             >
               <Button danger>{isLoading ? (
                 <AiOutlineLoading3Quarters className="animate-spin" />

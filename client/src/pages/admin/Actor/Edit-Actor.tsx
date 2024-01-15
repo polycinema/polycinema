@@ -3,28 +3,19 @@ import { DatePicker, Form, Input, Upload, UploadProps } from "antd";
 import { Button, message } from "antd";
 import { useNavigate, useParams } from "react-router";
 import { useState, useEffect } from "react";
-import { IActor, getActorById, updateActor } from "../../../api/actor";
-import { pause } from "../../../utils/pause";
 import dayjs from "dayjs";
 import swal from "sweetalert";
+import { useEditActorMutation, useGetActorByIDQuery } from "../../../redux/api/actorsApi";
 
 const EditActor = () => {
   const { id } = useParams();
+  const {data:actor} = useGetActorByIDQuery(id || "")
+  const [updateActor,{isLoading}] = useEditActorMutation()
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const [actor, setActor] = useState<IActor>();
   const [urlImage, setUrlImage] = useState<string>();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await getActorById(id);
-        setActor(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  
   const onFinish = async (value: IActor) => {
     urlImage === undefined
       ? updateActor({
@@ -83,10 +74,10 @@ const EditActor = () => {
   }, [actor]);
   const setFields = () => {
     form.setFieldsValue({
-      id: actor?.id,
-      name: actor?.name,
-      image: actor?.image,
-      date_of_birth: dayjs(actor?.date_of_birth, "YYYY/MM/DD"),
+      id: actor?.data?.id,
+      name: actor?.data?.name,
+      image: actor?.data?.image,
+      date_of_birth: dayjs(actor?.data?.date_of_birth, "YYYY/MM/DD"),
     });
   };
   return (
@@ -137,14 +128,18 @@ const EditActor = () => {
             <Form.Item label="Tác vụ">
               <>
                 <Button htmlType="submit">
-                  <VerticalAlignTopOutlined />{" "}
+                {isLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                <VerticalAlignTopOutlined />
+              )}{" "}
                 </Button>
               </>
             </Form.Item>
           </Form>
           <div className="bg-white p-4 rounded-md shadow-md">
             <h4 className="mb-2 text-xl">Ảnh diễn viên</h4>
-            <img className="w-72 rounded-sm" src={actor?.image} alt="anh" />
+            <img className="w-72 rounded-sm" src={actor?.data?.image} alt="anh" />
           </div>
         </div>
       </div>

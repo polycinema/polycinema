@@ -2,21 +2,23 @@ import { UploadOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import { DatePicker, Form, Input, Upload, UploadProps } from "antd";
 import { Button, message } from "antd";
 import { useState } from "react";
-import { IActor, addActor } from "../../../api/actor";
 import { useNavigate } from "react-router";
 import dayjs from "dayjs";
 import swal from "sweetalert";
+import { useAddActorMutation } from "../../../redux/api/actorsApi";
 
 const AddActor = () => {
+  const [addActor ,{isLoading}] = useAddActorMutation()
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [urlImage, setUrlImage] = useState("");
-  const onFinish = (values: IActor) => {
+  const onFinish = (values) => {
     addActor({
       ...values,
       image: urlImage,
       date_of_birth: dayjs(values.date_of_birth).format("YYYY/MM/DD"),
     })
+      .unwrap()
       .then(async () => {
         form.resetFields();
         await swal("Thành công!", "Thêm diễn viên thành công!", "success");
@@ -95,7 +97,11 @@ const AddActor = () => {
           <Form.Item label="Tác vụ">
             <>
               <Button htmlType="submit">
-                <VerticalAlignTopOutlined />{" "}
+              {isLoading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                <VerticalAlignTopOutlined />
+              )}{" "}
               </Button>
             </>
           </Form.Item>

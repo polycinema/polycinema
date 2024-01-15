@@ -67,7 +67,7 @@ const CardCheckout = ({ showtime, user }: Props) => {
             <FaCalendarDays /> <span>Ngày chiếu</span>
           </p>
           <p className="font-bold text-[14px]">
-            {dayjs(showtime?.data.show_date).format("DD-MM")}
+            {dayjs(showtime?.data?.show_date).format("DD-MM")}
           </p>
         </div>
 

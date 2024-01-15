@@ -16,14 +16,6 @@ import imgNormalActive from "../../../public/img/seat-select-normal.png";
 import imgNormalBuy from "../../../public/img/seat-buy-normal.png";
 import imgNormal from "../../../public/img/seat-unselect-normal.png";
 import imgDouble from "../../../public/img/seat-unselect-double.png";
-import imgDoubleActive from "../../../public/img/seat-double-active.png";
-import imgDoubleBuy from "../../../public/img/seat-double-by.png";
-import imgVip from "../../../public/img/seat-unselect-vip.png";
-import imgVipActive from "../../../public/img/seat-select-vip.png";
-import imgVipBuy from "../../../public/img/seat-buy-vip.png";
-import imgNormalGiu from "../../../public/img/img-seat-normal-giu.png";
-import imgDoubleGiu from "../../../public/img/img-seat-double-giu.png";
-import svg1 from "../../../public/seat-unselect-normal.svg";
 import manhinh from "../../../public/img/ic-screen.png";
 import imgProduct from "../../../public/img/ic-combo.png";
 import imgUser from "../../../public/img/ic-inforpayment.png";
@@ -127,7 +119,6 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
         }
       }
     }
-
     if (seat.status === "unbook") {
       updateSeatStatus({ id: seat.id, status: "booking", user_id: user?.id });
       dispacth(setSeatsToggle(seat));
@@ -203,8 +194,9 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       <img src={manhinh} alt="" />
       <div className=" seat-hidden lg:w-full  ">
         <div className="seat_container seat-scroll  mt-4 ">
-          <div className="flex flex-wrap gap-3 justify-center">
-            {groupedSeatsArray[0]?.map(
+          {groupedSeatsArray.map((dataSeat)=>(
+            <div className="flex flex-wrap gap-3 justify-center">
+            {dataSeat?.map(
               (seat: { id: number; seat_name: string }) => (
                 <button
                   key={seat.id}
@@ -217,14 +209,14 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
                     handleClick(seat);
                   }}
                 >
-                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center z-20">
+                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center z-20 text-[15px]">
                     {seat?.seat_name}
                   </p>
                   <img
                   style={{
                     filter:
                       seat?.status == "booking" && user?.id == seat?.user_id
-                        ? "invert(18%) sepia(97%) saturate(2398%) hue-rotate(192deg) brightness(95%) contrast(98%)"
+                        ? "invert(23%) sepia(35%) saturate(600%) hue-rotate(160deg) brightness(94%) contrast(103%)"
                         : seat.status == "booking" &&
                           user.id !== seat?.user_id
                         ? "invert(67%) sepia(23%) saturate(7265%) hue-rotate(179deg) brightness(108%) contrast(95%)"
@@ -240,82 +232,10 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
               )
             )}
           </div>
-          <div className="flex flex-wrap gap-3 justify-center">
-            {groupedSeatsArray[2]?.map(
-              (seat: { id: number; seat_name: string }) => (
-                <button
-                  key={seat.id}
-                  className={`w-[40px] relative ${
-                    seat.status == "booking" && seat.user_id != user.id
-                      ? " pointer-events-none opacity-60 "
-                      : ""
-                  }`}
-                  onClick={() => {
-                    handleClick(seat);
-                  }}
-                >
-                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center z-20">
-                    {seat?.seat_name}
-                  </p>
-                    <img
-                    style={{
-                      filter:
-                        seat?.status == "booking" && user?.id == seat?.user_id
-                          ? "invert(18%) sepia(97%) saturate(2398%) hue-rotate(192deg) brightness(95%) contrast(98%)"
-                          : seat.status == "booking" &&
-                            user.id !== seat?.user_id
-                          ? "invert(67%) sepia(23%) saturate(7265%) hue-rotate(179deg) brightness(108%) contrast(95%)"
-                          : seat.status == "booked"
-                          ? "invert(45%) sepia(100%) saturate(6342%) hue-rotate(359deg) brightness(99%) contrast(110%)"
-                          : "",
-                    }}
-                      className={`w-full`}
-                      src={seat?.seat_type?.image}
-                      alt=""
-                    />
-                </button>
-              )
-            )}
-          </div>
-          <div className="flex flex-wrap gap-3 justify-center">
-            {groupedSeatsArray[1]?.map(
-              (seat: { id: number; seat_name: string }) => (
-                <button
-                  key={seat.id}
-                  className={`w-[40px] relative ${
-                    seat.status == "booking" && seat.user_id != user.id
-                      ? " pointer-events-none opacity-60 "
-                      : ""
-                  }`}
-                  onClick={() => {
-                    handleClick(seat);
-                  }}
-                >
-                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full text-center z-20">
-                    {seat?.seat_name}
-                  </p>
-                  <div>
-                    <img
-                      style={{
-                        filter:
-                          seat?.status == "booking" && user?.id == seat?.user_id
-                            ? "invert(18%) sepia(97%) saturate(2398%) hue-rotate(192deg) brightness(95%) contrast(98%)"
-                            : seat.status == "booking" &&
-                              user.id !== seat?.user_id
-                            ? "invert(67%) sepia(23%) saturate(7265%) hue-rotate(179deg) brightness(108%) contrast(95%)"
-                            : seat.status == "booked"
-                            ? "invert(45%) sepia(100%) saturate(6342%) hue-rotate(359deg) brightness(99%) contrast(110%)"
-                            : "",
-                      }}
-                      className={`w-full`}
-                      src={seat?.seat_type?.image}
-                      alt=""
-                    />
-                  </div>
-                </button>
-              )
-            )}
-          </div>
+          ))}
+          
+          
+          
         </div>
       </div>
       <div className="md:grid grid-cols-4 gap-2 mt-20 mb-10 p-4 bg-white">
