@@ -32,6 +32,7 @@ class BookingController extends Controller
     {
         try {
             $bookings = Booking::query()->where('level', 'show')
+                ->where('status', '!=', 'cancel')
                 ->with('user')
                 ->with('showtime.movie')
                 ->with(['products' => function ($query) {
@@ -45,6 +46,7 @@ class BookingController extends Controller
             $not_yets = $bookings->where('level', 'show')->where('status', Booking::NOT_YET)->count();
             $satisfieds = $bookings->where('level', 'show')->where('status', Booking::SATISFIED)->count();
             $bookings_hide = Booking::query()->where('level', Booking::LEVEL_HIDE)->count();
+            $cancel = Booking::query()->where('status', 'cancel')->where('level', 'show')->count();
 
             $data = [
                 'bookings' => $bookings,
@@ -52,6 +54,7 @@ class BookingController extends Controller
                 'not_yet' => $not_yets,
                 'satisfieds' => $satisfieds,
                 'hide' => $bookings_hide,
+                'cancel' => $cancel
             ];
 
             return response()->json([
@@ -361,7 +364,7 @@ class BookingController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     public function doCancelBooking(string $id)
     {
         try {
