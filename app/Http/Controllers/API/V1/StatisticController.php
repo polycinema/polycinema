@@ -27,9 +27,9 @@ class StatisticController extends Controller
         try {
             $today = now()->toDateString();
 
-            $bookingCount = Booking::whereDate('created_at', $today)->count();
+            $bookingCount = Booking::whereDate('created_at', $today)->where('status', '!=', 'cancel')->count();
 
-            $totalRevenue = Booking::whereDate('created_at', $today)->sum('total_price');
+            $totalRevenue = Booking::whereDate('created_at', $today)->where('status', '!=', 'cancel')->sum('total_price');
 
             return response()->json([
                 'data' => [
@@ -62,6 +62,7 @@ class StatisticController extends Controller
 
             $weeklyBookings = Booking::whereBetween('created_at', [$startOfLast7Days, $endOfToday])
                 ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as booking_count'))
+                ->where('status', '!=', 'cancel')
                 ->groupBy('date')
                 ->get();
 
@@ -73,7 +74,7 @@ class StatisticController extends Controller
 
                 // total revenue a day
                 // $revenue = Booking::whereDate('created_at', $day)->sum('total_price');
-                $revenue = (int) Booking::whereDate('created_at', $day)->sum('total_price');
+                $revenue = (int) Booking::whereDate('created_at', $day)->where('status', '!=', 'cancel')->sum('total_price');
 
                 $result[] = [
                     'date' => $day,
@@ -119,6 +120,7 @@ class StatisticController extends Controller
 
             $dailyBookings = Booking::whereBetween('created_at', [$startOfLast28Days, $endOfToday])
                 ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as booking_count'))
+                ->where('status', '!=', 'cancel')
                 ->groupBy('date')
                 ->get();
 
@@ -130,7 +132,7 @@ class StatisticController extends Controller
                 $booking = $dailyBookings->firstWhere('date', $day);
 
                 // Total revenue a day
-                $revenue = (int) Booking::whereDate('created_at', $day)->sum('total_price');
+                $revenue = (int) Booking::whereDate('created_at', $day)->where('status', '!=', 'cancel')->sum('total_price');
 
                 $result[] = [
                     'date' => $day,
@@ -172,6 +174,7 @@ class StatisticController extends Controller
 
             $monthlyBookings = Booking::whereBetween('created_at', [$startOfLast12Months, $endOfMonth])
                 ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'), DB::raw('count(*) as booking_count'))
+                ->where('status', '!=', 'cancel')
                 ->groupBy('month')
                 ->get();
 
@@ -184,7 +187,7 @@ class StatisticController extends Controller
 
                 // Total revenue for a month
                 $revenue = (int) Booking::whereMonth('created_at', Carbon::parse($month)->month)
-                    ->sum('total_price');
+                    ->where('status', '!=', 'cancel')->sum('total_price');
 
                 $result[] = [
                     'date' => $month,
@@ -255,6 +258,7 @@ class StatisticController extends Controller
             // Lấy dữ liệu số lượng booking và doanh thu từ $from đến $to
             $bookingData = DB::table('bookings')
                 ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date'), DB::raw('COUNT(*) as booking_count'), DB::raw('CAST(SUM(total_price) AS CHAR) as revenue'))
+                ->where('status', '!=', 'cancel')
                 ->whereBetween('created_at', [$fromDay, $toDay])
                 ->groupBy('date')
                 ->orderBy('date')
@@ -325,7 +329,10 @@ class StatisticController extends Controller
 
             $bookings = Booking::whereHas('showtime', function ($query) use ($movie_id) {
                 $query->where('movie_id', $movie_id);
-            })->with('showtime')->with('user')->get();
+            })
+                ->where('status', '!=', 'cancel')
+                ->with('showtime')->with('user')->get();
+
 
             // đếm số lượng booking
             $count = $bookings->count();
@@ -335,10 +342,8 @@ class StatisticController extends Controller
             $satisfied = collect($bookings)->where('status', 'satisfied')->count();
             // Tổng đơn hàng không lấy vé
             $not_yet = collect($bookings)->where('status', 'not_yet')->count();
-            // Phần trăm đơn hàng đã lấy vé
-            $satisfied_percentage = ($satisfied / $count) * 100;
-            // Phần trăm đơn hàng chưa lấy vé
-            $notyet_percentage = ($not_yet / $count) * 100;
+            // Tổng đơn hàng hủy vé
+            $cancel = Booking::query()->where('status', 'cancel')->count();
 
             return response()->json([
                 'data' => $bookings,
@@ -346,8 +351,7 @@ class StatisticController extends Controller
                 'total_price' => $total_price,
                 'status_not_yet' => $not_yet,
                 'status_satisfied' => $satisfied,
-                'satisfied_percentage' => $satisfied_percentage,
-                'notyet_percentage' => $notyet_percentage,
+                'status_cancel' => $cancel,
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('StatisticController@getStatisticByMovie: ', [$exception->getMessage()]);
@@ -409,13 +413,15 @@ class StatisticController extends Controller
     public function getTop5UserHaveHighestBooking()
     {
         try {
-            $users = User::withCount('bookings')
+            $users = User::whereHas('bookings')
+                ->withCount('bookings')
+                ->where('status', '!=', 'cancel')
                 ->withSum('bookings', 'total_price')
                 ->orderBy('bookings_count', 'desc')
                 ->limit(3)
                 ->get();
 
-            $totalPrice = Booking::sum('total_price');
+
             return response()->json([
                 'data' => $users
             ], Response::HTTP_OK);
