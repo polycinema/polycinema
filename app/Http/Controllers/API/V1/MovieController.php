@@ -323,6 +323,7 @@ class MovieController extends Controller
                 // ->with(['movie', 'room'])
                 ->select('show_times.*')
                 ->selectRaw('(SELECT COUNT(*) FROM seats WHERE seats.showtime_id = show_times.id AND seats.status = "unbook") AS available_seat')
+                ->where('level', 'show')
                 ->whereDate('show_date', '>=', $currentDate)
                 ->get();
 
