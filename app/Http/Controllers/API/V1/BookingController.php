@@ -371,7 +371,7 @@ class BookingController extends Controller
             $booking = Booking::find($id);
 
             $booking->status = Booking::CANCEL;
-
+            $booking->level = Booking::LEVEL_HIDE;
             $booking->save();
 
             return response()->json([
