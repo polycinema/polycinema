@@ -22,7 +22,6 @@ interface DataType {
 
 const DashBoard = () => {
   const { data: dashboard } = useDashBoardQuery();
-  console.log(dashboard);
   
   const { user } = useAppSelector((state) => state.Authorization);
   const columns: TableProps<DataType>["columns"] = [
