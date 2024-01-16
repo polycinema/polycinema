@@ -197,7 +197,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
       <div className=" seat-hidden lg:w-full  ">
         <div className="seat_container seat-scroll  mt-4 ">
           {groupedSeatsArray.map((dataSeat)=>(
-            <div className="flex flex-wrap gap-3 justify-center">
+            <div className="flex flex-wrap gap-3 justify-center mt-4">
             {dataSeat?.map(
               (seat: { id: number; seat_name: string }) => (
                 <button
