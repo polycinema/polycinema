@@ -33,8 +33,6 @@ const CouponMng = () => {
   const [softCoupons, setSoftCoupons] = useState([]);
   const [CountSoftCoupons, setCountSoftCoupons] = useState(0);
   const [isModalOpenGarbage, SetIsModalOpenGarbage] = useState(false);
-
-  console.log("softCoupons: ", softCoupons);
   useEffect(() => {
     if (softCoupons) {
       setCountSoftCoupons(softCoupons.length);
@@ -78,6 +76,13 @@ const CouponMng = () => {
             }
           ],
           onFilter: (value: string, record) => record.type.indexOf(value) === 0,
+    },
+    {
+      title: "Ngày bắt đầu",
+      dataIndex: "start_at",
+      key: "start_at",
+      align: "center",
+      render: (start_at: any) => dayjs(start_at).format("DD-MM-YYYY"),
     },
     {
       title: "Ngày hết hạn",
@@ -161,6 +166,13 @@ const CouponMng = () => {
           : "Giảm theo giá tiền",
     },
     {
+      title: "Ngày bắt đầu",
+      dataIndex: "start_at",
+      key: "start_at",
+      align: "center",
+      render: (start_at: any) => dayjs(start_at).format("DD-MM-YYYY"),
+    },
+    {
       title: "Ngày hết hạn",
       dataIndex: "expires_at",
       key: "expires_at",
@@ -178,7 +190,7 @@ const CouponMng = () => {
       render: (min_order_value: any) => formatCurrency(min_order_value),
     },
     {
-      title: "Số lượng mã giảm",
+      title: "Số lượng ",
       dataIndex: "quantity",
       key: "quantity",
     },
@@ -250,6 +262,7 @@ const CouponMng = () => {
       discount: item.discount,
       min_order_value: item.min_order_value,
       expires_at: item.expires_at,
+      start_at: item.start_at,
       quantity: item.quantity,
     };
   });
@@ -262,6 +275,7 @@ const CouponMng = () => {
       discount: item.discount,
       min_order_value: item.min_order_value,
       expires_at: item.expires_at,
+      start_at: item.start_at,
       quantity: item.quantity,
     };
   });
@@ -330,6 +344,7 @@ export interface ICoupon {
   type: string;
   discount: number;
   expires_at: string;
+  start_at: string;
   quantity: number;
   min_order_value: any;
   level: string;

@@ -11,12 +11,10 @@ import {
   Input,
   InputNumber,
   Select,
-  message,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import dayjs from "dayjs";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { pause } from "../../../utils/pause";
 import { VerticalAlignTopOutlined } from "@ant-design/icons";
 import swal from "sweetalert";
 type FieldType = {
@@ -25,6 +23,7 @@ type FieldType = {
   type?: string;
   discount?: string | number;
   expires_at?: string;
+  start_at?:string;
   quantity?: number | string;
   min_order_value:number|string;
 
@@ -49,6 +48,7 @@ const EditCoupon = () => {
       quantity: coupon?.data.quantity,
       min_order_value:coupon?.data?.min_order_value,
       expires_at: dayjs(coupon?.data.expires_at, "YYYY/MM/DD"),
+      start_at: dayjs(coupon?.data.start_at, "YYYY/MM/DD"),
     });
   };
   const onFinish = (value: any) => {
@@ -56,6 +56,7 @@ const EditCoupon = () => {
       id,
       ...value,
       expires_at: dayjs(value.expires_at).format("YYYY/MM/DD"),
+      start_at: dayjs(value.start_at).format("YYYY/MM/DD"),
     })
       .unwrap()
       .then(async() => {
@@ -122,6 +123,13 @@ const EditCoupon = () => {
           ]}
         >
           <InputNumber style={{ width: "100%" }} placeholder="0" min={0} />
+        </Form.Item>
+        <Form.Item<FieldType>
+          label="Ngày bắt đầu"
+          name="start_at"
+          rules={[{ required: true, message: "Please input your start_at!" }]}
+        >
+          <DatePicker style={{ width: "100%" }} />
         </Form.Item>
         <Form.Item<FieldType>
           label="Ngày hết hạn"
