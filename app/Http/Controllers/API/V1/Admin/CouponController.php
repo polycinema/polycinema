@@ -57,6 +57,7 @@ class CouponController extends Controller
                         }
                     },
                 ],
+                'start_at' => 'required|date',
                 'expires_at' => 'required|date',
                 'quantity' => 'required|numeric|min:0',
                 'min_order_value' => 'nullable|numeric|min:0'
@@ -67,6 +68,8 @@ class CouponController extends Controller
                 'description.required' => 'Trường Mô Tả Mã Giảm Giá Không Được Trống',
                 'description.string' => 'Trường Mô Tả Mã Giảm Giá Phải Là Một Chuỗi',
                 'type.required' => 'Trường Loại Mã Giảm Giá Không Được Để Trống',
+                'start_at.required' => 'Trường Thời Hạn Hiệu Lực Mã Giảm Giá Không Được Để Trống',
+                'start_at.date' => 'Trường Thời Hạn Hiệu Lực Mã Giảm Giá Phải Theo Dạng YYYY/MM/DD',
                 'expires_at.required' => 'Trường Thời Hạn Mã Giảm Giá Không Được Để Trống',
                 'expires_at.date' => 'Trường Thời Hạn Mã Giảm Giá Phải Theo Dạng YYYY/MM/DD',
                 'quantity.required' => 'Trường Số Lượng Không Được Để Trống',
@@ -141,6 +144,7 @@ class CouponController extends Controller
                         }
                     },
                 ],
+                'start_at' => 'required|date',
                 'expires_at' => 'required|date',
                 'quantity' => 'required|numeric|min:0',
                 'min_order_value' => 'nullable|numeric|min:0'
@@ -151,6 +155,8 @@ class CouponController extends Controller
                 'description.required' => 'Trường Mô Tả Mã Giảm Giá Không Được Trống',
                 'description.string' => 'Trường Mô Tả Mã Giảm Giá Phải Là Một Chuỗi',
                 'type.required' => 'Trường Loại Mã Giảm Giá Không Được Để Trống',
+                'start_at.required' => 'Trường Thời Hạn Hiệu Lực Mã Giảm Giá Không Được Để Trống',
+                'start_at.date' => 'Trường Thời Hạn Hiệu Lực Mã Giảm Giá Phải Theo Dạng YYYY/MM/DD',
                 'expires_at.required' => 'Trường Thời Hạn Mã Giảm Giá Không Được Để Trống',
                 'expires_at.date' => 'Trường Thời Hạn Mã Giảm Giá Phải Theo Dạng YYYY/MM/DD hh:mm:ss',
                 'quantity.required' => 'Trường Số Lượng Không Được Để Trống',
