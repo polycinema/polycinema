@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import IsLoading from "../../utils/IsLoading";
 import YouTube from "react-youtube";
 import { FacebookProvider, Comments } from "react-facebook";
-import { getDirectorById } from "../../api/director";
 import { useGetShowtimeByIDMovieQuery } from "../../redux/api/showTimeApi";
 import dayjs from "dayjs";
 import { Modal } from "antd";
@@ -100,7 +99,7 @@ const MovieDetail = () => {
               </div>
               {movie?.actors?.map((itemsActors: any, index: number) => {
                 return (
-                  <div className="text1-1 mr-2" key={itemsActors.id}>
+                  <div className="text1-1 mr-2" key={index}>
                     {itemsActors.name}
                     {index < movie.actors?.length - 1 ? "," : ""}
                   </div>
@@ -114,7 +113,7 @@ const MovieDetail = () => {
               </div>
               {movie.genres?.map((itemsGenres: any, index: number) => {
                 return (
-                  <div className="text1-1 mr-2" key={itemsGenres.id}>
+                  <div className="text1-1 mr-2" key={index}>
                     {itemsGenres.name}
                     {index < movie.genres.length - 1 ? "," : ""}
                   </div>
@@ -139,10 +138,11 @@ const MovieDetail = () => {
         </div>
         <div className="space-y-6 md:mt-6 px-6 md:px-0">
           <div className="border-b-2 border-gray-400 space-x-6 ">
-            {shotimeBMVID?.map((items: Datum) => (
+            {shotimeBMVID?.map((items: Datum,index:number) => (
               <button
                 className="pb-2"
                 onClick={() => setShowtimeDate(items.date)}
+                key={index}
               >
                 <span
                   className={
@@ -159,10 +159,11 @@ const MovieDetail = () => {
           <div className="space-y-3">
             <p>2D PHỤ ĐỀ</p>
             <div className="space-x-6">
-              {shotimeChange?.showtimes?.map((items: Showtime2) => (
+              {shotimeChange?.showtimes?.map((items: Showtime2,index:number) => (
                 <button
                   className="space-y-2"
                   onClick={() => showModal(items.showtime)}
+                  key={index}
                 >
                   <span className="bg-gray-300 px-6 py-1 rounded-sm">
                     {items.showtime.start_time}

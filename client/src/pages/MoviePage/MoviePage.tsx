@@ -1,5 +1,5 @@
 import { Empty, Modal } from "antd";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import YouTube from "react-youtube";
 import { useGetShowTimesMovieQuery } from "../../redux/api/showTimeApi";
@@ -7,47 +7,48 @@ import { convertSlug } from "../../utils/convertSlug";
 import IsLoading from "../../utils/IsLoading";
 import ButtonCustom from "../../components/Button";
 import dayjs from "dayjs";
-import { deleteCoupon, deleteValueBooking, deleteValueProduct } from "../../redux/slices/valueCheckoutSlice";
+import {
+  deleteCoupon,
+  deleteValueBooking,
+  deleteValueProduct,
+} from "../../redux/slices/valueCheckoutSlice";
 import { useAppDispatch } from "../../store/hook";
 
 const MoviePage = () => {
   const [isModalOpenTrailer, setIsModalOpenTrailer] = useState(false);
   const [isModalOpenStartTime, setIsModalOpenStartTime] = useState(false);
-  const {data, isLoading, error }: any = useGetShowTimesMovieQuery();
-  const [showtimes, setShowtimes] = useState([]);
+  const { data, isLoading, error }: any = useGetShowTimesMovieQuery();
+  const [showtime, setShowtime] = useState([]);
   const [indexDate, setIndexDate] = useState(0);
-  const [showtime, setShowtime] = useState([0]);
-  const [showtimesByChange, setShowtimeByChange] = useState<RootObject[]>([]);
+  const [showtimesByChange, setShowtimeByChange]  = useState<MovieTime[]>();
   const [selectedMovie, setSelectedMovie] = useState<Movie>();
-  const [selectedMovieModalTime, setSelectedMovieModalTime] =
-    useState<Showtime>();
+  const [selectedMovieModalTime, setSelectedMovieModalTime] = useState<ModalTime>();
+  const [movies, setMovies] = useState<Movie[]>([]);
+  console.log("selectedMovieModalTime: ", selectedMovieModalTime);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch()
-  useEffect(()=>{
-      dispatch(deleteValueProduct())
-      dispatch(deleteValueBooking())
-      dispatch(deleteCoupon())
-  },[])
-
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    if (data) {
-      setShowtimes(data?.data);
-    }
-    if (showtimes.length) {
-      const index = showtimes.filter((items, index) => index === indexDate);
-      setShowtimeByChange(index);
-    }
-    if (!showtimes.length) {
-      <Empty />;
-    }
-  }, [data, showtimes, indexDate]);
+    dispatch(deleteValueProduct());
+    dispatch(deleteValueBooking());
+    dispatch(deleteCoupon());
+  }, []);
   useEffect(() => {
-    if (showtimesByChange.length) {
-      const showtime = showtimesByChange.map((items: any) => items.showtime);
-      setShowtime(showtime[0]);
-      // console.log(showtime[0].push({color: '#03599d'}))
+    if (showtimesByChange) {
+      setMovies(showtimesByChange.movie);
     }
   }, [showtimesByChange]);
+  useEffect(() => {
+    if (data) {
+      setShowtime(data?.data);
+    }
+    if (showtime.length) {
+      const index = showtime.filter((items, index) => index === indexDate);
+      setShowtimeByChange(index[0]);
+    }
+    if (!showtime.length) {
+      <Empty />;
+    }
+  }, [data, showtime, indexDate]);
   if (error) {
     console.error(error);
   }
@@ -58,7 +59,7 @@ const MoviePage = () => {
       </>
     );
   }
-  if (!showtimes.length) {
+  if (!showtime.length) {
     return (
       <div className="h-[50vh]">
         <Empty />
@@ -75,7 +76,7 @@ const MoviePage = () => {
   const handleCancelModalStartTime = () => {
     setIsModalOpenStartTime(false);
   };
-  const showModalStartTime = (movies: any) => {
+  const showModalStartTime = (movies: ModalTime) => {
     setSelectedMovieModalTime(movies);
     setIsModalOpenStartTime(true);
   };
@@ -90,7 +91,7 @@ const MoviePage = () => {
     <div className="moviepage__container">
       <div className="moviepage-date max-w-[1150px] mx-auto  border-b border-gray-400 p-4">
         <ul className="flex md:space-x-7 py-4 flex-wrap">
-          {showtimes.map((items: RootObject, index) => {
+          {showtime.map((items: MovieTime, index) => {
             return (
               <li
                 className={`px-4 py-2 text-center ${
@@ -112,15 +113,15 @@ const MoviePage = () => {
         </ul>
       </div>
       {/* <ListMovie /> */}
-      {showtime?.map((movie: Showtime, index: number) => {
+      {movies?.map((movie: Movie, index: number) => {
         return (
           <div className="md:max-w-[1150px] max-w-xs mx-auto my-10" key={index}>
             <div className="grid grid-cols-2 md:grid-cols-3">
               <div
                 className="relative md:w-[310px] w-[130px] group"
-                onClick={() => showModalTrailer(movie?.movie)}
+                onClick={() => showModalTrailer(movie)}
               >
-                <img src={movie?.movie?.image} alt="" className="rounded-xl" />
+                <img src={movie?.image} alt="" className="rounded-xl" />
                 <button className="absolute top-0 left-0 right-0 bottom-0 bg-black/40 hidden group-hover:block transition-all rounded-xl">
                   <i className="fas fa-play-circle text-white text-4xl"></i>
                 </button>
@@ -129,37 +130,52 @@ const MoviePage = () => {
                 {/* movies/${convertSlug(movie?.movie?.name)}-${movie?.movie?.id}.html/detail */}
                 <div
                   className="cursor-pointer"
-                  onClick={() => nextDetail(movie?.movie)}
+                  onClick={() => nextDetail(movie)}
                 >
                   <span className="md:text-4xl text-2xl text-[#03599d]">
-                    {movie?.movie?.name}
+                    {movie?.name}
                   </span>
                 </div>
                 <div className="mt-2">
                   <i className="fas fa-tags text-[#337ab7] mr-2"></i>
-                  {movie?.genre?.map((items: any, index: any) => {
+                  {movie?.genres?.map((items: Genre, index: number) => {
                     return (
                       <span key={index} className="mr-2">
                         {items?.name}
-                        {index <= length - 1 ? "," : ""}
+                        {index < movie?.genres.length - 1 ? "," : ""}
                       </span>
                     );
                   })}
                   <span className="">
                     <i className="far fa-clock text-[#337ab7] mr-1"></i>
-                    {movie?.movie?.duration}
+                    {movie?.duration}
                   </span>
                 </div>
 
                 <div className="space-y-2 mt-3">
                   <p>2D PHỤ ĐỀ</p>
-                  <button
-                    className="bg-gray-300 px-2 py-1 "
-                    onClick={() => showModalStartTime(movie)}
-                  >
-                    {movie?.start_time}
-                  </button>
-                  <p className="text-xs">{movie?.available_seat} ghế trống</p>
+                  <div className="md:flex gap-x-3 grid grid-cols-2">
+                    {movie?.showtimes.map((items) => (
+                      <div key={items.id}>
+                        <button
+                          className="bg-gray-300 px-2 py-1 "
+                          onClick={() =>
+                            showModalStartTime({
+                              start_time: items.start_time,
+                              show_date: items.show_date,
+                              showtime_id: items.id,
+                              name_movie: movie.name,
+                            })
+                          }
+                        >
+                          {items?.start_time}
+                        </button>
+                        <p className="text-xs">
+                          {items?.seats[0].available_seat} ghế trống
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -232,7 +248,7 @@ const MoviePage = () => {
       >
         <>
           <h4 className="text-center text-3xl text-[#03599d] pt-4">
-            {selectedMovieModalTime?.movie.name}
+            {selectedMovieModalTime?.name_movie}
           </h4>
           <table className="w-full my-8 ">
             <tr className="text-center border-b  ">
@@ -241,7 +257,7 @@ const MoviePage = () => {
             </tr>
             <tr className="text-center">
               <td className="p-4 text-xl">
-                {dayjs(showtimesByChange[0]?.show_date).format("DD/MM")}
+                {dayjs(selectedMovieModalTime?.show_date).format("DD/MM")}
               </td>
               <td className="p-4 text-xl">
                 {selectedMovieModalTime?.start_time}
@@ -272,28 +288,16 @@ const MoviePage = () => {
 };
 
 export default MoviePage;
-interface RootObject {
+export interface RootMovieTime {
+  data: MovieTime[];
+}
+
+export interface MovieTime {
   show_date: string;
-  showtime: Showtime[];
+  movie: Movie[];
 }
-interface Showtime {
-  movie: Movie;
-  room: Room;
-  genre: any;
-  start_time: string;
-  end_time: string;
-  available_seat: number;
-  showtime_id: number | string;
-}
-interface Room {
-  id: number;
-  room_name: string;
-  capacity: number;
-  deleted_at?: any;
-  created_at?: any;
-  updated_at?: any;
-}
-interface Movie {
+
+export interface Movie {
   id: number;
   name: string;
   title: string;
@@ -304,7 +308,46 @@ interface Movie {
   duration: number;
   director_id: number;
   status: string;
-  deleted_at?: any;
+  level: string;
+  deleted_at: any;
+  created_at: any;
+  updated_at: any;
+  genres: Genre[];
+  showtimes: Showtime[];
+}
+
+export interface Genre {
+  name: string;
+  pivot: Pivot;
+}
+
+export interface Pivot {
+  movie_id: number;
+  genre_id: number;
+}
+
+export interface Showtime {
+  id: number;
+  movie_id: number;
+  room_id: number;
+  show_date: string;
+  start_time: string;
+  end_time: any;
+  level: string;
+  deleted_at: any;
   created_at: string;
   updated_at: string;
+  seats: Seat[];
+}
+
+export interface Seat {
+  showtime_id: number;
+  available_seat: number;
+}
+
+export interface ModalTime {
+  showtime_id: number;
+  start_time: string;
+  show_date: string;
+  name_movie: string;
 }

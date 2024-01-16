@@ -18,7 +18,7 @@ const showtimeApi = createApi({
         }),
         getShowTimesMovie: build.query<void, void>({
             query: () => ({
-                url: "/showtimes",
+                url: "/movie-with-showtime",
             }),
             providesTags:['showtime']
         }),
