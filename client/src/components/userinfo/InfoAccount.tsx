@@ -88,15 +88,18 @@ const InfoAccount = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <Form layout="vertical" form={form} onFinish={onFinish}>
-        <Form.Item>
+        <Form.Item >
+          
           <Upload {...props}>
             <Button icon={<UploadOutlined />}>Click to Upload</Button>
           </Upload>
           {UserById?.data.image ? (
-            <Image width={200} src={UserById?.data.image} />
+            <Image className="rounded-full mt-4  object-cover" width={150} height={150} src={UserById?.data.image} />
           ) : (
             "Chưa cập nhật avatar"
           )}
+        
+          
         </Form.Item>
         <Row gutter={32}>
           <Col span={12}>

@@ -50,6 +50,9 @@ const statisticApi = createApi({
                 body:date
             }),
             invalidatesTags: ["Statistic"],
+        }),
+        DashBoard:build.query({
+            query:()=> `/dash-board`
         })
     }),
 });
@@ -63,7 +66,8 @@ export const {
     useGetTop1MovieQuery,
     useGetTopViewQuery,
     useGetTopUserQuery,
-    useSearchTopMovieQuery
+    useSearchTopMovieQuery,
+    useDashBoardQuery
 } = statisticApi;
 export const statisticReducer = statisticApi.reducer;
 export default statisticApi;
