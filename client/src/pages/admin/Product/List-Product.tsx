@@ -31,27 +31,32 @@ const ListProduct = () => {
       title: "Tên sản phẩm",
       dataIndex: "name",
       key: "name",
+      align: "center",
     },
     {
       title: "Ảnh sản phẩm",
       dataIndex: "image",
+      align: "center",
       key: "image",
-      render: (img) => <img className="w-40" src={img} alt="anh" />,
+      render: (img) => <img className="w-40 mx-auto" src={img} alt="anh" />,
     },
     {
       title: "Giá sản phẩm",
       dataIndex: "price",
       key: "price",
+      align: "center",
       render:(item)=> <p>{formatCurrency(item)}</p> 
     },
     {
       title: "Mô tả",
       dataIndex: "description",
       key: "description",
+      align: "center",
     },
     {
       title: "Hành động",
       key: "action",
+      align: "center",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
           <Button>

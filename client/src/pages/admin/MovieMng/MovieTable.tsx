@@ -169,16 +169,19 @@ const MovieTable = () => {
       title: "Tên phim",
       dataIndex: "name",
       key: "name",
+      align: "center",
     },
-    {
-      title: "Tiêu đề",
-      dataIndex: "title",
-      key: "title",
-    },
+    // {
+    //   title: "Tiêu đề",
+    //   dataIndex: "title",
+    //   key: "title",
+    //   align: "center",
+    // },
     {
       title: "Thể loại",
       dataIndex: "genres",
       key: "genres",
+      align: "center",
       render: (genres: Genre[]) =>
         genres.map((item: Genre, index: number) => (
           <span className="" key={item.id}>
@@ -191,6 +194,7 @@ const MovieTable = () => {
       title: "Ảnh phim",
       dataIndex: "image",
       key: "image",
+      align: "center",
       render: (image: string) => (
         <img src={image} alt="Movie Image" style={{ width: "50px" }} />
       ),
@@ -199,6 +203,7 @@ const MovieTable = () => {
       title: "Trailer",
       dataIndex: "trailer",
       key: "trailer",
+      align: "center",
     },
     {
       title: "Mô tả",
@@ -206,32 +211,38 @@ const MovieTable = () => {
       key: "description",
       width: 200,
       fixed: "left",
+      align: "center",
       render: (desc: string) => <p className="line-clamp-3">{desc}</p>,
     },
     {
       title: "Ngày khởi chiếu",
       dataIndex: "release_date",
       key: "release_date",
+      align: "center",
     },
     {
       title: "Thời lượng",
       dataIndex: "duration",
       key: "duration",
+      align: "center",
     },
     {
       title: "Đạo diễn",
       dataIndex: "director_id",
       key: "director_id",
+      align: "center",
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
+      align: "center",
     },
     {
       title: "Diễn viên",
       dataIndex: "actors",
       key: "actors",
+      align: "center",
       render: (actors: Actor[]) =>
         actors.map((item: Actor, index: number) => (
           <span className="" key={item.id}>
@@ -333,7 +344,6 @@ const MovieTable = () => {
             columns={columns}
             className="bg-white p-4 rounded-md shadow-md"
           />
-          ;
         </div>
       )}
     </>

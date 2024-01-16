@@ -31,26 +31,31 @@ const ListPost = (props: Props) => {
       title: "Tiêu đề tin tức",
       dataIndex: "title",
       key: "title",
+      align: "center",
     },
     {
       title: "Tóm tắt",
       dataIndex: "summary",
       key: "summary",
+      align: "center",
     },
     {
       title: "Mô tả",
       dataIndex: "description",
       key: "description",
+      align: "center",
     },
     {
       title: "Ảnh tin tức",
       dataIndex: "image",
+      align: "center",
       key: "image",
       render: (img) => <img className="w-40" src={img} alt="anh" />,
     },
     {
       title: "Hành động",
       key: "action",
+      align: "center",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
           <Button>

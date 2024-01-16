@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, Modal, Pagination, Popconfirm, Table, message } from "antd";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Input, InputRef, Modal, Pagination, Popconfirm, Space, Table, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import {
   useGetAllBookingsQuery,
@@ -10,7 +10,7 @@ import {
 } from "../../../redux/api/checkoutApi";
 import { FaDotCircle, FaEyeSlash } from "react-icons/fa";
 import { RootBooking } from "../../../interfaces/booking";
-import { LoadingOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { LoadingOutlined, QuestionCircleOutlined, SearchOutlined } from "@ant-design/icons";
 import { FaEye } from "react-icons/fa";
 import { FaFileExport } from "react-icons/fa";
 import IsLoading from "../../../utils/IsLoading";
@@ -23,7 +23,9 @@ import { FcFilm } from "react-icons/fc";
 import { FcInfo } from "react-icons/fc";
 import GarbageComponent from "../../../components/Garbage";
 import swal from "sweetalert";
-
+import { ColumnType } from "antd/es/list";
+import { FilterConfirmProps } from "antd/es/table/interface";
+type DataIndex = keyof DataType;
 const ListsBooking = () => {
   const { data: bookings, isLoading } = useGetAllBookingsQuery();
   const [
@@ -44,7 +46,9 @@ const ListsBooking = () => {
   const [listBooking, setListBooking] = useState();
   const [BookingById, setBookingById] = useState<RootBooking>();
   const [isModalOpenModal, setIsModalOpenModal] = useState(false);
-  // console.log("bookingsSoft: ", bookingsSoft);
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef<InputRef>(null);
   useEffect(() => {
     if (bookings) {
       setListBooking(bookings?.data?.bookings);
@@ -78,6 +82,82 @@ const ListsBooking = () => {
   if (errBookingById) {
     message.error(errBookingById);
   }
+  
+
+  const handleSearch = (
+    selectedKeys: string[],
+    confirm: (param?: FilterConfirmProps) => void,
+    dataIndex: DataIndex
+  ) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters: () => void) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (
+    dataIndex: DataIndex
+  ): ColumnType<DataType> => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            handleSearch(selectedKeys as string[], confirm, dataIndex)
+          }
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            onClick={() =>
+              handleSearch(selectedKeys as string[], confirm, dataIndex)
+            }
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes((value as string).toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? text : text.toString(),
+  });
 
   const inforBooking = listBooking?.map((items: RootBooking) => {
     return {
@@ -91,9 +171,8 @@ const ListsBooking = () => {
       showtime: items?.showtime?.show_date,
       showDate: items?.showtime?.show_date,
       startTime: items?.showtime?.start_time,
-    };
+    }
   });
-  // console.log("inforBooking: ", inforBooking);
   const titleVN_XLSX = {
     booking_id: "Mã vé đặt",
     total_price: "Tổng tiền",
@@ -118,14 +197,14 @@ const ListsBooking = () => {
 
     return translatedData;
   });
-  
-  // console.log('dataXLSX: ',dataXLSX)
   const columns: ColumnsType<any> = [
     {
       title: "Mã đơn hàng",
       dataIndex: "id",
       key: "id",
       align: "center",
+      ...getColumnSearchProps("id")
+      
     },
     {
       title: "Khách hàng",
@@ -138,6 +217,7 @@ const ListsBooking = () => {
       dataIndex: "email",
       key: "email",
       align: "center",
+      ...getColumnSearchProps("email")
     },
     {
       title: "Tổng tiền",
@@ -151,6 +231,7 @@ const ListsBooking = () => {
       dataIndex: "status",
       key: "status",
       align: "center",
+      type:"default", 
       render: (status, booking) =>
         status === "not_yet" ? (
           <div className="flex items-center content-center gap-x-3 justify-center">
@@ -180,6 +261,21 @@ const ListsBooking = () => {
             <span>Vé đã hủy</span>
           </div>
         ),
+        filters: [
+          {
+            text: 'Chưa lấy vé',
+            value: 'not_yet',
+          },
+          {
+            text: 'Đã lấy vé',
+            value: 'satisfied',
+          },
+          {
+            text: 'Đã hủy vé',
+            value: 'cancel',
+          },
+        ],
+        onFilter: (value: string, record) => record.status.indexOf(value) === 0,
     },
     {
       title: "Xem thêm",
