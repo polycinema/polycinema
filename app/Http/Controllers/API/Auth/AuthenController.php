@@ -70,6 +70,8 @@ class AuthenController extends Controller
                 'name'      => ['required', 'string', 'max:255'],
                 'email'     => ['required', 'string', 'email', 'unique:' . User::class],
                 'password'  => ['required', Password::defaults()]
+            ], [
+                'email.unique' => 'Tài khoản đã được đăng ký'
             ]);
 
             if ($validator->fails()) {
