@@ -6,7 +6,7 @@ import {
   Select,
   TimePicker,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   useGetByIdShowTimeQuery,
   useUpdateShowTimeMutation,
@@ -15,7 +15,6 @@ import { useNavigate, useParams } from "react-router";
 import dayjs from "dayjs";
 import IsLoading from "../../../utils/IsLoading";
 import { useGetAllMoviesQuery } from "../../../redux/api/movieApi";
-import { getAllRoom } from "../../../api/room";
 import swal from "sweetalert";
 import { useGetAllRoomsQuery } from "../../../redux/api/roomApi";
 
@@ -87,7 +86,7 @@ const UpdateShowTime = () => {
           <Select
             style={{ width: "100%" }}
             placeholder="Select to movie"
-            options={MovieData?.data?.map((items: any) => {
+            options={MovieData?.data?.filter(item=> item.status != "upcoming").map((items: any) => {
               return {
                 value: items.id,
                 label: items.name,

@@ -6,14 +6,11 @@ import {
   Select,
   Spin,
   TimePicker,
-  notification,
 } from "antd";
 import { useCreateShowTimeMutation } from "../../../redux/api/showTimeApi";
 import { IShowtime } from "../../../interfaces/showtime";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
 import { useGetAllMoviesQuery } from "../../../redux/api/movieApi";
-import { getAllRoom } from "../../../api/room";
 import { useNavigate } from "react-router";
 import swal from "sweetalert";
 import { useGetAllRoomsQuery } from "../../../redux/api/roomApi";
@@ -35,7 +32,6 @@ const CreateShowTime = () => {
     end_time,
     show_date,
   }: IShowtime) => {
-    // console.log('start time: ',moment(start_time);
     createShowTime({
       movie_id,
       room_id,
