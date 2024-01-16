@@ -55,7 +55,7 @@ const ListsBooking = () => {
       setListBooking(bookings?.data?.bookings);
     }
     if (bookingById) {
-      setBookingById(bookingById.data);
+      setBookingById(bookingById?.data);
     }
   }, [bookings, bookingById]);
   const handleCancelModal = () => {
@@ -148,9 +148,9 @@ const ListsBooking = () => {
     ),
     onFilter: (value, record) =>
       record[dataIndex]
-        .toString()
-        .toLowerCase()
-        .includes((value as string).toLowerCase()),
+        ?.toString()
+        ?.toLowerCase()
+        ?.includes((value as string).toLowerCase()),
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -168,7 +168,7 @@ const ListsBooking = () => {
       user: items?.user?.name,
       email: items?.user?.email,
       phone: items?.user?.phone,
-      movieName: items?.showtime?.movie.name,
+      movieName: items?.showtime?.movie?.name,
       showtime: items?.showtime?.show_date,
       showDate: dayjs(items?.showtime?.created_at).format("DD-MM-YYYY"),
       startTime: items?.showtime?.start_time,
@@ -343,7 +343,7 @@ const ListsBooking = () => {
       email: item?.user?.email,
       total: item?.total_price,
       status: item?.status,
-      nameMovie: item?.showtime?.movie.name,
+      nameMovie: item?.showtime?.movie?.name,
     };
   });
   const cancel = (e) => {

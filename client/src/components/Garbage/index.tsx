@@ -45,7 +45,7 @@ const GarbageComponent = () => {
     return {
       key: items.id,
       booking_id: items.booking_id,
-      nameMovie: items.showtime.movie.name
+      nameMovie: items.showtime?.movie.name
     }
   })
 
