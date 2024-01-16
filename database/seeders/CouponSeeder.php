@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,8 @@ class CouponSeeder extends Seeder
             'description' => 'Giảm Giá Cực Khủng',
             'type' => 'discount_percentage',
             'discount' => '40',
-            'expires_at' => '2024/12/12',
+            'start_at' => Carbon::now()->today(),
+            'expires_at' => Carbon::now()->nextWeekendDay(),
             'quantity' => '100',
             'min_order_value' => NULL
         ]);
@@ -28,7 +30,8 @@ class CouponSeeder extends Seeder
             'description' => 'Giảm Giá Cực Vip',
             'type' => 'discount_amount',
             'discount' => '50000',
-            'expires_at' => '2024/12/12',
+            'start_at' => Carbon::now()->today(),
+            'expires_at' => Carbon::now()->nextWeekendDay(),
             'quantity' => '100',
             'min_order_value' => 200000
         ]);
@@ -38,7 +41,8 @@ class CouponSeeder extends Seeder
             'description' => 'Giảm Giá Cực Đã',
             'type' => 'discount_percentage',
             'discount' => '20',
-            'expires_at' => '2024/12/12',
+            'start_at' => Carbon::now()->today(),
+            'expires_at' => Carbon::now()->nextWeekendDay(),
             'quantity' => '100',
             'min_order_value' => 300000
         ]);
@@ -48,7 +52,8 @@ class CouponSeeder extends Seeder
             'description' => 'Giảm Giá Cực Sốc',
             'type' => 'discount_amount',
             'discount' => '70000',
-            'expires_at' => '2024/12/12',
+            'start_at' => Carbon::now()->today(),
+            'expires_at' => Carbon::now()->nextWeekendDay(),
             'quantity' => '100',
             'min_order_value' => NULL
         ]);

@@ -84,6 +84,7 @@ class CouponController extends Controller
         // POST Request user_id 
         try {
             $coupons = Coupon::query()->where('expires_at', '>=', now())
+                ->where('start_at', '<=', now())
                 ->where('quantity', '>', 0)
                 ->where('level', 'show')
                 ->get();
