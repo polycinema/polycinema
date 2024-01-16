@@ -32,7 +32,7 @@ const Login = () => {
           dispatch(setUser(auth.user))
           dispatch(setToken(auth.token))
         }
-        notification.success({ message: "Login is successly!" });
+        notification.success({ message: "Đăng nhập thành công!" });
       }).then(() => navigate('/'));
   };
   const onFinishForgotPassword = (value:{email:string})=>{
@@ -40,7 +40,6 @@ const Login = () => {
     .unwrap()
     .then(()=>{
           setIsModalOpen(false)
-          
     })
     .catch((err:any)=>{
     console.log(err);

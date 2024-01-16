@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 const authorizationSlice = createSlice({
     name: "Authorization",
-    initialState: { isAuth: false, token: null, user: null },
+    initialState: { isAuth: false, token: null, user: null},
     reducers: {
         setIsAuth: (state) => {
             state.isAuth = true;

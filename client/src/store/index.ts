@@ -32,6 +32,7 @@ import roomApi, { roomReducer } from "../redux/api/roomApi";
 import acountApi, { acountReducer } from "../redux/api/acountApi";
 import productApi, { productReducer } from "../redux/api/productApi";
 import actorApi, { actorReducer } from "../redux/api/actorsApi";
+import { accountReducer } from "../redux/slices/accountSlice";
 
 const persistConfig = {
   key: "root",
@@ -55,7 +56,8 @@ const rootReducer = combineReducers({
   [productApi.reducerPath]:productReducer,
   [actorApi.reducerPath]:actorReducer,
   ValueCheckout: valueCheckoutReducer,
-  Authorization: authorizationReducer
+  Authorization: authorizationReducer,
+  Account: accountReducer
 });
 const middleware = [
   showtimeApi.middleware,

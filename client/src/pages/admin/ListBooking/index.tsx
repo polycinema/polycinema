@@ -49,6 +49,7 @@ const ListsBooking = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
+  console.log("listBooking: ", listBooking);
   useEffect(() => {
     if (bookings) {
       setListBooking(bookings?.data?.bookings);
@@ -169,10 +170,13 @@ const ListsBooking = () => {
       phone: items?.user?.phone,
       movieName: items?.showtime?.movie.name,
       showtime: items?.showtime?.show_date,
-      showDate: items?.showtime?.show_date,
+      showDate: dayjs(items?.showtime?.created_at).format("DD-MM-YYYY"),
       startTime: items?.showtime?.start_time,
-    }
+      seatName: items.seats.map((items) => items.seat_name),
+      roonName: items.seats.map((items) => items.showtime.room.room_name),
+    };
   });
+  console.log("inforBooking: ", inforBooking);
   const titleVN_XLSX = {
     booking_id: "Mã vé đặt",
     total_price: "Tổng tiền",
@@ -180,13 +184,13 @@ const ListsBooking = () => {
     user: "Khách hàng",
     email: "Email",
     phone: "Số điện thoại",
-    showtime: "Lịch chiếu",
+    showtime: "Ngày chiếu",
     movieName: "Tên phim",
     showDate: "Ngày đặt",
     startTime: "Giờ chiếu",
-    // seatName: "Ghế ngồi",
+    seatName: "Ghế ngồi",
     // typeSeat: "Loại ghế",
-    // roonName: "Phòng chiếu",
+    roonName: "Phòng chiếu",
   };
   const dataXLSX = inforBooking?.map((items: RootBooking) => {
     const translatedData = {};
@@ -299,7 +303,7 @@ const ListsBooking = () => {
       title: "Hành động",
       key: "action",
       align: "center",
-      render: ({status}: any, { key: id }: any) => (
+      render: ({ status }: any, { key: id }: any) => (
         <Popconfirm
           title="Ẩn vé đặt"
           description="Bạn có chắc muốn ẩn?"
@@ -321,11 +325,12 @@ const ListsBooking = () => {
           okType="default"
           cancelText="No"
         >
-          <Button className={`text-blue-500 ${
-                    status == "not_yet"
-                      ? " pointer-events-none opacity-60 "
-                      : ""
-                  }`} icon={<FaEyeSlash />} />
+          <Button
+            className={`text-blue-500 ${
+              status == "not_yet" ? " pointer-events-none opacity-60 " : ""
+            }`}
+            icon={<FaEyeSlash />}
+          />
         </Popconfirm>
       ),
     },
@@ -449,8 +454,8 @@ const ListsBooking = () => {
                 <div className=" border-b pb-4 p-2 text-base">
                   <span className="block font-semibold">Trạng thái:</span>
                   <span className="text-gray-600">
-                    {BookingById?.status === "not_yet"
-                      ? "Chưa lấy vé"
+                    {BookingById?.status === "cancel"
+                      ? "Đã hủy vé"
                       : "Đã lấy vé"}
                   </span>
                 </div>
@@ -461,11 +466,11 @@ const ListsBooking = () => {
                   </span>
                 </div>
                 <div className=" border-b pb-4 p-2 text-base">
-                  <span className="block mb-2 font-semibold">Rạp chiếu:</span>
+                  <span className="block  font-semibold">Rạp chiếu:</span>
                   <span className="text-gray-600">Polycinema</span>
                 </div>
                 <div className=" border-b pb-4 p-2 text-base">
-                  <span className="block mb-2 font-semibold">Phòng chiếu:</span>
+                  <span className="block  font-semibold">Phòng chiếu:</span>
                   <span className="text-gray-600">
                     {BookingById?.seats[0]?.showtime?.room?.room_name ??
                       "Không có"}
@@ -476,8 +481,11 @@ const ListsBooking = () => {
                 <div className=" border-b pb-4 p-2 text-base">
                   <span className="block  font-semibold">Chỗ ngồi:</span>
                   <span className="text-gray-600">
-                    {BookingById?.seats?.map((seat) => (
-                      <span key={seat?.id}>{seat?.seat_name}</span>
+                    {BookingById?.seats?.map((seat, index: number) => (
+                      <span key={seat?.id}>
+                        {seat?.seat_name}
+                        {index < BookingById?.seats.length - 1 ? ", " : ""}
+                      </span>
                     )) ?? "Không có"}
                   </span>
                 </div>
@@ -488,28 +496,36 @@ const ListsBooking = () => {
                   </span>
                 </div>
                 <div className=" border-b pb-4 p-2 text-base">
+                  <span className="block font-semibold">Ngày chiếu:</span>
+                  <span className="text-gray-600">
+                    {dayjs(BookingById?.showtime?.show_date).format(
+                      "DD/MM/YYYY"
+                    ) ?? "Không có"}
+                  </span>
+                </div>
+                <div className=" border-b pb-4 p-2 text-base">
                   <span className="block font-semibold">Ngày đặt:</span>
                   <span className="text-gray-600">
-                    {dayjs(BookingById?.created_at).format("DD/MM.YYYY") ??
+                    {dayjs(BookingById?.created_at).format("DD/MM/YYYY") ??
                       "Không có"}
                   </span>
                 </div>
 
                 <div className="border-b pb-4 p-2 text-base">
-                  <span className="block mb-2 font-semibold">Giờ đặt:</span>
+                  <span className="block  font-semibold">Giờ đặt:</span>
                   <span className="text-gray-600">
                     {dayjs(BookingById?.created_at).format("HH:mm:ss") ??
                       "Không có"}
                   </span>
                 </div>
-                <div className="border-b pb-4 p-2 text-base">
-                  <span className="block mb-2 font-semibold">Combo:</span>
-                  <span className="text-gray-600">
-                    {BookingById?.products?.map((item) => (
-                      <span key={item?.id}>{item?.name}</span>
-                    )) ?? "Không có"}
-                  </span>
-                </div>
+              </div>
+              <div className="p-2 text-base">
+                <span className="block font-semibold">Combo:</span>
+                <span className="text-gray-600">
+                  {BookingById?.products?.map((item) => (
+                    <span key={item?.id}>{item?.name}</span>
+                  )) ?? "Không có"}
+                </span>
               </div>
               <div className="p-2 text-xl">
                 <span className="block mb-2 font-semibold ">Tổng tiền:</span>
