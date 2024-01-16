@@ -245,7 +245,7 @@ class MovieController extends Controller
                 ->get();
 
             return response()->json([
-                'screening' => $moviesScreening, // phim đang chiếu 
+                'screening' => $moviesScreening, // phim đang chiếu
                 'yesterday_movie' => $yesterdayMovies // phim đã chiếu ngày hôm qua
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
@@ -257,7 +257,7 @@ class MovieController extends Controller
         }
     }
 
-    // Ẩn hiện Movie 
+    // Ẩn hiện Movie
     public function changeLevelMovie(Request $request)
     {
         try {
@@ -356,7 +356,7 @@ class MovieController extends Controller
                                 ->groupBy('showtime_id');
                         }]);
                         $query->where('level', 'show');
-                    
+
                     }])
                     ->get();
 

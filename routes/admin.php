@@ -41,7 +41,7 @@ Route::prefix('admin')->group(function () {
 
     Route::resource('coupons', CouponController::class)->except(['edit', 'create']);
 
-    Route::resource('bookings', BookingController::class)->except(['edit', 'create']);
+    Route::resource('bookings', BookingController::class)->except(['edit', 'create', 'update', 'store']);
 
     Route::resource('seat-types', SeatTypeController::class)->except(['edit', 'create']);
 
