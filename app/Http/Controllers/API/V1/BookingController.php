@@ -46,7 +46,8 @@ class BookingController extends Controller
             $not_yets = $bookings->where('level', 'show')->where('status', Booking::NOT_YET)->count();
             $satisfieds = $bookings->where('level', 'show')->where('status', Booking::SATISFIED)->count();
             $bookings_hide = Booking::query()->where('level', Booking::LEVEL_HIDE)->count();
-            $cancel = Booking::query()->where('status', 'cancel')->where('level', 'show')->count();
+
+            $cancel = Booking::query()->where('status', 'cancel')->count();
 
             $data = [
                 'bookings' => $bookings,
