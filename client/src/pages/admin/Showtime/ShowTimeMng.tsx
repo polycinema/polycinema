@@ -226,16 +226,16 @@ const ShowTimeMng = () => {
     ),
     onFilter: (value, record) =>
       record[dataIndex]
-        .toString()
-        .toLowerCase()
-        .includes((value as string).toLowerCase()),
+        ?.toString()
+        ?.toLowerCase()
+        ?.includes((value as string).toLowerCase()),
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
       }
     },
     render: (text) =>
-      searchedColumn === dataIndex ? text : text.toString(),
+      searchedColumn === dataIndex ? text : text?.toString(),
   });
   const columns: any[] = [
     {
@@ -276,15 +276,15 @@ const ShowTimeMng = () => {
               <Button icon={<EditFilled />}/>
             </Link>
             <Popconfirm
-              title="Xóa lịch chiếu"
-              description="Bạn có chắc muốn xóa?"
+              title="Ẩn lịch chiếu"
+              description="Bạn có chắc muốn Ẩn?"
               onConfirm={() =>
                 softDeleteShowtime({showtime_id: id})
                   .unwrap()
                   .then(() => {
-                    swal("Thành công!", "Xóa lịch chiếu thành công!", "success")
+                    swal("Thành công!", "Ẩn lịch chiếu thành công!", "success")
                   }).catch(()=>{
-                    swal("Thất bại!", "Xóa lịch chiếu thất bại , Vui lòng thử lại !", "error");
+                    swal("Thất bại!", "Ẩn lịch chiếu thất bại , Vui lòng thử lại !", "error");
                   })
               }
               okText="Yes"

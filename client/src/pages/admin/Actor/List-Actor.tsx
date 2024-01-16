@@ -82,17 +82,17 @@ const ListActor = () => {
           </Link>
           <div>
             <Popconfirm
-              title="Xóa diễn viên"
-              description="Bạn có chắc chắn muốn xóa diễn viên"
+              title="Ẩn diễn viên"
+              description="Bạn có chắc chắn muốn Ẩn diễn viên"
               onConfirm={() => {
                 softDeleteActor({ actor_id: id })
                   .then(() => {
-                    swal("Thành công!", "Xóa diễn viên thành công!", "success");
+                    swal("Thành công!", "Ẩn diễn viên thành công!", "success");
                   })
                   .catch(() => {
                     swal(
                       "Thất bại!",
-                      "Xóa diễn viên thất bại , Vui lòng thử lại !",
+                      "Ẩn diễn viên thất bại , Vui lòng thử lại !",
                       "error"
                     );
                   });

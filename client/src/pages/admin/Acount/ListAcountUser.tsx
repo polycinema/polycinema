@@ -126,16 +126,16 @@ const ListAcountUser = () => {
     ),
     onFilter: (value, record) =>
       record[dataIndex]
-        .toString()
-        .toLowerCase()
-        .includes((value as string).toLowerCase()),
+        ?.toString()
+        ?.toLowerCase()
+        ?.includes((value as string).toLowerCase()),
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
       }
     },
     render: (text) =>
-      searchedColumn === dataIndex ? text : text.toString(),
+      searchedColumn === dataIndex ? text : text?.toString(),
   });
 
   const columns: ColumnsType<DataType> = [
@@ -186,7 +186,7 @@ const ListAcountUser = () => {
           </Button>
           <div>
             <Popconfirm
-              title="Blcok tài khoản"
+              title="Block tài khoản"
               description="Bạn có chắc chắn muốn block tài khoản?"
               okText="Có"
               okType="default"
