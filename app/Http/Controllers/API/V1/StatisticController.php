@@ -442,4 +442,28 @@ class StatisticController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getAllMoviesSortedByTotalPrice()
+    {
+        try {
+            $movies = Movie::
+                // with(['director', 'actors', 'genres'])
+                select('movies.id', 'movies.name', 'movies.title', 'movies.image', 'movies.trailer', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status', DB::raw('SUM(bookings.total_price) as total_revenue'),  DB::raw('COUNT(bookings.id) as total_booking'))
+                ->join('show_times', 'show_times.movie_id', '=', 'movies.id')
+                ->join('bookings', 'show_times.id', '=', 'bookings.showtime_id')
+                ->groupBy('movies.id', 'movies.name', 'movies.title', 'movies.image', 'movies.trailer', 'movies.description', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status')
+                ->orderByDesc('total_revenue')
+                ->get();
+
+            return response()->json([
+                'data' => $movies,
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('StatisticController@getAllMoviesSortedByTotalPrice: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
