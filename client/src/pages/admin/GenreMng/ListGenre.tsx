@@ -68,11 +68,13 @@ const ListGenre = () => {
       title: "Tên thể loại",
       dataIndex: "name",
       key: "name",
+      align: "center",
       render: (text) => <a>{text}</a>,
     },
     {
       title: "Hành động",
       key: "action",
+      align: "center",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
           <Link to={`/admin/genres/${id}/edit`}>

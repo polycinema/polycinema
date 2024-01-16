@@ -27,11 +27,13 @@ const ListBanner = (props: Props) => {
       title: "Ảnh banner",
       dataIndex: "image",
       key: "image",
-      render: (img) => <img className="w-40" src={img} alt="anh" />,
+      align: "center",
+      render: (img) => <img className="w-40 mx-auto" src={img} alt="anh" />,
     },
     {
       title: "Hành động",
       key: "action",
+      align: "center",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
           <Button>

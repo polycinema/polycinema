@@ -28,22 +28,26 @@ const SeatTypeMng = () => {
       title: "Tên thể loại ghế",
       dataIndex: "name",
       key: "name",
+      align: "center",
     },
     {
       title: "Giá thể loại ghế",
       dataIndex: "price",
       key: "price",
+      align: "center",
       render: (price) => <p>{formatCurrency(price)}</p>,
     },
     {
       title: "Ảnh thể loại ghế",
       dataIndex: "image",
       key: "image",
-      render: (img) => <img className="w-20" src={img} alt="anh" />,
+      align: "center",
+      render: (img) => <img className="w-20 mx-auto" src={img} alt="anh" />,
     },
     {
       title: "Hành động",
       key: "action",
+      align: "center",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
           <Link to={`/admin/seats/${id}/edit`}>

@@ -35,6 +35,10 @@ const statisticApi = createApi({
             query: () => `/top10-movies-by-view`,
             providesTags: ["Statistic"],
         }),
+        getTopUser:build.query<[],void>({
+            query:() => `/top5-users-by-booking`,
+            providesTags: ["Statistic"]
+        }),
         StatisticCustom : build.mutation({
             query: (date) => ({
                 url:'/statistc-in-range',
@@ -53,7 +57,8 @@ export const {
     useGetTop10MovieQuery,
     useStatisticCustomMutation,
     useGetTop1MovieQuery,
-    useGetTopViewQuery
+    useGetTopViewQuery,
+    useGetTopUserQuery
 } = statisticApi;
 export const statisticReducer = statisticApi.reducer;
 export default statisticApi;

@@ -33,16 +33,18 @@ const ListRooms = () => {
       title: "Tên phòng",
       dataIndex: "room_name",
       key: "room_name",
-      render: (text) => <a>{text}</a>,
+      align: "center",
     },
     {
       title: "Số lượng ghế",
       dataIndex: "capacity",
       key: "capacity",
+      align: "center",
     },
     {
       title: "Hành động",
       key: "action",
+      align: "center",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
           <Link to={`/admin/rooms/${id}/edit`}>

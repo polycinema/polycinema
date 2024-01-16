@@ -1,4 +1,4 @@
-import { Badge, Button, Modal, Popconfirm, Table, notification } from "antd";
+import { Badge, Button, Input, InputRef, Modal, Popconfirm, Space, Table, notification } from "antd";
 import {
   useGetShowTimeSoftQuery,
   useGetShowTimesQuery,
@@ -6,14 +6,17 @@ import {
 } from "../../../redux/api/showTimeApi";
 import { IShowtime } from "../../../interfaces/showtime";
 import { Link } from "react-router-dom";
-import {  EditFilled, QuestionCircleOutlined } from "@ant-design/icons";
+import {  EditFilled, QuestionCircleOutlined, SearchOutlined } from "@ant-design/icons";
 import IsLoading from "../../../utils/IsLoading";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdAutoDelete } from "react-icons/md";
 import { FaEyeSlash, FaTrashRestore } from "react-icons/fa";
 import { FcDeleteDatabase } from "react-icons/fc";
 import swal from "sweetalert";
+import { FilterConfirmProps } from "antd/es/table/interface";
+import { ColumnType } from "antd/es/list";
 
+type DataIndex = keyof DataType;
 const ShowTimeMng = () => {
   const { data, isLoading, error }: any = useGetShowTimesQuery();
   const [showtime, setShowtime] = useState([]);
@@ -23,7 +26,9 @@ const ShowTimeMng = () => {
   const [showtimeSoftDelete, setShowtimeSoftDelete] = useState([]);
   const [countShowtimeSoft, setCountShowtimeSoft] = useState(0);
   const [isModalOpenGarbage, SetIsModalOpenGarbage] = useState(false);
-  // console.log('showtimeSoftDelete: ',showtimeSoftDelete)
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef<InputRef>(null);
   useEffect(() => {
     if (showtimeSoftDelete) {
       setCountShowtimeSoft(showtimeSoftDelete.length);
@@ -158,30 +163,111 @@ const ShowTimeMng = () => {
       },
     },
   ];
+  const handleSearch = (
+    selectedKeys: string[],
+    confirm: (param?: FilterConfirmProps) => void,
+    dataIndex: DataIndex
+  ) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters: () => void) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (
+    dataIndex: DataIndex
+  ): ColumnType<DataType> => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            handleSearch(selectedKeys as string[], confirm, dataIndex)
+          }
+          style={{ marginBottom: 8, display: "block" }}
+        />
+        <Space>
+          <Button
+            onClick={() =>
+              handleSearch(selectedKeys as string[], confirm, dataIndex)
+            }
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes((value as string).toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? text : text.toString(),
+  });
   const columns: any[] = [
     {
       title: "Phòng chiếu",
       dataIndex: "room_id",
       key: "1",
+      align:"center",
+      ...getColumnSearchProps("room_id")
     },
     {
       title: "Phim",
       dataIndex: "movie_id",
       key: "2",
+      align:"center",
+      ...getColumnSearchProps("movie_id")
     },
     {
       title: "Thời gian bắt đầu",
       dataIndex: "start_time",
       key: "3",
+      align:"center"
     },
     {
       title: "Ngày chiếu",
       dataIndex: "show_date",
       key: "5",
+      align:"center"
     },
     {
       title: "Hành động",
       dataIndex: "actions",
+      align:"center",
       key: "6",
       render: (_: any, { key: id }: any) => {
         return (

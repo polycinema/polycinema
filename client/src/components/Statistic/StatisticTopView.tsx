@@ -6,8 +6,6 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const StatisticTopView = () => {
   const {data} = useGetTopViewQuery()
-  console.log(data);
-  
         const data1 = {
                 labels:data?.data?.map((item)=> item.name),
                 datasets: [
@@ -44,7 +42,7 @@ const StatisticTopView = () => {
               };
   return (
         <div className=''>
-        <h1 className='text-2xl'>Top phim có lượt xem cao</h1>
+        <h1 className='text-xl flex justify-center p-4 text-[#0D5D9F]'>Top phim có lượt xem cao</h1>
         <Pie data={data1} />
       </div>
   )

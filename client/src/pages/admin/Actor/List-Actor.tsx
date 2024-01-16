@@ -56,21 +56,25 @@ const ListActor = () => {
       title: "Tên diễn viên",
       dataIndex: "name",
       key: "name",
+      align: "center",
     },
     {
       title: "Ảnh diễn viên",
       dataIndex: "image",
       key: "image",
-      render: (img) => <img className="w-40" src={img} alt="anh" />,
+      align: "center",
+      render: (img) => <img className="w-40 mx-auto" src={img} alt="anh" />,
     },
     {
       title: "Ngày sinh",
       dataIndex: "date_of_birth",
       key: "date_of_birth",
+      align: "center",
     },
     {
       title: "Hành động",
       key: "action",
+      align: "center",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
           <Link to={`/admin/actors/${id}/edit`}>

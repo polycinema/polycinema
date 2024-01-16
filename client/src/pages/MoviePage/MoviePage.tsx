@@ -155,7 +155,7 @@ const MoviePage = () => {
                 <div className="space-y-2 mt-3">
                   <p>2D PHỤ ĐỀ</p>
                   <div className="md:flex gap-x-3 grid grid-cols-2">
-                    {movie?.showtimes.map((items) => (
+                    {movie?.showtimes?.map((items) => (
                       <div key={items.id}>
                         <button
                           className="bg-gray-300 px-2 py-1 "
@@ -171,7 +171,7 @@ const MoviePage = () => {
                           {items?.start_time}
                         </button>
                         <p className="text-xs">
-                          {items?.seats[0].available_seat} ghế trống
+                          {items?.seats[0]?.available_seat} ghế trống
                         </p>
                       </div>
                     ))}

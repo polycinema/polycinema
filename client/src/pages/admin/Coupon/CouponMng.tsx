@@ -50,47 +50,66 @@ const CouponMng = () => {
       title: "Mã giảm giá",
       dataIndex: "coupon_code",
       key: "coupon_code",
+      align: "center",
     },
     {
       title: "Mô tả",
       dataIndex: "description",
       key: "description",
+      align: "center",
     },
     {
       title: "Loại mã giảm",
       dataIndex: "type",
+      align: "center",
       key: "type",
       render: (type: any) =>
         type === "discount_percentage"
           ? "Giảm theo phần trăm"
           : "Giảm theo giá tiền",
+          filters: [
+            {
+              text: "Giảm theo phần trăm",
+              value: "discount_percentage",
+            },
+            {
+              text: "Giảm theo giá tiền",
+              value: "discount_amount",
+            }
+          ],
+          onFilter: (value: string, record) => record.type.indexOf(value) === 0,
     },
     {
       title: "Ngày hết hạn",
       dataIndex: "expires_at",
       key: "expires_at",
+      align: "center",
       render: (expires_at: any) => dayjs(expires_at).format("DD-MM-YYYY"),
     },
     {
       title: "Giá trị mã giảm",
       dataIndex: "discount",
       key: "discount",
+      align: "center",
     },
     {
       title: "Giá trị đơn hàng tối thiếu",
       dataIndex: "min_order_value",
       key: "min_order_value",
+      align: "center",
       render: (min_order_value: any) => formatCurrency(min_order_value),
     },
     {
       title: "Số lượng mã giảm",
       dataIndex: "quantity",
       key: "quantity",
+      align: "center",
     },
 
     {
       title: "Hành động",
       key: "action",
+      align: "center",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
           <Link to={`/admin/coupon/${id}/edit`}>

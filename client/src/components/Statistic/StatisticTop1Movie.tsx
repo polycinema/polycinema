@@ -15,7 +15,7 @@ const StatisticTop1Movie = (props: Props) => {
 
   return (
     <div>
-      <h1 className="text-2xl text-center p-4 ">Phim có doanh thu cao nhất</h1>
+      <h1 className="text-xl text-center p-4 text-[#0D5D9F] ">Phim có doanh thu cao nhất</h1>
       <div className="rounded-md grid grid-cols-3 gap-4">
         <div className="col-span-2 m-4">
           <h1 className="text-[#0D5D9F] text-2xl p-4">{data?.data?.name}</h1>

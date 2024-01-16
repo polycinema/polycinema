@@ -137,7 +137,7 @@ const Statistic = () => {
         </Form>
       </div>
       <div className='m-2'>
-        <div className='m-2 text-xl'>
+        <div className='m-2 text-xl text-[#0D5D9F]'>
           {dateRange === 1 ? "Thống kê 7 ngày gần nhất" :
             dateRange === 2 ? "Thống kê 28 ngày gần nhất" :
               dateRange === 3 ? "Thống kê 1 năm" :
