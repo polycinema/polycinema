@@ -320,7 +320,7 @@ class StatisticController extends Controller
     public function getStatisticByMovie(string $movie_id)
     {
         try {
-            $movie = Movie::find($movie_id);
+            $movie = Movie::query()->where('id', $movie_id)->with('actors')->with('genres')->with('director')->get();
             if (!$movie) {
                 return response()->json([
                     'message' => 'Phim không tồn tại'
@@ -329,29 +329,38 @@ class StatisticController extends Controller
 
             $bookings = Booking::whereHas('showtime', function ($query) use ($movie_id) {
                 $query->where('movie_id', $movie_id);
+            })->get();
+
+            $bookings_show = Booking::whereHas('showtime', function ($query) use ($movie_id) {
+                $query->where('movie_id', $movie_id);
             })
-                ->where('status', '!=', 'cancel')
-                ->with('showtime')->with('user')->get();
+                // ->with('showtime')->with('user')
+                ->where('level', 'show')
+                ->get();
 
 
             // đếm số lượng booking
             $count = $bookings->count();
             // Tổng doanh thu
-            $total_price = collect($bookings)->sum('total_price');
+            $total_price = collect($bookings)->where('status', '!=', 'cancel')->sum('total_price');
             // Tổng đơn hàng đã lấy vé
             $satisfied = collect($bookings)->where('status', 'satisfied')->count();
             // Tổng đơn hàng không lấy vé
             $not_yet = collect($bookings)->where('status', 'not_yet')->count();
             // Tổng đơn hàng hủy vé
             $cancel = Booking::query()->where('status', 'cancel')->count();
+            // Tổng đơn hàng ẩn
+            $hide = Booking::query()->where('level', 'hide')->count();
 
             return response()->json([
-                'data' => $bookings,
+                'movie' => $movie,
+                'bookings' => $bookings_show,
                 'total_booking' => $count,
                 'total_price' => $total_price,
                 'status_not_yet' => $not_yet,
                 'status_satisfied' => $satisfied,
                 'status_cancel' => $cancel,
+                'hide' => $hide,
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('StatisticController@getStatisticByMovie: ', [$exception->getMessage()]);

@@ -114,7 +114,8 @@ class BookingController extends Controller
 
                 $seatModel->update([
                     'status' => Seat::BOOKED,
-                    'booking_id' => $booking->id
+                    'booking_id' => $booking->id,
+                    'user_id' => $request->user_id
                 ]);
 
                 event(new SeatReservation($seatModel));
