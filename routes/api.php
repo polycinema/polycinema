@@ -173,4 +173,6 @@ Route::prefix('v1')->group(function () {
     
     Route::get('get-movie-soft-by-total-revenue', [StatisticController::class, 'getAllMoviesSortedByTotalPrice']);
 
+    Route::get('dash-board', [StatisticController::class, 'dashBoard']);
+
 });
