@@ -1,5 +1,5 @@
 import { Empty, Modal } from "antd";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import YouTube from "react-youtube";
 import { useGetShowTimesMovieQuery } from "../../redux/api/showTimeApi";
@@ -13,18 +13,20 @@ import {
   deleteValueProduct,
 } from "../../redux/slices/valueCheckoutSlice";
 import { useAppDispatch } from "../../store/hook";
+import { useGetAllMoviesQuery } from "../../redux/api/movieApi";
 
 const MoviePage = () => {
   const [isModalOpenTrailer, setIsModalOpenTrailer] = useState(false);
   const [isModalOpenStartTime, setIsModalOpenStartTime] = useState(false);
   const { data, isLoading, error }: any = useGetShowTimesMovieQuery();
+  const { data: movieUpscreing } = useGetAllMoviesQuery();
   const [showtime, setShowtime] = useState([]);
   const [indexDate, setIndexDate] = useState(0);
-  const [showtimesByChange, setShowtimeByChange]  = useState<MovieTime[]>();
+  const [showtimesByChange, setShowtimeByChange] = useState<MovieTime[]>();
   const [selectedMovie, setSelectedMovie] = useState<Movie>();
-  const [selectedMovieModalTime, setSelectedMovieModalTime] = useState<ModalTime>();
+  const [selectedMovieModalTime, setSelectedMovieModalTime] =
+    useState<ModalTime>();
   const [movies, setMovies] = useState<Movie[]>([]);
-  console.log("selectedMovieModalTime: ", selectedMovieModalTime);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -112,7 +114,6 @@ const MoviePage = () => {
           })}
         </ul>
       </div>
-      {/* <ListMovie /> */}
       {movies?.map((movie: Movie, index: number) => {
         return (
           <div className="md:max-w-[1150px] max-w-xs mx-auto my-10" key={index}>
@@ -190,53 +191,15 @@ const MoviePage = () => {
             Phim Sắp Chiếu
           </h4>
           <div className="flex gap-1 md:translate-x-[400px] py-20">
-            <div>
-              <Link to={""}>
-                <img
-                  className="w-48"
-                  src="https://files.betacorp.vn/files/media/images/2023/10/09/cw-400x633-162007-091023-43.jpg"
-                  alt=""
-                />
-              </Link>
-            </div>
-
-            <div>
-              <Link to={""}>
-                <img
-                  className="w-40"
-                  src="https://files.betacorp.vn/files/media/images/2023/10/03/th-nh-ph-ng-g-t-payoff-poster-kh-i-chi-u-13-10-2023-1-113244-031023-35.png"
-                  alt=""
-                />
-              </Link>
-            </div>
-
-            <div>
-              <Link to={""}>
-                <img
-                  className="w-40"
-                  src="	https://files.betacorp.vn/files/media/images/2023/09/27/700x1000-vtm-1-153242-270923-76.png"
-                  alt=""
-                />
-              </Link>
-            </div>
-            <div>
-              <Link to={""}>
-                <img
-                  className="w-40"
-                  src="https://files.betacorp.vn/files/media/images/2023/10/03/700x1000-5demkinhhoang-115804-031023-17.png"
-                  alt=""
-                />
-              </Link>
-            </div>
-            <div>
-              <Link to={""}>
-                <img
-                  className="w-48"
-                  src="https://files.betacorp.vn/files/media/images/2023/10/10/384512522-860973838723843-7797595519513200784-n-copy-103620-101023-46.jpg"
-                  alt=""
-                />
-              </Link>
-            </div>
+            {movieUpscreing?.data
+              ?.filter((item) => item.status == "upcoming")
+              ?.map((item) => (
+                <div>
+                  <button onClick={() => nextDetail(item)}>
+                    <img className="w-48" src={item?.image} alt="" />
+                  </button>
+                </div>
+              ))}
           </div>
         </div>
       </div>

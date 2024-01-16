@@ -105,7 +105,7 @@ const EditNews = () => {
       <div>
         <h1 className="text-4xl mb-6 bg-white p-4 rounded-md shadow-md">Câp nhật Tin Tức</h1>
         <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-2 p-4 bg-white p-4 rounded-md shadow-md">
+          <div className="col-span-2 p-4 bg-white  rounded-md shadow-md">
             <Form
               form={form}
               name="basic"

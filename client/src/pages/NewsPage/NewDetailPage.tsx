@@ -29,7 +29,7 @@ const NewDetailPage = (props: any) => {
           {loadNewDeatil?.title}
         </h1>
         <Link to={""}>
-          <img className="h-96 pt-5 w-60  " src={loadNewDeatil?.image} alt="" />
+          <img className="h-96 pt-5 w-full object-cover " src={loadNewDeatil?.image} alt="" />
         </Link>
         <p className="md:pt-5 md:text-lg pt-3">
           {loadNewDeatil?.summary}
