@@ -25,5 +25,5 @@ Route::get('mail', function() {
 });
 
 Route::get('mail-booking', function() {
-    return view('mails.booking-information');
+    return view('mails.test');
 });

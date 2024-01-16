@@ -30,7 +30,7 @@ class BookingInformationMail extends Mailable
     {
         return new Envelope(
             from: new Address(config('mail.from.address'), config('mail.from.name')),
-            subject: 'Booking Information Mail',
+            subject: 'Thông Tin Chi Tiết Đơn Hàng',
         );
     }
 

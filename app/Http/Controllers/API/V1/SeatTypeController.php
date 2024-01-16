@@ -108,8 +108,6 @@ class SeatTypeController extends Controller
     public function update(Request $request, SeatType $seatType)
     {
         try {
-            $old_data = $seatType;
-
             $validator = Validator::make([
                 'name' => 'nullable',
                 'price' => 'nullable',
@@ -160,7 +158,7 @@ class SeatTypeController extends Controller
     {
         try {
             $seatType->delete();
-            
+
             $seatType->rooms()->detach();
 
             return response()->json([], Response::HTTP_NO_CONTENT);
