@@ -31,8 +31,9 @@ class BookingController extends Controller
     public function index()
     {
         try {
-            $bookings = Booking::query()->where('level', 'show')
-                // ->where('status', '!=', 'cancel')
+            $bookings = Booking::query()->get();
+
+            $bookings_show = Booking::query()->where('level', 'show')
                 ->with('user')
                 ->with('showtime.movie')
                 ->with(['products' => function ($query) {
@@ -44,13 +45,12 @@ class BookingController extends Controller
 
             $total_bookings = $bookings->count();
             $not_yets = $bookings->where('level', 'show')->where('status', Booking::NOT_YET)->count();
-            $satisfieds = $bookings->where('level', 'show')->where('status', Booking::SATISFIED)->count();
+            $satisfieds = $bookings->where('status', Booking::SATISFIED)->count();
             $bookings_hide = Booking::query()->where('level', Booking::LEVEL_HIDE)->count();
-
             $cancel = Booking::query()->where('status', 'cancel')->count();
 
             $data = [
-                'bookings' => $bookings,
+                'bookings' => $bookings_show,
                 'total_bookings' => $total_bookings,
                 'not_yet' => $not_yets,
                 'satisfieds' => $satisfieds,
