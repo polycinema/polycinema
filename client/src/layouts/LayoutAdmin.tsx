@@ -17,7 +17,7 @@ import {
 import { Layout, Menu, Popconfirm, theme } from "antd";
 import { useAppDispatch } from "../store/hook";
 import { setLogout } from "../redux/slices/authorizationSlice";
-import { AiFillGold } from "react-icons/ai";
+import { AiFillGold, AiFillSignal } from "react-icons/ai";
 const { Header, Content, Footer, Sider } = Layout;
 
 const LayoutAdmin: React.FC = () => {
@@ -59,11 +59,16 @@ const LayoutAdmin: React.FC = () => {
           <Menu
             theme="dark"
             mode="inline"
-            defaultSelectedKeys={["1"]}
+            defaultSelectedKeys={["16"]}
             items={[
               {
-                key: 1,
+                key: 16,
                 icon: <AppstoreOutlined />,
+                label: <Link to={"dashboard"}>DashBoard</Link>,
+              },
+              {
+                key: 1,
+                icon: <AiFillSignal />,
                 label: <Link to={"statistic"}>Thống kê</Link>,
               },
               {
