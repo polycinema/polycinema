@@ -117,7 +117,6 @@ class BookingController extends Controller
                     'booking_id' => $booking->id,
                     'user_id' => $request->user_id
                 ]);
-
                 event(new SeatReservation($seatModel));
             }
 

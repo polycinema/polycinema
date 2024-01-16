@@ -113,7 +113,7 @@ const ListRooms = () => {
       render: (_: any, { key: id }: any) => (
         <div className="space-x-3">
           <Popconfirm
-            title="Bỏ ẩn sản phẩm"
+            title="Bỏ ẩn phòng"
             description="Bạn có chắc muốn khôi phục?"
             onConfirm={() =>
               softDelete({ room_id: id })

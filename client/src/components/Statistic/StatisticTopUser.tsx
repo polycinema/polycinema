@@ -6,7 +6,6 @@ import { formatCurrency } from "../../utils/formatVND";
 
 const StatisticTopUser = () => {
   const { data: TopUser } = useGetTopUserQuery();
-  console.log(TopUser);
 
   const dataSource = TopUser?.data?.map((items: ITop10Movie) => {
     return {
@@ -18,7 +17,6 @@ const StatisticTopUser = () => {
       bookings_sum_total_price: items.bookings_sum_total_price,
     };
   });
-  console.log("dataSource: ", dataSource);
   const columns: ColumnsType<ColumnTypeTopMovie> = [
     {
       title: "Tên Phim",
@@ -63,7 +61,6 @@ const StatisticTopUser = () => {
       dataIndex: "bookings_count",
       key: "bookings_count",
       align: "center",
-
       render: (bookings_count) => <p>{bookings_count} đơn</p>,
     },
     {

@@ -116,19 +116,6 @@ const InfoAccount = () => {
             >
               <Input prefix={<PhoneOutlined />} placeholder="SĐT" />
             </Form.Item>
-            <Form.Item
-              name="email"
-              label="Email"
-              rules={[
-                {
-                  required: true,
-                  type: "email",
-                  message: "Vui lòng nhập email",
-                },
-              ]}
-            >
-              <Input placeholder="Email" />
-            </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item

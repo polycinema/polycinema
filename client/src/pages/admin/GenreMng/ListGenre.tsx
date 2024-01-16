@@ -161,26 +161,6 @@ const ListGenre = () => {
           >
             <Button icon={<FaTrashRestore />} />
           </Popconfirm>
-          <Popconfirm
-            title="Xóa thể loại vĩnh viễn"
-            description="Bạn có chắc muốn xóa?"
-            // onConfirm={() =>
-            //   softDeleteBooking({booking_id: id})
-            //     .unwrap()
-            //     .then(() => {
-            //       notification.success({
-            //         message: "Delete booking sucessfuly!",
-            //       });
-            //       dispatch(setBookingSoftDelete(_))
-            //     })
-            // }
-            okText="Yes"
-            okType="default"
-            cancelText="No"
-            icon={<QuestionCircleOutlined style={{ color: "red" }} />}
-          >
-            <Button icon={<FcDeleteDatabase />} />
-          </Popconfirm>
         </div>
       ),
     },
