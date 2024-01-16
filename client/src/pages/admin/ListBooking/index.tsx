@@ -1,5 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Input, InputRef, Modal, Pagination, Popconfirm, Space, Table, message } from "antd";
+import {
+  Button,
+  Input,
+  InputRef,
+  Modal,
+  Pagination,
+  Popconfirm,
+  Space,
+  Table,
+  message,
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
 import {
   useGetAllBookingsQuery,
@@ -10,7 +20,11 @@ import {
 } from "../../../redux/api/checkoutApi";
 import { FaDotCircle, FaEyeSlash } from "react-icons/fa";
 import { RootBooking } from "../../../interfaces/booking";
-import { LoadingOutlined, QuestionCircleOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  QuestionCircleOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import { FaEye } from "react-icons/fa";
 import { FaFileExport } from "react-icons/fa";
 import IsLoading from "../../../utils/IsLoading";
@@ -83,7 +97,6 @@ const ListsBooking = () => {
   if (errBookingById) {
     message.error(errBookingById);
   }
-  
 
   const handleSearch = (
     selectedKeys: string[],
@@ -156,8 +169,7 @@ const ListsBooking = () => {
         setTimeout(() => searchInput.current?.select(), 100);
       }
     },
-    render: (text) =>
-      searchedColumn === dataIndex ? text : text.toString(),
+    render: (text) => (searchedColumn === dataIndex ? text : text.toString()),
   });
 
   const inforBooking = listBooking?.map((items: RootBooking) => {
@@ -176,7 +188,6 @@ const ListsBooking = () => {
       roonName: items.seats.map((items) => items.showtime.room.room_name),
     };
   });
-  console.log("inforBooking: ", inforBooking);
   const titleVN_XLSX = {
     booking_id: "Mã vé đặt",
     total_price: "Tổng tiền",
@@ -207,8 +218,7 @@ const ListsBooking = () => {
       dataIndex: "id",
       key: "id",
       align: "center",
-      ...getColumnSearchProps("id")
-      
+      ...getColumnSearchProps("id"),
     },
     {
       title: "Khách hàng",
@@ -221,7 +231,7 @@ const ListsBooking = () => {
       dataIndex: "email",
       key: "email",
       align: "center",
-      ...getColumnSearchProps("email")
+      ...getColumnSearchProps("email"),
     },
     {
       title: "Tổng tiền",
@@ -235,7 +245,7 @@ const ListsBooking = () => {
       dataIndex: "status",
       key: "status",
       align: "center",
-      type:"default", 
+      type: "default",
       render: (status, booking) =>
         status === "not_yet" ? (
           <div className="flex items-center content-center gap-x-3 justify-center">
@@ -265,21 +275,21 @@ const ListsBooking = () => {
             <span>Vé đã hủy</span>
           </div>
         ),
-        filters: [
-          {
-            text: 'Chưa lấy vé',
-            value: 'not_yet',
-          },
-          {
-            text: 'Đã lấy vé',
-            value: 'satisfied',
-          },
-          {
-            text: 'Đã hủy vé',
-            value: 'cancel',
-          },
-        ],
-        onFilter: (value: string, record) => record.status.indexOf(value) === 0,
+      filters: [
+        {
+          text: "Chưa lấy vé",
+          value: "not_yet",
+        },
+        {
+          text: "Đã lấy vé",
+          value: "satisfied",
+        },
+        {
+          text: "Đã hủy vé",
+          value: "cancel",
+        },
+      ],
+      onFilter: (value: string, record) => record.status.indexOf(value) === 0,
     },
     {
       title: "Xem thêm",
@@ -454,7 +464,9 @@ const ListsBooking = () => {
                 <div className=" border-b pb-4 p-2 text-base">
                   <span className="block font-semibold">Trạng thái:</span>
                   <span className="text-gray-600">
-                    {BookingById?.status === "cancel"
+                    {BookingById?.status === "not_yet"
+                      ? "Chưa lấy vé"
+                      : BookingById?.status === "cancel"
                       ? "Đã hủy vé"
                       : "Đã lấy vé"}
                   </span>

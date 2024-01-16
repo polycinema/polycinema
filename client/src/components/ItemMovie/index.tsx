@@ -94,6 +94,12 @@ const ItemMovie = ({ movie }: Props) => {
           </p>
         </div>
         <div className="movie-des">
+          <p className="movie-des-1">Ngày chiếu:</p>
+          <p className="movie-des-2">
+            {dayjs(movie?.release_date).format("DD/MM")}
+          </p>
+        </div>
+        <div className="movie-des">
           <p className="movie-des-1">Thời lượng:</p>
           <p className="movie-des-2">{movie?.duration} phút</p>
         </div>

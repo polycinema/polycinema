@@ -16,12 +16,14 @@ import { useAddMovieMutation } from "../../../redux/api/movieApi";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import swal from "sweetalert";
 import { useGetAllGenresQuery } from "../../../redux/api/genresApi";
+import { useGetAllActorQuery } from "../../../redux/api/actorsApi";
+import { useGetAllDirectorsQuery } from "../../../redux/api/directorApi";
 
 const AddMovies = () => {
   const [addMovies, { isLoading: isAddLoading }] = useAddMovieMutation();
   const {data:genres} = useGetAllGenresQuery()
-  const {data:actors} = useGetAllGenresQuery()
-  const {data:directors} = useGetAllGenresQuery()
+  const {data:actors} = useGetAllActorQuery()
+  const {data:directors} = useGetAllDirectorsQuery()
   const [urlImage, setUrlImage] = useState<string>();
   const [form] = Form.useForm();
   const navigate = useNavigate();

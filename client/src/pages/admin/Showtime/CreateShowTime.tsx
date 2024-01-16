@@ -102,7 +102,7 @@ const CreateShowTime = () => {
           <Select
             style={{ width: "100%" }}
             placeholder="Select to movie"
-            options={movies?.data?.map((items: any) => {
+            options={movies?.data?.filter(item=> item.status != "upcoming")?.map((items: any) => {
               return {
                 value: items.id,
                 label: items.name,

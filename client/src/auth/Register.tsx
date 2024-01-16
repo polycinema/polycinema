@@ -18,7 +18,7 @@ const Register = () => {
   // console.log("errRegister: ", errRegister);
   useEffect(() => {
     if (error) {
-      serErrRegister(error.data.errors.email[0]);
+      serErrRegister(error?.data?.errors?.email[0]);
     }
   }, [error]);
   const onFinish = (values: IAuth) => {

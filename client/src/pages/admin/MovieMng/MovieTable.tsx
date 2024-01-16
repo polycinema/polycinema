@@ -18,8 +18,7 @@ import { ColumnsType } from "antd/es/table";
 
 const MovieTable = () => {
   const { data: movies, isLoading: isLoadingMovies } = useGetAllMoviesQuery();
-  const { data: dataMovieSoft, error: errMovieSoft } =
-    useGetMovieSoftQuery();
+  const { data: dataMovieSoft, error: errMovieSoft } = useGetMovieSoftQuery();
   const [softDeleteMovie, { error: ErrorSoftDeleteMovie }] =
     useSoftDeleteMovieMutation();
   const [restoreMovie, { error: RestoreSoftDeleteMovie }] =
@@ -151,7 +150,7 @@ const MovieTable = () => {
       status: item.status,
     };
   });
-  const columns:ColumnsType<{
+  const columns: ColumnsType<{
     key: number;
     name: string;
     title: string;
@@ -164,7 +163,7 @@ const MovieTable = () => {
     status: string;
     actors: Actor[];
     director_id: string;
-}>  = [
+  }> = [
     {
       title: "Tên phim",
       dataIndex: "name",
@@ -237,6 +236,30 @@ const MovieTable = () => {
       dataIndex: "status",
       key: "status",
       align: "center",
+      render: (status) => (
+        <p>
+          {status === "upcoming"
+            ? "Sắp chiếu"
+            : status === "screening"
+            ? "Đang chiếu"
+            : "Đã chiếu"}
+        </p>
+      ),
+      filters: [
+        {
+          text: "Sắp chiếu",
+          value: "upcoming",
+        },
+        {
+          text: "Đang chiếu",
+          value: "screening",
+        },
+        {
+          text: "Đã chiếu",
+          value: "unscreen",
+        },
+      ],
+      onFilter: (value: string, record) => record.status.indexOf(value) === 0,
     },
     {
       title: "Diễn viên",
@@ -351,6 +374,3 @@ const MovieTable = () => {
 };
 
 export default MovieTable;
-
-
-

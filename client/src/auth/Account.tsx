@@ -5,9 +5,8 @@ import { useAppSelector } from "../store/hook";
 import { useEffect, useState } from "react";
 
 const Account = () => {
-  const { activeKeyAccout } = useAppSelector((state) => state.Account);
+  const { activeKeyAccout } = useAppSelector((state) => state?.Account);
   const [key,setKey] = useState<string>('1')
-  // console.log("key: ", key);
   useEffect(() => {
     if(activeKeyAccout){
       setKey(activeKeyAccout)
