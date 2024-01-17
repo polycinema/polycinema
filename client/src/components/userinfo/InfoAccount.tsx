@@ -105,12 +105,13 @@ const InfoAccount = () => {
               src={UserById?.data.image}
             />
           ) : (
+            urlImage ? 
             <Image
               className="rounded-full mt-4  object-cover"
               width={150}
               height={150}
               src={urlImage}
-            /> ?? <span className="text-red-500">Chưa cập nhật avatar</span>
+            /> : <span className="text-red-500">Chưa cập nhật avatar</span>
           )}
          
         </Form.Item>
