@@ -131,7 +131,7 @@ const PaymentPage = () => {
               <span className="font-semibold mr-2">Ghế ngồi:</span>
               <span className="text-gray-600">
                 {booking?.payload?.seats?.map((seat) => (
-                  <span key={seat?.id}>{seat?.seat_name}</span>
+                  <span key={seat?.id}>{seat?.seat_name},</span>
                 ))}
               </span>
             </div>

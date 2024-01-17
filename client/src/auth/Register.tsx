@@ -38,13 +38,13 @@ const Register = () => {
         onFinish={onFinish}
       >
         <Form.Item
-          label="User name"
+          label="Tên người dùng"
           name={"name"}
           rules={[{ required: true, message: "Vui lòng nhập tên" }]}
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="User name"
+            placeholder="Tên người dùng"
           />
         </Form.Item>
         <Form.Item
@@ -58,17 +58,17 @@ const Register = () => {
           <Input prefix={<MailOutlined />} placeholder="Email" />
         </Form.Item>
         <Form.Item
-          label="Password"
+          label="Mật khẩu"
           name={"password"}
           rules={[
             { required: true, message: "Vui lòng nhập password" },
-            { min: 8, message: "Password tối thiểu 8 kí tự" },
+            { min: 8, message: "Mật khẩu tối thiểu 8 kí tự" },
           ]}
         >
-          <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+          <Input.Password prefix={<LockOutlined />} placeholder="Mật khẩu" />
         </Form.Item>
         <Form.Item
-          label="Confirm password"
+          label="Xác nhận mật kh"
           name={"confirmPassword"}
           rules={[
             { required: true, message: "Vui lòng nhập confirm password" },
@@ -91,7 +91,7 @@ const Register = () => {
         <Form.Item>
           <Space style={{ display: "flex", justifyContent: "space-between" }}>
             <Button htmlType="submit">
-              {isLoading ? <LoadingOutlined /> : "Register"}
+              {isLoading ? <LoadingOutlined /> : "Đăng kí"}
             </Button>
           </Space>
         </Form.Item>
