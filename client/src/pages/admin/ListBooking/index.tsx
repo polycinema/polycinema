@@ -413,7 +413,7 @@ const ListsBooking = () => {
         </div>
       </div>
       <div className="mb-2">
-        <h1 className="text-center text-xl py-4 ">Danh sách vé đặt</h1>
+        <h1 className="text-center text-2xl py-4 text-[#0D5D9F]">Danh sách vé đặt</h1>
         <div className="md:flex gap-x-3 justify-between">
           <Popconfirm
             title="Export excel"

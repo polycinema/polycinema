@@ -317,11 +317,11 @@ const ShowTimeMng = () => {
         footer={null}
         width={700}
       >
-        <Table dataSource={dataSourceSoft} columns={columnsSoftDelete} />;
+        <Table dataSource={dataSourceSoft} columns={columnsSoftDelete} />
       </Modal>
         </div>
       </div>
-      <h1 className="text-2xl my-6 bg-white p-4 rounded-md shadow-md ">Danh sách lịch chiếu</h1>
+      <h1 className="text-2xl my-6 text-[#0D5D9F] bg-white p-4 rounded-md shadow-md ">Danh sách lịch chiếu</h1>
       <Table dataSource={dataSource} columns={columns} className="bg-white p-4 rounded-md shadow-md" />
     </div>
   );

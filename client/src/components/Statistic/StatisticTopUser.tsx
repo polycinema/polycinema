@@ -33,7 +33,7 @@ const StatisticTopUser = () => {
       align: "center",
       fixed: "left",
       render: (image) => (
-        <img className="w-20 rounded-full" src={image} alt="" />
+        <img className="w-20 h-20 object-cover mx-auto rounded-full" src={image} alt="" />
       ),
     },
     {

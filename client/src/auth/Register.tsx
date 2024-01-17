@@ -15,7 +15,6 @@ const Register = () => {
   const [register, { isLoading, error }] = useRegisterMutation();
   const [errRegister, serErrRegister] = useState<any>();
   const dispatch = useAppDispatch();
-  // console.log("errRegister: ", errRegister);
   useEffect(() => {
     if (error) {
       serErrRegister(error?.data?.errors?.email[0]);
@@ -29,11 +28,7 @@ const Register = () => {
       })
       .then(() => dispatch(setActiveKeyAccount("1")))
       .catch(() => swal("Đăng kí thất bại!", `${errRegister}`, "error"));
-    // console.log(values);
   };
-  if (error) {
-    console.error("error register: ", error);
-  }
   return (
     <div className="max-w-2xl mx-auto my-20">
       <Form

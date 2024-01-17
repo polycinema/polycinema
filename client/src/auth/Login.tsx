@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { setIsAuth, setToken, setUser } from "../redux/slices/authorizationSlice";
 import { useAppDispatch } from "../store/hook";
 import { useNavigate } from "react-router";
+import swal from "sweetalert";
 
 const Login = () => {
   const [login, { isLoading, error }]: any = useLoginMutation();
@@ -25,14 +26,17 @@ const Login = () => {
     login(values)
       .unwrap()
       .then((auth: any) => {
-        // console.log('auth: ',auth)
         if (auth) {
           dispatch(setIsAuth())
           dispatch(setUser(auth.user))
           dispatch(setToken(auth.token))
         }
         notification.success({ message: "Đăng nhập thành công!" });
-      }).then(() => navigate('/'));
+      })
+      .then(() => navigate('/'))
+      .catch(()=>{
+        notification.error({ message: "Đăng nhập thất bại! . Vui lòng kiểm tra lại tài khoản" });
+      })
   };
   const onFinishForgotPassword = (value:{email:string})=>{
     forgotPassword(value)
