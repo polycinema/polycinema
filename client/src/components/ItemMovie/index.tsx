@@ -84,7 +84,7 @@ const ItemMovie = ({ movie }: Props) => {
             {movie?.name}
           </Link>
         </h4>
-        <div className="movie-des">
+        <div className="movie-des h-[30px]">
           <p className="movie-des-1">Thể loại:</p>
           <p className="movie-des-2">
             {movie?.genres?.slice(0, 4)?.map((itemGenres: any) => {
@@ -93,13 +93,13 @@ const ItemMovie = ({ movie }: Props) => {
             ...
           </p>
         </div>
-        <div className="movie-des">
+        <div className="movie-des h-[30px]">
           <p className="movie-des-1">Ngày chiếu:</p>
           <p className="movie-des-2">
             {dayjs(movie?.release_date).format("DD/MM")}
           </p>
         </div>
-        <div className="movie-des">
+        <div className="movie-des h-[30px]">
           <p className="movie-des-1">Thời lượng:</p>
           <p className="movie-des-2">{movie?.duration} phút</p>
         </div>
