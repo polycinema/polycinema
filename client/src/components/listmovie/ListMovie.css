@@ -93,6 +93,7 @@
 }
 .movie-item-description{
         margin-top: 10px;
+        
 }
 .movie-item-description .movie-name{
         color: #337ab7;
@@ -101,17 +102,18 @@
         font-size: 18px;
         font-weight: 700;
         line-height: 1.5rem;
+        margin-bottom: 30px;
         
 }
 .movie-des{
         display: flex;
         align-items: center;
         font-size: 15px;
-        height: 40px;
 
 }
 
 .movie-des .movie-des-1{
+        
         font-weight: 700;
         width: 40%;
 }

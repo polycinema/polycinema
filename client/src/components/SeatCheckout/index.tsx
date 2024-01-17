@@ -281,10 +281,10 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
           <table className="w-full mt-8">
             <tr>
               <td></td>
-              <td className="text-center">Tên Combo</td>
-              <td className="text-center">Giá</td>
-              <td className="text-center">Mô Tả</td>
-              <td className="text-center">Số Lượng</td>
+              <td className="text-center"></td>
+              <td className="text-center"></td>
+              <td className="text-center"></td>
+              <td className="text-center"></td>
             </tr>
             {isLoading ? (
               <IsLoading />
@@ -299,7 +299,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
                 }) => (
                   <tr key={item.id}>
                     <td className="text-center p-2">
-                      <img className="w-28" src={item?.image} alt="" />
+                      <img className="w-28 h-28 rounded-full object-cover" src={item?.image} alt="" />
                     </td>
                     <td className="text-center p-2">{item?.name}</td>
                     <td className="text-center p-2">
