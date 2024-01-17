@@ -30,7 +30,7 @@ class BookingInformationMail extends Mailable
     {
         return new Envelope(
             from: new Address(config('mail.from.address'), config('mail.from.name')),
-            subject: 'Thông Tin Chi Tiết Đơn Hàng',
+            subject:  'Xác nhận đặt vé Poly Cinema thành công - Mã giao dịch ' . $this->booking->booking_id,
         );
     }
 

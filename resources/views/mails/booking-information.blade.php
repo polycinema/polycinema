@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,17 +9,14 @@
     <title>MAIL</title>
 </head>
 
-<body
-    style="font-family: Arial, sans-serif;
-background-color: #f0f0f0;
-margin: 0;
-padding: 0;
-display: flex;
-justify-content: center;
-align-items: center;">
-    <center>
-        <h2>Thông Tin Chi Tiết Đơn Hàng</h2><br>
-    </center>
+<body style="font-family: Arial, sans-serif;  margin: 0; padding: 0; text-align: center;">
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%">
+        <tr >
+            <td style="padding: 20px; text-align: center;">
+                <h1>Thông Tin Chi Tiết Đơn Hàng</h1>               
+            </td>
+        </tr>
+    </table>
     <div class="ticket"
         style="background-color: #fff;
     border-radius: 8px;
@@ -26,11 +24,14 @@ align-items: center;">
     padding: 20px;
     width: 300px;
     text-align: center;
-    border: 2px dashed #999;">
+    border: 2px dashed #999;
+    margin: 0 auto;">
+      <!-- <h1>Thông Tin Chi Tiết Đơn Hàng</h1> -->
         <div class="movie-title" style="font-size: 1.2em;
         font-weight: bold;
         margin-bottom: 10px;">
-            {{ $booking->showtime->movie->name }}</div>
+            {{ $booking->showtime->movie->name }}
+        </div>
         <div class="details" style="font-size: 0.9em;
         color: #555;
         margin-bottom: 15px;">
@@ -46,19 +47,25 @@ align-items: center;">
         margin-bottom: 15px;">
             <img src="http://localhost:8000/{{ DNS1D::getBarcodePNGPath($booking->booking_id, 'PHARMA2T',3,33,array(0,0,0)) }}"
                 alt="barcode" />
+                
         </div>
         <div class="seat-info" style="font-size: 0.8em;
         color: #777;">Phòng chiếu:
-            {{ $booking->showtime->room->room_name }}</div>
+            {{ $booking->showtime->room->room_name }}
+        </div>
         <div class="seat-info" style="font-size: 0.8em;
         color: #777;">Ghế: @foreach ($booking->seats as $seat)
                 {{ $seat->seat_name . ', ' }}
             @endforeach
         </div>
+        <h1>Tổng Tiền: {{ $booking->total_price }}</h1>
         <div class="footer" style="margin-top: 15px;
         color: #555;">Vui lòng giữ vé này để xác nhận quyền vào
-            rạp.</div>
+            rạp.
+        </div>
     </div>
+
 </body>
 
 </html>
+
