@@ -110,22 +110,29 @@ const StatisticPage = () => {
           <StatisticTop1Movie />
         </div>
       </div>
-      <div>
-        <StatisticSearchMovie />
-      </div>
       <div className="grid grid-cols-3 gap-6 mt-4">
         <div className="space-y-6 mt-4 bg-white p-2 rounded-md shadow-md col-span-1">
           <StatisticTopView />
         </div>
         <div className="space-y-6 mt-4 bg-white p-2 rounded-md shadow-md col-span-2">
-          <span className="text-xl flex justify-center text-[#0D5D9F]">Top 10 phim có doanh thu cao nhất</span>
+          <span className="text-xl flex justify-center text-[#0D5D9F]">
+            Top 10 phim có doanh thu cao nhất
+          </span>
           <Table dataSource={dataSource} columns={columns} />
         </div>
       </div>
       <div className="space-y-6 mt-4 bg-white p-2 rounded-md shadow-md col-span-2">
-          <span className="text-xl flex justify-center text-[#0D5D9F]">Người dùng đặt vé nhiều nhất</span>
-          <StatisticTopUser/>
-        </div>
+        <span className="text-xl flex justify-center text-[#0D5D9F]">
+          Người dùng đặt vé nhiều nhất
+        </span>
+        <StatisticTopUser />
+      </div>
+      <div className="space-y-6 mt-4 bg-white p-2 rounded-md shadow-md col-span-2">
+        <span className="text-xl flex justify-center text-[#0D5D9F]">
+          Doanh thu theo phim
+        </span>
+        <StatisticSearchMovie />
+      </div>
       <Modal
         title={`Trailer: ${movie?.name}`}
         open={isModalOpenTrailer}

@@ -226,16 +226,16 @@ const ShowTimeMng = () => {
     ),
     onFilter: (value, record) =>
       record[dataIndex]
-        .toString()
-        .toLowerCase()
-        .includes((value as string).toLowerCase()),
+        ?.toString()
+        ?.toLowerCase()
+        ?.includes((value as string).toLowerCase()),
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
       }
     },
     render: (text) =>
-      searchedColumn === dataIndex ? text : text.toString(),
+      searchedColumn === dataIndex ? text : text?.toString(),
   });
   const columns: any[] = [
     {
@@ -276,15 +276,15 @@ const ShowTimeMng = () => {
               <Button icon={<EditFilled />}/>
             </Link>
             <Popconfirm
-              title="Xóa lịch chiếu"
-              description="Bạn có chắc muốn xóa?"
+              title="Ẩn lịch chiếu"
+              description="Bạn có chắc muốn Ẩn?"
               onConfirm={() =>
                 softDeleteShowtime({showtime_id: id})
                   .unwrap()
                   .then(() => {
-                    swal("Thành công!", "Xóa lịch chiếu thành công!", "success")
+                    swal("Thành công!", "Ẩn lịch chiếu thành công!", "success")
                   }).catch(()=>{
-                    swal("Thất bại!", "Xóa lịch chiếu thất bại , Vui lòng thử lại !", "error");
+                    swal("Thất bại!", "Ẩn lịch chiếu thất bại , Vui lòng thử lại !", "error");
                   })
               }
               okText="Yes"
@@ -317,11 +317,11 @@ const ShowTimeMng = () => {
         footer={null}
         width={700}
       >
-        <Table dataSource={dataSourceSoft} columns={columnsSoftDelete} />;
+        <Table dataSource={dataSourceSoft} columns={columnsSoftDelete} />
       </Modal>
         </div>
       </div>
-      <h1 className="text-2xl my-6 bg-white p-4 rounded-md shadow-md ">Danh sách lịch chiếu</h1>
+      <h1 className="text-2xl my-6 text-[#0D5D9F] bg-white p-4 rounded-md shadow-md ">Danh sách lịch chiếu</h1>
       <Table dataSource={dataSource} columns={columns} className="bg-white p-4 rounded-md shadow-md" />
     </div>
   );

@@ -33,7 +33,6 @@ import EditNews from "./pages/admin/News/Update-News";
 import AddProduct from "./pages/admin/Product/Add-Product";
 import ListProduct from "./pages/admin/Product/List-Product";
 import EditProduct from "./pages/admin/Product/Edit-Product";
-import Dashboard from "./pages/admin/StatisticPage/StatisticPage";
 import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
 import NewDetailPage from "./pages/NewsPage/NewDetailPage";
 import PaymentPage from "./pages/PaymentPage";
@@ -56,6 +55,7 @@ import StatisticPage from "./pages/admin/StatisticPage/StatisticPage";
 import SeatTypeMng from "./pages/admin/SeatType/SeatTypeMng";
 import AddSeatType from "./pages/admin/SeatType/AddSeatType";
 import EditSeatType from "./pages/admin/SeatType/EditSeatType";
+import DashBoard from "./pages/admin/DashBoard";
 
 export const router = createBrowserRouter([
   { path: "*", element: <NotFoundPage /> },
@@ -104,8 +104,9 @@ export const router = createBrowserRouter([
           {
             element: <LayoutAdmin />,
             children: [
-              { index: true, element: <StatisticPage /> },
-              { path: "statistic", element: <Dashboard /> },
+              { index: true, element: <DashBoard /> },
+              { path: "dashboard", element: <DashBoard /> },
+              { path: "statistic", element: <StatisticPage /> },
               { path: "booking", element: <ListsBooking /> },
               { path: "rooms", element: <ListRooms /> },
               { path: "rooms/add", element: <AddRoom /> },

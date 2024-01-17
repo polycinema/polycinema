@@ -94,16 +94,16 @@ const ListDirector = () => {
           </Link>
           <div>
             <Popconfirm
-              title="Xóa sản phẩm"
-              description="Bạn có chắc chắn muốn xóa sản phẩm"
+              title="Ẩn đạo diễn"
+              description="Bạn có chắc chắn muốn ẩn đạo diễn"
               onConfirm={() => {
                 SoftDeleteDirector({ director_id: id }).then(() => {
                   setDirectors(
-                    directors?.filter((item: IDirector) => item.id !== id)
+                    directors?.filter((item) => item.id !== id)
                   );
-                  swal("Thành công!", "Xóa đạo diễn thành công!", "success")
+                  swal("Thành công!", "Ẩn đạo diễn thành công!", "success")
                 }).catch(()=>{
-                  swal("Thất bại!", "Xóa đạo diễn thất bại , Vui lòng thử lại !", "error");
+                  swal("Thất bại!", "ẨN đạo diễn thất bại , Vui lòng thử lại !", "error");
                 });
               }}
               okText="Có"
@@ -225,7 +225,7 @@ const ListDirector = () => {
             </Modal>
           </div>
         </div>
-        <h1 className="text-2xl mb-6 mt-2 bg-white p-4 rounded-md shadow-md ">
+        <h1 className="text-2xl mb-6 mt-2 bg-white p-4 rounded-md shadow-md text-[#0D5D9F]">
           Danh sách đạo diễn
         </h1>
         <Table

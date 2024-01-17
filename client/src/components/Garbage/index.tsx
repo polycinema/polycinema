@@ -8,6 +8,7 @@ import { useGetBookingsSoftQuery, useSoftDeleteBookingMutation } from "../../red
 import { RootBooking } from "../../interfaces/booking";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import swal from "sweetalert";
+import { formatCurrency } from "../../utils/formatVND";
 
 const GarbageComponent = () => {
   const [
@@ -45,6 +46,10 @@ const GarbageComponent = () => {
     return {
       key: items.id,
       booking_id: items.booking_id,
+      name: items?.user?.name,
+      email: items?.user?.email,
+      phone: items?.user?.phone,
+      total: items?.total_price,
       nameMovie: items.showtime?.movie.name
     }
   })
@@ -56,9 +61,30 @@ const GarbageComponent = () => {
       key: "booking_id",
     },
     {
+      title: "Khách hàng",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      key: "phone",
+    },
+    {
       title: "Tên Phim",
       dataIndex: "nameMovie",
       key: "nameMovie",
+    },
+    {
+      title: "Tổng tiền",
+      dataIndex: "total",
+      key: "total",
+      render:(total)=> <p>{formatCurrency(total)}</p>
     },
     {
       title: "Hành Động",
@@ -122,8 +148,10 @@ const GarbageComponent = () => {
         open={isModalOpenGarbage}
         onCancel={handleCancelGarbage}
         footer={null}
+        width={1100}
+
       >
-        <Table dataSource={dataSource} columns={columns} />;
+        <Table dataSource={dataSource} columns={columns} />
       </Modal>
     </>
   );

@@ -63,7 +63,6 @@ const ListsBooking = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
-  console.log("listBooking: ", listBooking);
   useEffect(() => {
     if (bookings) {
       setListBooking(bookings?.data?.bookings);
@@ -169,9 +168,8 @@ const ListsBooking = () => {
         setTimeout(() => searchInput.current?.select(), 100);
       }
     },
-    render: (text) => (searchedColumn === dataIndex ? text : text.toString()),
+    render: (text) => (searchedColumn === dataIndex ? text : text?.toString()),
   });
-
   const inforBooking = listBooking?.map((items: RootBooking) => {
     return {
       booking_id: items?.booking_id,
@@ -200,7 +198,6 @@ const ListsBooking = () => {
     showDate: "Ngày đặt",
     startTime: "Giờ chiếu",
     seatName: "Ghế ngồi",
-    // typeSeat: "Loại ghế",
     roonName: "Phòng chiếu",
   };
   const dataXLSX = inforBooking?.map((items: RootBooking) => {
@@ -232,6 +229,13 @@ const ListsBooking = () => {
       key: "email",
       align: "center",
       ...getColumnSearchProps("email"),
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      key: "phone",
+      align: "center",
+      ...getColumnSearchProps("phone"),
     },
     {
       title: "Tổng tiền",
@@ -351,6 +355,7 @@ const ListsBooking = () => {
       id: item?.booking_id,
       name: item?.user?.name,
       email: item?.user?.email,
+      phone: item?.user?.phone,
       total: item?.total_price,
       status: item?.status,
       nameMovie: item?.showtime?.movie?.name,
@@ -408,7 +413,7 @@ const ListsBooking = () => {
         </div>
       </div>
       <div className="mb-2">
-        <h1 className="text-center text-xl py-4 ">Danh sách vé đặt</h1>
+        <h1 className="text-center text-2xl py-4 text-[#0D5D9F]">Danh sách vé đặt</h1>
         <div className="md:flex gap-x-3 justify-between">
           <Popconfirm
             title="Export excel"
@@ -447,7 +452,7 @@ const ListsBooking = () => {
       <Modal
         title={`Chi tiết vé đặt`}
         open={isModalOpenModal}
-        // width={500}
+        width={600}
         bodyStyle={{ height: "500px", overflow: "auto" }}
         onCancel={handleCancelModal}
       >

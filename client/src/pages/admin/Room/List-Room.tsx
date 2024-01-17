@@ -113,7 +113,7 @@ const ListRooms = () => {
       render: (_: any, { key: id }: any) => (
         <div className="space-x-3">
           <Popconfirm
-            title="Bỏ ẩn sản phẩm"
+            title="Bỏ ẩn phòng"
             description="Bạn có chắc muốn khôi phục?"
             onConfirm={() =>
               softDelete({ room_id: id })
@@ -166,7 +166,7 @@ const ListRooms = () => {
             </Modal>
           </div>
         </div>
-        <h1 className="text-2xl my-6  bg-white p-4 rounded-md shadow-md">
+        <h1 className="text-2xl my-6  bg-white p-4 rounded-md shadow-md text-[#0D5D9F] ">
           Danh sách phòng{" "}
         </h1>
         <Table

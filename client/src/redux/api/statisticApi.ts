@@ -39,6 +39,10 @@ const statisticApi = createApi({
             query:() => `/top5-users-by-booking`,
             providesTags: ["Statistic"]
         }),
+        SearchTopMovie:build.query<[],void>({
+            query:() => `/get-movie-soft-by-total-revenue`,
+            providesTags: ["Statistic"]
+        }),
         StatisticCustom : build.mutation({
             query: (date) => ({
                 url:'/statistc-in-range',
@@ -46,6 +50,9 @@ const statisticApi = createApi({
                 body:date
             }),
             invalidatesTags: ["Statistic"],
+        }),
+        DashBoard:build.query({
+            query:()=> `/dash-board`
         })
     }),
 });
@@ -58,7 +65,9 @@ export const {
     useStatisticCustomMutation,
     useGetTop1MovieQuery,
     useGetTopViewQuery,
-    useGetTopUserQuery
+    useGetTopUserQuery,
+    useSearchTopMovieQuery,
+    useDashBoardQuery
 } = statisticApi;
 export const statisticReducer = statisticApi.reducer;
 export default statisticApi;

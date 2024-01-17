@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Movie;
+use App\Models\Seat;
+use App\Models\ShowTime;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -427,7 +429,7 @@ class StatisticController extends Controller
                 ->where('status', '!=', 'cancel')
                 ->withSum('bookings', 'total_price')
                 ->orderBy('bookings_count', 'desc')
-                ->limit(3)
+                ->limit(5)
                 ->get();
 
 
@@ -436,6 +438,80 @@ class StatisticController extends Controller
             ], Response::HTTP_OK);
         } catch (Exception $exception) {
             Log::error('StatisticController@getTop5UserHaveHighestBooking: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getAllMoviesSortedByTotalPrice()
+    {
+        try {
+            $movies = Movie::
+                // with(['director', 'actors', 'genres'])
+                select('movies.id', 'movies.name', 'movies.title', 'movies.image', 'movies.trailer', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status', DB::raw('SUM(bookings.total_price) as total_revenue'),  DB::raw('COUNT(bookings.id) as total_booking'))
+                ->join('show_times', 'show_times.movie_id', '=', 'movies.id')
+                ->join('bookings', 'show_times.id', '=', 'bookings.showtime_id')
+                ->groupBy('movies.id', 'movies.name', 'movies.title', 'movies.image', 'movies.trailer', 'movies.description', 'movies.release_date', 'movies.duration', 'movies.director_id', 'movies.status')
+                ->orderByDesc('total_revenue')
+                ->get();
+
+            return response()->json([
+                'data' => $movies,
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('StatisticController@getAllMoviesSortedByTotalPrice: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'message' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function dashBoard()
+    {
+        try {
+            // Lấy ngày hôm nay
+            $today = Carbon::today();
+
+            $new_users = User::whereDate('created_at', $today)->count();
+            $new_bookings = Booking::whereDate('created_at', $today)->get();
+            $count_new_bookings = $new_bookings->count();
+            $showtimes_today = ShowTime::whereDate('created_at', $today)
+                ->with(['movie' => function ($query) {
+                    $query->select('id', 'title', 'image');
+                }])
+                ->with(['room' => function ($query) {
+                    $query->select('id', 'room_name');
+                }])
+                ->get();
+
+            $count_showtimes_today = $showtimes_today->count();
+            $total_revenue_today = Booking::whereDate('created_at', $today)->where('status', '!=', 'cancel')->sum('total_price');
+
+            // lấy ra 5 người dùng đã đặt vé ngày hôm nay sắp xếp theo total_price từ lớn tới bé
+            $users = User::whereHas('bookings', function ($query) use ($today) {
+                $query->whereDate('created_at', $today);
+            })
+                ->withCount('bookings')
+                ->where('status', '!=', 'cancel')
+                ->withSum('bookings', 'total_price')
+                ->orderBy('bookings_count', 'desc')
+                ->limit(5)
+                ->get();
+
+            return response()->json([
+                'new_users' => $new_users,
+                'users_bookings' => $users,
+                // 'new_booking' => $new_bookings,
+                'count_new_bookings' => $count_new_bookings,
+                'showtimes_today' => $showtimes_today,
+                'count_showtimes' => $count_showtimes_today,
+                'total_revenue_today' => $total_revenue_today,
+            ], Response::HTTP_OK);
+        } catch (Exception $exception) {
+            Log::error('StatisticController@dashBoard: ', [$exception->getMessage()]);
 
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'

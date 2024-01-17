@@ -170,5 +170,9 @@ Route::prefix('v1')->group(function () {
     Route::get('movie-with-showtime', [MovieController::class, 'getMovieWithShowTimeGroupByDate']);
 
     Route::get('top5-users-by-booking', [StatisticController::class, 'getTop5UserHaveHighestBooking']);
+    
+    Route::get('get-movie-soft-by-total-revenue', [StatisticController::class, 'getAllMoviesSortedByTotalPrice']);
+
+    Route::get('dash-board', [StatisticController::class, 'dashBoard']);
 
 });

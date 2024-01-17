@@ -199,7 +199,7 @@ const ListProduct = () => {
             </Modal>
           </div>
         </div>
-        <h1 className="text-2xl my-6 bg-white p-4 rounded-md shadow-md ">
+        <h1 className="text-2xl my-6 bg-white text-[#0D5D9F] p-4 rounded-md shadow-md ">
           Danh sách sản phẩm
         </h1>
         <Table

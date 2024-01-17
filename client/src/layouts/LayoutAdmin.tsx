@@ -17,7 +17,7 @@ import {
 import { Layout, Menu, Popconfirm, theme } from "antd";
 import { useAppDispatch } from "../store/hook";
 import { setLogout } from "../redux/slices/authorizationSlice";
-import { AiFillGold } from "react-icons/ai";
+import { AiFillGold, AiFillSignal } from "react-icons/ai";
 const { Header, Content, Footer, Sider } = Layout;
 
 const LayoutAdmin: React.FC = () => {
@@ -39,12 +39,13 @@ const LayoutAdmin: React.FC = () => {
         }}
       >
         <Link to={"/"}>
-          <img src={logo1} alt="" className="w-28   " />
+          <img src={logo1} alt="" className="w-28 m-2 p-2"  />
         </Link>
       </Header>
 
       <Layout>
         <Sider
+           style={{ width:"100px",  height: '100vh', position: 'fixed', left: 0, top: 0, bottom: 0 ,marginTop:"60px", paddingTop:"20px"}}
           collapsible
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
@@ -59,11 +60,16 @@ const LayoutAdmin: React.FC = () => {
           <Menu
             theme="dark"
             mode="inline"
-            defaultSelectedKeys={["1"]}
+            defaultSelectedKeys={["16"]}
             items={[
               {
-                key: 1,
+                key: 16,
                 icon: <AppstoreOutlined />,
+                label: <Link to={"dashboard"}>DashBoard</Link>,
+              },
+              {
+                key: 1,
+                icon: <AiFillSignal />,
                 label: <Link to={"statistic"}>Thống kê</Link>,
               },
               {
@@ -156,7 +162,7 @@ const LayoutAdmin: React.FC = () => {
             ]}
           />
         </Sider>
-        <Content style={{ margin: "24px 16px 0" }}>
+        <Content style={{ margin: "24px 16px 0", marginLeft: 230  }}>
           <div
             style={{
               padding: 24,
