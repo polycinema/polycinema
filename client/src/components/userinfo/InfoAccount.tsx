@@ -1,4 +1,8 @@
-import { PhoneOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  PhoneOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -28,23 +32,20 @@ const InfoAccount = () => {
   const [updateProfile, { isLoading, error }] = useUpdateProfileMutation();
   const [urlImage, setUrlImage] = useState<string>();
   const { data: UserById } = useGetUserByIdQuery(user.id);
-
+  // console.log("UserById: ", UserById);
   useEffect(() => {
     (async () => {
       await form.setFieldsValue({
-        name: UserById?.data.name ?? "Chưa có thông tin",
-        phone: UserById?.data.phone ?? "Chưa có thông tin",
-        email: UserById?.data.email ?? "Chưa có thông tin",
-        date_of_birth:
-          dayjs(UserById?.data.date_of_birth) ?? "Chưa có thông tin",
-        gender: UserById?.data.gender ?? "Chưa có thông tin",
-        // image: UserById?.data.image,
-        // UserById_id: user?.id
+        name: UserById?.data.name,
+        phone: UserById?.data.phone,
+        date_of_birth: dayjs(UserById?.data.date_of_birth),
+        gender: UserById?.data.gender,
+        image: UserById?.data.image,
       });
     })();
   }, [UserById]);
   const onFinish = (value: User) => {
-    console.log("value: ", value);
+    // console.log("value: ", value);
 
     updateProfile({
       name: value.name,
@@ -85,21 +86,33 @@ const InfoAccount = () => {
       }
     },
   };
+  if (error) {
+    message.error('error update profile');
+    console.error("error update profile: ", error);
+  }
   return (
     <div className="max-w-4xl mx-auto">
       <Form layout="vertical" form={form} onFinish={onFinish}>
-        <Form.Item >
-          
+        <Form.Item>
           <Upload {...props}>
             <Button icon={<UploadOutlined />}>Click to Upload</Button>
           </Upload>
           {UserById?.data.image ? (
-            <Image className="rounded-full mt-4  object-cover" width={150} height={150} src={UserById?.data.image} />
+            <Image
+              className="rounded-full mt-4  object-cover"
+              width={150}
+              height={150}
+              src={UserById?.data.image}
+            />
           ) : (
-            "Chưa cập nhật avatar"
+            <Image
+              className="rounded-full mt-4  object-cover"
+              width={150}
+              height={150}
+              src={urlImage}
+            /> ?? <span className="text-red-500">Chưa cập nhật avatar</span>
           )}
-        
-          
+         
         </Form.Item>
         <Row gutter={32}>
           <Col span={12}>
@@ -146,7 +159,11 @@ const InfoAccount = () => {
           <Button type="link">Đổi mật khẩu</Button>
         </Form.Item>
         <Form.Item>
-          <Button htmlType="submit">Cập Nhật</Button>
+          {isLoading ? (
+            <LoadingOutlined />
+          ) : (
+            <Button htmlType="submit">Cập Nhật</Button>
+          )}
         </Form.Item>
       </Form>
     </div>
