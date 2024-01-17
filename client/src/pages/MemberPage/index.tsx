@@ -76,8 +76,8 @@ const MemberPage = (props: Props) => {
                   <th className="border border-gray-400 p-2">Rạp chiếu</th>
                   <th className="border border-gray-400 p-2">Chỗ ngồi</th>
                   <th className="border border-gray-400 p-2">Phòng chiếu</th>
-                  <th className="border border-gray-400 p-2">Giờ chiếu</th>
                   <th className="border border-gray-400 p-2">Ngày chiếu</th>
+                  <th className="border border-gray-400 p-2">Giờ chiếu</th>
                   <th className="border border-gray-400 p-2"></th>
                 </tr>
               </thead>
@@ -105,10 +105,10 @@ const MemberPage = (props: Props) => {
                         {item?.seats[0]?.showtime?.room?.room_name}
                       </td>
                       <td className="border border-gray-400 p-2 text-center">
-                        {dayjs(item?.created_at).format("DD/MM.YYYY")}
+                        {dayjs(item?.showtime?.show_date).format("DD/MM.YYYY")}
                       </td>
                       <td className="border border-gray-400 p-2 text-center">
-                        {dayjs(item?.created_at).format("HH:mm:ss")}
+                        {item?.showtime?.start_time}
                       </td>
                       <td className="p-3 border-b border-gray-400 flex justify-center items-center text-xl text-[#42a5f5] ">
                         <button onClick={() => onHandleDetail(item)}>
@@ -173,9 +173,9 @@ const MemberPage = (props: Props) => {
               </span>
             </div>
             <div className=" border-b pb-4 p-2 text-lg flex gap-2">
-              <span className="block mb-2 font-semibold">Ngày đặt:</span>
+              <span className="block mb-2 font-semibold">Ngày chiếu:</span>
               <span className="text-gray-600">
-                {dayjs(detailBooking?.created_at).format("DD/MM.YYYY")}
+                {dayjs(detailBooking?.showtime?.show_date).format("DD/MM.YYYY")}
               </span>
             </div>
 
