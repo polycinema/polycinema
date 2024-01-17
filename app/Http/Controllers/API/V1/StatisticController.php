@@ -474,7 +474,7 @@ class StatisticController extends Controller
         try {
             // Lấy ngày hôm nay
             $today = Carbon::today();
-
+                
             $new_users = User::whereDate('created_at', $today)->count();
             $new_bookings = Booking::whereDate('created_at', $today)->get();
             $count_new_bookings = $new_bookings->count();
@@ -490,14 +490,17 @@ class StatisticController extends Controller
             $count_showtimes_today = $showtimes_today->count();
             $total_revenue_today = Booking::whereDate('created_at', $today)->where('status', '!=', 'cancel')->sum('total_price');
 
+            $toDay = now()->toDateString();
             // lấy ra 5 người dùng đã đặt vé ngày hôm nay sắp xếp theo total_price từ lớn tới bé
-            $users = User::whereHas('bookings', function ($query) use ($today) {
-                $query->whereDate('created_at', $today);
-            })
-                ->withCount('bookings')
-                ->where('status', '!=', 'cancel')
-                ->withSum('bookings', 'total_price')
-                ->orderBy('bookings_count', 'desc')
+            $users = User::
+                join('bookings', 'users.id', '=', 'bookings.user_id')
+                ->whereDate('bookings.created_at', $toDay)
+                ->where('bookings.status', '!=', 'cancel')
+                ->select('users.id', 'users.name', 'users.image')
+                ->selectRaw('COUNT(bookings.id) as bookings_count')
+                ->selectRaw('SUM(bookings.total_price) as bookings_sum_total_price')
+                ->groupBy('users.id', 'users.name')
+                ->orderByDesc('bookings_sum_total_price', 'decs')
                 ->limit(5)
                 ->get();
 
