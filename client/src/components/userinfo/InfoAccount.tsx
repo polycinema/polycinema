@@ -60,7 +60,7 @@ const InfoAccount = () => {
       .then((user) => {
         try {
           console.log("user update: ", user);
-          notification.success({ message: "update profile successfully" });
+          notification.success({ message: "Cập nhật thông tin thành công" });
           // navigate("/admin/showtime");
         } catch (error) {
           console.error("error update profile: ", error);
@@ -155,10 +155,6 @@ const InfoAccount = () => {
             </Form.Item>
           </Col>
         </Row>
-
-        <Form.Item>
-          <Button type="link">Đổi mật khẩu</Button>
-        </Form.Item>
         <Form.Item>
           {isLoading ? (
             <LoadingOutlined />

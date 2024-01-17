@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { setIsAuth, setToken, setUser } from "../redux/slices/authorizationSlice";
 import { useAppDispatch } from "../store/hook";
 import { useNavigate } from "react-router";
-import swal from "sweetalert";
 
 const Login = () => {
   const [login, { isLoading, error }]: any = useLoginMutation();
@@ -79,19 +78,18 @@ const Login = () => {
           />
         </Form.Item>
         <Form.Item
-          label="Password"
+          label="Mật khẩu"
           name="password"
           rules={[{ min: 6, required: true, message: "Please input your Password!" }]}
         >
           <Input.Password
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
-            placeholder="Password"
+            placeholder="Mật khẩu"
           />
         </Form.Item>
         <Form.Item>
           <Space style={{ display: "flex", justifyContent: "space-between" }}>
-            <Checkbox>Remember me</Checkbox>
 
             <Button onClick={showModal} className="login-form-forgot text-blue-500">Quên mật khẩu?</Button>
           </Space>
@@ -100,7 +98,7 @@ const Login = () => {
         <Form.Item>
           <Space>
             <Button htmlType="submit" >
-              {isLoading ? <LoadingOutlined /> : "Login"}
+              {isLoading ? <LoadingOutlined /> : "Đăng nhập"}
             </Button>
           </Space>
         </Form.Item>
