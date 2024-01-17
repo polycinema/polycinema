@@ -146,44 +146,57 @@ const ListAcountUser = () => {
       title: "Tên tài khoản",
       dataIndex: "name",
       key: "name",
-      width: "30%",
+      align:"center",
       ...getColumnSearchProps("name"),
     },
     {
       title: "Ảnh ",
       dataIndex: "image",
       key: "image",
+      align:"center",
       render: (image) => (
-        <img className="w-28 rounded-full" src={image} alt="" />
+        <img className="w-24 h-24 object-cover mx-auto rounded-full" src={image} alt="" />
       ),
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      align:"center",
       render: (text) => <a>{text}</a>,
     },
     {
       title: "Số điện thoại",
       dataIndex: "phone",
       key: "phone",
+      align:"center",
       render: (text) => <a>{text}</a>,
     },
     {
       title: "Ngày sinh",
       dataIndex: "date_of_birth",
       key: "date_of_birth",
+      align:"center",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Giới tính",
+      dataIndex: "gender",
+      key: "gender",
+      align:"center",
       render: (text) => <a>{text}</a>,
     },
     {
       title: "Vai trò",
       dataIndex: "role",
       key: "role",
+      align:"center",
       render: (text) => <a>{text}</a>,
     },
     {
       title: "Hành động",
       key: "action",
+      align:"center",
       render: ({ key: id }: { key: number | string }) => (
         <Space size="middle">
           <Button>
@@ -226,6 +239,7 @@ const ListAcountUser = () => {
       email: item?.email,
       phone: item?.phone,
       image: item?.image,
+      gender: item?.gender,
       date_of_birth: item?.date_of_birth,
       role: item?.role,
     };
@@ -236,11 +250,16 @@ const ListAcountUser = () => {
   const OpentModalGarbage = () => {
     SetIsModalOpenGarbage(true);
   };
-  const dataSource = acountBanned?.data?.map((items) => {
+  const dataSource = acountBanned?.data?.map((item) => {
     return {
-      key: items.id,
-      name: items?.name,
-      email: items?.email,
+      key: item?.id,
+      name: item?.name,
+      email: item?.email,
+      phone: item?.phone,
+      image: item?.image,
+      gender: item?.gender,
+      date_of_birth: item?.date_of_birth,
+      role: item?.role,
     };
   });
   const columnBanned = [
@@ -248,11 +267,52 @@ const ListAcountUser = () => {
       title: "Tên tài khoản",
       dataIndex: "name",
       key: "name",
+      align:"center",
+      ...getColumnSearchProps("name"),
+    },
+    {
+      title: "Ảnh ",
+      dataIndex: "image",
+      key: "image",
+      align:"center",
+      render: (image) => (
+        <img className="w-24 h-24 object-cover mx-auto rounded-full" src={image} alt="" />
+      ),
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      align:"center",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      key: "phone",
+      align:"center",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Ngày sinh",
+      dataIndex: "date_of_birth",
+      key: "date_of_birth",
+      align:"center",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Giới tính",
+      dataIndex: "gender",
+      key: "gender",
+      align:"center",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Vai trò",
+      dataIndex: "role",
+      key: "role",
+      align:"center",
+      render: (text) => <a>{text}</a>,
     },
     {
       title: "Hành Động",
@@ -312,6 +372,7 @@ const ListAcountUser = () => {
               open={isModalOpenGarbage}
               onCancel={handleCancelGarbage}
               footer={null}
+              width={1100}
             >
               <Table dataSource={dataSource} columns={columnBanned} />;
             </Modal>
