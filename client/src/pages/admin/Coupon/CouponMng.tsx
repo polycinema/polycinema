@@ -298,7 +298,7 @@ const CouponMng = () => {
               </Modal>
             </div>
           </div>
-          <h1 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md">
+          <h1 className="text-xl uppercase font-bold mb-4 bg-white p-4 rounded-md shadow-md text-[#0D5D9F]">
             Danh sách mã giảm
           </h1>
           <Table

@@ -15,8 +15,12 @@ import type { ColumnsType } from "antd/es/table";
 import { Link } from "react-router-dom";
 import { QuestionCircleOutlined, SearchOutlined } from "@ant-design/icons";
 import { FilterConfirmProps } from "antd/es/table/interface";
-import type { ColumnType } from 'antd/es/table';
-import { useBlockAcountByIdMutation, useGetAcountBannedQuery, useGetAllAcountUsersQuery } from "../../../redux/api/acountApi";
+import type { ColumnType } from "antd/es/table";
+import {
+  useBlockAcountByIdMutation,
+  useGetAcountBannedQuery,
+  useGetAllAcountUsersQuery,
+} from "../../../redux/api/acountApi";
 import { MdAutoDelete } from "react-icons/md";
 import { FaTrashRestore } from "react-icons/fa";
 import swal from "sweetalert";
@@ -26,16 +30,16 @@ interface DataType {
   key: string;
   name: string;
   email: string;
-  phone:string;
-  image:string;
-  date_of_birth:string;
+  phone: string;
+  image: string;
+  date_of_birth: string;
   role: string;
 }
 type DataIndex = keyof DataType;
 const ListAcountUser = () => {
-  const {data:acounts} = useGetAllAcountUsersQuery()
-  const {data:acountBanned} = useGetAcountBannedQuery()
-  const [blockAcount,{isLoading}] = useBlockAcountByIdMutation()
+  const { data: acounts } = useGetAllAcountUsersQuery();
+  const { data: acountBanned } = useGetAcountBannedQuery();
+  const [blockAcount, { isLoading }] = useBlockAcountByIdMutation();
   const [messageApi, contextHolder] = message.useMessage();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -134,8 +138,7 @@ const ListAcountUser = () => {
         setTimeout(() => searchInput.current?.select(), 100);
       }
     },
-    render: (text) =>
-      searchedColumn === dataIndex ? text : text?.toString(),
+    render: (text) => (searchedColumn === dataIndex ? text : text?.toString()),
   });
 
   const columns: ColumnsType<DataType> = [
@@ -150,7 +153,9 @@ const ListAcountUser = () => {
       title: "Ảnh ",
       dataIndex: "image",
       key: "image",
-      render: (image) => <img className="w-28 rounded-full" src={image} alt="" />,
+      render: (image) => (
+        <img className="w-28 rounded-full" src={image} alt="" />
+      ),
     },
     {
       title: "Email",
@@ -192,20 +197,21 @@ const ListAcountUser = () => {
               okType="default"
               cancelText="Không"
               onConfirm={() => {
-                blockAcount({user_id:id}).then(() => {
+                blockAcount({ user_id: id }).then(() => {
                   messageApi.open({
                     type: "success",
                     content: "Block khoản thành công",
                   });
                 });
               }}
-              
             >
-              <Button danger>{isLoading ? (
-                <AiOutlineLoading3Quarters className="animate-spin" />
-              ) : (
-                "Block"
-              )}{" "}</Button>
+              <Button danger>
+                {isLoading ? (
+                  <AiOutlineLoading3Quarters className="animate-spin" />
+                ) : (
+                  "Block"
+                )}{" "}
+              </Button>
             </Popconfirm>
           </div>
         </Space>
@@ -230,13 +236,13 @@ const ListAcountUser = () => {
   const OpentModalGarbage = () => {
     SetIsModalOpenGarbage(true);
   };
-  const dataSource = acountBanned?.data?.map((items)=> {
+  const dataSource = acountBanned?.data?.map((items) => {
     return {
       key: items.id,
       name: items?.name,
       email: items?.email,
-    }
-  })
+    };
+  });
   const columnBanned = [
     {
       title: "Tên tài khoản",
@@ -258,22 +264,30 @@ const ListAcountUser = () => {
             title="Bỏ chặn tài khoản"
             description="Bạn có chắc muốn khôi phục?"
             onConfirm={() =>
-              blockAcount({user_id: id})
+              blockAcount({ user_id: id })
                 .unwrap()
                 .then(() => {
-                  swal("Thành công!", "Bỏ chặn tài khoản thành công!", "success")
-                }).catch(()=>{
-                  swal("Thất bại!", "Bỏ chặn tài khoản thất bại , Vui lòng thử lại !", "error")
+                  swal(
+                    "Thành công!",
+                    "Bỏ chặn tài khoản thành công!",
+                    "success"
+                  );
+                })
+                .catch(() => {
+                  swal(
+                    "Thất bại!",
+                    "Bỏ chặn tài khoản thất bại , Vui lòng thử lại !",
+                    "error"
+                  );
                 })
             }
             okText="Yes"
             okType="default"
             cancelText="No"
-            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+            icon={<QuestionCircleOutlined style={{ color: "red" }} />}
           >
             <Button icon={<FaTrashRestore />} />
           </Popconfirm>
-          
         </div>
       ),
     },
@@ -282,30 +296,30 @@ const ListAcountUser = () => {
     <>
       {contextHolder}
       <div>
-      <Button className="m-2">
-              <Link to={"/admin/addAcount"}>Thêm Tài Khoản Mới</Link>
-            </Button>
         <div className="flex justify-between">
-        <h1 className="text-2xl mb-6 bg-white p-2 rounded-md shadow-md">
+          <Button className="m-2">
+            <Link to={"/admin/addAcount"}>Thêm Tài Khoản Mới</Link>
+          </Button>
+
+          <div>
+            <Badge count={acountBanned?.data?.length} size="small">
+              <Button icon={<MdAutoDelete />} onClick={OpentModalGarbage}>
+                Tài khoản bị chặn
+              </Button>
+            </Badge>
+            <Modal
+              title="Danh sách tài khoản đã chặn"
+              open={isModalOpenGarbage}
+              onCancel={handleCancelGarbage}
+              footer={null}
+            >
+              <Table dataSource={dataSource} columns={columnBanned} />;
+            </Modal>
+          </div>
+        </div>
+        <h1 className="text-2xl mb-6 text-[#0D5D9F] bg-white p-2 rounded-md shadow-md">
           Danh sách tài khoản khách hàng
         </h1>
-        <div>
-        <Badge count={acountBanned?.data?.length} size="small">
-        <Button icon={<MdAutoDelete />} onClick={OpentModalGarbage}>
-          Tài khoản bị chặn
-        </Button>
-      </Badge>
-      <Modal
-        title="Danh sách tài khoản đã chặn"
-        open={isModalOpenGarbage}
-        onCancel={handleCancelGarbage}
-        footer={null}
-      >
-        <Table dataSource={dataSource} columns={columnBanned} />;
-      </Modal>
-        </div>
-        </div>
-        
         <Table
           columns={columns}
           dataSource={dataConfig}

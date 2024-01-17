@@ -306,7 +306,7 @@ const SeatCheckout = ({ showtime, isLoading, user }: Props) => {
                       {formatCurrency(item?.price)}
                     </td>
                     <td className="text-center p-2">{item?.description}</td>
-                    <td className="text-center p-2 flex justify-center items-center gap-2 ">
+                    <td className="text-center p-2 flex justify-center items-center gap-2 pt-[50px]">
                       <Button
                         onClick={() => dispacth(decreaseProduct(item.id))}
                       >

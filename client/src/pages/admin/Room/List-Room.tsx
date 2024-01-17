@@ -166,7 +166,7 @@ const ListRooms = () => {
             </Modal>
           </div>
         </div>
-        <h1 className="text-2xl my-6  bg-white p-4 rounded-md shadow-md">
+        <h1 className="text-2xl my-6  bg-white p-4 rounded-md shadow-md text-[#0D5D9F] ">
           Danh sách phòng{" "}
         </h1>
         <Table

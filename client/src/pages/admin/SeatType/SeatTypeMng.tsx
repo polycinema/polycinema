@@ -191,7 +191,7 @@ const SeatTypeMng = () => {
               </Modal>
             </div>
         </div>
-        <h1 className="text-2xl mb-6 mt-2 bg-white p-4 rounded-md shadow-md ">
+        <h1 className="text-2xl mb-6 mt-2 bg-white p-4 rounded-md shadow-md text-[#0D5D9F]">
           Danh sách loại ghế
         </h1>
         <Table

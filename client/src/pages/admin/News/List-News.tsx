@@ -102,7 +102,7 @@ const ListPost = (props: Props) => {
         <Button>
           <Link to={"/admin/news/add"}>Thêm tin tức</Link>
         </Button>
-        <h1 className="text-2xl mb-6 mt-2 bg-white p-4 rounded-md shadow-md ">Danh sách tin tức</h1>
+        <h1 className="text-2xl mb-6 mt-2 text-[#0D5D9F] bg-white p-4 rounded-md shadow-md ">Danh sách tin tức</h1>
         <Table columns={columns} dataSource={data} className="bg-white p-4 rounded-md shadow-md" />
       </div>
     </>
