@@ -31,6 +31,14 @@ const ListBanner = (props: Props) => {
       render: (img) => <img className="w-40 mx-auto" src={img} alt="anh" />,
     },
     {
+      title:"Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      align: "center",
+      render: (status) => <p>{status == "active"? "Hiển thị":"Ẩn"}</p>
+
+    },
+    {
       title: "Hành động",
       key: "action",
       align: "center",
@@ -68,6 +76,7 @@ const ListBanner = (props: Props) => {
     return {
       key: item?.id,
       image: item?.name,
+      status: item?.status,
     };
   });
   return (

@@ -46,7 +46,7 @@ const CreateShowTime = () => {
         navigate("/admin/showtime");
       })
       .catch((err) => {
-        swal("Thất bại!", `${err.message}`, "error");
+        swal("Thất bại!", `Lịch chiếu đã tồn tại! Vui lòng kiểm tra lại`, "error");
       })
   };
   if (error) {
