@@ -9,10 +9,12 @@
 </head>
 
 <body style="font-family: Arial, sans-serif;  margin: 0; padding: 0; text-align: center;">
+<h3>Chào {{ $booking->user->name }}  </h3>
     <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%">
         <tr>
+        
             <td style="padding: 20px; text-align: center;">
-                <h2>Chào {{ $booking->user->name }} Dưới Đây Thông Tin Chi Tiết Đơn Hàng </h2>
+                <h2> Dưới Đây Là Thông Tin Chi Tiết Đơn Hàng </h2>
             </td>
         </tr>
     </table>
