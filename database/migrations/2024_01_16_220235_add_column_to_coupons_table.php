@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('coupons', function (Blueprint $table) {
-            $table->timestamp('start_at'); // ngày hiệu lực
+            $table->timestamp('start_at')->nullable();
         });
     }
 
