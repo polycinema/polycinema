@@ -56,11 +56,10 @@ const BannerMovie: React.FC = () => {
             }
         )()
     }, [])
-
     return (
         <div className="box-all">
             <Slider {...settings} className="w-full">
-                {banner?.map((banner: IBanner, index) => (
+                {banner?.filter((item)=>item?.status == "active")?.map((banner: IBanner, index) => (
                     <div className="slider" key={index + 1}>
                         <img src={banner.name} alt="" />
                     </div>

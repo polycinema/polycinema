@@ -1,22 +1,23 @@
 import React, { useState } from "react";
-import { Button, Form, Upload, UploadProps, message } from "antd";
+import { Button, Form, Select, Upload, UploadProps, message } from "antd";
 import { UploadOutlined, VerticalAlignTopOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router";
-import { pause } from "../../../utils/pause";
 import swal from "sweetalert";
 import { addBanner } from "../../../api/Banner";
 
 type FieldType = {
   name: string;
+  status: string;
 };
 
 const AddBanner = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [urlImage, setUrlImage] = useState("");
+console.log(urlImage);
 
-  const onFinish = async () => {
-    addBanner({ name: urlImage })
+  const onFinish = async (value) => {
+    addBanner({ name: urlImage, status:value?.status })
       .then(async () => {
         form.resetFields();
         await swal("Thành công!", "Thêm banner thành công!", "success");
@@ -27,23 +28,11 @@ const AddBanner = () => {
       });
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
-
   const props: UploadProps = {
     name: "file",
     action: "https://api.cloudinary.com/v1_1/dbktpvcfz/image/upload",
-    // Thay đổi thành URL API của Cloudinary
-    headers: {
-      // Authorization: 'Bearer 773215578244178',
-      // "Access-Control-Allow-Origin":"*"
-      // Thay đổi thành API key của bạn
-    },
     data: {
-      // Thêm các dữ liệu cần thiết như upload preset
       upload_preset: "upload",
-      // Thay đổi thành upload preset của bạn
     },
     onChange(info) {
       if (info.file.status === "done") {
@@ -61,7 +50,9 @@ const AddBanner = () => {
   return (
     <>
       <div>
-        <h1 className="text-4xl mb-6 bg-white p-4 rounded-md shadow-md">Thêm banner</h1>
+        <h1 className="text-4xl mb-6 bg-white p-4 rounded-md shadow-md">
+          Thêm banner
+        </h1>
         <div className="grid grid-cols-2 gap-10">
           <Form
             name="basic"
@@ -70,7 +61,6 @@ const AddBanner = () => {
             style={{ width: "100%" }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             autoComplete="off"
             className="bg-white p-4 rounded-md shadow-md"
           >
@@ -82,6 +72,22 @@ const AddBanner = () => {
               <Upload {...props}>
                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
               </Upload>
+            </Form.Item>
+            <Form.Item
+              label="Trạng thái"
+              name="status"
+              rules={[
+                { required: true, message: "Trạng thái không được để trống" },
+              ]}
+            >
+              <Select
+                style={{ width: "100%" }}
+                placeholder="Trạng thái Banner ..."
+                options={[
+                  { value: "active", label: "Hiển thị" },
+                  { value: "deactive", label: "Ẩn" },
+                ]}
+              ></Select>
             </Form.Item>
             <Form.Item label="Tác vụ :">
               <Button htmlType="submit">
