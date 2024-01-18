@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\Auth\AuthenController;
 use App\Http\Controllers\API\V1\ActorController;
 use App\Http\Controllers\API\V1\Admin\UserController;
+use App\Http\Controllers\API\V1\BannerController;
 use App\Http\Controllers\API\V1\BookingController;
 use App\Http\Controllers\API\V1\CouponController;
 use App\Http\Controllers\API\V1\DirectorController;
@@ -140,15 +141,15 @@ Route::prefix('v1')->group(function () {
     Route::post('change-level-product', [ProductController::class, 'changeLevelProduct']);
     // List Data in trash ( level = hide )
     Route::get('actor-in-trash', [ActorController::class, 'listActorInTrash']);
-    
+
     Route::get('coupon-in-trash', [CouponController::class, 'ListCouponInTrash']);
 
     Route::get('director-in-trash', [DirectorController::class, 'listDirectorInTrash']);
-    
+
     Route::get('genre-in-trash', [GenreController::class, 'listGenreInTrash']);
-    
+
     Route::get('movie-in-trash', [MovieController::class, 'listMovieInTrash']);
-    
+
     Route::get('product-in-trash', [ProductController::class, 'listProductInTrash']);
 
     Route::get('showtime-in-trash', [ShowTimeController::class, 'listShowTimeInTrash']);
@@ -158,7 +159,7 @@ Route::prefix('v1')->group(function () {
     Route::post('change-level-room', [RoomController::class, 'changeLevelRoom']);
     // Update status booking = cancel ( Hủy đơn hoàn tiền )
     Route::post('cancel-booking/{booking_id}', [BookingController::class, 'doCancelBooking']);
-    
+
     Route::post('change-status-user', [NewpasswordController::class, 'changeStatusUser']);
 
     Route::get('get-banned-user', [UserController::class, 'getBannedUsers']);
@@ -166,13 +167,14 @@ Route::prefix('v1')->group(function () {
     Route::post('change-level-seat-type', [SeatTypeController::class, 'changeLevelSeatType']);
 
     Route::get('seat-type-in-trash', [SeatTypeController::class, 'listSeatTypeInTrash']);
-    
-    Route::get('movie-with-showtime', [MovieController::class, 'getMovieWithShowTimeGroupByDate']);
 
+    Route::get('movie-with-showtime', [MovieController::class, 'getMovieWithShowTimeGroupByDate']);
+;
     Route::get('top5-users-by-booking', [StatisticController::class, 'getTop5UserHaveHighestBooking']);
-    
+
     Route::get('get-movie-soft-by-total-revenue', [StatisticController::class, 'getAllMoviesSortedByTotalPrice']);
 
     Route::get('dash-board', [StatisticController::class, 'dashBoard']);
 
+    Route::get('banners', [BannerController::class, 'getBannersHomeScreen']);
 });

@@ -18,7 +18,7 @@ class BannerController extends Controller
     public function index()
     {
         try {
-            $banners = Banner::query()->where('status', 'active')->get();
+            $banners = Banner::query()->get();
 
             return response()->json([
                 'data' => $banners
@@ -29,6 +29,23 @@ class BannerController extends Controller
             return response()->json([
                 'message' => 'Đã có lỗi nghiêm trọng xảy ra'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getBannersHomeScreen()
+    {
+        try{
+            $banners = Banner::query()->where('status', Banner::ACTIVE)->get();
+
+            return response()->json([
+                'data' => $banners
+            ], Response::HTTP_OK);
+        }catch(Exception $exception) {
+            Log::error('BannerController@getBannersHomeScreen: ', [$exception->getMessage()]);
+
+            return response()->json([
+                'messagge' => 'Đã có lỗi nghiêm trọng xảy ra'
+            ]);
         }
     }
 

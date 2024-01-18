@@ -9,6 +9,9 @@ class Banner extends Model
 {
     use HasFactory;
 
+    const ACTIVE = 'active';
+    const DEACTIVE = 'deactive';
+
     protected $fillable = [
         'name',
         'status'
