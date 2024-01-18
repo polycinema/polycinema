@@ -90,6 +90,7 @@ class MovieController extends Controller
                 // ->whereTime('t1.start_time', '>=', $currentTime)
                 ->select('t1.*')
                 ->distinct()
+                ->orderBy('start_time', 'asc')
                 ->get();
 
             $groupedData = collect($showTimes)->groupBy('show_date')->map(function ($items) {
