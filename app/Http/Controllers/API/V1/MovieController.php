@@ -356,7 +356,7 @@ class MovieController extends Controller
                                 ->groupBy('showtime_id');
                         }]);
                         $query->where('level', 'show');
-
+                        $query->orderBy('start_time', 'asc');
                     }])
                     ->get();
 
