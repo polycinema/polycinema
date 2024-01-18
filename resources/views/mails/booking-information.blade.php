@@ -8,8 +8,8 @@
     <title>MAIL</title>
 </head>
 
-<body style="font-family: Arial, sans-serif;  margin: 0; padding: 0; text-align: center;">
-<h3>Chào {{ $booking->user->name }}  </h3>
+<body style="font-family: Arial, sans-serif;  margin: 0; padding: 0; ">
+    <h3>Chào {{ $booking->user->name }}  </h3>
     <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%">
         <tr>
         

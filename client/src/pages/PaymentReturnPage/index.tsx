@@ -26,8 +26,6 @@ const PayementReturnPage = () => {
   const vnpAmount = queryParams.get("vnp_Amount");
   const vnpTransactionStatus = queryParams.get("vnp_TransactionStatus");
   const vnpTxnRef: number = queryParams.get("vnp_TxnRef");
-
-  const { data, refetch } = useGetBookingByBooking_IdQuery(vnpTxnRef | "");
   useEffect(() => {
     addBooking({
       ...booking.payload,
@@ -40,7 +38,6 @@ const PayementReturnPage = () => {
         dispatch(deleteValueBooking());
         dispatch(deleteCoupon());
         dispatch(deleteSeatsToggle());
-        refetch();
       });
   }, []);
 
