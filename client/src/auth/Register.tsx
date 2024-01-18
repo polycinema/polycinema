@@ -68,7 +68,7 @@ const Register = () => {
           <Input.Password prefix={<LockOutlined />} placeholder="Mật khẩu" />
         </Form.Item>
         <Form.Item
-          label="Xác nhận mật kh"
+          label="Xác nhận mật khẩu"
           name={"confirmPassword"}
           rules={[
             { required: true, message: "Vui lòng nhập confirm password" },
